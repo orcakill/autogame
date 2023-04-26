@@ -22,6 +22,7 @@ test_sources = [
 ]
 
 requires = [
+    "airtest",
 ]
 test_requires = [
     "pytest",
@@ -142,7 +143,9 @@ requires = [
 
 [tool.briefcase.app.helloworld.android]
 requires = [
-    "toga-android~=0.3.1"
+    "toga-android~=0.3.1",
+        "airtest",
+
 ]
 
 # Web deployments
