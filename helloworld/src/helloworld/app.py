@@ -4,8 +4,8 @@ My first application
 import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
-from airtest.core.api import *
-from airtest.cli.parser import cli_setup
+import os
+
 
 
 class HelloWorld(toga.App):
@@ -22,7 +22,6 @@ class HelloWorld(toga.App):
                                   style=Pack(padding=50, width=200, height=100, font_family="serif", font_size=20))
         self.button_YYS = toga.Button("启动阴阳师", on_press=self.my_callonmyoji,
                                   style=Pack(padding=50, width=200, height=100, font_family="serif", font_size=20))
-        main_box.add(self.button)
         main_box.add(self.button_YYS)
 
         self.main_window = toga.MainWindow(title=self.formal_name)
@@ -42,14 +41,7 @@ class HelloWorld(toga.App):
             '你好', '我是一个按钮。按钮文本是：{}，按钮id是：{}，style:{}'.format(self.button.text, self.button.id,
                                                                              self.button.style)
         )
-        # 连接设备以及初始化工作 log文件夹默认生成在当面目录下
-        auto_setup(__file__, logdir=True, devices=["Android:///", ], )
-        # 启动阴阳师
-        start_app("com.netease.onmyoji")
-        # 等待5s
-        sleep(5)
-        # 关闭阴阳师
-        stop_app("com.netease.onmyoji")
+        os.system('adb shell am start -n com.netease.onmyoji/com.netease.ntunisdk.external.protocol.ProtocolLauncher')
 
 def main():
     return HelloWorld()
