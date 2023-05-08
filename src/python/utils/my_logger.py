@@ -1,8 +1,12 @@
-import sys
+import os
+import  sys
 
 from loguru import logger
 
-my_log_file_path = "test_log"
+from pathlib import Path
+
+project_path = Path.cwd()
+my_log_file_path = Path(project_path.joinpath("log"), "loguru_log.log")
 
 
 class MyLogger:
