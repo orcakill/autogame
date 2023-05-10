@@ -1,12 +1,8 @@
-
-import  sys
+import sys
 
 from loguru import logger
 
-from pathlib import Path
-
-project_path = Path.cwd()
-my_log_file_path = Path(project_path.joinpath("log"), "loguru.log")
+my_log_file_path = "loguru.log"
 
 
 class MyLogger:
@@ -35,3 +31,5 @@ class MyLogger:
     def get_logger(self):
         return self.logger
 
+
+logger = MyLogger().get_logger()

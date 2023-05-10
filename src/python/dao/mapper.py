@@ -1,27 +1,41 @@
-import datetime
+import configparser
+import uuid
+from typing import Optional, Type
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from pathlib import Path
-import configparser
 
 from src.python.model.models import GameThread
 
 config = configparser.ConfigParser()
-project_path = Path.cwd().parent
-config_path = Path(project_path.joinpath("resources"), "config.ini")
-config.read(config_path, encoding="utf-8")
-engine = create_engine(config.get("database", "url"), echo=config.get("database", "echo"))
+config.read("config.ini", encoding="utf-8")
+url = config.get("database", "url")
+engine = create_engine(url, echo=False)  # 实例化数据库连接
 Session = sessionmaker(bind=engine)
 session = Session()
 
 
-def model_add(game_thread: GameThread):
-    session.add(game_thread)
+def save(game_thread: GameThread):
+    """
+    游戏进程保存
+    :param game_thread:
+    :return:
+    """
+    session.merge(game_thread)
     session.commit()
 
 
+def select_by_id(thread_id: str) -> GameThread:
+    game_thread = session.get(GameThread,thread_id)
+    print(session.get(GameThread,thread_id))
+    return game_thread
+
+
 if __name__ == '__main__':
-    date01 = datetime.datetime.now()
-    gameThread = GameThread("测试", "测试", "测试", 1, "测试", date01, "测试", date01)
-    model_add(gameThread)
+    # 保存测试
+    # sid = str(uuid.uuid1())
+    # game_thread1 = GameThread(id=str(uuid.uuid1()), ip="1")
+    # save(game_thread1)
+    # 查询测试
+    game_thread1 = select_by_id("95cdade8-eee1-11ed-b1a8-744ca19b639c")
+
