@@ -2,7 +2,7 @@ import sys
 
 from loguru import logger
 
-my_log_file_path = "loguru.log"
+my_log_file_path = "logs/loguru.log"
 
 
 class MyLogger:
@@ -14,9 +14,8 @@ class MyLogger:
         self.logger.add(sys.stdout,
                         format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | "  # 颜色>时间
                                "{process.name} | "  # 进程名
-                               "{thread.name} | "  # 进程名
-                               "<cyan>{module}</cyan>.<cyan>{function}</cyan>"  # 模块名.方法名
-                               ":<cyan>{line}</cyan> | "  # 行号
+                               "{thread.name}  | "  # 线程名
+                               '"<blue>{file.name}:{line}"</blue> |'
                                "<level>{level}</level>: "  # 等级
                                "<level>{message}</level>",  # 日志内容
                         )
