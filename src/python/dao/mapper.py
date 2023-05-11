@@ -1,10 +1,8 @@
 import configparser
-import uuid
 from typing import Optional, Type
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
 from src.python.model.models import GameThread
 
 config = configparser.ConfigParser()
@@ -25,17 +23,9 @@ def save(game_thread: GameThread):
     session.commit()
 
 
-def select_by_id(thread_id: str) -> GameThread:
-    game_thread = session.get(GameThread,thread_id)
-    print(session.get(GameThread,thread_id))
+def select_by_id(thread_id: str):
+    game_thread = session.get(GameThread, thread_id)
+    session.close()
     return game_thread
 
-
-if __name__ == '__main__':
-    # 保存测试
-    # sid = str(uuid.uuid1())
-    # game_thread1 = GameThread(id=str(uuid.uuid1()), ip="1")
-    # save(game_thread1)
-    # 查询测试
-    game_thread1 = select_by_id("95cdade8-eee1-11ed-b1a8-744ca19b639c")
 

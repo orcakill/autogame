@@ -16,19 +16,20 @@ class GameThread(Base):
     host_name = Column(String(255), comment='主机名')
     thread_state = Column(Integer, comment='进程状态')
     create_user = Column(VARCHAR(40), comment='创建人')
-    create_time = Column(DateTime, comment='创建时间',default=datetime.now)
+    create_time = Column(DateTime, comment='创建时间', default=datetime.now)
     update_user = Column(VARCHAR(40), comment='修改人')
-    update_time = Column(DateTime, comment='修改时间',default=datetime.now,onupdate=datetime.now())
+    update_time = Column(DateTime, comment='修改时间', default=datetime.now, onupdate=datetime.now())
 
-
-# if __name__ == '__main__':
-#     config = configparser.ConfigParser()
-#     config.read("config.ini", encoding="utf-8")
-#     url = config.get("database", "url")
-#     engine = create_engine(url, echo=True)  # 实例化数据库连接
-#     Session = sessionmaker(bind=engine)
-#     session = Session()
-#     game_thread = GameThread(id=str(uuid.uuid1()),ip="123.1.1.1")
-#     session.add(game_thread)  # 添加数据
-#     session.commit()  # 最后需要调用commit()方法提交事务。
-
+    def __repr__(self):
+        """重写显示方法，定义后查询时可以显示数据，不会显示内存地址"""
+        Id = self.id
+        ip = self.ip
+        host_name = self.host_name
+        thread_state = self.thread_state
+        create_user = self.create_user
+        create_time = self.create_time
+        update_user = self.update_user
+        update_time = self.update_time
+        return f"id:{Id}, ip:{ip}, host_name:{host_name}, thread_state:{thread_state}, create_user:{create_user}," \
+               f"create_time :{create_time},update_user :{create_user},update_user :{update_user}," \
+               f"update_time:{update_time}"
