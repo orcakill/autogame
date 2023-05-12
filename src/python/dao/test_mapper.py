@@ -1,8 +1,10 @@
+import os
 import uuid
+from pathlib import Path
 
 from src.python.dao.mapper import save, select_by_id
 from src.python.model.models import GameThread
-from src.python.utils.my_logger import logger
+from src.python.utils.my_logger import my_logger as logger
 
 
 def test_save_game_thread():

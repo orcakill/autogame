@@ -1,8 +1,12 @@
+import os
 import sys
+from pathlib import Path
 
 from loguru import logger
 
-my_log_file_path = "logs/loguru.log"
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+# 设置主日志文件,所有日志都会记录在此文件中
+my_log_file_path = os.path.join(BASE_DIR, "logs/my.log")
 
 
 class MyLogger:
@@ -31,4 +35,4 @@ class MyLogger:
         return self.logger
 
 
-logger = MyLogger().get_logger()
+my_logger = MyLogger().get_logger()
