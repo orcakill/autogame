@@ -1,8 +1,9 @@
-from pathlib import Path
 
-from src.python.utils.my_logger import my_logger as logger
-
+from utils.my_logger import my_logger as logger
 from airtest.core.api import *
+
+
+
 
 if __name__ == '__main__':
     logger.debug("脚本启动")

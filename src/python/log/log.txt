@@ -1,0 +1,1 @@
+{"tag": "function", "depth": 1, "time": 1684167456.445247, "data": {"name": "start_app", "call_args": {"package": "com.netease.onmyoji", "activity": null}, "start_time": 1684167455.7114813, "ret": null, "end_time": 1684167456.445247}}
