@@ -8,8 +8,10 @@ if __name__ == '__main__':
     game_type = input("请输入一个脚本类型：")
     game_round = input("请输入一个脚本轮次：")
     logger.info("脚本类型 {},脚本轮次 {}", game_type, game_round)
-    # 项目组
-    projects=task(game_type,game_round);
+    # 执行项目组
+    # 发送邮件报告
+
+
     # 连接设备
     auto_setup(__file__, logdir=True, devices=["android://"])
     #
