@@ -9,6 +9,7 @@ if __name__ == '__main__':
     game_round = input("请输入一个脚本轮次：")
     logger.info("脚本类型 {},脚本轮次 {}", game_type, game_round)
     # 执行项目组
+
     # 发送邮件报告
 
 
