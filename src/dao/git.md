@@ -1,0 +1,1 @@
+sqlacodegen url outfile=test_models.py  

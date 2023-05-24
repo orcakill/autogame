@@ -3,7 +3,7 @@ from typing import Optional, Type
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from src.python.model.models import GameThread
+from src.model.models import GameThread
 
 config = configparser.ConfigParser()
 config.read("config.ini", encoding="utf-8")
