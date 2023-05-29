@@ -18,28 +18,74 @@ def create_models():
     url = config.get("database", "url")
     # 创建数据库连接
     engine = create_engine(url)
-    # 创建元数据对象
+    # # 创建元数据对象
     metadata = MetaData()
     # 获取所有表名和字段信息
     metadata.reflect(engine)
-    # 打印所有表名和字段信息
-    for table_name, table in metadata.tables.items():
+
+    # 打印库里的表名和列名
+    for table in metadata.sorted_tables:
+        table_name = table.name
         # 类名大写
         class_name = table_name.capitalize()
         # 转换成驼峰命名
         class_name = re.sub(r'_(\w)', lambda m: m.group(1).upper(), class_name)
-        model_file2 = model_file2 + "class " + class_name + "(Base):\n\r" + "    __tablename__ = " + table_name \
-                      + "\n\r\n\r"
-        for column_name, column in table.columns.items():
-            type=mysql_type_to_python_type(column.type.__class__.__name__)
-            length=column.length
-            column_file=column_name + "=Column(" +type
-            if type=="String":
-                column_file=column_file+"("+length
-            model_file2 = model_file2 + "    " +column_file+ "\n\r"
+        model_file2 = model_file2 + "class " + class_name + "(Base):\n\r"
+        model_file2 = model_file2 + "    __tablename__ = \"" + table_name + "\"\n\r\n\r"
+        # 类属性
+        for column in table.columns:
+            # 字段名称
+            column_name = column.name
+            # 字段类型
+            column_type = mysql_type_to_python_type(column.type.__class__.__name__)
+            # 字段小数位数
+            # 字段主键
+            column_PK = column.primary_key
+            # 字段注释
+            column_comment = column.comment
+            column_file = column_name + "=Column(" + column_type
+            if column_type == "String":
+                # 字段长度
+                column_type_length = format(column.type.length)
+                # 字符集
+                column_charset = column.type.charset
+                # 排序规则
+                column_collation = column.type.collation
+                column_file = column_file + "(" + column_type_length + ")"
+            if column_PK == True:
+                column_file = column_file + ",primary_key=True"
+            column_file = column_file + ",info='" + column_comment + "')"
+            model_file2 = model_file2 + "    " + column_file + "\n\r"
         model_file2 = model_file2 + "\n\r"
+        #   __repr__方法
+        model_file21 = "    def __repr__(self):\n\r"
+        model_file21 = model_file21 + "\t\treturn f\"{self.__class__.__name__}:\"\\\n\r"
+        for i in range(0, len(table.columns)):
+            column1 = table.columns[i]
+            # 字段名称
+            column_name1 = column1.name
+            column_file1 = ""
+            if i == len(table.columns) - 1:
+                column_file1 = "\t\t   f\"" + column_name1 + "= {self." + column_name1 + "}\""
+            else:
+                column_file1 = "\t\t   f\"" + column_name1 + "= {self." + column_name1 + "},\" \\"
+            column_file1 = column_file1
+            model_file21 = model_file21 + "    " + column_file1 + "\n\r"
+        model_file2 = model_file2 + model_file21 + "\n\r"
     model_file = model_file1 + model_file2
     print(model_file)
+
+    # 遍历元数据中的表信息并打印
+    # for table in metadata.sorted_tables:
+    #     print(f"Table: {table.name}")
+    #     print(f"Columns:")
+    #     for column in table.columns:
+    #         print(f"\t{column.name}: {column.type.__class__.__name__}")
+    #         print(f"\t\tLength: {column.type.length}")
+    #         print(f"\t\tDecimal: {column.type.decimal}")
+    #         print(f"\t\tPrimary Key: {table.primary_key.__class__.__name__}")
+    #         print(f"\t\tComment: {column.comment}")
+    #         print("")
 
 
 def mysql_type_to_python_type(mysql_type):
