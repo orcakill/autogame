@@ -13,12 +13,13 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-def save(game_thread: GameThread):
+def save_game_thread(game_thread: GameThread):
     session.merge(game_thread)
     session.commit()
+    session.close()
 
 
-def select_by_id(thread_id: str):
-    game_thread = session.get(GameThread, thread_id)
+def select_game_thread_get(id: str):
+    game_thread = session.get(GameThread, id)
     session.close()
     return game_thread

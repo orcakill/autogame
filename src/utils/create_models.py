@@ -47,12 +47,8 @@ def create_models():
             if column_type == "String":
                 # 字段长度
                 column_type_length = format(column.type.length)
-                # 字符集
-                column_charset = column.type.charset
-                # 排序规则
-                column_collation = column.type.collation
                 column_file = column_file + "(" + column_type_length + ")"
-            if column_PK == True:
+            if column_PK:
                 column_file = column_file + ",primary_key=True"
             column_file = column_file + ",info='" + column_comment + "')"
             model_file2 = model_file2 + "    " + column_file + "\n\r"
@@ -64,7 +60,6 @@ def create_models():
             column1 = table.columns[i]
             # 字段名称
             column_name1 = column1.name
-            column_file1 = ""
             if i == len(table.columns) - 1:
                 column_file1 = "\t\t   f\"" + column_name1 + "= {self." + column_name1 + "}\""
             else:
