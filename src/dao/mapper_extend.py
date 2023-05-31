@@ -2,11 +2,13 @@ import configparser
 
 from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import sessionmaker
+from src.model.models import GameThread, GameProjects, GameProjectsRelation, GameProject, GameAccount
+from src.utils.project_path import get_project_path
 
-from src.model.models import GameThread, GameProjects, GameProjectsRelation, GameProject
-
+root_path=get_project_path()
+config_path=root_path+"src\\resources\\config.ini"
 config = configparser.ConfigParser()
-config.read("config.ini", encoding="utf-8")
+config.read(config_path, encoding="utf-8")
 url = config.get("database", "url")
 engine = create_engine(url, echo=False)  # 实例化数据库连接
 Session = sessionmaker(bind=engine)
@@ -27,12 +29,13 @@ class MapperExtend:
 
     @staticmethod
     def select_game_task(object_id: str, object_projects_num: str):
-        task = session.query(GameProjects, GameProjectsRelation, GameProject) \
+        task = session.query(GameProjects, GameProjectsRelation,GameAccount, GameProject) \
             .join(GameProjectsRelation, GameProjects.id == GameProjectsRelation.projects_id) \
             .join(GameProject, GameProjectsRelation.project_id == GameProject.id) \
+            .join(GameAccount,GameAccount.id==GameProjectsRelation.user_id) \
             .filter(or_(GameProjects.id == object_id, object_id == ""),
                     or_(GameProjects.projects_num == object_projects_num, object_projects_num == "")) \
-            .order_by(GameProjectsRelation.project_num) \
+            .order_by(GameProjects.id,GameProjectsRelation.relation_num) \
             .all()
         session.close()
         return task
