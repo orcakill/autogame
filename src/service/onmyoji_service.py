@@ -3,11 +3,6 @@
 # @Author  : orcakill
 # @File    : onmyoji_service.py
 # @Description : 服务接口
-
-from abc import ABC, abstractmethod
-
-
-class OnmyojiService(ABC):
-    @abstractmethod
-    def area(self):
+class OnmyojiService:
+    def initialization(self, user_id: str):
         pass
