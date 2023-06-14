@@ -25,5 +25,4 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
             user_id = game_task[j]['GameAccount'].id
             if project_name == "当前状态初始化":
                 logger.info("{}:{}", project_name, game_name)
-                onmyojiService = OnmyojiService()
-                onmyojiService.initialization(user_id)
+                OnmyojiService.initialization(user_id)

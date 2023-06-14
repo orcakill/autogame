@@ -1,22 +1,22 @@
-from airtest.aircv import cv2_2_pil
-from airtest.core.api import auto_setup, start_app
-from airtest.core.helper import G
-from src.utils.my_logger import my_logger as logger
-
+from src.service.airtest_service import AirtestService
+from src.utils.junk.my_logging import logger
 
 # @Time    : 2023年05月31日 17:51
 # @Author  : orcakill
 # @File    : onmyoji_service.py
 # @Description : 服务接口
+
+airtest_service = AirtestService()
+
+
 class OnmyojiService:
-    def initialization(self, user_id: str):
+    @staticmethod
+    def initialization(user_id: str):
         logger.debug("连接Android设备")
         # 连接android设备
-        auto_setup(__file__, logdir=False, devices=["android://"])
-        logger.debug("截取当前页面")
-        screen1 = G.DEVICE.snapshot()
-        pil_img = cv2_2_pil(screen1)
-        pil_img.save(r"D:/test.png", quality=99, optimize=True)
+        airtest_service.auto_setup()
+        logger.info("截取当前页面")
+        airtest_service.snapshot()
         # 在auto_setup接口传入devices参数
         # start_app("com.netease.onmyoji")
         # 判断当前是否是用户首页

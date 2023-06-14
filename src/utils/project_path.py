@@ -1,4 +1,5 @@
 import os
+import configparser
 
 
 def get_project_path():
@@ -6,3 +7,12 @@ def get_project_path():
     p_path = os.path.abspath(os.path.dirname(__file__))
     # 通过字符串截取方式截取，当前文件相对路径./src/util/StrUtil.py
     return p_path[:p_path.rindex('src')]
+
+
+def get_database_url():
+    root_path = get_project_path()
+    config_path = root_path + "src\\resources\\config.ini"
+    config = configparser.ConfigParser()
+    config.read(config_path, encoding="utf-8")
+    return  config.get("database", "url")
+
