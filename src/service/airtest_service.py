@@ -5,7 +5,7 @@
 # @Description : airtest接口
 """
 from airtest.aircv import cv2_2_pil
-from airtest.core.api import auto_setup, exists
+from airtest.core.api import *
 from airtest.core.helper import G
 import logging
 
@@ -25,10 +25,20 @@ class AirtestService():
 
     @staticmethod
     def snapshot():
-        screen1 = G.DEVICE.snapshot()
-        pil_img = cv2_2_pil(screen1)
-        pil_img.save(r"D:/test.png", quality=99, optimize=True)
+        """
+        实时截图
+        :return: 数组
+        """
+        return G.DEVICE.snapshot()
 
     @staticmethod
-    def exist():
-        return exists()
+    def assert_exists(template:Template):
+        """
+        判断图片是否存在
+        :param template: airtest图片类
+        :return: boolean
+        """
+        if assert_exists(template):
+            return True
+        else:
+            return False
