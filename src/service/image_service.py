@@ -3,12 +3,14 @@
 # @File    : image_service.py
 # @Description : 图像识别接口
 import os
+import re
 
 from airtest.core.cv import Template
 
 from src.service.airtest_service import AirtestService
 
 from src.utils.my_logger import my_logger as logger
+from src.utils.project_path import get_onmyoji_image_path
 
 # 导入 airtest服务接口
 airtest_service = AirtestService()
@@ -23,23 +25,24 @@ class ImageService:
         :param folder_path: 文件夹路径
         :return: boolean
         """
-        for file_name in os.listdir(folder_path):
-            folder_all_path=os.path.abspath(os.path.join(folder_path, folder_path))
-            file_path = os.path.abspath(os.path.join(folder_path, file_name))
+        folder_all_path = os.path.join(get_onmyoji_image_path(),folder_path)
+        for file_name in os.listdir(folder_all_path):
+            file_path = os.path.abspath(os.path.join(folder_all_path, file_name))
             # 判断文件是否存在
             if os.path.isfile(file_path):
                 # 判断文件是否是图片类型
                 file_ext = file_path.split('.')[-1].lower()
                 if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp']:
-                    parts = file_path.split("_")
-                    result = [part.split(".")[0] for part in parts[1:]]
+                    part=re.sub('.'+file_ext,'',file_path)
+                    parts = part.split("_")
+                    result = parts[1:]
                     # 文件名符合4段下划线的规范
-                    if len(result) == 3:
+                    if len(result) == 4:
                         # 获取图片偏移量
-                        record_pos = (result[0], result[1])
+                        record_pos = (float(result[0]), float(result[1]))
                         # 获取图片分辨率
-                        resolution = (result[2], result[3])
-                        template = Template(file_path, record_pos, resolution)
+                        resolution = (int(result[2]),int(result[3]))
+                        template = Template(filename=file_path,record_pos=record_pos,resolution=resolution)
                         # 判断图片是否存在
                         if airtest_service.assert_exists(template):
                             return True

@@ -1,22 +1,33 @@
-from src.service.airtest_service import AirtestService
-from src.utils.junk.my_logging import logger
-
 # @Time    : 2023年05月31日 17:51
 # @Author  : orcakill
 # @File    : onmyoji_service.py
 # @Description : 服务接口
+import os
 
+from src.service.airtest_service import AirtestService
+from src.service.image_service import ImageService
+from src.utils.junk.my_logging import logger
+from src.model.enum import Onmyoji
+
+# airtest服务接口
 airtest_service = AirtestService()
+image_service = ImageService()
 
 
 class OnmyojiService:
     @staticmethod
     def initialization(user_id: str):
-        logger.debug("连接Android设备")
-        # 连接android设备
-        airtest_service.auto_setup()
-        logger.info("截取当前页面")
-        airtest_service.snapshot()
+        logger.debug("判断当前状态")
+        # 当前状态 账号首页 1，2,3，4
+        #        其它，不在账号首页
+        account_index=os.path.join(Onmyoji.login_ACCOUNT,user_id)
+        is_index = image_service.exists(account_index)
+        if is_index:
+            logger.debug("账号首页")
+        else:
+            logger.debug("其它情况")
+        # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
+        logger.debug("初始化当前状态完成")
         # 在auto_setup接口传入devices参数
         # start_app("com.netease.onmyoji")
         # 判断当前是否是用户首页

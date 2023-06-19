@@ -23,4 +23,4 @@ def get_database_url():
 
 def get_onmyoji_image_path():
     project_path = get_project_path()
-    return project_path + "src\\resources\\static\\onmyoji"
+    return project_path + "src\\resources\\static\\onmyoji\\"
