@@ -42,3 +42,17 @@ class AirtestService():
             return True
         else:
             return False
+
+    @staticmethod
+    def restart_app(app:str):
+        """
+        重启APP
+        :param app: app的包名
+        :return: 无
+        """
+        if app=="":
+            app="com.netease.onmyoji"
+        stop_app(app)
+        wait(2)
+        start_app(app)
+        wait(1)
