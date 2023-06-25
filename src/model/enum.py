@@ -8,3 +8,4 @@ class Onmyoji:
 
 if __name__ == '__main__':
     print(Onmyoji.login_ACCOUNT)
+

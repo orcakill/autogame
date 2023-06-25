@@ -4,17 +4,18 @@
 # @File    : airtest_service.py
 # @Description : airtest接口
 """
-from airtest.aircv import cv2_2_pil
+import logging
+
 from airtest.core.api import *
 from airtest.core.helper import G
-import logging
+from airtest.core.settings import Settings
 
 # 控制airtest的日志输出
 log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
 
 
-class AirtestService():
+class AirtestService:
     @staticmethod
     def auto_setup():
         """
@@ -32,26 +33,28 @@ class AirtestService():
         return G.DEVICE.snapshot()
 
     @staticmethod
-    def assert_exists(template:Template):
+    def assert_exists(template: Template, cvstrategy: [])->bool:
         """
         判断图片是否存在
-        :param template: airtest图片类
-        :return: boolean
+        :param template: 图片类
+        :param cvstrategy: 图像识别算法
+        :return:bool
         """
+        Settings.CVSTRATEGY = cvstrategy
         if assert_exists(template):
             return True
         else:
             return False
 
     @staticmethod
-    def restart_app(app:str):
+    def restart_app(app: str):
         """
         重启APP
         :param app: app的包名
         :return: 无
         """
-        if app=="":
-            app="com.netease.onmyoji"
+        if app == "":
+            app = "com.netease.onmyoji"
         stop_app(app)
         wait(2)
         start_app(app)

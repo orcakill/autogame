@@ -3,13 +3,10 @@
 # @File    : image_service.py
 # @Description : 图像识别接口
 import os
-import re
-import datetime
 
 from airtest.core.cv import Template
 
 from src.service.airtest_service import AirtestService
-
 from src.utils.my_logger import my_logger as logger
 from src.utils.project_path import get_onmyoji_image_path
 
@@ -19,7 +16,7 @@ airtest_service = AirtestService()
 
 class ImageService:
     @staticmethod
-    def exists(folder_path: str):
+    def exists(folder_path: str,cvstrategy:[]):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
         :param folder_path: 文件夹路径
@@ -33,22 +30,10 @@ class ImageService:
                 # 判断文件是否是图片类型
                 file_ext = file_path.split('.')[-1].lower()
                 if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp']:
-                    part = re.sub('.' + file_ext, '', file_path)
-                    parts = part.split("_")
-                    result = parts[1:]
+                    # 图片类赋值
                     template = Template(filename=file_path)
-                    # 文件名符合4段下划线的规范
-                    if len(result) == 4:
-                        # 获取图片偏移量
-                        record_pos = (float(result[0]), float(result[1]))
-                        # 获取图片分辨率
-                        resolution = (int(result[2]), int(result[3]))
-                        template = Template(filename=file_path, record_pos=record_pos, resolution=resolution)
                     # 判断图片是否存在
-                    now=datetime.datetime.now()
-                    if airtest_service.assert_exists(template):
-                        now1 = datetime.datetime.now()
-                        print(now1-now)
+                    if airtest_service.assert_exists(template,cvstrategy):
                         logger.debug("图片识别成功")
                         return True
                 else:
