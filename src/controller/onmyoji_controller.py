@@ -22,7 +22,7 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
             # 判断项目名称，根据项目名称执行不同的函数
             project_name = game_task[j]['GameProject'].project_name
             game_name = game_task[j]['GameAccount'].game_name
-            user_id = game_task[j]['GameAccount'].id
+            game_account = game_task[j]['GameAccount']
             if project_name == "当前状态初始化":
                 logger.info("{}:{}", project_name, game_name)
-                OnmyojiService.initialization(user_id)
+                OnmyojiService.initialization(game_account)

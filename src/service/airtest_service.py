@@ -33,15 +33,43 @@ class AirtestService:
         return G.DEVICE.snapshot()
 
     @staticmethod
-    def assert_exists(template: Template, cvstrategy: [])->bool:
+    def assert_exists(template: Template, cvstrategy: [], timeout: int):
         """
         判断图片是否存在
         :param template: 图片类
         :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
         :return:bool
         """
         Settings.CVSTRATEGY = cvstrategy
-        if assert_exists(template):
+        if assert_exists(Template=template, timeout=timeout):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def touch(template: Template, cvstrategy: [], timeout: int):
+        """
+        判断图片是否存在
+        :param template: 图片类
+        :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
+        :return:bool
+        """
+        Settings.CVSTRATEGY = cvstrategy
+        if touch(Template=template, timeout=timeout):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def touch_coordinate(v: []):
+        """
+        点击坐标
+        :param v: 坐标
+        :return: bool
+        """
+        if touch(v):
             return True
         else:
             return False
@@ -53,8 +81,6 @@ class AirtestService:
         :param app: app的包名
         :return: 无
         """
-        if app == "":
-            app = "com.netease.onmyoji"
         stop_app(app)
         wait(2)
         start_app(app)
