@@ -8,7 +8,7 @@ import logging
 
 from airtest.core.api import *
 from airtest.core.helper import G
-from airtest.core.settings import Settings
+from airtest.core.settings import Settings as ST
 
 # 控制airtest的日志输出
 log_airtest = logging.getLogger("airtest")
@@ -17,12 +17,15 @@ log_airtest.setLevel(logging.CRITICAL)
 
 class AirtestService:
     @staticmethod
-    def auto_setup():
+    def auto_setup(game_device:str):
         """
         设备连接
         :return:
         """
-        auto_setup(__file__, logdir=False, devices=["android://"])
+        if game_device!="":
+            auto_setup(__file__, logdir=False, devices=["android://"])
+        if game_device=="1":
+            auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:62001?cap_method=JAVACAP&&ori_method=ADBORI&&touch_method=ADBTOUCH"])
 
     @staticmethod
     def snapshot():
@@ -41,8 +44,9 @@ class AirtestService:
         :param timeout: 超时时间
         :return:bool
         """
-        Settings.CVSTRATEGY = cvstrategy
-        if assert_exists(Template=template, timeout=timeout):
+        ST.CVSTRATEGY = cvstrategy
+        ST.FIND_TIMEOUT=timeout
+        if exists(template):
             return True
         else:
             return False
@@ -56,8 +60,8 @@ class AirtestService:
         :param timeout: 超时时间
         :return:bool
         """
-        Settings.CVSTRATEGY = cvstrategy
-        if touch(Template=template, timeout=timeout):
+        ST.CVSTRATEGY = cvstrategy
+        if touch(v=template,timeout=timeout):
             return True
         else:
             return False
@@ -82,6 +86,6 @@ class AirtestService:
         :return: 无
         """
         stop_app(app)
-        wait(2)
+        time.sleep(2)
         start_app(app)
-        wait(1)
+        time.sleep(1)
