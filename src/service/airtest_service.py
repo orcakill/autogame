@@ -25,7 +25,7 @@ class AirtestService:
         if game_device!="":
             auto_setup(__file__, logdir=False, devices=["android://"])
         if game_device=="1":
-            auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:62001?cap_method=JAVACAP&&ori_method=ADBORI&&touch_method=ADBTOUCH"])
+            auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/127.0.0.1:62001"])
 
     @staticmethod
     def snapshot():
