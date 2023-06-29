@@ -11,7 +11,7 @@ if __name__ == '__main__':
     logger.info("脚本启动")
     logger.info("1 大号、小号、协战号每日任务")
     logger.info("2 协战号寄养、协战、领取奖励")
-    logger.info("null  默认设备 1 夜神模拟器")
+    logger.info("0  默认设备 1 夜神模拟器")
     game_type = input("请输入一个脚本类型：")
     game_round = input("请输入一个脚本轮次：")
     game_device=input("请输入一个脚本设备：")

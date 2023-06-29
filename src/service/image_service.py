@@ -62,7 +62,7 @@ def image_rec(folder_path: str, cvstrategy: [] = Cvstrategy.sift, timeout: int =
                 # 根据识别类型，存在 或 存在并点击
                 if image_type == "exists":
                     # 判断图片是否存在
-                    if airtest_service.touch(template, cvstrategy, timeout):
+                    if airtest_service.exists(template, cvstrategy, timeout):
                         logger.debug("图片识别成功")
                         return True
                 elif image_type == "touch":
@@ -74,4 +74,4 @@ def image_rec(folder_path: str, cvstrategy: [] = Cvstrategy.sift, timeout: int =
                 logger.debug("{}文件类型不为图片", file_path)
         else:
             logger.debug("{}文件不存在", file_path)
-        return False
+    return False

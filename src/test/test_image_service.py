@@ -24,10 +24,9 @@ airtest_service=AirtestService
 
 
 def test_exists():
-    airtest_service.auto_setup()
+    airtest_service.auto_setup("0")
     now=datetime.datetime.now()
-    screen =snapshot()
-    screen1 =G.DEVICE.snapshot()
+    print(image_service.touch(Onmyoji.login_XSJ))
     now1 = datetime.datetime.now()
     print(now1-now)
 

@@ -1,6 +1,5 @@
 import os
 import sys
-from pathlib import Path
 
 from loguru import logger
 
@@ -17,7 +16,7 @@ class MyLogger:
         # 清空所有设置
         self.logger.remove()
         # 添加控制台输出的格式,sys.stdout为输出到屏幕;关于这些配置还需要自定义请移步官网查看相关参数说明
-        self.logger.add(sys.stdout,level='DEBUG',
+        self.logger.add(sys.stdout, level='DEBUG',
                         format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "  # 颜色>时间
                                "{process.name} | "  # 进程名
                                "{thread.name} | "  # 进程名
