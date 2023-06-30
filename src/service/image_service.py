@@ -17,7 +17,7 @@ airtest_service = AirtestService()
 
 class ImageService:
     @staticmethod
-    def exists(folder_path: str, cvstrategy: [] = Cvstrategy.sift, timeout: int = 20) -> bool:
+    def exists(folder_path: str, cvstrategy: [] = Cvstrategy.sift, timeout: int = 20,threshold: float=0.7) -> bool:
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
         :param folder_path: 图片文件夹路径
@@ -25,10 +25,10 @@ class ImageService:
         :param timeout: 超时时间
         :return: bool
         """
-        return image_rec(folder_path, cvstrategy, timeout, "exists")
+        return image_rec(folder_path, cvstrategy, timeout, "exists",threshold)
 
     @staticmethod
-    def touch(folder_path: str, cvstrategy: [] = Cvstrategy.sift, timeout: int = 20) -> bool:
+    def touch(folder_path: str, cvstrategy: [] = Cvstrategy.sift, timeout: int = 20,threshold: float=0.7) -> bool:
         """
         根据文件夹名获取图片进行图像识别，点击图片
         :param folder_path: 图片文件夹路径
@@ -36,11 +36,10 @@ class ImageService:
         :param timeout: 超时时间
         :return: bool
         """
-        return image_rec(folder_path, cvstrategy, timeout, "touch")
+        return image_rec(folder_path, cvstrategy, timeout, "touch",threshold)
 
 
-def image_rec(folder_path: str, cvstrategy: [] = Cvstrategy.sift, timeout: int = 20,
-              image_type: str = "exists") -> bool:
+def image_rec(folder_path: str, cvstrategy: [], timeout: int,image_type: str,threshold: float) -> bool:
     """
     根据文件夹名获取图片进行图像识别，点击图片
     :param folder_path: 图片文件夹路径
@@ -62,12 +61,12 @@ def image_rec(folder_path: str, cvstrategy: [] = Cvstrategy.sift, timeout: int =
                 # 根据识别类型，存在 或 存在并点击
                 if image_type == "exists":
                     # 判断图片是否存在
-                    if airtest_service.exists(template, cvstrategy, timeout):
+                    if airtest_service.exists(template, cvstrategy, timeout,threshold):
                         logger.debug("图片识别成功")
                         return True
                 elif image_type == "touch":
                     # 判断图片是否存在并点击
-                    if airtest_service.touch(template, cvstrategy, timeout):
+                    if airtest_service.touch(template, cvstrategy, timeout,threshold):
                         logger.debug("图片识别点击成功")
                         return True
             else:

@@ -9,7 +9,7 @@ from src.model.models import GameAccount
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.junk.my_logging import logger
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 
 # airtest服务接口
 airtest_service = AirtestService()
@@ -42,8 +42,8 @@ class OnmyojiService:
             logger.debug("判断是否存在适龄提示")
             is_ageAppropriateReminder= image_service.exists(Onmyoji.login_SLTS)
             count=0
-            # 不存在适龄提示，执行次数小于3
-            while not is_ageAppropriateReminder and  count<3:
+            # 不存在适龄提示，执行次数小于5
+            while not is_ageAppropriateReminder and  count<5:
                 logger.debug("点击左上角，防止有开场动画")
                 airtest_service.touch_coordinate([10, 10])
                 logger.debug("点击公告返回")
@@ -71,7 +71,7 @@ class OnmyojiService:
             logger.debug("切换服务器")
             image_service.touch(Onmyoji.login_QHFWQ)
             logger.debug("点击小三角")
-            image_service.touch(Onmyoji.login_XSJ)
+            image_service.touch(Onmyoji.login_XSJ,cvstrategy=Cvstrategy.default,timeout=3)
             logger.debug("选择服务器:{}", game_account.game_region)
             server = os.path.join(Onmyoji.login_FWQ, game_account.account_name)
             image_service.touch(server)

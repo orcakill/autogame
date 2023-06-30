@@ -38,32 +38,36 @@ class AirtestService:
         return G.DEVICE.snapshot()
 
     @staticmethod
-    def exists(template: Template, cvstrategy: [], timeout: int):
+    def exists(template: Template, cvstrategy: [], timeout: int, threshold: float):
         """
         判断图片是否存在
         :param template: 图片类
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
+        :param threshold: 图像识别阈值
         :return:bool
         """
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT = timeout
+        Settings.THRESHOLD = threshold
         if exists(template):
             return True
         else:
             return False
 
     @staticmethod
-    def touch(template: Template, cvstrategy: [], timeout: int):
+    def touch(template: Template, cvstrategy: [], timeout: int, threshold: float):
         """
         判断图片是否存在
         :param template: 图片类
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
+        :param threshold: 图像识别阈值
         :return:bool
         """
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT = timeout
+        Settings.THRESHOLD = threshold
         try:
             if touch(template):
                 return True

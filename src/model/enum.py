@@ -28,6 +28,7 @@ class Onmyoji:
 class Cvstrategy:
     # 图像文字识别类型
     sift = ["sift"]
+    default=["mstpl", "tpl", "sift", "brisk"]
 
 
 if __name__ == '__main__':

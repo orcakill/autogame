@@ -17,7 +17,7 @@ from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 import datetime
 from airtest.core.api import *
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 
 image_service = ImageService
 airtest_service=AirtestService
@@ -26,7 +26,7 @@ airtest_service=AirtestService
 def test_exists():
     airtest_service.auto_setup("0")
     now=datetime.datetime.now()
-    print(image_service.touch(Onmyoji.login_XSJ))
+    print(image_service.touch(Onmyoji.login_XSJ,cvstrategy=Cvstrategy.default,threshold=0.5))
     now1 = datetime.datetime.now()
     print(now1-now)
 
