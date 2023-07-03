@@ -84,8 +84,8 @@ class OnmyojiService:
                 logger.debug("未打开底部菜单栏")
                 for i in range(3):
                     logger.debug("点击可能存在的返回")
-                    image_service.touch(Onmyoji.home_FH)
+                    image_service.touch(Onmyoji.home_FH,timeout=3)
                     logger.debug("点击可能存在的下载")
-                    image_service.touch(Onmyoji.home_XZ)
+                    image_service.touch(Onmyoji.home_XZ,timeout=3)
             logger.debug("当前账号首页")
         logger.info("初始化当前状态完成")
