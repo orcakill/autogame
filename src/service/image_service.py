@@ -94,11 +94,9 @@ def image_rec(folder_path: str, cvstrategy: [], timeout: int, image_type: str, t
                         if airtest_service.touch(template, cvstrategy, timeout, threshold):
                             logger.debug("图片识别点击成功")
                             return True
-                else:
-                    logger.debug("{}文件类型不为图片", file_path)
             else:
                 logger.debug("{}文件不存在", file_path)
-            logger.debug("第{}轮图片未识别", i+1)
-            # 等待 *秒
-            time.sleep(interval)
+        logger.debug("第{}轮图片未识别", i+1)
+        # 等待 *秒
+        time.sleep(interval)
     return False
