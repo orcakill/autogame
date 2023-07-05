@@ -6,8 +6,8 @@
 
 class Onmyoji:
     # 游戏
-    home_DBCD = r"首页\底部菜单栏"
-    home_DBCDDK = r"首页\底部菜单栏打开"
+    home_DBCD = r"首页\底部菜单"
+    home_DBCDDK = r"首页\底部菜单打开"
     home_FH = r"首页\返回"
     home_XZ = r"首页\下载"
     home_TS = r"首页\探索"
@@ -23,6 +23,7 @@ class Onmyoji:
     login_XSJ = r"登录\小三角"
     login_YHZX = r"登录\用户中心"
     user_XZZH= r"用户\选择账号"
+    user_SYTX = r"用户\首页头像"
 
 
 class Cvstrategy:
