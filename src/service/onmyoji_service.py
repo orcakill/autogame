@@ -26,7 +26,7 @@ class OnmyojiService:
         account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
         is_index = image_service.exists(account_index)
         if is_index:
-            logger.debug("当前账号首页")
+            logger.debug("当前账号首页，清理首页弹出窗口，打开底部菜单")
         else:
             logger.debug("不在账号首页")
             for i in range(3):
@@ -74,19 +74,27 @@ class OnmyojiService:
                 logger.debug("开始游戏")
                 image_service.touch(Onmyoji.login_KSYX)
                 time.sleep(15)
-                logger.debug("打开底部菜单栏")
-                is_openBottom = image_service.touch(Onmyoji.home_DBCDDK)
-                if not is_openBottom:
-                    logger.debug("未打开底部菜单栏")
-                    for j in range(3):
-                        logger.debug("点击可能存在的返回")
-                        image_service.touch(Onmyoji.home_FH, timeout=3)
-                        logger.debug("点击可能存在的下载")
-                        image_service.touch(Onmyoji.home_XZ, timeout=3)
-                        logger.debug("点击可能存在的底部菜单")
-                        image_service.touch(Onmyoji.home_DBCD, timeout=3)
-                        is_openBottom = image_service.touch(Onmyoji.home_DBCDDK)
-                        if is_openBottom:
-                            break
         logger.debug("当前账号首页")
         logger.info("初始化当前状态完成")
+
+    @staticmethod
+    def home_popup_window():
+        """
+        处理首页的弹出窗口
+        :return:
+        """
+        is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
+        if not is_openBottom:
+            for i in range(3):
+                logger.debug("点击可能存在的右上角返回")
+                image_service.touch(Onmyoji.home_FH, timeout=3)
+                logger.debug("点击可能存在的下载")
+                image_service.touch(Onmyoji.home_XZ, timeout=3)
+                logger.debug("点击可能存在的底部菜单")
+                image_service.touch(Onmyoji.home_DBCD, timeout=3)
+                is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
+                if is_openBottom:
+                    break
+        return  is_openBottom
+
+

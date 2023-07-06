@@ -24,6 +24,7 @@ class Onmyoji:
     login_YHZX = r"登录\用户中心"
     user_XZZH= r"用户\选择账号"
     user_SYTX = r"用户\首页头像"
+    return_XSFYHSCH = r"通用\返回\悬赏封印红色叉号"
 
 
 class Cvstrategy:
