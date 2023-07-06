@@ -26,7 +26,7 @@ airtest_service=AirtestService
 def test_exists():
     airtest_service.auto_setup("0")
     now=datetime.datetime.now()
-    print(image_service.touch(Onmyoji.login_XSJ,cvstrategy=Cvstrategy.default))
+    print(image_service.touch(Onmyoji.login_QHFWQ,cvstrategy=Cvstrategy.default))
     now1 = datetime.datetime.now()
     print(now1-now)
 

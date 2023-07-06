@@ -77,9 +77,11 @@ def image_rec(folder_path: str, cvstrategy: [], timeout: int, image_type: str, t
         num = i + 1
         if num >= 2:
             # 识别轮次大于1时，判断是存在并点击悬赏封印
-            image_rec_one(Onmyoji.return_XSFYHSCH, cvstrategy, 1, "touch", threshold)
-        if not image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold):
-            logger.debug("第{}轮图片未识别", num)
+            image_rec_one(Onmyoji.comm_XSFYHSCH, cvstrategy, 1, "touch", threshold)
+        if image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold):
+            return True
+        else:
+            logger.debug("{},第{}轮图片未识别",folder_path,num)
         # 等待 *秒
         time.sleep(interval)
     return False
@@ -109,10 +111,12 @@ def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: st
                 if image_type == "exists":
                     # 判断图片是否存在
                     if airtest_service.exists(template, cvstrategy, timeout, threshold):
+                        logger.debug("图片识别成功")
                         return True
                 elif image_type == "touch":
                     # 判断图片是否存在并点击
                     if airtest_service.touch(template, cvstrategy, timeout, threshold):
+                        logger.debug("图片识别点击成功")
                         return True
         else:
             logger.debug("{}文件不存在", file_path)
