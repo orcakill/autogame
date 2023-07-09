@@ -5,8 +5,6 @@
 # @Description : airtest接口
 """
 import logging
-
-import logger
 from airtest.core.api import *
 from airtest.core.helper import G
 from airtest.core.settings import Settings
@@ -32,7 +30,7 @@ class AirtestService:
     @staticmethod
     def snapshot():
         """
-        实时截图
+        这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
         """
         return G.DEVICE.snapshot()
@@ -45,7 +43,7 @@ class AirtestService:
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
         :param threshold: 图像识别阈值
-        :return:bool
+        :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT = timeout
@@ -78,11 +76,6 @@ class AirtestService:
 
     @staticmethod
     def touch_coordinate(v: []):
-        """
-        点击坐标
-        :param v: 坐标
-        :return: bool
-        """
         if touch(v):
             return True
         else:

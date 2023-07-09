@@ -5,11 +5,11 @@
 import os
 import time
 
+from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.junk.my_logging import logger
-from src.model.enum import Onmyoji, Cvstrategy
 
 # airtest服务接口
 airtest_service = AirtestService()
@@ -17,8 +17,14 @@ image_service = ImageService()
 
 
 class OnmyojiService:
+
     @staticmethod
     def initialization(game_account: GameAccount):
+        """
+        当前状态初始化
+        :param game_account: 用户信息
+        :return:
+        """
         # 判断是否是待登录账号首页
         logger.debug("判断当前状态")
         # 当前状态 账号首页 1，2,3，4
@@ -64,7 +70,7 @@ class OnmyojiService:
             logger.debug("登录")
             image_service.touch(Onmyoji.login_DLAN)
             logger.debug("切换服务器")
-            image_service.touch(Onmyoji.login_QHFWQ,cvstrategy=Cvstrategy.default)
+            image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default)
             logger.debug("点击小三角")
             image_service.touch(Onmyoji.login_XSJ, cvstrategy=Cvstrategy.default)
             logger.debug("选择服务器:{}", game_account.game_region)
@@ -89,3 +95,12 @@ class OnmyojiService:
                 if is_openBottom:
                     break
         logger.info("初始化当前状态完成")
+
+    @staticmethod
+    def soul_fight(game_account: GameAccount):
+        """
+        御魂战斗  魂一、魂八、魂十、魂十一
+        :param game_account: 用户信息
+        :return:
+        """
+
