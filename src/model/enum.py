@@ -26,6 +26,18 @@ class Onmyoji:
     comm_XSFYHSCH = r"通用\返回\悬赏封印红色叉号"
     comm_SYHSCH = r"通用\返回\首页红色叉号"
 
+    soul_YHTB=r"探索\御魂\御魂图标"
+    soul_BQXZ = r"探索\御魂\八岐大蛇\选择八岐大蛇"
+    soul_BQJC = r"探索\御魂\八岐大蛇\加成"
+    soul_BQKQJC = r"探索\御魂\八岐大蛇\开启加成"
+    soul_BQGBJC = r"探索\御魂\八岐大蛇\关闭加成"
+    soul_HONE = r"探索\御魂\八岐大蛇\魂一"
+    soul_HTEN = r"探索\御魂\八岐大蛇\魂十"
+    soul_HELEVEN = r"探索\御魂\八岐大蛇\魂十一"
+    soul_TZ = r"探索\御魂\八岐大蛇\挑战"
+    soul_JSTX = r"探索\御魂\八岐大蛇\角色头像"
+    soul_TCTZ = r"探索\御魂\八岐大蛇\退出挑战"
+    soul_ZDSB= r"探索\御魂\八岐大蛇\战斗失败"
 
 class Cvstrategy:
     # 图像文字识别类型

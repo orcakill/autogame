@@ -61,7 +61,7 @@ class AirtestService:
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
         :param threshold: 图像识别阈值
-        :return:bool
+        :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT = timeout

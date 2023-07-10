@@ -93,6 +93,7 @@ class OnmyojiService:
                 logger.debug("重新判断是否存在底部菜单打开")
                 is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
                 if is_openBottom:
+                    logger.debug("底部菜单已打开")
                     break
         logger.info("初始化当前状态完成")
 
@@ -100,7 +101,21 @@ class OnmyojiService:
     def soul_fight(game_account: GameAccount):
         """
         御魂战斗  魂一、魂八、魂十、魂十一
+        大号   魂十一   开启加成
+        小号   魂十    开启加成
+        协战号 魂一    不开加成
         :param game_account: 用户信息
         :return:
         """
+        logger.debug("进入探索")
+        image_service.touch(Onmyoji.home_TS)
+        logger.debug("进入御魂")
 
+        logger.debug("进入八岐大蛇")
+        logger.debug("开启加成")
+        logger.debug("选择层数")
+        logger.debug("御魂挑战")
+        logger.debug("挑战")
+        logger.debug("退出挑战-角色头像、宝箱、失败")
+        logger.debug("关闭加成")
+        logger.debug("返回首页")
