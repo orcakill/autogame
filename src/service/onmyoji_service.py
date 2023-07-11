@@ -6,7 +6,7 @@ import os
 import time
 
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount
+from src.model.models import GameAccount, GameProjectsRelation, GameProject
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.junk.my_logging import logger
@@ -85,7 +85,7 @@ class OnmyojiService:
             for i_openBottom in range(4):
                 logger.debug("当前页面无底部菜单打开")
                 logger.debug("点击可能存在的右上角返回")
-                image_service.touch(Onmyoji.comm_SYHSCH, timeout=3)
+                image_service.touch(Onmyoji.comm_FH_SYHSCH, timeout=3)
                 logger.debug("点击可能存在的下载")
                 image_service.touch(Onmyoji.home_XZ, timeout=3)
                 logger.debug("点击可能存在的底部菜单")
@@ -98,24 +98,69 @@ class OnmyojiService:
         logger.info("初始化当前状态完成")
 
     @staticmethod
-    def soul_fight(game_account: GameAccount):
+    def soul_fight(game_task: []):
         """
         御魂战斗  魂一、魂八、魂十、魂十一
         大号   魂十一   开启加成
         小号   魂十    开启加成
         协战号 魂一    不开加成
-        :param game_account: 用户信息
+        :param game_task: 项目组信息
         :return:
         """
+        game_account = GameAccount(game_task['GameAccount'])
+        game_projects_relation = GameProjectsRelation(game_task['GameProjectsRelation'])
+        game_project = GameProject(game_task['GameProject'])
         logger.debug("进入探索")
         image_service.touch(Onmyoji.home_TS)
         logger.debug("进入御魂")
-
+        image_service.touch(Onmyoji.soul_YHTB)
         logger.debug("进入八岐大蛇")
-        logger.debug("开启加成")
+        image_service.touch(Onmyoji.soul_BQXZ)
+        if game_account.account_class == 0:
+            logger.debug("开启加成")
         logger.debug("选择层数")
-        logger.debug("御魂挑战")
-        logger.debug("挑战")
-        logger.debug("退出挑战-角色头像、宝箱、失败")
-        logger.debug("关闭加成")
+        if game_project.project_name == "魂一":
+            logger.debug("魂一")
+            is_soul_one = image_service.exists(Onmyoji.soul_HONE)
+            if is_soul_one is None:
+                logger.debug("当前无魂一")
+                # 获取层字的横坐标，向上滑动3次
+                layer_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ)
+                airtest_service.swipe(layer_coordinates[0], 1 / 2 * layer_coordinates[1])
+                airtest_service.swipe(layer_coordinates[0], 1 / 2 * layer_coordinates[1])
+                airtest_service.swipe(layer_coordinates[0], 1 / 2 * layer_coordinates[1])
+        if game_project.project_name in ["魂十", "魂十一"]:
+            logger.debug(game_project.project_name)
+            is_soul_one = image_service.exists(Onmyoji.soul_HELEVEN)
+            if is_soul_one is None:
+                logger.debug("当前无{}", game_project.project_name)
+                # 获取层字的横坐标，向下滑动3次
+                layer_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ)
+                airtest_service.swipe(layer_coordinates[0], 2 * layer_coordinates[1])
+                airtest_service.swipe(layer_coordinates[0], 2 * layer_coordinates[1])
+                airtest_service.swipe(layer_coordinates[0], 2 * layer_coordinates[1])
+        logger.debug("准备完成，开始御魂挑战循环")
+        project_start_time = time.time()
+        for i in range(1, game_projects_relation.project_num):
+            start_time = time.time()
+            logger.debug("第{}次{}挑战", i, game_project.project_name)
+            image_service.touch(Onmyoji.soul_TZ)
+            logger.debug("退出挑战-角色头像、宝箱、失败")
+            time.sleep(15)
+            for j in (1, 30):
+                logger.debug("第{}次识别", j)
+                image_service.touch(Onmyoji.soul_JSTX, timeout=1)
+                is_win = image_service.touch(Onmyoji.soul_TCTZ)
+                if not is_win:
+                    image_service.touch(Onmyoji.soul_ZDSB)
+            end_time = time.time()
+            logger.debug("本次{}战斗结束，用时{}秒", game_project.project_name, end_time - start_time)
+        project_end_time = time.time()
+        logger.debug("本轮{}战斗结束，总用时{}秒，平均用时{}秒", game_project.project_name,
+                     project_end_time - project_start_time,
+                     (project_end_time - project_start_time) / game_projects_relation.project_num)
+        if game_account.account_class == 0:
+            logger.debug("关闭加成")
         logger.debug("返回首页")
+        image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
+        image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)

@@ -54,6 +54,21 @@ class AirtestService:
             return False
 
     @staticmethod
+    def exists_coordinate(template: Template, cvstrategy: [], timeout: int, threshold: float):
+        """
+        判断图片是否存在并返回坐标
+        :param template: 图片类
+        :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
+        :param threshold: 图像识别阈值
+        :return: bool
+        """
+        Settings.CVSTRATEGY = cvstrategy
+        Settings.FIND_TIMEOUT = timeout
+        Settings.THRESHOLD = threshold
+        return exists(template)
+
+    @staticmethod
     def touch(template: Template, cvstrategy: [], timeout: int, threshold: float):
         """
         判断图片是否存在
@@ -92,3 +107,16 @@ class AirtestService:
         time.sleep(2)
         start_app(app)
         time.sleep(1)
+
+    @staticmethod
+    def swipe(v1: [], v2: []):
+        """
+        重启APP
+        :param v1: 图片1
+        :param v2: 图片2
+        :return: 无
+        """
+        if swipe(v1, v2):
+            return True
+        else:
+            return False

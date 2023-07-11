@@ -44,6 +44,22 @@ class ImageService:
         return image_rec(folder_path, cvstrategy, timeout, "exists", threshold, rec_round, interval)
 
     @staticmethod
+    def exists_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
+                          threshold: float = THRESHOLD, rec_round: int = REC_ROUND, interval: int = INTERVAL):
+        """
+        根据文件夹名获取图片进行图像识别，判断图片是否存在并返回坐标
+        :param folder_path: 图片文件夹路径
+        :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
+        :param threshold: 图像识别阈值
+        :param rec_round:   图片组识别次数
+        :param interval:   图片识别间隔
+        :return: bool
+        """
+        return image_rec_coordinate(folder_path, cvstrategy, timeout, "exists_coordinate", threshold, rec_round,
+                                    interval)
+
+    @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
               threshold: float = THRESHOLD, rec_round: int = REC_ROUND, interval: int = INTERVAL) -> bool:
         """
@@ -81,10 +97,39 @@ def image_rec(folder_path: str, cvstrategy: [], timeout: int, image_type: str, t
         if image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold):
             return True
         else:
-            logger.debug("{},第{}轮图片未识别",folder_path,num)
+            logger.debug("{},第{}轮图片未识别", folder_path, num)
         # 等待 *秒
         time.sleep(interval)
     return False
+
+
+def image_rec_coordinate(folder_path: str, cvstrategy: [], timeout: int, image_type: str, threshold: float,
+                         rec_round: int,
+                         interval: int):
+    """
+    根据文件夹名获取图片进行图像识别，返回坐标
+    :param folder_path: 图片文件夹路径
+    :param cvstrategy: 图像识别算法
+    :param timeout: 单张图片超时时间
+    :param image_type: 识别类型
+    :param threshold: 图像识别阈值
+    :param rec_round:   图片组识别次数
+    :param interval:   图片识别间隔
+    :return: bool
+    """
+    coordinate = ()
+    for i in range(rec_round):
+        # 当前识别轮次
+        num = i + 1
+        if num >= 2:
+            # 识别轮次大于1时，判断是存在并点击悬赏封印
+            image_rec_one(Onmyoji.comm_XSFYHSCH, cvstrategy, 1, "touch", threshold)
+        coordinate = image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold)
+        if coordinate is None:
+            logger.debug("{},第{}轮图片未识别", folder_path, num)
+        # 等待 *秒
+        time.sleep(interval)
+    return coordinate
 
 
 def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: str, threshold: float) -> bool:
@@ -118,6 +163,9 @@ def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: st
                     if airtest_service.touch(template, cvstrategy, timeout, threshold):
                         logger.debug("图片识别点击成功")
                         return True
+                elif image_type == "exists_coordinate":
+                    # 判断图片是否存在并返回坐标
+                    return airtest_service.exists_coordinate(template, cvstrategy, timeout, threshold)
         else:
             logger.debug("{}文件不存在", file_path)
 

@@ -3,12 +3,15 @@
 # @File    : kwarg_test.py
 # @Description : TODO
 
-def cs_test1():
-    for i in range(1, 6):
-        print("第一层" + str(i))
-        for i in range(1, 4):
-            print("第二层" + str(i))
+def cs_test1(s:str):
+    t=(1,2)
+    if s=="1":
+        return True
+    else:
+        return t[0]
+
 
 
 if __name__ == '__main__':
-    cs_test1()
+    print(cs_test1("1"))
+    print(cs_test1("2"))
