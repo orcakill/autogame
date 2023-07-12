@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import sessionmaker
+
 from src.model.models import GameThread, GameProjects, GameProjectsRelation, GameProject, GameAccount
 
 from src.utils.project_path import get_database_url

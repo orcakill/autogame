@@ -15,18 +15,17 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
     # 获取项目组
     game_task = MapperExtend.select_game_task("", game_type)
     # 循环项目组
-    for i in (1,) * int(game_round):
-        logger.info("第{}轮", i)
+    for i in range(int(game_round)):
+        logger.info("第{}轮", i+1)
         # 循环项目
         for j in range(len(game_task)):
             # 判断项目名称，根据项目名称执行不同的函数
-            project_name = game_task[j]['GameProject'].project_name
-            game_name = game_task[j]['GameAccount'].game_name
-            game_account = game_task[j]['GameAccount']
-            logger.info("{}:{}", project_name, game_name)
+            game_project, game_projects_relation, game_account, game_project = game_task[j]
+            logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
+                        game_account.account_name)
             logger.info("当前状态初始化")
             OnmyojiService.initialization(game_account)
-            if project_name == "魂一":
+            if game_project.project_name in ["魂一", "魂十", "魂十一"]:
                 OnmyojiService.soul_fight(game_task)
         if game_is_email:
             logger.info("发送邮件")
