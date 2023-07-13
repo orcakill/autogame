@@ -11,8 +11,10 @@ def create_models():
                   "from sqlalchemy.ext.declarative import declarative_base\n\r\n\r" \
                   "Base = declarative_base()\n\r" \
                   "metadata = Base.metadata\n\r\n\r"
-    # 第二部分
+    # 第二部分 __repr__
     model_file2 = ""
+    # 第三部分 __init__
+    ""
     config = configparser.ConfigParser()
     config.read("config.ini", encoding="utf-8")
     url = config.get("database", "url")
@@ -52,35 +54,32 @@ def create_models():
                 column_file = column_file + ",primary_key=True"
             column_file = column_file + ",info='" + column_comment + "')"
             model_file2 = model_file2 + "    " + column_file + "\n\r"
-        model_file2 = model_file2 + "\n\r"
         #   __repr__方法
-        model_file21 = "    def __repr__(self):\n\r"
+        model_file2 = model_file2 + "\n\r"
+        model_file21 = "\tdef __repr__(self):\n\r"
         model_file21 = model_file21 + "\t\treturn f\"{self.__class__.__name__}:\"\\\n\r"
         for i in range(0, len(table.columns)):
             column1 = table.columns[i]
             # 字段名称
             column_name1 = column1.name
             if i == len(table.columns) - 1:
-                column_file1 = "\t\t   f\"" + column_name1 + "= {self." + column_name1 + "}\""
+                column_file1 = "\t\t\tf\"" + column_name1 + "= {self." + column_name1 + "}\""
             else:
-                column_file1 = "\t\t   f\"" + column_name1 + "= {self." + column_name1 + "},\" \\"
+                column_file1 = "\t\t\tf\"" + column_name1 + "= {self." + column_name1 + "},\" \\"
             column_file1 = column_file1
             model_file21 = model_file21 + "    " + column_file1 + "\n\r"
         model_file2 = model_file2 + model_file21 + "\n\r"
+        #   __init__方法
+        model_file2 = model_file2 + "\tdef __init__(self, " + table_name + ": (), **kwargs):\n\r"
+        model_file2 = model_file2 + "\t\tsuper().__init__(**kwargs)\n\r"
+        for i in range(0, len(table.columns)):
+            column1 = table.columns[i]
+            # 字段名称
+            column_name1 = column1.name
+            column_file2 = "\t\tself." + column_name1 + "= " + table_name + "." + column_name1
+            model_file2 = model_file2 + column_file2 + "\n\r"
     model_file = model_file1 + model_file2
     print(model_file)
-
-    # 遍历元数据中的表信息并打印
-    # for table in metadata.sorted_tables:
-    #     print(f"Table: {table.name}")
-    #     print(f"Columns:")
-    #     for column in table.columns:
-    #         print(f"\t{column.name}: {column.type.__class__.__name__}")
-    #         print(f"\t\tLength: {column.type.length}")
-    #         print(f"\t\tDecimal: {column.type.decimal}")
-    #         print(f"\t\tPrimary Key: {table.primary_key.__class__.__name__}")
-    #         print(f"\t\tComment: {column.comment}")
-    #         print("")
 
 
 def mysql_type_to_python_type(mysql_type):
