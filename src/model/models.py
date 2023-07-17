@@ -72,6 +72,16 @@ class GameProjects(Base):
     update_user = Column(String(40), info='修改人')
     update_time = Column(DateTime, info='修改时间')
 
+    def __init__(self, s: () = None, **kwargs):
+        super().__init__(**kwargs)
+        self.id = s.id
+        self.projects_num = s.projects_num
+        self.projects_name = s.projects_name
+        self.create_user = s.create_user
+        self.create_time = s.create_time
+        self.update_user = s.update_user
+        self.update_time = s.update_time
+
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
                f"id= {self.id}," \

@@ -25,10 +25,10 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
             game_account = GameAccount (game_task[j][2])
             game_project = GameProject(game_task[j][3])
             logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
-                        game_account.account_name)
+                        game_account.game_name)
             logger.info("当前状态初始化")
             OnmyojiService.initialization(game_account)
             if game_project.project_name in ["魂一", "魂十", "魂十一"]:
-                OnmyojiService.soul_fight(game_task)
+                OnmyojiService.soul_fight(game_task[j])
         if game_is_email:
             logger.info("发送邮件")

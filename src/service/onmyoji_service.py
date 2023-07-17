@@ -63,12 +63,12 @@ class OnmyojiService:
                 logger.debug("切换账号")
                 image_service.touch(Onmyoji.login_QHZH)
             logger.debug("常用")
-            image_service.touch(Onmyoji.login_CY,interval=1)
+            image_service.touch(Onmyoji.login_CY, interval=1)
             logger.debug("选择账号")
             account = os.path.join(Onmyoji.user_XZZH, game_account.id)
-            image_service.touch(account,interval=1)
+            image_service.touch(account, interval=1)
             logger.debug("登录")
-            image_service.touch(Onmyoji.login_DLAN,interval=1)
+            image_service.touch(Onmyoji.login_DLAN, interval=1)
             logger.debug("切换服务器")
             image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default)
             logger.debug("点击小三角")
@@ -107,9 +107,9 @@ class OnmyojiService:
         :param game_task: 项目组信息
         :return:
         """
-        game_account = GameAccount(game_task['GameAccount'])
-        game_projects_relation = GameProjectsRelation(game_task['GameProjectsRelation'])
-        game_project = GameProject(game_task['GameProject'])
+        game_projects_relation = GameProjectsRelation(game_task[1])
+        game_account = GameAccount(game_task[2])
+        game_project = GameProject(game_task[3])
         logger.debug("进入探索")
         image_service.touch(Onmyoji.home_TS)
         logger.debug("进入御魂")
@@ -121,8 +121,8 @@ class OnmyojiService:
         logger.debug("选择层数")
         if game_project.project_name == "魂一":
             logger.debug("魂一")
-            is_soul_one = image_service.exists(Onmyoji.soul_HONE)
-            if is_soul_one is None:
+            is_soul = image_service.exists(Onmyoji.soul_HONE)
+            if not is_soul:
                 logger.debug("当前无魂一")
                 # 获取层字的横坐标，向上滑动3次
                 layer_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ)
@@ -131,8 +131,8 @@ class OnmyojiService:
                 airtest_service.swipe(layer_coordinates[0], 1 / 2 * layer_coordinates[1])
         if game_project.project_name in ["魂十", "魂十一"]:
             logger.debug(game_project.project_name)
-            is_soul_one = image_service.exists(Onmyoji.soul_HELEVEN)
-            if is_soul_one is None:
+            is_soul = image_service.exists(Onmyoji.soul_HELEVEN)
+            if not is_soul:
                 logger.debug("当前无{}", game_project.project_name)
                 # 获取层字的横坐标，向下滑动3次
                 layer_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ)
