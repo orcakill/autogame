@@ -21,9 +21,9 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
         # 循环项目
         for j in range(len(game_task)):
             # 判断项目名称，根据项目名称执行不同的函数
-            game_projects, game_projects_relation, game_account, game_project = GameProjects(game_task[j][0]), \
-                GameProjectsRelation(game_task[j][1]), GameAccount(game_task[j][2]), \
-                GameProject(game_task[j][4]),
+            game_projects_relation = GameProjectsRelation(game_task[j][1])
+            game_account = GameAccount (game_task[j][2])
+            game_project = GameProject(game_task[j][3])
             logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
                         game_account.account_name)
             logger.info("当前状态初始化")

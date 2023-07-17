@@ -24,7 +24,7 @@ class Onmyoji:
     user_XZZH = r"用户\选择账号"
     user_SYTX = r"用户\首页头像"
     comm_FH_XSFYHSCH = r"通用\返回\悬赏封印红色叉号"
-    comm_FH_SYHSCH = r"通用\返回\首页红色叉号"
+    comm_FH_SYHDBSCH = r"通用\返回\首页红底白色叉号"
     comm_FH_LSYXBSXYH = r"通用\返回\蓝色圆形白色小于号"
 
     soul_YHTB = r"探索\御魂\御魂图标"
