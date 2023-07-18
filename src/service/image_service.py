@@ -159,12 +159,12 @@ def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: st
                 if image_type == "exists":
                     # 判断图片是否存在
                     if airtest_service.exists(template, cvstrategy, timeout, threshold):
-                        logger.debug("图片识别成功")
+                        logger.debug("图片识别成功：{}",folder_path)
                         return True
                 elif image_type == "touch":
                     # 判断图片是否存在并点击
                     if airtest_service.touch(template, cvstrategy, timeout, threshold):
-                        logger.debug("图片识别点击成功")
+                        logger.debug("图片识别点击成功：{}",folder_path)
                         return True
                 elif image_type == "exists_coordinate":
                     # 判断图片是否存在并返回坐标

@@ -70,7 +70,7 @@ class OnmyojiService:
             logger.debug("登录")
             image_service.touch(Onmyoji.login_DLAN, interval=1)
             logger.debug("切换服务器")
-            image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default,interval=1)
+            image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, interval=1)
             logger.debug("点击小三角")
             image_service.touch(Onmyoji.login_XSJ, cvstrategy=Cvstrategy.default, interval=1)
             logger.debug("选择服务器:{}", game_account.game_region)
@@ -139,7 +139,7 @@ class OnmyojiService:
                             break
                 logger.debug("结束循环")
                 image_service.touch(Onmyoji.soul_HONE)
-        if game_project.project_name in ["魂十","魂十一"]:
+        if game_project.project_name in ["魂十", "魂十一"]:
             logger.debug(game_project.project_name)
             is_soul = image_service.exists(Onmyoji.soul_HTEN)
             if not is_soul:
@@ -158,11 +158,11 @@ class OnmyojiService:
                         if is_soul:
                             break
                 logger.debug("结束循环")
-                if game_project.project_name=="魂十":
+                if game_project.project_name == "魂十":
                     image_service.touch(Onmyoji.soul_HTEN)
-                if game_project.project_name=="魂十一":
+                if game_project.project_name == "魂十一":
                     image_service.touch(Onmyoji.soul_HELEVEN)
-        logger.debug("准备完成，开始御魂挑战循环{}次",game_projects_relation.project_num)
+        logger.debug("准备完成，开始御魂挑战循环{}次", game_projects_relation.project_num)
         project_start_time = time.time()
         for i in range(game_projects_relation.project_num):
             start_time = time.time()
@@ -172,14 +172,21 @@ class OnmyojiService:
             time.sleep(15)
             # 循环30次
             for j in range(30):
-                logger.debug("第{}次识别", j+1)
+                logger.debug("第{}次识别", j + 1)
                 # 如果是大号，走角色头像大号，小号则走角色头像小号
-                if game_account.account_class==0:
-                    image_service.touch(Onmyoji.soul_JSTXXH, timeout=1)
-                else:
+                if game_account.account_class == 0:
+                    logger.debug("点击角色头像")
                     image_service.touch(Onmyoji.soul_JSTXDH, timeout=1)
-                is_win = image_service.touch(Onmyoji.soul_TCTZ)
-                if not is_win:
+                else:
+                    logger.debug("点击角色头像")
+                    image_service.touch(Onmyoji.soul_JSTXXH, timeout=1)
+                logger.debug("判断退出挑战")
+                is_win = image_service.exists_coordinate(Onmyoji.soul_TCTZ,timeout=5)
+                if is_win:
+                    airtest_service.touch_coordinate(is_win)
+                    logger.debug("战斗胜利")
+                    break
+                else:
                     image_service.touch(Onmyoji.soul_ZDSB)
                 time.sleep(1)
             end_time = time.time()
