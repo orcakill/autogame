@@ -70,12 +70,12 @@ class OnmyojiService:
             logger.debug("登录")
             image_service.touch(Onmyoji.login_DLAN, interval=1)
             logger.debug("切换服务器")
-            image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default)
+            image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default,interval=1)
             logger.debug("点击小三角")
-            image_service.touch(Onmyoji.login_XSJ, cvstrategy=Cvstrategy.default)
+            image_service.touch(Onmyoji.login_XSJ, cvstrategy=Cvstrategy.default, interval=1)
             logger.debug("选择服务器:{}", game_account.game_region)
             server = os.path.join(Onmyoji.login_FWQ, game_account.game_region)
-            image_service.touch(server)
+            image_service.touch(server, interval=1)
             logger.debug("开始游戏")
             image_service.touch(Onmyoji.login_KSYX)
             time.sleep(15)
@@ -123,36 +123,65 @@ class OnmyojiService:
             logger.debug("魂一")
             is_soul = image_service.exists(Onmyoji.soul_HONE)
             if not is_soul:
-                logger.debug("当前无魂一")
-                # 获取层字的横坐标，向上滑动3次
-                layer_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ)
-                airtest_service.swipe(layer_coordinates[0], 1 / 2 * layer_coordinates[1])
-                airtest_service.swipe(layer_coordinates[0], 1 / 2 * layer_coordinates[1])
-                airtest_service.swipe(layer_coordinates[0], 1 / 2 * layer_coordinates[1])
-        if game_project.project_name in ["魂十", "魂十一"]:
+                logger.debug("循环3次")
+                for i_soul in range(3):
+                    logger.debug("当前无{}，向上滑动三次", game_project.project_name)
+                    # 获取层字的横坐标，向上滑动3次
+                    layer_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ, cvstrategy=Cvstrategy.default)
+                    if layer_coordinates:
+                        xy1 = (layer_coordinates[0], layer_coordinates[1])
+                        xy2 = (layer_coordinates[0], 2 * layer_coordinates[1])
+                        airtest_service.swipe(xy1, xy2)
+                        airtest_service.swipe(xy1, xy2)
+                        airtest_service.swipe(xy1, xy2)
+                        is_soul = image_service.exists(Onmyoji.soul_HONE)
+                        if is_soul:
+                            break
+                logger.debug("结束循环")
+                image_service.touch(Onmyoji.soul_HONE)
+        if game_project.project_name in ["魂十","魂十一"]:
             logger.debug(game_project.project_name)
-            is_soul = image_service.exists(Onmyoji.soul_HELEVEN)
+            is_soul = image_service.exists(Onmyoji.soul_HTEN)
             if not is_soul:
-                logger.debug("当前无{}", game_project.project_name)
-                # 获取层字的横坐标，向下滑动3次
-                layer_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ)
-                airtest_service.swipe(layer_coordinates[0], 2 * layer_coordinates[1])
-                airtest_service.swipe(layer_coordinates[0], 2 * layer_coordinates[1])
-                airtest_service.swipe(layer_coordinates[0], 2 * layer_coordinates[1])
-        logger.debug("准备完成，开始御魂挑战循环")
+                logger.debug("循环3次")
+                for i_soul in range(3):
+                    logger.debug("当前无{}，向下滑动三次", game_project.project_name)
+                    # 获取层字的横坐标，向下滑动3次
+                    layer_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ, cvstrategy=Cvstrategy.default)
+                    if layer_coordinates:
+                        xy1 = (layer_coordinates[0], layer_coordinates[1])
+                        xy2 = (layer_coordinates[0], 1 / 4 * layer_coordinates[1])
+                        airtest_service.swipe(xy1, xy2)
+                        airtest_service.swipe(xy1, xy2)
+                        airtest_service.swipe(xy1, xy2)
+                        is_soul = image_service.exists(Onmyoji.soul_HTEN)
+                        if is_soul:
+                            break
+                logger.debug("结束循环")
+                if game_project.project_name=="魂十":
+                    image_service.touch(Onmyoji.soul_HTEN)
+                if game_project.project_name=="魂十一":
+                    image_service.touch(Onmyoji.soul_HELEVEN)
+        logger.debug("准备完成，开始御魂挑战循环{}次",game_projects_relation.project_num)
         project_start_time = time.time()
-        for i in range(1, game_projects_relation.project_num):
+        for i in range(game_projects_relation.project_num):
             start_time = time.time()
-            logger.debug("第{}次{}挑战", i, game_project.project_name)
+            logger.debug("第{}次{}挑战", i + 1, game_project.project_name)
             image_service.touch(Onmyoji.soul_TZ)
             logger.debug("退出挑战-角色头像、宝箱、失败")
             time.sleep(15)
-            for j in (1, 30):
-                logger.debug("第{}次识别", j)
-                image_service.touch(Onmyoji.soul_JSTX, timeout=1)
+            # 循环30次
+            for j in range(30):
+                logger.debug("第{}次识别", j+1)
+                # 如果是大号，走角色头像大号，小号则走角色头像小号
+                if game_account.account_class==0:
+                    image_service.touch(Onmyoji.soul_JSTXXH, timeout=1)
+                else:
+                    image_service.touch(Onmyoji.soul_JSTXDH, timeout=1)
                 is_win = image_service.touch(Onmyoji.soul_TCTZ)
                 if not is_win:
                     image_service.touch(Onmyoji.soul_ZDSB)
+                time.sleep(1)
             end_time = time.time()
             logger.debug("本次{}战斗结束，用时{}秒", game_project.project_name, end_time - start_time)
         project_end_time = time.time()

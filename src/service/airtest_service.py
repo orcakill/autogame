@@ -48,10 +48,13 @@ class AirtestService:
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT = timeout
         Settings.THRESHOLD = threshold
-        if exists(template):
-            return True
-        else:
-            return False
+        try:
+            if exists(template):
+                return True
+            else:
+                return False
+        except Exception as e:
+            logger.debug("异常：{}", e)
 
     @staticmethod
     def exists_coordinate(template: Template, cvstrategy: [], timeout: int, threshold: float):
@@ -66,7 +69,10 @@ class AirtestService:
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT = timeout
         Settings.THRESHOLD = threshold
-        return exists(template)
+        try:
+            return exists(template)
+        except Exception as e:
+            logger.debug("异常：{}", e)
 
     @staticmethod
     def touch(template: Template, cvstrategy: [], timeout: int, threshold: float):

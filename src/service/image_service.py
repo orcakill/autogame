@@ -3,6 +3,7 @@
 # @File    : image_service.py
 # @Description : 图像识别接口
 import os
+import random
 import time
 
 from airtest.core.cv import Template
@@ -54,7 +55,7 @@ class ImageService:
         :param threshold: 图像识别阈值
         :param rec_round:   图片组识别次数
         :param interval:   图片识别间隔
-        :return: bool
+        :return:
         """
         return image_rec_coordinate(folder_path, cvstrategy, timeout, "exists_coordinate", threshold, rec_round,
                                     interval)
@@ -93,7 +94,7 @@ def image_rec(folder_path: str, cvstrategy: [], timeout: int, image_type: str, t
         num = i + 1
         if num >= 2:
             # 识别轮次大于1时，判断是存在并点击悬赏封印
-            image_rec_one(Onmyoji.comm_XSFYHSCH, cvstrategy, 1, "touch", threshold)
+            image_rec_one(Onmyoji.comm_FH_XSFYHSCH, cvstrategy, 1, "touch", threshold)
         if image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold):
             return True
         else:
@@ -123,7 +124,7 @@ def image_rec_coordinate(folder_path: str, cvstrategy: [], timeout: int, image_t
         num = i + 1
         if num >= 2:
             # 识别轮次大于1时，判断是存在并点击悬赏封印
-            image_rec_one(Onmyoji.comm_XSFYHSCH, cvstrategy, 1, "touch", threshold)
+            image_rec_one(Onmyoji.comm_FH_XSFYHSCH, cvstrategy, 1, "touch", threshold)
         coordinate = image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold)
         if coordinate is None:
             logger.debug("{},第{}轮图片未识别", folder_path, num)
@@ -132,7 +133,7 @@ def image_rec_coordinate(folder_path: str, cvstrategy: [], timeout: int, image_t
     return coordinate
 
 
-def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: str, threshold: float) -> bool:
+def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: str, threshold: float):
     """
     根据文件夹名获取图片进行图像识别，点击图片
     :param folder_path: 图片文件夹路径
@@ -143,7 +144,9 @@ def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: st
     :return: bool
     """
     folder_all_path = os.path.join(get_onmyoji_image_path(), folder_path)
-    for file_name in os.listdir(folder_all_path):
+    folder_list=os.listdir(folder_all_path)
+    random.shuffle(folder_list)
+    for file_name in folder_list:
         file_path = os.path.abspath(os.path.join(folder_all_path, file_name))
         # 判断文件是否存在
         if os.path.isfile(file_path):
