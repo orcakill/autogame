@@ -169,20 +169,28 @@ class OnmyojiService:
             logger.debug("第{}次{}挑战", i + 1, game_project.project_name)
             image_service.touch(Onmyoji.soul_TZ)
             logger.debug("退出挑战-角色头像、宝箱、失败")
+            if i==0:
+                time.sleep(2)
+                logger.debug("第一次战斗，判断是否需要喂食")
+                is_food=image_service.touch(Onmyoji.soul_WSXSJ)
+                if is_food:
+                    logger.debug("喂食")
+                    image_service.touch(Onmyoji.soul_WS)
             time.sleep(15)
             # 循环30次
             for j in range(30):
-                logger.debug("第{}次识别", j + 1)
+                logger.debug("御魂战斗第{}次识别", j + 1)
                 # 如果是大号，走角色头像大号，小号则走角色头像小号
                 if game_account.account_class == 0:
-                    logger.debug("点击角色头像")
+                    logger.debug("点击角色头像大号")
                     image_service.touch(Onmyoji.soul_JSTXDH, timeout=1)
                 else:
-                    logger.debug("点击角色头像")
+                    logger.debug("点击角色头像小号")
                     image_service.touch(Onmyoji.soul_JSTXXH, timeout=1)
                 logger.debug("判断退出挑战")
-                is_win = image_service.exists_coordinate(Onmyoji.soul_TCTZ,timeout=5)
+                is_win = image_service.exists_coordinate(Onmyoji.soul_TCTZ, timeout=5)
                 if is_win:
+                    time.sleep(1)
                     airtest_service.touch_coordinate(is_win)
                     logger.debug("战斗胜利")
                     break
@@ -193,10 +201,38 @@ class OnmyojiService:
             logger.debug("本次{}战斗结束，用时{}秒", game_project.project_name, end_time - start_time)
         project_end_time = time.time()
         logger.debug("本轮{}战斗结束，总用时{}秒，平均用时{}秒", game_project.project_name,
-                     project_end_time - project_start_time,
-                     (project_end_time - project_start_time) / game_projects_relation.project_num)
+                     round(project_end_time - project_start_time, 3),
+                     round((project_end_time - project_start_time) / game_projects_relation.project_num), 3)
         if game_account.account_class == 0:
             logger.debug("关闭加成")
         logger.debug("返回首页")
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
+
+    @staticmethod
+    def border_fight(game_task: []):
+        """
+        结界突破 border
+        :param game_task: 项目信息
+        :return:
+        """
+        game_projects_relation = GameProjectsRelation(game_task[1])
+        game_account = GameAccount(game_task[2])
+        game_project = GameProject(game_task[3])
+        logger.debug("进入探索")
+        image_service.touch(Onmyoji.home_TS)
+        logger.debug("进入结界突破")
+        image_service.touch(Onmyoji.broder_JJTPTB)
+        logger.debug("判断是存在结界")
+
+        logger.debug("判断是否有呱太入侵")
+        logger.debug("结界循环挑战")
+        logger.debug("判断是否存在退出挑战")
+        logger.debug("判断结界挑战劵是否为零")
+        logger.debug("结界挑战劵不为零，寻找结界")
+        logger.debug("锁定阵容")
+        logger.debug("点击结界")
+        logger.debug("进攻")
+        logger.debug("准备")
+        logger.debug("退出挑战")
+        logger.debug("返回首页")

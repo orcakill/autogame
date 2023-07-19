@@ -98,6 +98,7 @@ class AirtestService:
     @staticmethod
     def touch_coordinate(v: []):
         if touch(v):
+            logger.debug("坐标点击成功")
             return True
         else:
             return False
