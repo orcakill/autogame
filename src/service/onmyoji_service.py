@@ -224,8 +224,9 @@ class OnmyojiService:
         logger.debug("进入结界突破")
         image_service.touch(Onmyoji.broder_JJTPTB)
         logger.debug("判断是存在结界")
-
-        logger.debug("判断是否有呱太入侵")
+        if image_service.exists(Onmyoji.border_GRJJ):
+            logger.debug("不存在个人结界，有意外情况")
+            logger.debug("判断是否有呱太入侵")
         logger.debug("结界循环挑战")
         logger.debug("判断是否存在退出挑战")
         logger.debug("判断结界挑战劵是否为零")
