@@ -222,12 +222,31 @@ class OnmyojiService:
         logger.debug("进入探索")
         image_service.touch(Onmyoji.home_TS)
         logger.debug("进入结界突破")
-        image_service.touch(Onmyoji.broder_JJTPTB)
+        image_service.touch(Onmyoji.border_JJTPTB)
         logger.debug("判断是存在结界")
-        if image_service.exists(Onmyoji.border_GRJJ):
+        is_border=image_service.exists(Onmyoji.border_GRJJ)
+        if not is_border:
             logger.debug("不存在个人结界，有意外情况")
-            logger.debug("判断是否有呱太入侵")
-        logger.debug("结界循环挑战")
+            for i_border in range(3):
+                logger.debug("点击呱太入侵")
+                image_service.touch(Onmyoji.border_GTRQ,timeout=5)
+                logger.debug("点击退出挑战")
+                image_service.touch(Onmyoji.border_TCTZ, timeout=5)
+                is_border = image_service.exists(Onmyoji.border_GRJJ)
+                if is_border:
+                    break
+        logger.debug("判断是否存在结界突破劵0/30")
+        is_securities=image_service.exists(Onmyoji.border_WJJTZJ)
+        # 退级计数
+        num_retirement=0
+        while is_border and not is_securities:
+            logger.debug("结界循环挑战")
+            logger.debug("点击个人结界")
+            image_service.touch(Onmyoji.border_GRJJ)
+            logger.debug("进攻")
+            image_service.touch(Onmyoji.border_JG)
+            if num_retirement<9:
+        # 每九次先退九次再打
         logger.debug("判断是否存在退出挑战")
         logger.debug("判断结界挑战劵是否为零")
         logger.debug("结界挑战劵不为零，寻找结界")
