@@ -29,16 +29,26 @@ class GameAccount(Base):
                f"account_class= {self.account_class}," \
                f"account_number= {self.account_number}"
 
-    def __init__(self, game_account: (), **kwargs):
-        super().__init__(**kwargs)
-        self.id = game_account.id
-        self.account_name = game_account.account_name
-        self.account_password = game_account.account_password
-        self.game_region = game_account.game_region
-        self.game_name = game_account.game_name
-        self.account_type = game_account.account_type
-        self.account_class = game_account.account_class
-        self.account_number = game_account.account_number
+    def __init__(self, game_account: () = None, **kwargs):
+        if game_account is None:
+            self.id = self.id
+            self.account_name = self.account_name
+            self.account_password = self.account_password
+            self.game_region = self.game_region
+            self.game_name = self.game_name
+            self.account_type = self.account_type
+            self.account_class = self.account_class
+            self.account_number = self.account_number
+        else:
+            super().__init__(**kwargs)
+            self.id = game_account.id
+            self.account_name = game_account.account_name
+            self.account_password = game_account.account_password
+            self.game_region = game_account.game_region
+            self.game_name = game_account.game_name
+            self.account_type = game_account.account_type
+            self.account_class = game_account.account_class
+            self.account_number = game_account.account_number
 
 
 class GameProject(Base):
@@ -54,11 +64,16 @@ class GameProject(Base):
                f"project_num= {self.project_num}," \
                f"project_name= {self.project_name}"
 
-    def __init__(self, game_project: (), **kwargs):
-        super().__init__(**kwargs)
-        self.id = game_project.id
-        self.project_num = game_project.project_num
-        self.project_name = game_project.project_name
+    def __init__(self, game_project: () = None, **kwargs):
+        if game_project is None:
+            self.id = self.id
+            self.project_num = self.project_num
+            self.project_name = self.project_name
+        else:
+            super().__init__(**kwargs)
+            self.id = game_project.id
+            self.project_num = game_project.project_num
+            self.project_name = game_project.project_name
 
 
 class GameProjects(Base):
@@ -82,15 +97,24 @@ class GameProjects(Base):
                f"update_user= {self.update_user}," \
                f"update_time= {self.update_time}"
 
-    def __init__(self, game_projects: (), **kwargs):
-        super().__init__(**kwargs)
-        self.id = game_projects.id
-        self.projects_num = game_projects.projects_num
-        self.projects_name = game_projects.projects_name
-        self.create_user = game_projects.create_user
-        self.create_time = game_projects.create_time
-        self.update_user = game_projects.update_user
-        self.update_time = game_projects.update_time
+    def __init__(self, game_projects: () = None, **kwargs):
+        if game_projects is None:
+            self.id = self.id
+            self.projects_num = self.projects_num
+            self.projects_name = self.projects_name
+            self.create_user = self.create_user
+            self.create_time = self.create_time
+            self.update_user = self.update_user
+            self.update_time = self.update_time
+        else:
+            super().__init__(**kwargs)
+            self.id = game_projects.id
+            self.projects_num = game_projects.projects_num
+            self.projects_name = game_projects.projects_name
+            self.create_user = game_projects.create_user
+            self.create_time = game_projects.create_time
+            self.update_user = game_projects.update_user
+            self.update_time = game_projects.update_time
 
 
 class GameProjectsRelation(Base):
@@ -116,16 +140,26 @@ class GameProjectsRelation(Base):
                f"wait_before_time= {self.wait_before_time}," \
                f"wait_after_time= {self.wait_after_time}"
 
-    def __init__(self, game_projects_relation: (), **kwargs):
-        super().__init__(**kwargs)
-        self.id = game_projects_relation.id
-        self.projects_id = game_projects_relation.projects_id
-        self.relation_num = game_projects_relation.relation_num
-        self.project_id = game_projects_relation.project_id
-        self.user_id = game_projects_relation.user_id
-        self.project_num = game_projects_relation.project_num
-        self.wait_before_time = game_projects_relation.wait_before_time
-        self.wait_after_time = game_projects_relation.wait_after_time
+    def __init__(self, game_projects_relation: () = None, **kwargs):
+        if game_projects_relation is None:
+            self.id = self.id
+            self.projects_id = self.projects_id
+            self.relation_num = self.relation_num
+            self.project_id = self.project_id
+            self.user_id = self.user_id
+            self.project_num = self.project_num
+            self.wait_before_time = self.wait_before_time
+            self.wait_after_time = self.wait_after_time
+        else:
+            super().__init__(**kwargs)
+            self.id = game_projects_relation.id
+            self.projects_id = game_projects_relation.projects_id
+            self.relation_num = game_projects_relation.relation_num
+            self.project_id = game_projects_relation.project_id
+            self.user_id = game_projects_relation.user_id
+            self.project_num = game_projects_relation.project_num
+            self.wait_before_time = game_projects_relation.wait_before_time
+            self.wait_after_time = game_projects_relation.wait_after_time
 
 
 class GameThread(Base):
@@ -151,16 +185,26 @@ class GameThread(Base):
                f"update_user= {self.update_user}," \
                f"update_time= {self.update_time}"
 
-    def __init__(self, game_thread: (), **kwargs):
-        super().__init__(**kwargs)
-        self.id = game_thread.id
-        self.ip = game_thread.ip
-        self.host_name = game_thread.host_name
-        self.thread_state = game_thread.thread_state
-        self.create_user = game_thread.create_user
-        self.create_time = game_thread.create_time
-        self.update_user = game_thread.update_user
-        self.update_time = game_thread.update_time
+    def __init__(self, game_thread: () = None, **kwargs):
+        if game_thread is None:
+            self.id = self.id
+            self.ip = self.ip
+            self.host_name = self.host_name
+            self.thread_state = self.thread_state
+            self.create_user = self.create_user
+            self.create_time = self.create_time
+            self.update_user = self.update_user
+            self.update_time = self.update_time
+        else:
+            super().__init__(**kwargs)
+            self.id = game_thread.id
+            self.ip = game_thread.ip
+            self.host_name = game_thread.host_name
+            self.thread_state = game_thread.thread_state
+            self.create_user = game_thread.create_user
+            self.create_time = game_thread.create_time
+            self.update_user = game_thread.update_user
+            self.update_time = game_thread.update_time
 
 
 class GameThreadDetail(Base):
@@ -190,18 +234,30 @@ class GameThreadDetail(Base):
                f"update_user= {self.update_user}," \
                f"update_time= {self.update_time}"
 
-    def __init__(self, game_thread_detail: (), **kwargs):
-        super().__init__(**kwargs)
-        self.id = game_thread_detail.id
-        self.thread_id = game_thread_detail.thread_id
-        self.projects_id = game_thread_detail.projects_id
-        self.project_id = game_thread_detail.project_id
-        self.project_state = game_thread_detail.project_state
-        self.project_num = game_thread_detail.project_num
-        self.create_user = game_thread_detail.create_user
-        self.create_time = game_thread_detail.create_time
-        self.update_user = game_thread_detail.update_user
-        self.update_time = game_thread_detail.update_time
+    def __init__(self, game_thread_detail: () = None, **kwargs):
+        if game_thread_detail is None:
+            self.id = self.id
+            self.thread_id = self.thread_id
+            self.projects_id = self.projects_id
+            self.project_id = self.project_id
+            self.project_state = self.project_state
+            self.project_num = self.project_num
+            self.create_user = self.create_user
+            self.create_time = self.create_time
+            self.update_user = self.update_user
+            self.update_time = self.update_time
+        else:
+            super().__init__(**kwargs)
+            self.id = game_thread_detail.id
+            self.thread_id = game_thread_detail.thread_id
+            self.projects_id = game_thread_detail.projects_id
+            self.project_id = game_thread_detail.project_id
+            self.project_state = game_thread_detail.project_state
+            self.project_num = game_thread_detail.project_num
+            self.create_user = game_thread_detail.create_user
+            self.create_time = game_thread_detail.create_time
+            self.update_user = game_thread_detail.update_user
+            self.update_time = game_thread_detail.update_time
 
 
 class GameThreadPicture(Base):
@@ -235,20 +291,34 @@ class GameThreadPicture(Base):
                f"update_user= {self.update_user}," \
                f"update_time= {self.update_time}"
 
-    def __init__(self, game_thread_picture: (), **kwargs):
-        super().__init__(**kwargs)
-        self.id = game_thread_picture.id
-        self.thread_id = game_thread_picture.thread_id
-        self.projects_id = game_thread_picture.projects_id
-        self.project_id = game_thread_picture.project_id
-        self.project_number = game_thread_picture.project_number
-        self.picture_folder = game_thread_picture.picture_folder
-        self.picture_name = game_thread_picture.picture_name
-        self.detail_id = game_thread_picture.detail_id
-        self.create_user = game_thread_picture.create_user
-        self.create_time = game_thread_picture.create_time
-        self.update_user = game_thread_picture.update_user
-        self.update_time = game_thread_picture.update_time
+    def __init__(self, game_thread_picture: () = None, **kwargs):
+        if game_thread_picture is None:
+            self.id = self.id
+            self.thread_id = self.thread_id
+            self.projects_id = self.projects_id
+            self.project_id = self.project_id
+            self.project_number = self.project_number
+            self.picture_folder = self.picture_folder
+            self.picture_name = self.picture_name
+            self.detail_id = self.detail_id
+            self.create_user = self.create_user
+            self.create_time = self.create_time
+            self.update_user = self.update_user
+            self.update_time = self.update_time
+        else:
+            super().__init__(**kwargs)
+            self.id = game_thread_picture.id
+            self.thread_id = game_thread_picture.thread_id
+            self.projects_id = game_thread_picture.projects_id
+            self.project_id = game_thread_picture.project_id
+            self.project_number = game_thread_picture.project_number
+            self.picture_folder = game_thread_picture.picture_folder
+            self.picture_name = game_thread_picture.picture_name
+            self.detail_id = game_thread_picture.detail_id
+            self.create_user = game_thread_picture.create_user
+            self.create_time = game_thread_picture.create_time
+            self.update_user = game_thread_picture.update_user
+            self.update_time = game_thread_picture.update_time
 
 
 class GameThreadResult(Base):
@@ -274,13 +344,23 @@ class GameThreadResult(Base):
                f"update_user= {self.update_user}," \
                f"update_time= {self.update_time}"
 
-    def __init__(self, game_thread_result: (), **kwargs):
-        super().__init__(**kwargs)
-        self.id = game_thread_result.id
-        self.detail_id = game_thread_result.detail_id
-        self.picture_folder = game_thread_result.picture_folder
-        self.picture_name = game_thread_result.picture_name
-        self.create_user = game_thread_result.create_user
-        self.create_time = game_thread_result.create_time
-        self.update_user = game_thread_result.update_user
-        self.update_time = game_thread_result.update_time
+    def __init__(self, game_thread_result: () = None, **kwargs):
+        if game_thread_result is None:
+            self.id = self.id
+            self.detail_id = self.detail_id
+            self.picture_folder = self.picture_folder
+            self.picture_name = self.picture_name
+            self.create_user = self.create_user
+            self.create_time = self.create_time
+            self.update_user = self.update_user
+            self.update_time = self.update_time
+        else:
+            super().__init__(**kwargs)
+            self.id = game_thread_result.id
+            self.detail_id = game_thread_result.detail_id
+            self.picture_folder = game_thread_result.picture_folder
+            self.picture_name = game_thread_result.picture_name
+            self.create_user = game_thread_result.create_user
+            self.create_time = game_thread_result.create_time
+            self.update_user = game_thread_result.update_user
+            self.update_time = game_thread_result.update_time

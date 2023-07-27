@@ -70,13 +70,21 @@ def create_models():
             model_file21 = model_file21 + "    " + column_file1 + "\n\r"
         model_file2 = model_file2 + model_file21 + "\n\r"
         #   __init__方法
-        model_file2 = model_file2 + "\tdef __init__(self, " + table_name + ": (), **kwargs):\n\r"
-        model_file2 = model_file2 + "\t\tsuper().__init__(**kwargs)\n\r"
+        model_file2 = model_file2 + "\tdef __init__(self, " + table_name + ": ()=None, **kwargs):\n\r"
+        model_file2 = model_file2 + "\t\tif "+table_name+" is None:\n\r"
         for i in range(0, len(table.columns)):
             column1 = table.columns[i]
             # 字段名称
             column_name1 = column1.name
-            column_file2 = "\t\tself." + column_name1 + "= " + table_name + "." + column_name1
+            column_file2 = "\t\t\tself." + column_name1 + "= self." + column_name1
+            model_file2 = model_file2 + column_file2 + "\n\r"
+        model_file2 = model_file2 + "\t\telse:\n\r"
+        model_file2 = model_file2 + "\t\t\tsuper().__init__(**kwargs)\n\r"
+        for i in range(0, len(table.columns)):
+            column1 = table.columns[i]
+            # 字段名称
+            column_name1 = column1.name
+            column_file2 = "\t\t\tself." + column_name1 + "= " + table_name + "." + column_name1
             model_file2 = model_file2 + column_file2 + "\n\r"
     model_file = model_file1 + model_file2
     print(model_file)
