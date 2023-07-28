@@ -6,6 +6,7 @@ from src.dao.mapper import select_game_account
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.airtest_service import AirtestService
 from src.service.onmyoji_service import OnmyojiService
+from src.utils.my_logger import logger
 
 
 def test_border_fight():

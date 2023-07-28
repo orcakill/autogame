@@ -9,7 +9,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount, GameProjectsRelation, GameProject
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
-from src.utils.junk.my_logging import logger
+from src.utils.my_logger import logger
 
 # airtest服务接口
 airtest_service = AirtestService()
