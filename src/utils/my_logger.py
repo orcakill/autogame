@@ -38,6 +38,8 @@ logger.configure(handlers=[
     },
 ])
 
+my_logger = logging.getLogger('root')
+
 if __name__ == '__main__':
     log = logging.getLogger('root')
     # 使用标注日志系统输出
