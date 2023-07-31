@@ -3,6 +3,8 @@ import re
 
 from sqlalchemy import create_engine, MetaData
 
+from src.utils.project_path import get_database_url
+
 
 def create_models():
     # 第一部分
@@ -16,8 +18,8 @@ def create_models():
     # 第三部分 __init__
     ""
     config = configparser.ConfigParser()
-    config.read("config.ini", encoding="utf-8")
-    url = config.get("database", "url")
+    url = get_database_url()
+    config.read(url, encoding="utf-8")
     # 创建数据库连接
     engine = create_engine(url)
     # # 创建元数据对象
@@ -71,7 +73,7 @@ def create_models():
         model_file2 = model_file2 + model_file21 + "\n\r"
         #   __init__方法
         model_file2 = model_file2 + "\tdef __init__(self, " + table_name + ": ()=None, **kwargs):\n\r"
-        model_file2 = model_file2 + "\t\tif "+table_name+" is None:\n\r"
+        model_file2 = model_file2 + "\t\tif " + table_name + " is None:\n\r"
         for i in range(0, len(table.columns)):
             column1 = table.columns[i]
             # 字段名称

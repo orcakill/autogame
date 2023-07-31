@@ -8,8 +8,8 @@ airtest_service = AirtestService()
 if __name__ == '__main__':
     logger.info("脚本启动")
     logger.info("**************")
-    logger.info("1 大号、小号、协战号每日任务")
-    logger.info("2 协战号寄养、协战、领取奖励")
+    logger.info("1 大号全流程任务")
+    logger.info("2 小号全流程任务")
     logger.info("0  默认设备 1 夜神模拟器")
     logger.info("**************")
     # game_type = input("请输入一个脚本类型：")
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     # 0 每个节点都发送邮件 1 进程结束后发送邮件  2不发送邮件
     game_is_email = "0"
     logger.info("**************")
-    logger.info("脚本类型 {},脚本轮次 {},连接设备{}", game_type, game_round, game_device)
+    logger.info("脚本类型{},脚本轮次 {},连接设备{}", game_type, game_round, game_device)
     logger.info("**************")
     logger.info("连接Android设备")
     # 连接android设备

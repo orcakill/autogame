@@ -57,23 +57,35 @@ class GameProject(Base):
     id = Column(String(40), primary_key=True, info='ID')
     project_num = Column(Integer, info='序号')
     project_name = Column(String(255), info='项目名称')
+    time_stamp = Column(Integer, info='时间限制标志')
+    start_time = Column(Integer, info='开始时间')
+    end_time = Column(Integer, info='结束时间')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
                f"id= {self.id}," \
                f"project_num= {self.project_num}," \
-               f"project_name= {self.project_name}"
+               f"project_name= {self.project_name}," \
+               f"time_stamp= {self.time_stamp}," \
+               f"start_time= {self.start_time}," \
+               f"end_time= {self.end_time}"
 
     def __init__(self, game_project: () = None, **kwargs):
         if game_project is None:
             self.id = self.id
             self.project_num = self.project_num
             self.project_name = self.project_name
+            self.time_stamp = self.time_stamp
+            self.start_time = self.start_time
+            self.end_time = self.end_time
         else:
             super().__init__(**kwargs)
             self.id = game_project.id
             self.project_num = game_project.project_num
             self.project_name = game_project.project_name
+            self.time_stamp = game_project.time_stamp
+            self.start_time = game_project.start_time
+            self.end_time = game_project.end_time
 
 
 class GameProjects(Base):
@@ -128,6 +140,7 @@ class GameProjectsRelation(Base):
     project_num = Column(Integer, info='项目执行次数')
     wait_before_time = Column(BigInteger, info='项目执行前等待时间')
     wait_after_time = Column(BigInteger, info='项目执行后等待时间')
+    project_state = Column(Integer, info='启用状态')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
@@ -138,7 +151,8 @@ class GameProjectsRelation(Base):
                f"user_id= {self.user_id}," \
                f"project_num= {self.project_num}," \
                f"wait_before_time= {self.wait_before_time}," \
-               f"wait_after_time= {self.wait_after_time}"
+               f"wait_after_time= {self.wait_after_time}," \
+               f"project_state= {self.project_state}"
 
     def __init__(self, game_projects_relation: () = None, **kwargs):
         if game_projects_relation is None:
@@ -150,6 +164,7 @@ class GameProjectsRelation(Base):
             self.project_num = self.project_num
             self.wait_before_time = self.wait_before_time
             self.wait_after_time = self.wait_after_time
+            self.project_state = self.project_state
         else:
             super().__init__(**kwargs)
             self.id = game_projects_relation.id
@@ -160,6 +175,7 @@ class GameProjectsRelation(Base):
             self.project_num = game_projects_relation.project_num
             self.wait_before_time = game_projects_relation.wait_before_time
             self.wait_after_time = game_projects_relation.wait_after_time
+            self.project_state = game_projects_relation.project_state
 
 
 class GameThread(Base):
