@@ -65,7 +65,7 @@ class OnmyojiService:
             logger.debug("常用")
             image_service.touch(Onmyoji.login_CY, interval=1)
             logger.debug("选择账号")
-            account = os.path.join(Onmyoji.user_XZZH, game_account.id)
+            account = os.path.join(Onmyoji.user_XZZH, game_account.account_name)
             image_service.touch(account, interval=1)
             logger.debug("登录")
             image_service.touch(Onmyoji.login_DLAN, interval=1)
@@ -90,12 +90,14 @@ class OnmyojiService:
                 image_service.touch(Onmyoji.home_XZ, timeout=3)
                 logger.debug("点击可能存在的底部菜单")
                 image_service.touch(Onmyoji.home_DBCD, timeout=3)
+                logger.debug("点击可能存在的取消，不打开加成")
+                image_service.touch(Onmyoji.home_QX, timeout=3)
                 logger.debug("重新判断是否存在底部菜单打开")
                 is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
                 if is_openBottom:
                     logger.debug("底部菜单已打开")
                     break
-        logger.info("初始化当前状态完成")
+        logger.info("初始化当前状态完成:{}",game_account.game_name)
 
     @staticmethod
     def soul_fight(game_task: []):

@@ -10,5 +10,5 @@ def test_select_game_threads():
 
 def test_select_task():
     # 查询测试
-    task = MapperExtend.select_game_task("", "")
+    task = MapperExtend.select_game_task("", "2")
     logger.info(task)

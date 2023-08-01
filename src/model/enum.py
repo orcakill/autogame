@@ -27,6 +27,7 @@ class Onmyoji:
     home_DBCDDK = r"首页\底部菜单打开"
     home_TS = r"首页\探索"
     home_XZ = r"首页\下载"
+    home_QX=r"首页\取消"
     # 登录
     login_CY = r"登录\常用"
     login_DLAN = r"登录\登录按钮"
