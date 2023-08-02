@@ -92,9 +92,6 @@ def image_rec(folder_path: str, cvstrategy: [], timeout: int, image_type: str, t
     for i in range(rec_round):
         # 当前识别轮次
         num = i + 1
-        if num >= 2:
-            # 识别轮次大于1时，判断是存在并点击悬赏封印
-            image_rec_one(Onmyoji.comm_FH_XSFYHSCH, cvstrategy, 1, "touch", threshold)
         if image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold):
             return True
         else:
@@ -122,9 +119,7 @@ def image_rec_coordinate(folder_path: str, cvstrategy: [], timeout: int, image_t
     for i in range(rec_round):
         # 当前识别轮次
         num = i + 1
-        if num >= 2:
-            # 识别轮次大于1时，判断是存在并点击悬赏封印
-            image_rec_one(Onmyoji.comm_FH_XSFYHSCH, cvstrategy, 1, "touch", threshold)
+        # if num >= 2:
         coordinate = image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold)
         if coordinate is None:
             logger.debug("{},第{}轮图片未识别", folder_path, num)

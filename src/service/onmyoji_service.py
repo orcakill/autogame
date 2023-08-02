@@ -216,6 +216,25 @@ class OnmyojiService:
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
 
     @staticmethod
+    def soul_fight_thug():
+        """
+        御魂打手
+        :return:
+        """
+        for i in range(1000):
+            logger.debug("御魂组队第{}次识别", i + 1)
+            while (not image_service.exists_coordinate(Onmyoji.soul_ZD, rec_round=10) and
+                   image_service.exists_coordinate(Onmyoji.soul_JSTXDS, rec_round=10)):
+                logger.debug("角色头像-打手识别成功")
+                time.sleep(1)
+                image_service.touch(Onmyoji.soul_JSTXDS)
+            c_win = image_service.exists_coordinate(Onmyoji.soul_TCTZ)
+            if c_win:
+                logger.debug("退出挑战成功")
+                time.sleep(1)
+                airtest_service.touch_coordinate(c_win)
+
+    @staticmethod
     def border_fight(game_task: []):
         """
         结界突破 border

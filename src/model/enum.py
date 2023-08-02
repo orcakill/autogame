@@ -51,6 +51,8 @@ class Onmyoji:
     soul_HTEN = r"探索\御魂\八岐大蛇\魂十"
     soul_JSTXDH = r"探索\御魂\八岐大蛇\角色头像大号"
     soul_JSTXXH = r"探索\御魂\八岐大蛇\角色头像小号"
+    soul_JSTXDS = r"探索\御魂\八岐大蛇\角色头像打手"
+    soul_ZD = r"探索\御魂\八岐大蛇\自动"
     soul_TCTZ = r"探索\御魂\八岐大蛇\退出挑战"
     soul_TZ = r"探索\御魂\八岐大蛇\挑战"
     soul_WS = r"探索\御魂\八岐大蛇\喂食"

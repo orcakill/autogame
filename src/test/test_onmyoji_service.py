@@ -2,7 +2,7 @@
 # @Author: orcakill
 # @File: test_onmyoji_service.py
 # @Description: 服务测试类
-import time
+from unittest import TestCase
 
 from src.dao.mapper import select_game_account
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
@@ -39,3 +39,13 @@ def test_border_fight():
     OnmyojiService.initialization(game_account)
     # 执行测试任务
     OnmyojiService.border_fight(game_task)
+
+
+class TestOnmyojiService(TestCase):
+    def test_soul_fight_thug(self):
+        # 御魂打手
+        logger.debug("开始测试")
+        # 初始化设备信息
+        AirtestService.auto_setup("1")
+        # 执行点击角色头像和退出挑战
+        OnmyojiService.soul_fight_thug()

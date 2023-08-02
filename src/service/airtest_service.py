@@ -46,10 +46,8 @@ class AirtestService:
         :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
-        Settings.FIND_TIMEOUT = timeout
-        Settings.THRESHOLD = threshold
         try:
-            if exists(template):
+            if loop_find(template,timeout=timeout,threshold=threshold):
                 return True
             else:
                 return False
