@@ -19,12 +19,13 @@ image_service = ImageService()
 class OnmyojiService:
 
     @staticmethod
-    def initialization(game_account: GameAccount):
+    def initialization(game_task: []):
         """
         当前状态初始化
-        :param game_account: 用户信息
+        :param game_task: 任务信息
         :return:
         """
+        game_account = GameAccount(game_task[2])
         # 判断是否是待登录账号首页
         logger.debug("判断当前状态")
         # 当前状态 账号首页 1，2,3，4
@@ -97,15 +98,18 @@ class OnmyojiService:
                 if is_openBottom:
                     logger.debug("底部菜单已打开")
                     break
-        logger.info("初始化当前状态完成:{}",game_account.game_name)
+        is_index = image_service.exists(account_index)
+        if is_index:
+            logger.info("初始化当前状态完成:{}", game_account.game_name)
+            return True
+        else:
+            logger.info("初始化当前状态失败:{}", game_account.game_name)
+            return False
 
     @staticmethod
     def soul_fight(game_task: []):
         """
         御魂战斗  魂一、魂八、魂十、魂十一
-        大号   魂十一   开启加成
-        小号   魂十    开启加成
-        协战号 魂一    不开加成
         :param game_task: 项目组信息
         :return:
         """
@@ -122,7 +126,7 @@ class OnmyojiService:
             logger.debug("开启加成")
         logger.debug("选择层数")
         if game_project.project_name == "魂一":
-            logger.debug("魂一")
+            logger.debug("魂一,拉协战式神：阿修罗 协战")
             is_soul = image_service.exists(Onmyoji.soul_HONE)
             if not is_soul:
                 logger.debug("循环3次")

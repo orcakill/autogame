@@ -27,10 +27,13 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
             logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
                         game_account.game_name)
             logger.info("当前状态初始化")
-            OnmyojiService.initialization(game_account)
-            if game_project.project_name in ["登录"]:
-                OnmyojiService.initialization(game_account)
-            elif game_project.project_name in ["魂一", "魂十", "魂十一"]:
-                OnmyojiService.soul_fight(game_task[j])
+            is_initialization=OnmyojiService.initialization(game_task[j])
+            if is_initialization:
+                if game_project.project_name in ["登录"]:
+                    OnmyojiService.initialization(game_task[j])
+                elif game_project.project_name in ["魂一", "魂十", "魂十一"]:
+                    OnmyojiService.soul_fight(game_task[j])
+            else:
+                logger.debug("当前状态初始化失败{}",game_account.game_name)
         if game_is_email:
             logger.info("发送邮件")
