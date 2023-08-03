@@ -24,15 +24,21 @@ THRESHOLD = 0.7
 # 图片识别轮次
 REC_ROUND = 1
 # 图片识别间隔(秒）·
-INTERVAL = 1
+INTERVAL = 0.5
+# 点击次数
+TIMES = 1
+# 按住时间
+DURATION = 0.01
 
 
 class ImageService:
     @staticmethod
     def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
-               threshold: float = THRESHOLD) -> bool:
+               threshold: float = THRESHOLD, is_throw: bool = False, is_click: bool = False) -> bool:
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
+        :param is_click: 是否点击坐标
+        :param is_throw: 是否显示异常
         :param folder_path: 图片文件夹路径
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
@@ -40,44 +46,66 @@ class ImageService:
         :return: bool
         """
         template_list = get_template_list(folder_path)
-        is_exist = False
         for template in template_list:
-            is_exist = airtest_service.exists(template, cvstrategy, timeout, threshold)
-        return is_exist
+            pos = airtest_service.exists(template, cvstrategy, timeout, threshold, is_throw)
+            if pos and not is_click:
+                logger.debug("图像识别成功")
+                return pos
+            if pos and is_click:
+                logger.debug("图像识别点击成功")
+                airtest_service.touch_coordinate(pos)
+                return True
+        return False
 
     @staticmethod
-    def exists_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
-                          threshold: float = THRESHOLD):
-        """
-        根据文件夹名获取图片进行图像识别，判断图片是否存在并返回坐标
-        :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 超时时间
-        :param threshold: 图像识别阈值
-        :return:
-        """
-        template_list = get_template_list(folder_path)
-        coordinate = ()
-        for template in template_list:
-            coordinate = airtest_service.exists_coordinate(template, cvstrategy, timeout, threshold)
-        return coordinate
-
-    @staticmethod
-    def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
-              threshold: float = THRESHOLD, interval: int = INTERVAL) -> bool:
+    def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+              threshold: float = THRESHOLD, is_throw: bool = False, times: int = TIMES,
+              duration: float = DURATION) -> bool:
         """
         根据文件夹名获取图片进行图像识别，点击图片
+        :param times: 点击次数
+        :param duration: 按住时间
         :param folder_path: 图片文件夹路径
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
         :param threshold: 图像识别阈值
+        :param is_throw: 是否显示异常,默认不显示异常
         :return: bool
         """
         template_list = get_template_list(folder_path)
-        is_click = False
         for template in template_list:
-            is_click = airtest_service.touch(template, cvstrategy, timeout, threshold, interval)
-        return is_click
+            is_click = airtest_service.touch(template, cvstrategy, timeout, threshold, is_throw, times, duration)
+            if is_click:
+                logger.debug("图像识别点击成功")
+                return True
+        return False
+
+    @staticmethod
+    def wait(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
+             threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False,
+             is_click: bool = False) -> bool:
+        """
+        根据文件夹名获取图片进行图像识别，等待图片出现并点击
+        :param is_click: 是否点击坐标
+        :param interval: 图像识别间隔
+        :param folder_path: 图片文件夹路径
+        :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
+        :param threshold: 图像识别阈值
+        :param is_throw: 是否显示异常,默认不显示异常
+        :return: bool
+        """
+        template_list = get_template_list(folder_path)
+        for template in template_list:
+            pos = airtest_service.wait(template, cvstrategy, timeout, threshold, interval, is_throw)
+            if pos and not is_click:
+                logger.debug("图像识别成功")
+                return pos
+            if pos and is_click:
+                airtest_service.touch_coordinate(pos)
+                logger.debug("图像识别点击成功")
+                return pos
+        return False
 
 
 def get_template_list(folder_path: str):

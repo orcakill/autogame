@@ -80,7 +80,7 @@ class OnmyojiService:
             logger.debug("开始游戏")
             image_service.touch(Onmyoji.login_KSYX)
             time.sleep(15)
-        logger.debug("当前账号首页,判断底部菜单")
+        logger.debug("{}首页,判断底部菜单", game_account.game_name)
         is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
         if not is_openBottom:
             for i_openBottom in range(4):
@@ -223,15 +223,10 @@ class OnmyojiService:
         """
         for i in range(1000):
             logger.debug("御魂组队第{}次识别", i + 1)
-            while image_service.exists_coordinate(Onmyoji.soul_JSTXDS, timeout=30):
-                logger.debug("角色头像-打手识别成功")
-                time.sleep(1)
-                image_service.touch(Onmyoji.soul_JSTXDS)
-            c_win = image_service.exists_coordinate(Onmyoji.soul_TCTZ)
-            if c_win:
-                logger.debug("退出挑战成功")
-                time.sleep(1)
-                airtest_service.touch_coordinate(c_win)
+            is_win = image_service.touch(Onmyoji.soul_JSTXDS, timeout=30, interval=1)
+            if is_win:
+                logger.debug("退出挑战")
+                image_service.touch(Onmyoji.soul_TCTZ, timeout=30, interval=1)
 
     @staticmethod
     def border_fight(game_task: []):
@@ -241,6 +236,7 @@ class OnmyojiService:
         :return:
         """
         game_account = GameAccount(game_task[2])
+        logger.debug(game_account.game_name)
         logger.debug("进入探索")
         image_service.touch(Onmyoji.home_TS)
         logger.debug("进入结界突破")
@@ -261,10 +257,14 @@ class OnmyojiService:
         is_securities = image_service.exists(Onmyoji.border_WJJTZJ)
         #  战斗等待时间
         num_wait = 10
+        # 战斗失败次数
+        num_false = 0
+        # 结界突破起始时间
         time_start_border = time.time()
+        # 结界突破战斗用时
         time_fight_list = []
         if is_border and not is_securities:
-            logger.debug("结界循环挑战33次,有结界有结界挑战劵")
+            logger.debug("结界循环挑战33次,有个人结界有结界挑战劵")
             for i in range(33):
                 logger.debug("点击个人结界")
                 image_service.touch(Onmyoji.border_GRJJ)
@@ -279,19 +279,14 @@ class OnmyojiService:
                 for j in range(30):
                     logger.debug("结界突破战斗结束第{}次识别", j + 1)
                     logger.debug("点击战斗胜利")
-                    image_service.touch(Onmyoji.border_ZDSL, timeout=1)
-                    logger.debug("判断结界突破-退出挑战")
-                    is_win = image_service.exists_coordinate(Onmyoji.border_TCTZ, timeout=5)
+                    is_win = image_service.touch(Onmyoji.border_ZDSL, timeout=10)
                     if is_win:
-                        logger.debug("结界突破-战斗胜利")
-                        time.sleep(1)
-                        airtest_service.touch_coordinate(is_win)
-                        break
-                    is_false=image_service.exists_coordinate(Onmyoji.soul_ZDSB, timeout=1)
+                        logger.debug("结界突破-退出挑战")
+                        image_service.touch(Onmyoji.border_TCTZ, timeout=5)
+                    is_false = image_service.touch(Onmyoji.border_ZDSB, timeout=5)
                     if is_false:
-                        logger.debug("结界突破-战斗胜利")
-                        time.sleep(1)
-                        image_service.touch(Onmyoji.soul_ZDSB)
+                        logger.debug("结界突破-战斗失败")
+                        num_false = num_false + 1
                     time.sleep(1)
                 time_fight_end = time.time()
                 time_fight = time_fight_end - time_fight_start
@@ -304,6 +299,7 @@ class OnmyojiService:
                 # 重新判断是否存在无结界挑战劵
                 is_securities = image_service.exists(Onmyoji.border_WJJTZJ)
                 if not is_border or is_securities:
+                    logger.debug("无个人结界或无结界挑战劵")
                     break
         logger.debug("返回首页")
         time_end_border = time.time()

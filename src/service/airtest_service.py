@@ -5,14 +5,16 @@
 # @Description: airtest接口
 """
 import logging
+
 from airtest.core.api import *
 from airtest.core.helper import G
 from airtest.core.settings import Settings
+
 from src.utils.my_logger import my_logger as logger
 
 # 控制airtest的日志输出
 log_airtest = logging.getLogger("airtest")
-log_airtest.setLevel(logging.CRITICAL)
+log_airtest.setLevel(logging.DEBUG)
 
 
 class AirtestService:
@@ -36,32 +38,14 @@ class AirtestService:
         return G.DEVICE.snapshot()
 
     @staticmethod
-    def exists(template: Template, cvstrategy: [], timeout: int, threshold: float):
-        """
-        判断图片是否存在
-        :param template: 图片类
-        :param cvstrategy: 图像识别算法
-        :param timeout: 超时时间
-        :param threshold: 图像识别阈值
-        :return: bool
-        """
-        Settings.CVSTRATEGY = cvstrategy
-        try:
-            if loop_find(template, timeout=timeout, threshold=threshold):
-                return True
-            else:
-                return False
-        except Exception as e:
-            logger.debug("异常：{}", e)
-
-    @staticmethod
-    def exists_coordinate(template: Template, cvstrategy: [], timeout: int, threshold: float):
+    def exists(template: Template, cvstrategy: [], timeout: int, threshold: float, is_throw: bool):
         """
         判断图片是否存在并返回坐标
         :param template: 图片类
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
         :param threshold: 图像识别阈值
+        :param is_throw: 是否显示异常
         :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
@@ -70,13 +54,41 @@ class AirtestService:
         try:
             return exists(template)
         except Exception as e:
-            logger.debug("异常：{}", e)
+            if is_throw:
+                logger.debug("异常：{}", e)
 
     @staticmethod
-    def touch(template: Template, cvstrategy: [], timeout: int, threshold: float, interval: int):
+    def touch(template: Template, cvstrategy: [], timeout: float, threshold: float, is_throw: bool, times: int,
+              duration: float):
         """
         判断图片是否存在
-        :param interval: 图像识别间隔
+        :param times: 点击次数
+        :param duration: 按住时间
+        :param template: 图片类
+        :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
+        :param threshold: 图像识别阈值
+        :param is_throw: 是否显示异常
+        :return: bool
+        """
+        Settings.CVSTRATEGY = cvstrategy
+        Settings.FIND_TIMEOUT = timeout
+        Settings.THRESHOLD = threshold
+        try:
+            if touch(template, times=times, duration=duration):
+                return True
+            else:
+                return False
+        except Exception as e:
+            if is_throw:
+                logger.debug("异常：{}", e)
+
+    @staticmethod
+    def wait(template: Template, cvstrategy: [], timeout: int, threshold: float, interval: float, is_throw: bool):
+        """
+        判断图片是否存在
+        :param interval: 间隔时间
+        :param is_throw: 是否显示异常
         :param template: 图片类
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
@@ -84,13 +96,16 @@ class AirtestService:
         :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
+        Settings.THRESHOLD = threshold
         try:
-            if touch(template, interval=interval, timeout=timeout, threshold=threshold):
-                return True
+            pos = wait(template, timeout=timeout, interval=interval)
+            if pos:
+                return pos
             else:
                 return False
         except Exception as e:
-            logger.debug("异常：{}", e)
+            if is_throw:
+                logger.debug("异常：{}", e)
 
     @staticmethod
     def touch_coordinate(v: []):

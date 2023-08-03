@@ -4,34 +4,42 @@
 # @Description : 图像识别测试类
 
 import datetime
+from unittest import TestCase
+
+from airtest.core.api import touch
+from airtest.core.cv import Template
 
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
+from src.utils.my_logger import logger
 
 image_service = ImageService
 airtest_service = AirtestService
 
 
-def test_exists():
-    airtest_service.auto_setup("0")
-    now = datetime.datetime.now()
-    print(image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default))
-    now1 = datetime.datetime.now()
-    print(now1 - now)
+class TestImageService(TestCase):
+    def test_exists(self):
+        airtest_service.auto_setup("0")
+        now = datetime.datetime.now()
+        print(image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default))
+        now1 = datetime.datetime.now()
+        print(now1 - now)
 
+    def test_exists_coordinate(self):
+        airtest_service.auto_setup("0")
+        now = datetime.datetime.now()
+        now1 = datetime.datetime.now()
+        print(now1 - now)
 
-def test_exists_coordinate():
-    airtest_service.auto_setup("0")
-    now = datetime.datetime.now()
-    # 获取层字的横坐标，向下滑动3次
-    test_coordinates = image_service.exists_coordinate(Onmyoji.soul_CZ,cvstrategy=Cvstrategy.default)
-    print(test_coordinates)
-    if  test_coordinates:
-        x1=test_coordinates[0]
-        y1=test_coordinates[1]
-        x2=x1
-        y2=2*y1
-        airtest_service.swipe((x1,y1),(x2,y2))
-    now1 = datetime.datetime.now()
-    print(now1 - now)
+    def test_touch(self):
+        airtest_service.auto_setup("0")
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        # image_service.touch(Onmyoji.home_TS, timeout=0.1, is_throw=True)
+        touch(Template(
+            r"D:\study\Project\***REMOVED***code\python\autogame\src\resources\static\onmyoji\首页\探索\屏幕截图 2023-08-03 222007.png"))
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
