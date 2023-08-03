@@ -11,6 +11,7 @@ class Onmyoji:
     border_ZB=r"探索\结界突破\准备"
     border_GTRQ = r"探索\结界突破\呱太入侵"
     border_ZDSB = r"探索\结界突破\战斗失败"
+    border_ZDSL = r"探索\结界突破\战斗胜利"
     border_WJJTZJ = r"探索\结界突破\无结界挑战劵"
     border_JJTPTB=r"探索\结界突破\结界突破图标"
     border_JSTXDH = r"探索\结界突破\角色头像大号"

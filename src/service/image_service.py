@@ -4,11 +4,10 @@
 # @Description : 图像识别接口
 import os
 import random
-import time
 
 from airtest.core.cv import Template
 
-from src.model.enum import Cvstrategy, Onmyoji
+from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.utils.my_logger import my_logger as logger
 from src.utils.project_path import get_onmyoji_image_path
@@ -31,115 +30,65 @@ INTERVAL = 1
 class ImageService:
     @staticmethod
     def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
-               threshold: float = THRESHOLD, rec_round: int = REC_ROUND, interval: int = INTERVAL) -> bool:
+               threshold: float = THRESHOLD) -> bool:
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
         :param folder_path: 图片文件夹路径
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
         :param threshold: 图像识别阈值
-        :param rec_round:   图片组识别次数
-        :param interval:   图片识别间隔
         :return: bool
         """
-        return image_rec(folder_path, cvstrategy, timeout, "exists", threshold, rec_round, interval)
+        template_list = get_template_list(folder_path)
+        is_exist = False
+        for template in template_list:
+            is_exist = airtest_service.exists(template, cvstrategy, timeout, threshold)
+        return is_exist
 
     @staticmethod
     def exists_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
-                          threshold: float = THRESHOLD, rec_round: int = REC_ROUND, interval: int = INTERVAL):
+                          threshold: float = THRESHOLD):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在并返回坐标
         :param folder_path: 图片文件夹路径
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
         :param threshold: 图像识别阈值
-        :param rec_round:   图片组识别次数
-        :param interval:   图片识别间隔
         :return:
         """
-        return image_rec_coordinate(folder_path, cvstrategy, timeout, "exists_coordinate", threshold, rec_round,
-                                    interval)
+        template_list = get_template_list(folder_path)
+        coordinate = ()
+        for template in template_list:
+            coordinate = airtest_service.exists_coordinate(template, cvstrategy, timeout, threshold)
+        return coordinate
 
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
-              threshold: float = THRESHOLD, rec_round: int = REC_ROUND, interval: int = INTERVAL) -> bool:
+              threshold: float = THRESHOLD, interval: int = INTERVAL) -> bool:
         """
         根据文件夹名获取图片进行图像识别，点击图片
         :param folder_path: 图片文件夹路径
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
         :param threshold: 图像识别阈值
-        :param rec_round:   图片组识别次数
-        :param interval:   图片识别间隔
         :return: bool
         """
-        return image_rec(folder_path, cvstrategy, timeout, "touch", threshold, rec_round, interval)
+        template_list = get_template_list(folder_path)
+        is_click = False
+        for template in template_list:
+            is_click = airtest_service.touch(template, cvstrategy, timeout, threshold, interval)
+        return is_click
 
 
-def image_rec(folder_path: str, cvstrategy: [], timeout: int, image_type: str, threshold: float, rec_round: int,
-              interval: int) -> bool:
+def get_template_list(folder_path: str):
     """
-    根据文件夹名获取图片进行图像识别，点击图片
+    根据文件夹名获取图片集合，转为template列表
     :param folder_path: 图片文件夹路径
-    :param cvstrategy: 图像识别算法
-    :param timeout: 单张图片超时时间
-    :param image_type: 识别类型
-    :param threshold: 图像识别阈值
-    :param rec_round:   图片组识别次数
-    :param interval:   图片识别间隔
-    :return: bool
+    :return:
     """
-    for i in range(rec_round):
-        # 当前识别轮次
-        num = i + 1
-        if image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold):
-            return True
-        else:
-            logger.debug("{},第{}轮图片未识别", folder_path, num)
-        # 等待 *秒
-        time.sleep(interval)
-    return False
-
-
-def image_rec_coordinate(folder_path: str, cvstrategy: [], timeout: int, image_type: str, threshold: float,
-                         rec_round: int,
-                         interval: int):
-    """
-    根据文件夹名获取图片进行图像识别，返回坐标
-    :param folder_path: 图片文件夹路径
-    :param cvstrategy: 图像识别算法
-    :param timeout: 单张图片超时时间
-    :param image_type: 识别类型
-    :param threshold: 图像识别阈值
-    :param rec_round:   图片组识别次数
-    :param interval:   图片识别间隔
-    :return: bool
-    """
-    coordinate = ()
-    for i in range(rec_round):
-        # 当前识别轮次
-        num = i + 1
-        # if num >= 2:
-        coordinate = image_rec_one(folder_path, cvstrategy, timeout, image_type, threshold)
-        if coordinate is None:
-            logger.debug("{},第{}轮图片未识别", folder_path, num)
-        # 等待 *秒
-        time.sleep(interval)
-    return coordinate
-
-
-def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: str, threshold: float):
-    """
-    根据文件夹名获取图片进行图像识别，点击图片
-    :param folder_path: 图片文件夹路径
-    :param cvstrategy: 图像识别算法
-    :param timeout: 单张图片超时时间
-    :param image_type: 识别类型
-    :param threshold: 图像识别阈值
-    :return: bool
-    """
+    template_list = []
     folder_all_path = os.path.join(get_onmyoji_image_path(), folder_path)
-    folder_list=os.listdir(folder_all_path)
+    folder_list = os.listdir(folder_all_path)
     random.shuffle(folder_list)
     for file_name in folder_list:
         file_path = os.path.abspath(os.path.join(folder_all_path, file_name))
@@ -150,21 +99,7 @@ def image_rec_one(folder_path: str, cvstrategy: [], timeout: int, image_type: st
             if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp']:
                 # 图片类赋值
                 template = Template(filename=file_path)
-                # 根据识别类型，存在 或 存在并点击
-                if image_type == "exists":
-                    # 判断图片是否存在
-                    if airtest_service.exists(template, cvstrategy, timeout, threshold):
-                        logger.debug("图片识别成功：{}",folder_path)
-                        return True
-                elif image_type == "touch":
-                    # 判断图片是否存在并点击
-                    if airtest_service.touch(template, cvstrategy, timeout, threshold):
-                        logger.debug("图片识别点击成功：{}",folder_path)
-                        return True
-                elif image_type == "exists_coordinate":
-                    # 判断图片是否存在并返回坐标
-                    return airtest_service.exists_coordinate(template, cvstrategy, timeout, threshold)
+                template_list.append(template)
         else:
             logger.debug("{}文件不存在", file_path)
-
-    return False
+    return template_list

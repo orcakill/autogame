@@ -10,43 +10,43 @@ class GameAccount(Base):
     __tablename__ = "game_account"
 
     id = Column(String(40), primary_key=True, info='ID')
+    account_type = Column(String(40), info='账号类型')
     account_name = Column(String(40), info='账号名称')
     account_password = Column(String(40), info='账号密码')
     game_region = Column(String(40), info='游戏服务器')
     game_name = Column(String(40), info='角色名称')
-    account_type = Column(String(40), info='账号类型')
     account_class = Column(String(40), info='账号等级')
     account_number = Column(Integer, info='账号序号')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
                f"id= {self.id}," \
+               f"account_type= {self.account_type}," \
                f"account_name= {self.account_name}," \
                f"account_password= {self.account_password}," \
                f"game_region= {self.game_region}," \
                f"game_name= {self.game_name}," \
-               f"account_type= {self.account_type}," \
                f"account_class= {self.account_class}," \
                f"account_number= {self.account_number}"
 
     def __init__(self, game_account: () = None, **kwargs):
         if game_account is None:
             self.id = self.id
+            self.account_type = self.account_type
             self.account_name = self.account_name
             self.account_password = self.account_password
             self.game_region = self.game_region
             self.game_name = self.game_name
-            self.account_type = self.account_type
             self.account_class = self.account_class
             self.account_number = self.account_number
         else:
             super().__init__(**kwargs)
             self.id = game_account.id
+            self.account_type = game_account.account_type
             self.account_name = game_account.account_name
             self.account_password = game_account.account_password
             self.game_region = game_account.game_region
             self.game_name = game_account.game_name
-            self.account_type = game_account.account_type
             self.account_class = game_account.account_class
             self.account_number = game_account.account_number
 
@@ -60,6 +60,7 @@ class GameProject(Base):
     time_stamp = Column(Integer, info='时间限制标志')
     start_time = Column(Integer, info='开始时间')
     end_time = Column(Integer, info='结束时间')
+    remark = Column(String(255), info='备注')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
@@ -68,7 +69,8 @@ class GameProject(Base):
                f"project_name= {self.project_name}," \
                f"time_stamp= {self.time_stamp}," \
                f"start_time= {self.start_time}," \
-               f"end_time= {self.end_time}"
+               f"end_time= {self.end_time}," \
+               f"remark= {self.remark}"
 
     def __init__(self, game_project: () = None, **kwargs):
         if game_project is None:
@@ -78,6 +80,7 @@ class GameProject(Base):
             self.time_stamp = self.time_stamp
             self.start_time = self.start_time
             self.end_time = self.end_time
+            self.remark = self.remark
         else:
             super().__init__(**kwargs)
             self.id = game_project.id
@@ -86,6 +89,7 @@ class GameProject(Base):
             self.time_stamp = game_project.time_stamp
             self.start_time = game_project.start_time
             self.end_time = game_project.end_time
+            self.remark = game_project.remark
 
 
 class GameProjects(Base):

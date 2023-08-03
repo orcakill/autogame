@@ -11,37 +11,35 @@ from src.service.onmyoji_service import OnmyojiService
 from src.utils.my_logger import logger
 
 
-def test_initialization():
-    # 测试登录功能
-    game_projects = GameProjects()
-    game_projects_relation = GameProjectsRelation()
-    game_account = select_game_account("3")
-    game_project = GameProject()
-    game_task = [game_projects, game_projects_relation, game_account, game_project]
-    logger.debug("开始测试")
-    # 初始化设备信息
-    AirtestService.auto_setup("0")
-    # 当前状态初始化
-    OnmyojiService.initialization(game_task)
-
-
-def test_border_fight():
-    # 初始化测试任务信息
-    game_projects = GameProjects()
-    game_projects_relation = GameProjectsRelation()
-    game_account = select_game_account("1")
-    game_project = GameProject()
-    game_task = [game_projects, game_projects_relation, game_account, game_project]
-    logger.debug("开始测试")
-    # 初始化设备信息
-    AirtestService.auto_setup("0")
-    # 当前状态初始化
-    OnmyojiService.initialization(game_account)
-    # 执行测试任务
-    OnmyojiService.border_fight(game_task)
-
-
 class TestOnmyojiService(TestCase):
+    def test_initialization(self):
+        # 测试登录功能
+        game_projects = GameProjects()
+        game_projects_relation = GameProjectsRelation()
+        game_account = select_game_account("3")
+        game_project = GameProject()
+        game_task = [game_projects, game_projects_relation, game_account, game_project]
+        logger.debug("开始测试")
+        # 初始化设备信息
+        AirtestService.auto_setup("0")
+        # 当前状态初始化
+        OnmyojiService.initialization(game_task)
+
+    def test_border_fight(self):
+        # 初始化测试任务信息
+        game_projects = GameProjects()
+        game_projects_relation = GameProjectsRelation()
+        game_account = select_game_account("2")
+        game_project = GameProject()
+        game_task = [game_projects, game_projects_relation, game_account, game_project]
+        logger.debug("开始测试")
+        # 初始化设备信息
+        AirtestService.auto_setup("0")
+        # 当前状态初始化
+        OnmyojiService.initialization(game_task)
+        # 执行测试任务
+        OnmyojiService.border_fight(game_task)
+
     def test_soul_fight_thug(self):
         # 御魂打手
         logger.debug("开始测试")

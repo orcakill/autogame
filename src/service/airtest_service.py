@@ -1,8 +1,8 @@
 """
-# @Time    : 2023年06月13日19:24
-# @Author  : orcakill
-# @File    : airtest_service.py
-# @Description : airtest接口
+# @Time: 2023年06月13日19:24
+# @Author: orcakill
+# @File: airtest_service.py
+# @Description: airtest接口
 """
 import logging
 from airtest.core.api import *
@@ -47,7 +47,7 @@ class AirtestService:
         """
         Settings.CVSTRATEGY = cvstrategy
         try:
-            if loop_find(template,timeout=timeout,threshold=threshold):
+            if loop_find(template, timeout=timeout, threshold=threshold):
                 return True
             else:
                 return False
@@ -73,9 +73,10 @@ class AirtestService:
             logger.debug("异常：{}", e)
 
     @staticmethod
-    def touch(template: Template, cvstrategy: [], timeout: int, threshold: float):
+    def touch(template: Template, cvstrategy: [], timeout: int, threshold: float, interval: int):
         """
         判断图片是否存在
+        :param interval: 图像识别间隔
         :param template: 图片类
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
@@ -83,10 +84,8 @@ class AirtestService:
         :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
-        Settings.FIND_TIMEOUT = timeout
-        Settings.THRESHOLD = threshold
         try:
-            if touch(template):
+            if touch(template, interval=interval, timeout=timeout, threshold=threshold):
                 return True
             else:
                 return False
