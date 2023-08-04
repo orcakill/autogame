@@ -14,7 +14,7 @@ from src.utils.my_logger import my_logger as logger
 
 # 控制airtest的日志输出
 log_airtest = logging.getLogger("airtest")
-log_airtest.setLevel(logging.DEBUG)
+log_airtest.setLevel(logging.CRITICAL)
 
 
 class AirtestService:

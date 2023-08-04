@@ -18,6 +18,7 @@ class Onmyoji:
     border_JSTXXH = r"探索\结界突破\角色头像小号"
     border_JG = r"探索\结界突破\进攻"
     border_TCTZ = r"探索\结界突破\退出挑战"
+    border_ZCTZ = r"探索\结界突破\再次挑战"
     border_SDZR = r"探索\结界突破\锁定阵容"
     # 返回
     comm_FH_LSYXBSXYH = r"通用\返回\蓝色圆形白色小于号"
