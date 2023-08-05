@@ -50,10 +50,10 @@ class ImageService:
         for template in template_list:
             pos = airtest_service.exists(template, cvstrategy, timeout, threshold, is_throw)
             if pos and not is_click:
-                logger.debug("图像识别成功")
+                logger.debug("图像识别成功:{}", folder_path)
                 return pos
             if pos and is_click:
-                logger.debug("图像识别点击成功")
+                logger.debug("图像识别点击成功:{}", folder_path)
                 airtest_service.touch_coordinate(pos)
                 return True
         return False
@@ -79,7 +79,7 @@ class ImageService:
         for template in template_list:
             is_click = airtest_service.touch(template, cvstrategy, timeout, threshold, is_throw, times, duration)
             if is_click:
-                logger.debug("图像识别点击成功")
+                logger.debug("图像识别点击成功:{}", folder_path)
                 return True
         return False
 
@@ -102,11 +102,11 @@ class ImageService:
         for template in template_list:
             pos = airtest_service.wait(template, cvstrategy, timeout, threshold, interval, is_throw)
             if pos and not is_click:
-                logger.debug("图像识别成功")
+                logger.debug("图像识别成功:{}", folder_path)
                 return pos
             if pos and is_click:
                 airtest_service.touch_coordinate(pos)
-                logger.debug("图像识别点击成功")
+                logger.debug("图像识别点击成功:{}", folder_path)
                 return pos
         return False
 
