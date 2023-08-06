@@ -29,7 +29,7 @@ class TestOnmyojiService(TestCase):
         # 初始化测试任务信息
         game_projects = GameProjects()
         game_projects_relation = GameProjectsRelation()
-        game_account = select_game_account("3")
+        game_account = select_game_account("4")
         game_project = GameProject()
         game_task = [game_projects, game_projects_relation, game_account, game_project]
         logger.debug("开始测试")
