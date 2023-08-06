@@ -1,4 +1,6 @@
-from src.controller.onmyoji_controller import task
+import threading
+
+from src.controller.onmyoji_controller import task, assist
 from src.service.airtest_service import AirtestService
 from utils.my_logger import my_logger as logger
 
@@ -26,8 +28,14 @@ if __name__ == '__main__':
     logger.info("连接Android设备")
     # 连接android设备
     airtest_service.auto_setup(game_device)
+    thread1 = threading.Thread(target=task(game_type, game_round, game_is_email))
+    thread2 = threading.Thread(target=assist())
+
+    thread1.start()
+    thread2.start()
+
     # 执行项目组、每个节点整理邮件报告
-    task(game_type, game_round, game_is_email)
+
 
 #    项目：
 #        当前状态初始化

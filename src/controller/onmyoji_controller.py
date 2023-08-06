@@ -1,10 +1,18 @@
+import time
+
 from src.dao.mapper_extend import MapperExtend
+from src.model.enum import Onmyoji
 from src.model.models import *
+from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.utils.my_logger import my_logger as logger
 
+image_service = ImageService()
+interrupt_flag = False
+
 
 def task(game_type: str, game_round: str, game_is_email: str) -> None:
+    global interrupt_flag
     """
     项目组任务
     :param game_type: 项目类型
@@ -22,18 +30,26 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
         for j in range(len(game_task)):
             # 判断项目名称，根据项目名称执行不同的函数
             game_projects_relation = GameProjectsRelation(game_task[j][1])
-            game_account = GameAccount (game_task[j][2])
+            game_account = GameAccount(game_task[j][2])
             game_project = GameProject(game_task[j][3])
             logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
                         game_account.game_name)
             logger.info("当前状态初始化")
-            is_initialization=OnmyojiService.initialization(game_task[j])
+            is_initialization = OnmyojiService.initialization(game_task[j])
             if is_initialization:
                 if game_project.project_name in ["登录"]:
                     OnmyojiService.initialization(game_task[j])
                 elif game_project.project_name in ["魂一", "魂十", "魂十一"]:
                     OnmyojiService.soul_fight(game_task[j])
             else:
-                logger.debug("当前状态初始化失败{}",game_account.game_name)
+                logger.debug("当前状态初始化失败{}", game_account.game_name)
         if game_is_email:
             logger.info("发送邮件")
+    interrupt_flag=True
+
+
+def assist():
+    global interrupt_flag
+    while not interrupt_flag:
+        time.sleep(30)
+        image_service.touch(Onmyoji.comm_FH_XSFYHSCH)

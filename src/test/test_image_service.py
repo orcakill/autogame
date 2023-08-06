@@ -22,7 +22,8 @@ class TestImageService(TestCase):
     def test_exists(self):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
-        is_border = image_service.exists(Onmyoji.border_GRJJ,cvstrategy=Cvstrategy.default)
+        # is_border = image_service.exists(Onmyoji.border_JJTZJWP)
+        is_border = image_service.exists(Onmyoji.border_WJJTZJ,cvstrategy=Cvstrategy.default)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)

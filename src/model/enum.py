@@ -1,22 +1,28 @@
-# @Time    : 2023年06月19日 11:57
-# @Author  : orcakill
-# @File    : enum.py
-# @Description : 常量
+# @Time: 2023年06月19日 11:57
+# @Author: orcakill
+# @File: enum.py
+# @Description: 常量
 
 
 class Onmyoji:
     # 结界突破
-    border_GRJJ=r"探索\结界突破\个人结界"
-    border_GRJJWSB=r"探索\结界突破\个人结界无失败"
-    border_ZB=r"探索\结界突破\准备"
+    border_GRJJ = r"探索\结界突破\个人结界"
+    border_SX = r"探索\结界突破\刷新"
+    border_SXQD = r"探索\结界突破\刷新确定"
+    border_JJSY = r"探索\结界突破\结界首页"
+    border_GRJJWSB = r"探索\结界突破\个人结界无失败"
+    border_ZB = r"探索\结界突破\准备"
     border_GTRQ = r"探索\结界突破\呱太入侵"
     border_ZDSB = r"探索\结界突破\战斗失败"
     border_ZDSL = r"探索\结界突破\战斗胜利"
+    border_ZBBZ = r"探索\结界突破\战败标志"
     border_WJJTZJ = r"探索\结界突破\无结界挑战劵"
-    border_JJTPTB=r"探索\结界突破\结界突破图标"
+    border_JJTZJWP = r"探索\结界突破\结界挑战劵误判"
+    border_JJTPTB = r"探索\结界突破\结界突破图标"
     border_JSTXDH = r"探索\结界突破\角色头像大号"
     border_JSTXXH = r"探索\结界突破\角色头像小号"
     border_JG = r"探索\结界突破\进攻"
+    border_XH = r"探索\结界突破\消耗"
     border_TCTZ = r"探索\结界突破\退出挑战"
     border_ZCTZ = r"探索\结界突破\再次挑战"
     border_SDZR = r"探索\结界突破\锁定阵容"
@@ -24,16 +30,16 @@ class Onmyoji:
     comm_FH_LSYXBSXYH = r"通用\返回\蓝色圆形白色小于号"
     comm_FH_SYHDBSCH = r"通用\返回\首页红底白色叉号"
     comm_FH_XSFYHSCH = r"通用\返回\悬赏封印红色叉号"
+    comm_FH_YSJZDHBSCH = r"通用\返回\右上角棕底红白色叉号"
     # 首页
     home_DBCD = r"首页\底部菜单"
     home_DBCDDK = r"首页\底部菜单打开"
     home_TS = r"首页\探索"
     home_XZ = r"首页\下载"
-    home_QX=r"首页\取消"
+    home_QX = r"首页\取消"
     # 登录
     login_CY = r"登录\常用"
     login_DLAN = r"登录\登录按钮"
-    login_FH = r'登录\返回'
     login_FWQ = r"登录\服务器"
     login_KSYX = r"登录\开始游戏"
     login_QHFWQ = r"登录\切换服务器"

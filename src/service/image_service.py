@@ -98,6 +98,8 @@ class ImageService:
         :param is_throw: 是否显示异常,默认不显示异常
         :return: bool
         """
+        if interval > 0:
+            time.sleep(interval)
         template_list = get_template_list(folder_path)
         for template in template_list:
             pos = airtest_service.wait(template, cvstrategy, timeout, threshold, interval, is_throw)
