@@ -25,7 +25,7 @@ THRESHOLD = 0.7
 # 图片识别轮次
 REC_ROUND = 1
 # 图片识别间隔(秒）·
-INTERVAL = 0.5
+INTERVAL = 1
 # 点击次数
 TIMES = 1
 # 按住时间
@@ -35,9 +35,11 @@ DURATION = 0.01
 class ImageService:
     @staticmethod
     def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT,
-               threshold: float = THRESHOLD, is_throw: bool = False, is_click: bool = False):
+               threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False,
+               is_click: bool = False):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
+        :param interval: 间隔时间
         :param is_click: 是否点击坐标
         :param is_throw: 是否显示异常
         :param folder_path: 图片文件夹路径
@@ -46,6 +48,7 @@ class ImageService:
         :param threshold: 图像识别阈值
         :return:
         """
+        time.sleep(interval)
         template_list = get_template_list(folder_path)
         for template in template_list:
             pos = airtest_service.exists(template, cvstrategy, timeout, threshold, is_throw)
@@ -98,8 +101,7 @@ class ImageService:
         :param is_throw: 是否显示异常,默认不显示异常
         :return: bool
         """
-        if interval > 0:
-            time.sleep(interval)
+        time.sleep(interval)
         template_list = get_template_list(folder_path)
         for template in template_list:
             pos = airtest_service.wait(template, cvstrategy, timeout, threshold, interval, is_throw)

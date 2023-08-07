@@ -9,7 +9,7 @@ from PIL import Image
 
 def fun1():
     # 打开图像
-    image = Image.open('F:\\a.png')
+    image = Image.open('D:\\a.png')
 
     # 使用 Tesseract 进行文字识别
     text = pytesseract.image_to_string(image, lang='eng')

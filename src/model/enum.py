@@ -48,6 +48,8 @@ class Onmyoji:
     login_SLTS = r"登录\适龄提示"
     login_WYYX = r"登录\网易游戏"
     login_XSJ = r"登录\小三角"
+    login_TYCS = r"登录\特邀测试"
+    login_ZXJS = r"登录\注销角色"
     login_YHZX = r"登录\用户中心"
     # 御魂
     soul_BQGBJC = r"探索\御魂\八岐大蛇\关闭加成"

@@ -4,6 +4,7 @@
 # @Description : 图像识别测试类
 
 import datetime
+import os
 from unittest import TestCase
 
 from airtest.core.api import touch
@@ -35,11 +36,11 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_touch(self):
-        airtest_service.auto_setup("0")
+        airtest_service.auto_setup("1")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        image_service.touch(Onmyoji.border_JG,cvstrategy=Cvstrategy.default,interval=1)
+        image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
