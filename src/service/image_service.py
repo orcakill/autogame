@@ -44,7 +44,7 @@ class ImageService:
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
         :param threshold: 图像识别阈值
-        :return: bool
+        :return:
         """
         template_list = get_template_list(folder_path)
         for template in template_list:

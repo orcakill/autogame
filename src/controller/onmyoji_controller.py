@@ -41,6 +41,8 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
                     OnmyojiService.initialization(game_task[j])
                 elif game_project.project_name in ["魂一", "魂十", "魂十一"]:
                     OnmyojiService.soul_fight(game_task[j])
+                elif game_project.project_name in ["个人突破"]:
+                    OnmyojiService.border_fight(game_task[j])
             else:
                 logger.debug("当前状态初始化失败{}", game_account.game_name)
         if game_is_email:
@@ -50,6 +52,7 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
 
 def assist():
     global interrupt_flag
+    logger.debug("开启拒接协战")
     while not interrupt_flag:
         time.sleep(30)
         image_service.touch(Onmyoji.comm_FH_XSFYHSCH)

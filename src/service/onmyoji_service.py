@@ -10,12 +10,14 @@ from src.model.models import GameAccount, GameProjectsRelation, GameProject
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.ocr_service import OcrService
 from src.utils.my_logger import logger
 
 # airtest服务接口
 airtest_service = AirtestService()
 image_service = ImageService()
 complex_service = ComplexService()
+ocr_service = OcrService()
 
 
 class OnmyojiService:
@@ -269,12 +271,8 @@ class OnmyojiService:
                     is_border = image_service.exists(Onmyoji.border_JJSY)
                     if is_border:
                         break
-            is_securities = False
-            logger.debug("判断是否存在结界挑战劵10、20、30")
-            is_misjudgment = image_service.exists(Onmyoji.border_JJTZJWP)
-            if not is_misjudgment:
-                logger.debug("判断是否存在结界突破劵0/30")
-                is_securities = image_service.exists(Onmyoji.border_WJJTZJ, cvstrategy=Cvstrategy.default)
+            logger.debug("判断是否存在结界挑战劵0/30")
+            is_securities = ocr_service.border_bond()
             if not is_securities:
                 logger.debug("有挑战劵")
                 if num_false % 3 == 0:

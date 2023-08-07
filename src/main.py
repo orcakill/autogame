@@ -28,14 +28,16 @@ if __name__ == '__main__':
     logger.info("连接Android设备")
     # 连接android设备
     airtest_service.auto_setup(game_device)
-    thread1 = threading.Thread(target=task(game_type, game_round, game_is_email))
-    thread2 = threading.Thread(target=assist())
-
+    logger.info("创建任务线程")
+    thread1 = threading.Thread(target=task, args=(game_type, game_round, game_is_email))
+    thread2 = threading.Thread(target=assist,args=())
     thread1.start()
     thread2.start()
+    thread1.join()
+    thread2.join()
+
 
     # 执行项目组、每个节点整理邮件报告
-
 
 #    项目：
 #        当前状态初始化
@@ -83,4 +85,3 @@ if __name__ == '__main__':
 #            (2)逢魔极boss战斗
 #            (3)逢魔boss战斗
 #         百鬼夜行
-

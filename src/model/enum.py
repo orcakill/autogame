@@ -10,6 +10,7 @@ class Onmyoji:
     border_SX = r"探索\结界突破\刷新"
     border_SXQD = r"探索\结界突破\刷新确定"
     border_JJSY = r"探索\结界突破\结界首页"
+    border_YSJTP = r"探索\结界突破\右上角突破"
     border_GRJJWSB = r"探索\结界突破\个人结界无失败"
     border_ZB = r"探索\结界突破\准备"
     border_GTRQ = r"探索\结界突破\呱太入侵"
