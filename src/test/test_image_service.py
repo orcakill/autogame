@@ -12,11 +12,13 @@ from airtest.core.cv import Template
 
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
+from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
 
 image_service = ImageService
 airtest_service = AirtestService
+complex_service = ComplexService
 
 
 class TestImageService(TestCase):
@@ -32,6 +34,9 @@ class TestImageService(TestCase):
     def test_exists_coordinate(self):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
+        logger.debug("常用")
+        complex_service.broder_fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
+                                         Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 60)
         now1 = datetime.datetime.now()
         print(now1 - now)
 

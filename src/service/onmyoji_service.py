@@ -79,7 +79,7 @@ class OnmyojiService:
             pos_TCS = image_service.exists(Onmyoji.login_TYCS, interval=2)
             pos_JSX = image_service.exists(Onmyoji.login_ZXJS, interval=2)
             if pos_TCS and pos_JSX:
-                airtest_service.touch_coordinate((pos_TCS[0],pos_JSX[1]))
+                airtest_service.touch_coordinate((pos_TCS[0], pos_JSX[1]))
             logger.debug("选择服务器:{}", game_account.game_region)
             server = os.path.join(Onmyoji.login_FWQ, game_account.game_region)
             image_service.touch(server, interval=2)
@@ -230,10 +230,9 @@ class OnmyojiService:
         """
         for i in range(1000):
             logger.debug("御魂组队第{}次识别", i + 1)
-            is_win = image_service.wait(Onmyoji.soul_JSTXDS, timeout=30, interval=1)
-            if is_win:
-                logger.debug("退出挑战")
-                image_service.touch(Onmyoji.soul_TCTZ, timeout=30)
+            complex_service.broder_fight_end(Onmyoji.soul_JSTXDS, Onmyoji.soul_TCTZ, Onmyoji.soul_ZDSB,
+                                             Onmyoji.soul_ZDSB, 60)
+            time.sleep(1)
 
     @staticmethod
     def border_fight(game_task: []):
@@ -257,7 +256,7 @@ class OnmyojiService:
         image_service.touch(Onmyoji.home_TS)
         logger.debug("进入结界突破")
         image_service.touch(Onmyoji.border_JJTPTB)
-        for i in range(33):
+        for i in range(40):
             logger.debug("判断是否有退出挑战")
             image_service.touch(Onmyoji.border_TCTZ, timeout=1)
             logger.debug("判断是否在结界首页")
@@ -282,13 +281,14 @@ class OnmyojiService:
                 if num_false % 3 == 0:
                     logger.debug("判断是否有战败标志")
                     is_fail = image_service.exists(Onmyoji.border_ZBBZ)
-                    logger.debug("判断是否有刷新")
-                    is_rush = image_service.exists(Onmyoji.border_SX)
-                    if is_fail and is_rush:
-                        logger.debug("有战败标志，战斗失败累计{}次，3的倍数，点击刷新", num_false)
-                        image_service.touch(Onmyoji.border_SX)
-                        time.sleep(2)
-                        image_service.touch(Onmyoji.border_SXQD)
+                    if is_fail:
+                        logger.debug("判断是否有刷新")
+                        is_rush = image_service.exists(Onmyoji.border_SX)
+                        if is_rush:
+                            logger.debug("有战败标志，战斗失败累计{}次，3的倍数，点击刷新", num_false)
+                            image_service.touch(Onmyoji.border_SX)
+                            time.sleep(2)
+                            image_service.touch(Onmyoji.border_SXQD)
                 time_fight_start = time.time()
                 logger.debug("点击个人结界")
                 image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default)
@@ -336,3 +336,13 @@ class OnmyojiService:
             time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
         logger.debug("本轮结界突破战斗结束，总用时{}秒，战斗总用时{}秒,平均用时{}秒", time_all, time_fight_all,
                      time_fight_avg)
+
+        @staticmethod
+        def awakening(game_task: []):
+            """
+            觉醒
+            觉醒一 风、火、水、雷（默认雷）  不开加成，选阵容，拉阿修罗出来协战
+            觉醒十 风、火、水、雷（默认雷）  开加成，选阵容打
+            :param game_task:  任务信息
+            :return:
+            """
