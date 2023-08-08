@@ -341,8 +341,36 @@ class OnmyojiService:
         def awakening(game_task: []):
             """
             觉醒
-            觉醒一 风、火、水、雷（默认雷）  不开加成，选阵容，拉阿修罗出来协战
-            觉醒十 风、火、水、雷（默认雷）  开加成，选阵容打
+            觉醒九 风、火、水、雷（默认雷）  开加成，选协战阵容，拉阿修罗出来协战
+            觉醒十 风、火、水、雷（默认雷）  开加成，选觉醒阵容
             :param game_task:  任务信息
             :return:
             """
+            logger.debug("进入探索")
+            image_service.touch(Onmyoji.home_TS)
+            logger.debug("进入觉醒")
+            logger.debug("判断本日周几")
+            logger.debug("本日周，麒麟")
+            logger.debug("判断当前层数")
+            logger.debug("通过滑动，选中待攻打的层数")
+            logger.debug("判断任务层数")
+
+            logger.debug("觉醒九层，开加成")
+            logger.debug("解锁阵容")
+            logger.debug("挑战")
+            logger.debug("点击预设")
+            logger.debug("选择队伍，先上白蛋，清洗位置")
+            logger.debug("再上协战阵容")
+            logger.debug("点击地板")
+            logger.debug("拖拽协战式神，与白蛋互换位置")
+            logger.debug("准备")
+            logger.debug("判断战斗结果")
+
+            logger.debug("觉醒十层，开加成")
+            logger.debug("解锁阵容")
+            logger.debug("挑战")
+            logger.debug("点击预设觉醒,防止协战阵容干扰")
+            logger.debug("准备")
+            logger.debug("判断战斗结果")
+
+
