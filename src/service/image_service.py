@@ -19,9 +19,9 @@ airtest_service = AirtestService()
 # 图像识别算法
 CVSTRATEGY = Cvstrategy.sift
 # 单张图片识别时间
-TIMEOUT = 1
+TIMEOUT = 0.5
 # 图片组识别时间
-TIMEOUTS = 20
+TIMEOUTS = 5
 # 图像识别阈值
 THRESHOLD = 0.7
 # 图片识别轮次

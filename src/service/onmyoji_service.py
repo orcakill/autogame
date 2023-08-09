@@ -45,7 +45,7 @@ class OnmyojiService:
             logger.debug("等待20秒")
             time.sleep(20)
             logger.debug("判断是否存在适龄提示")
-            is_ageAppropriateReminder = image_service.exists(Onmyoji.login_SLTS, timeout=5)
+            is_ageAppropriateReminder = image_service.exists(Onmyoji.login_SLTS, timeouts=5)
             # 不存在适龄提示
             if not is_ageAppropriateReminder:
                 logger.debug("不存在适龄提示")
@@ -92,13 +92,13 @@ class OnmyojiService:
             for i_openBottom in range(4):
                 logger.debug("当前页面无底部菜单打开")
                 logger.debug("点击可能存在的右上角返回")
-                image_service.touch(Onmyoji.comm_FH_SYHDBSCH, timeout=3)
+                image_service.touch(Onmyoji.comm_FH_SYHDBSCH, timeouts=3)
                 logger.debug("点击可能存在的下载")
-                image_service.touch(Onmyoji.home_XZ, timeout=3)
+                image_service.touch(Onmyoji.home_XZ, timeouts=3)
                 logger.debug("点击可能存在的底部菜单")
-                image_service.touch(Onmyoji.home_DBCD, timeout=3)
+                image_service.touch(Onmyoji.home_DBCD, timeouts=3)
                 logger.debug("点击可能存在的取消，不打开加成")
-                image_service.touch(Onmyoji.home_QX, timeout=3)
+                image_service.touch(Onmyoji.home_QX, timeouts=3)
                 logger.debug("重新判断是否存在底部菜单打开")
                 is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
                 if is_openBottom:
@@ -196,12 +196,12 @@ class OnmyojiService:
                 # 如果是大号，走角色头像大号，小号则走角色头像小号
                 if game_account.account_class == 0:
                     logger.debug("御魂战斗-点击角色头像大号")
-                    image_service.touch(Onmyoji.soul_JSTXDH, timeout=1)
+                    image_service.touch(Onmyoji.soul_JSTXDH, timeouts=1)
                 else:
                     logger.debug("御魂战斗-点击角色头像小号")
-                    image_service.touch(Onmyoji.soul_JSTXXH, timeout=1)
+                    image_service.touch(Onmyoji.soul_JSTXXH, timeouts=1)
                 logger.debug("御魂战斗-判断退出挑战")
-                is_win = image_service.exists(Onmyoji.soul_TCTZ, timeout=5)
+                is_win = image_service.exists(Onmyoji.soul_TCTZ, timeouts=5)
                 if is_win:
                     time.sleep(1)
                     airtest_service.touch_coordinate(is_win)
@@ -258,16 +258,18 @@ class OnmyojiService:
         image_service.touch(Onmyoji.border_JJTPTB)
         for i in range(40):
             logger.debug("判断是否有退出挑战")
-            image_service.touch(Onmyoji.border_TCTZ, timeout=1)
+            image_service.touch(Onmyoji.border_TCTZ, timeouts=3)
             logger.debug("判断是否在结界首页")
             is_border = image_service.exists(Onmyoji.border_JJSY, cvstrategy=Cvstrategy.default)
             if not is_border:
                 logger.debug("不在结界首页，有意外情况")
                 for i_border in range(3):
-                    logger.debug("点击呱太入侵")
-                    image_service.touch(Onmyoji.border_GTRQ, timeout=5)
-                    logger.debug("点击退出挑战")
-                    image_service.touch(Onmyoji.border_TCTZ, timeout=5)
+                    logger.debug("点击可能存在的呱太入侵")
+                    image_service.touch(Onmyoji.border_GTRQ, timeouts=5)
+                    logger.debug("点击可能存在的退出挑战")
+                    image_service.touch(Onmyoji.border_TCTZ, timeouts=5)
+                    logger.debug("点击可能存在的准备")
+                    image_service.touch(Onmyoji.border_ZB, timeouts=5)
                     logger.debug("战斗结束未成功点击")
                     complex_service.broder_fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                                      Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 5)
@@ -280,7 +282,7 @@ class OnmyojiService:
                 logger.debug("有挑战劵")
                 if num_false % 3 == 0:
                     logger.debug("判断是否有战败标志")
-                    is_fail = image_service.exists(Onmyoji.border_ZBBZ)
+                    is_fail = image_service.exists(Onmyoji.border_ZBBZ,timeouts=3)
                     if is_fail:
                         logger.debug("判断是否有刷新")
                         is_rush = image_service.exists(Onmyoji.border_SX)
@@ -296,14 +298,13 @@ class OnmyojiService:
                 is_attack = image_service.touch(Onmyoji.border_JG, interval=1)
                 time.sleep(3)
                 logger.debug("判断是否仍有进攻")
-                is_attack1 = image_service.exists(Onmyoji.border_JG)
+                is_attack1 = image_service.exists(Onmyoji.border_JG,timeouts=2)
                 if is_attack and is_attack1:
                     logger.debug("可能已无结界挑战劵,点击消耗退出")
                     image_service.touch(Onmyoji.border_XH)
-                    break
                 else:
                     logger.debug("点击准备")
-                    image_service.touch(Onmyoji.border_ZB, timeout=3)
+                    image_service.touch(Onmyoji.border_ZB, timeouts=3)
                     logger.debug("等待点击战斗胜利")
                     is_result = complex_service.broder_fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                                                  Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 60)

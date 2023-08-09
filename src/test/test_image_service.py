@@ -14,11 +14,13 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.ocr_service import OcrService
 from src.utils.my_logger import logger
 
 image_service = ImageService
 airtest_service = AirtestService
 complex_service = ComplexService
+ocr_service = OcrService
 
 
 class TestImageService(TestCase):
@@ -26,7 +28,7 @@ class TestImageService(TestCase):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
         # is_border = image_service.exists(Onmyoji.border_JJTZJWP)
-        is_border = image_service.exists(Onmyoji.border_JJSY)
+        is_border =image_service.exists(Onmyoji.border_JG,timeouts=2)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -41,7 +43,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_touch(self):
-        airtest_service.auto_setup("1")
+        airtest_service.auto_setup("0")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
