@@ -4,11 +4,7 @@
 # @Description : 图像识别测试类
 
 import datetime
-import os
 from unittest import TestCase
-
-from airtest.core.api import touch
-from airtest.core.cv import Template
 
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
@@ -28,7 +24,7 @@ class TestImageService(TestCase):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
         # is_border = image_service.exists(Onmyoji.border_JJTZJWP)
-        is_border =image_service.exists(Onmyoji.border_JG,timeouts=2)
+        is_border = image_service.exists(Onmyoji.border_JG, timeouts=2)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -36,9 +32,8 @@ class TestImageService(TestCase):
     def test_exists_coordinate(self):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
-        logger.debug("常用")
-        complex_service.broder_fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                         Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 60)
+        complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
+                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS, 60)
         now1 = datetime.datetime.now()
         print(now1 - now)
 

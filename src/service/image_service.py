@@ -95,7 +95,7 @@ class ImageService:
         return False
 
     @staticmethod
-    def wait(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = 20,
+    def wait(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = 20,
              threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False,
              is_click: bool = False):
         """

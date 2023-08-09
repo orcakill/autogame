@@ -116,7 +116,10 @@ class OnmyojiService:
     @staticmethod
     def soul_fight(game_task: []):
         """
-        御魂战斗  魂一、魂八、魂十、魂十一
+        御魂战斗  八岐大蛇
+        魂一  第一次战斗检查协战，有协战上协战，没协战直接退出到首页，不开加成
+        魂十  第一次战斗检查协战，有协战上协战，开加成，
+        魂十一  不检查协战，不上协战，开加成
         :param game_task: 项目组信息
         :return:
         """
@@ -129,8 +132,7 @@ class OnmyojiService:
         image_service.touch(Onmyoji.soul_YHTB)
         logger.debug("进入八岐大蛇")
         image_service.touch(Onmyoji.soul_BQXZ)
-        if game_account.account_class == 0:
-            logger.debug("开启加成")
+        logger.debug("开启加成")
         logger.debug("选择层数")
         if game_project.project_name == "魂一":
             logger.debug("魂一,拉协战式神：阿修罗 协战")
@@ -152,7 +154,7 @@ class OnmyojiService:
                             break
                 logger.debug("结束循环")
                 image_service.touch(Onmyoji.soul_HONE)
-        if game_project.project_name in ["魂十", "魂十一"]:
+        if game_project.project_name in ["魂十"]:
             logger.debug(game_project.project_name)
             is_soul = image_service.exists(Onmyoji.soul_HTEN)
             if not is_soul:
@@ -341,8 +343,6 @@ class OnmyojiService:
         @staticmethod
         def awakening(game_task: []):
             """
-            觉醒
-            觉醒九 风、火、水、雷（默认雷）  开加成，选协战阵容，拉阿修罗出来协战
             觉醒十 风、火、水、雷（默认雷）  开加成，选觉醒阵容
             :param game_task:  任务信息
             :return:

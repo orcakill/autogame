@@ -51,7 +51,7 @@ class AirtestService:
         :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
-        Settings.FIND_TIMEOUT = timeout
+        Settings.FIND_TIMEOUT_TMP = timeout
         Settings.THRESHOLD = threshold
         try:
             return exists(template)
@@ -86,7 +86,7 @@ class AirtestService:
                 logger.debug("异常：{}", e)
 
     @staticmethod
-    def wait(template: Template, cvstrategy: [], timeout: int, threshold: float, interval: float, is_throw: bool):
+    def wait(template: Template, cvstrategy: [], timeout: float, threshold: float, interval: float, is_throw: bool):
         """
         判断图片是否存在
         :param interval: 间隔时间
