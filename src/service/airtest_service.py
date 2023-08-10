@@ -40,7 +40,7 @@ class AirtestService:
         return G.DEVICE.snapshot()
 
     @staticmethod
-    def exists(template: Template, cvstrategy: [], timeout: int, threshold: float, is_throw: bool):
+    def exists(template: Template, cvstrategy: [], timeout: float, threshold: float, is_throw: bool):
         """
         判断图片是否存在并返回坐标
         :param template: 图片类

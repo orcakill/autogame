@@ -2,6 +2,7 @@
 # @Author: orcakill
 # @File: onmyoji_service.py
 # @Description: 服务接口
+import datetime
 import os
 import time
 
@@ -232,8 +233,8 @@ class OnmyojiService:
         """
         for i in range(1000):
             logger.debug("御魂组队第{}次识别", i + 1)
-            complex_service.broder_fight_end(Onmyoji.soul_JSTXDS, Onmyoji.soul_TCTZ, Onmyoji.soul_ZDSB,
-                                             Onmyoji.soul_ZDSB, 60)
+            complex_service.fight_end(Onmyoji.soul_JSTXDS, Onmyoji.soul_TCTZ, Onmyoji.soul_ZDSB,
+                                      Onmyoji.soul_ZDSB, 60)
             time.sleep(1)
 
     @staticmethod
@@ -273,8 +274,8 @@ class OnmyojiService:
                     logger.debug("点击可能存在的准备")
                     image_service.touch(Onmyoji.border_ZB, timeouts=5)
                     logger.debug("战斗结束未成功点击")
-                    complex_service.broder_fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                                     Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 5)
+                    complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
+                                              Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 5)
                     is_border = image_service.exists(Onmyoji.border_JJSY)
                     if is_border:
                         break
@@ -284,7 +285,7 @@ class OnmyojiService:
                 logger.debug("有挑战劵")
                 if num_false % 3 == 0:
                     logger.debug("判断是否有战败标志")
-                    is_fail = image_service.exists(Onmyoji.border_ZBBZ,timeouts=3)
+                    is_fail = image_service.exists(Onmyoji.border_ZBBZ, timeouts=3)
                     if is_fail:
                         logger.debug("判断是否有刷新")
                         is_rush = image_service.exists(Onmyoji.border_SX)
@@ -300,7 +301,7 @@ class OnmyojiService:
                 is_attack = image_service.touch(Onmyoji.border_JG, interval=1)
                 time.sleep(3)
                 logger.debug("判断是否仍有进攻")
-                is_attack1 = image_service.exists(Onmyoji.border_JG,timeouts=2)
+                is_attack1 = image_service.exists(Onmyoji.border_JG, timeouts=2)
                 if is_attack and is_attack1:
                     logger.debug("可能已无结界挑战劵,点击消耗退出")
                     image_service.touch(Onmyoji.border_XH)
@@ -308,8 +309,8 @@ class OnmyojiService:
                     logger.debug("点击准备")
                     image_service.touch(Onmyoji.border_ZB, timeouts=3)
                     logger.debug("等待点击战斗胜利")
-                    is_result = complex_service.broder_fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                                                 Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 60)
+                    is_result = complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
+                                                          Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 60)
                     if is_result:
                         num_win = num_win + 1
                     elif not is_result:
@@ -340,38 +341,49 @@ class OnmyojiService:
         logger.debug("本轮结界突破战斗结束，总用时{}秒，战斗总用时{}秒,平均用时{}秒", time_all, time_fight_all,
                      time_fight_avg)
 
-        @staticmethod
-        def awakening(game_task: []):
-            """
+    @staticmethod
+    def awakening(game_task: []):
+        """
             觉醒十 风、火、水、雷（默认雷）  开加成，选觉醒阵容
             :param game_task:  任务信息
             :return:
             """
-            logger.debug("进入探索")
-            image_service.touch(Onmyoji.home_TS)
-            logger.debug("进入觉醒")
-            logger.debug("判断本日周几")
-            logger.debug("本日周，麒麟")
-            logger.debug("判断当前层数")
-            logger.debug("通过滑动，选中待攻打的层数")
-            logger.debug("判断任务层数")
+        # 账号信息
+        game_account = GameAccount(game_task[2])
+        # 获取当前日期
+        today = datetime.date.today()
+        # 获取本日是周几（周一为0，周日为6）
+        weekday = today.weekday() + 1
+        logger.debug(game_account.game_name)
+        logger.debug("进入探索")
+        image_service.touch(Onmyoji.home_TS)
+        logger.debug("进入觉醒")
+        image_service.touch(Onmyoji.awaken_JXBT)
+        logger.debug("本日周{}", weekday)
+        if weekday == 1:
+            logger.debug("火麒麟")
+            image_service.touch(Onmyoji.awaken_QL_H)
+        elif weekday == 2:
+            logger.debug("风麒麟")
+            image_service.touch(Onmyoji.awaken_QL_F)
+        elif weekday == 3:
+            logger.debug("水麒麟")
+            image_service.touch(Onmyoji.awaken_QL_S)
+        else:
+            logger.debug("雷麒麟")
+            image_service.touch(Onmyoji.awaken_QL_L)
+        logger.debug("选择层号")
+        complex_service.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 3)
+        logger.debug("开启加成")
+        logger.debug("挑战")
+        logger.debug("点击预设觉醒,防止协战阵容干扰")
+        logger.debug("准备")
+        logger.debug("判断战斗结果")
+        logger.debug("战斗结束，返回首页")
 
-            logger.debug("觉醒九层，开加成")
-            logger.debug("解锁阵容")
-            logger.debug("挑战")
-            logger.debug("点击预设")
-            logger.debug("选择队伍，先上白蛋，清洗位置")
-            logger.debug("再上协战阵容")
-            logger.debug("点击地板")
-            logger.debug("拖拽协战式神，与白蛋互换位置")
-            logger.debug("准备")
-            logger.debug("判断战斗结果")
-
-            logger.debug("觉醒十层，开加成")
-            logger.debug("解锁阵容")
-            logger.debug("挑战")
-            logger.debug("点击预设觉醒,防止协战阵容干扰")
-            logger.debug("准备")
-            logger.debug("判断战斗结果")
-
-
+    @staticmethod
+    def friend_management(game_task: []):
+        # 账号信息
+        game_account = GameAccount(game_task[2])
+        logger.debug(game_account.game_name)
+        logger.debug("好友管理")

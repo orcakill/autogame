@@ -4,10 +4,13 @@
 # @Description: 复杂逻辑处理
 import time
 
+from src.model.enum import Cvstrategy
+from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
 
 image_service = ImageService()
+airtest_service = AirtestService()
 
 
 class ComplexService:
@@ -35,11 +38,64 @@ class ComplexService:
             is_win = image_service.wait(fight_win, timeout=1, is_click=True)
             if is_win:
                 logger.debug("战斗胜利，退出挑战")
-                image_service.wait(fight_quit, timeout=1, is_click=True,interval=2)
+                image_service.wait(fight_quit, timeout=1, is_click=True, interval=2)
                 return True
             is_fail = image_service.wait(fight_again, timeout=1)
             if is_fail:
                 logger.debug("战斗失败")
-                image_service.wait(fight_fail, timeout=1, is_click=True,interval=2)
+                image_service.wait(fight_fail, timeout=1, is_click=True, interval=2)
                 return False
         return None
+
+    @staticmethod
+    def swipe_floor(floor: str, target: str, swipe: int, times: int):
+        """
+        判断是否有待选层号,有则直接选中，无则通过向
+        :param floor:
+        :param target:
+        :param swipe:
+        :param times:
+        :return:
+        """
+        is_target = image_service.exists(target, is_click=True)
+        if not is_target:
+            logger.debug("无目标层号")
+            # 获取层字的横坐标，向下滑动3次
+            layer_coordinates = image_service.exists(floor, cvstrategy=Cvstrategy.default)
+            if layer_coordinates:
+                if swipe == 0:
+                    xy1 = (layer_coordinates[0], layer_coordinates[1])
+                    xy2 = (layer_coordinates[0], 1 / 4 * layer_coordinates[1])
+                else:
+                    xy1 = (layer_coordinates[0], 1 / 4 * layer_coordinates[1])
+                    xy2 = (layer_coordinates[0], layer_coordinates[1])
+                logger.debug("开始滑动")
+                for i in range(times):
+                    airtest_service.swipe(xy1, xy2)
+                    is_target = image_service.exists(target, is_click=True)
+                    if is_target:
+                        break
+        else:
+            logger.debug("有目标层号")
+
+        def top_addition(word:str,type:str,add_open:str,add_close:str,add_switch:int):
+            """
+
+            :param word:  加成文字
+            :param type:  加成类型
+            :param add_open: 打开加成
+            :param add_close: 关闭加成
+            :param add_switch:  加成开关
+            :return:
+            """
+
+            place_word=image_service.exists(word)
+            if place_word:
+                airtest_service.touch(place_word)
+                if add_switch == 0:
+                    logger.debug("关闭加成")
+                    is_close=image_service.exists(add_close)
+                else:
+                    logger.debug("打开加成")
+
+

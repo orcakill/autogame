@@ -24,6 +24,7 @@ class Onmyoji:
     awaken_SDZR = r"探索\觉醒\锁定阵容"
     awaken_DW1 = r"探索\觉醒\队伍1"
     awaken_YS = r"探索\觉醒\预设"
+    awaken_SC = r"探索\觉醒\十层"
     awaken_QL_F = r"探索\觉醒\麒麟图标\风麒麟"
     awaken_QL_H = r"探索\觉醒\麒麟图标\火麒麟"
     awaken_QL_S = r"探索\觉醒\麒麟图标\水麒麟"

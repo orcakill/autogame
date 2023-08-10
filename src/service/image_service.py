@@ -36,7 +36,7 @@ DURATION = 0.01
 
 class ImageService:
     @staticmethod
-    def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: int = TIMEOUT, timeouts: int = TIMEOUTS,
+    def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
                threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False,
                is_click: bool = False):
         """
@@ -67,7 +67,7 @@ class ImageService:
         return False
 
     @staticmethod
-    def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,timeouts: int = TIMEOUTS,
+    def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
               threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False, times: int = TIMES,
               duration: float = DURATION):
         """
