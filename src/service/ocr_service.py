@@ -39,8 +39,8 @@ class OcrService:
             # logger.debug(text)
             text = text.replace(" ", "").replace(":", "").replace("<", "")
             text = re.sub(r'\D', '', text)
+            text = text[:-2]
             logger.debug(text)
-            if text == "030":
-                return True
+            return text
             # 文字判断
-        return False
+        return None

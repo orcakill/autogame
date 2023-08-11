@@ -250,6 +250,8 @@ class OnmyojiService:
         num_win = 0
         # 战斗失败次数
         num_false = 0
+        # 结界挑战劵数
+        num_securities = 0
         # 结界突破起始时间
         time_start_border = time.time()
         # 结界突破战斗用时
@@ -262,6 +264,9 @@ class OnmyojiService:
         for i in range(40):
             time_fight_start = time.time()
             logger.debug("结界突破{}次", i + 1)
+            if i == 0:
+                logger.debug("第一次战斗，获取当前结界挑战劵数")
+                num_securities = ocr_service.border_bond()
             if num_false % 3 == 0:
                 logger.debug("战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
                 is_fail = image_service.exists(Onmyoji.border_ZBBZ, timeouts=3)
@@ -288,7 +293,7 @@ class OnmyojiService:
                     logger.debug("战斗结束未成功点击")
                     complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                               Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ, 5)
-                    is_border = image_service.exists(Onmyoji.border_JJSY,timeouts=2)
+                    is_border = image_service.exists(Onmyoji.border_JJSY, timeouts=2)
                     if is_border:
                         logger.debug("重新点击个人结界")
                         airtest_service.touch_coordinate(is_border)
@@ -302,7 +307,7 @@ class OnmyojiService:
                 image_service.touch(Onmyoji.border_XH)
                 logger.debug("判断是否存在结界挑战劵0/30")
                 is_securities = ocr_service.border_bond()
-                if not is_securities:
+                if not is_securities and is_securities == 0:
                     logger.debug("无结界挑战劵，跳出循环")
                     break
             else:
@@ -335,8 +340,9 @@ class OnmyojiService:
         time_fight_avg = 0
         if len_time_fight_list > 0:
             time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
-        logger.debug("本轮结界突破战斗结束，总用时{}秒，战斗总用时{}秒,平均用时{}秒", time_all, time_fight_all,
-                     time_fight_avg)
+        logger.debug(
+            "本轮结界突破战斗结束，总用时{}秒，结界挑战劵{}张，战斗总用时{}秒,战斗次数{}次，胜利{}次，失败{}次，平均用时{}秒",
+            time_all, num_securities, time_fight_all, len_time_fight_list, num_win, num_false, time_fight_avg)
 
     @staticmethod
     def awakening(game_task: []):
