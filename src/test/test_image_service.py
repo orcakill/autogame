@@ -33,7 +33,7 @@ class TestImageService(TestCase):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
         complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS, 60)
+                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS,Onmyoji.border_GRJJ,60)
         now1 = datetime.datetime.now()
         print(now1 - now)
 

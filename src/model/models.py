@@ -141,7 +141,7 @@ class GameProjectsRelation(Base):
     relation_num = Column(String(40), info='关系序号')
     project_id = Column(String(40), info='项目ID')
     user_id = Column(String(40), info='用户ID')
-    project_num = Column(Integer, info='项目执行次数')
+    project_num_times = Column(Integer, info='项目执行次数')
     wait_before_time = Column(BigInteger, info='项目执行前等待时间')
     wait_after_time = Column(BigInteger, info='项目执行后等待时间')
     project_state = Column(Integer, info='启用状态')
@@ -153,7 +153,7 @@ class GameProjectsRelation(Base):
                f"relation_num= {self.relation_num}," \
                f"project_id= {self.project_id}," \
                f"user_id= {self.user_id}," \
-               f"project_num= {self.project_num}," \
+               f"project_num_times= {self.project_num_times}," \
                f"wait_before_time= {self.wait_before_time}," \
                f"wait_after_time= {self.wait_after_time}," \
                f"project_state= {self.project_state}"
@@ -165,7 +165,7 @@ class GameProjectsRelation(Base):
             self.relation_num = self.relation_num
             self.project_id = self.project_id
             self.user_id = self.user_id
-            self.project_num = self.project_num
+            self.project_num_times = self.project_num_times
             self.wait_before_time = self.wait_before_time
             self.wait_after_time = self.wait_after_time
             self.project_state = self.project_state
@@ -176,7 +176,7 @@ class GameProjectsRelation(Base):
             self.relation_num = game_projects_relation.relation_num
             self.project_id = game_projects_relation.project_id
             self.user_id = game_projects_relation.user_id
-            self.project_num = game_projects_relation.project_num
+            self.project_num_times = game_projects_relation.project_num_times
             self.wait_before_time = game_projects_relation.wait_before_time
             self.wait_after_time = game_projects_relation.wait_after_time
             self.project_state = game_projects_relation.project_state

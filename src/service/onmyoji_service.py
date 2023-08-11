@@ -234,7 +234,7 @@ class OnmyojiService:
         for i in range(1000):
             logger.debug("御魂组队第{}次识别", i + 1)
             complex_service.fight_end(Onmyoji.soul_JSTXDS, Onmyoji.soul_TCTZ, Onmyoji.soul_ZDSB,
-                                      Onmyoji.soul_ZDSB, 60)
+                                      Onmyoji.soul_ZDSB, Onmyoji.soul_TZ, 60)
             time.sleep(1)
 
     @staticmethod
@@ -260,69 +260,66 @@ class OnmyojiService:
         logger.debug("进入结界突破")
         image_service.touch(Onmyoji.border_JJTPTB)
         for i in range(40):
-            logger.debug("判断是否有退出挑战")
-            image_service.touch(Onmyoji.border_TCTZ, timeouts=3)
-            logger.debug("判断是否在结界首页")
-            is_border = image_service.exists(Onmyoji.border_JJSY, cvstrategy=Cvstrategy.default)
+            time_fight_start = time.time()
+            logger.debug("结界突破{}次", i + 1)
+            if num_false % 3 == 0:
+                logger.debug("战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
+                is_fail = image_service.exists(Onmyoji.border_ZBBZ, timeouts=3)
+                if is_fail:
+                    logger.debug("判断是否有刷新")
+                    is_rush = image_service.exists(Onmyoji.border_SX)
+                    if is_rush:
+                        logger.debug("有战败标志，战斗失败累计{}次，3的倍数，点击刷新", num_false)
+                        image_service.touch(Onmyoji.border_SX)
+                        time.sleep(2)
+                        image_service.touch(Onmyoji.border_SXQD)
+            logger.debug("点击个人结界")
+            # 判断是否可以正常点击个人结界
+            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default)
             if not is_border:
-                logger.debug("不在结界首页，有意外情况")
+                logger.debug("未正常点击，有意外情况")
                 for i_border in range(3):
                     logger.debug("点击可能存在的呱太入侵")
-                    image_service.touch(Onmyoji.border_GTRQ, timeouts=5)
+                    image_service.touch(Onmyoji.border_GTRQ, timeouts=1)
                     logger.debug("点击可能存在的退出挑战")
-                    image_service.touch(Onmyoji.border_TCTZ, timeouts=5)
+                    image_service.touch(Onmyoji.border_TCTZ, timeouts=1)
                     logger.debug("点击可能存在的准备")
-                    image_service.touch(Onmyoji.border_ZB, timeouts=5)
+                    image_service.touch(Onmyoji.border_ZB, timeouts=1)
                     logger.debug("战斗结束未成功点击")
                     complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                              Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 5)
-                    is_border = image_service.exists(Onmyoji.border_JJSY)
+                                              Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ, 5)
+                    is_border = image_service.exists(Onmyoji.border_JJSY,timeouts=2)
                     if is_border:
+                        logger.debug("重新点击个人结界")
+                        airtest_service.touch_coordinate(is_border)
                         break
-            logger.debug("判断是否存在结界挑战劵0/30")
-            is_securities = ocr_service.border_bond()
-            if not is_securities:
-                logger.debug("有挑战劵")
-                if num_false % 3 == 0:
-                    logger.debug("判断是否有战败标志")
-                    is_fail = image_service.exists(Onmyoji.border_ZBBZ, timeouts=3)
-                    if is_fail:
-                        logger.debug("判断是否有刷新")
-                        is_rush = image_service.exists(Onmyoji.border_SX)
-                        if is_rush:
-                            logger.debug("有战败标志，战斗失败累计{}次，3的倍数，点击刷新", num_false)
-                            image_service.touch(Onmyoji.border_SX)
-                            time.sleep(2)
-                            image_service.touch(Onmyoji.border_SXQD)
-                time_fight_start = time.time()
-                logger.debug("点击个人结界")
-                image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default)
-                logger.debug("点击进攻")
-                is_attack = image_service.touch(Onmyoji.border_JG, interval=1)
-                time.sleep(3)
-                logger.debug("判断是否仍有进攻")
-                is_attack1 = image_service.exists(Onmyoji.border_JG, timeouts=2)
-                if is_attack and is_attack1:
-                    logger.debug("可能已无结界挑战劵,点击消耗退出")
-                    image_service.touch(Onmyoji.border_XH)
-                else:
-                    logger.debug("点击准备")
-                    image_service.touch(Onmyoji.border_ZB, timeouts=3)
-                    logger.debug("等待点击战斗胜利")
-                    is_result = complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                                          Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, 60)
-                    if is_result:
-                        num_win = num_win + 1
-                    elif not is_result:
-                        num_false = num_false + 1
-                    time_fight_end = time.time()
-                    time_fight = time_fight_end - time_fight_start
-                    time.sleep(3)
-                    logger.debug("本次结界突破战斗结束，用时{}秒", round(time_fight, 3))
-                    time_fight_list.append(time_fight)
+            logger.debug("点击进攻")
+            is_attack = image_service.touch(Onmyoji.border_JG, interval=1)
+            logger.debug("判断是否仍有进攻")
+            is_attack1 = image_service.exists(Onmyoji.border_JG, interval=1, timeouts=2)
+            if is_attack and is_attack1:
+                logger.debug("可能已无结界挑战劵,点击消耗退出")
+                image_service.touch(Onmyoji.border_XH)
+                logger.debug("判断是否存在结界挑战劵0/30")
+                is_securities = ocr_service.border_bond()
+                if not is_securities:
+                    logger.debug("无结界挑战劵，跳出循环")
+                    break
             else:
-                logger.debug("无结界挑战劵")
-                break
+                logger.debug("点击准备")
+                image_service.touch(Onmyoji.border_ZB, timeouts=3)
+                logger.debug("等待点击战斗胜利")
+                is_result = complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
+                                                      Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,
+                                                      60)
+                if is_result:
+                    num_win = num_win + 1
+                elif not is_result:
+                    num_false = num_false + 1
+                time_fight_end = time.time()
+                time_fight = time_fight_end - time_fight_start
+                logger.debug("本次结界突破战斗结束，用时{}秒", round(time_fight, 3))
+                time_fight_list.append(time_fight)
         logger.debug("返回探索界面")
         image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
         logger.debug("返回首页")
@@ -352,7 +349,7 @@ class OnmyojiService:
         game_projects_relation = GameProjectsRelation(game_task[1])
         # 账号信息
         game_account = GameAccount(game_task[2])
-        fight_time = game_projects_relation.project_num
+        fight_time = game_projects_relation.project_num_times
         if fight_time is None:
             fight_time = 1
         # 获取当前日期
@@ -387,7 +384,7 @@ class OnmyojiService:
             image_service.touch(Onmyoji.awaken_TZ)
             logger.debug("等待战斗结果")
             complex_service.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
-                                      Onmyoji.awaken_TCTZ, 20)
+                                      Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, 20)
         logger.debug("关闭加成")
         complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
         logger.debug("战斗结束，返回首页")

@@ -15,12 +15,13 @@ airtest_service = AirtestService()
 
 class ComplexService:
     @staticmethod
-    def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, timeout: int):
+    def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str,fight_none:str,timeout: int):
         """
         结界战斗，结束战斗
         1、战斗胜利,退出挑战
         2、退出挑战
         3、再次挑战（只识别不点击），战斗失败
+        :param fight_none: 已有挑战，什么都不做
         :param timeout: 超时时间
         :param fight_win: 战斗胜利
         :param fight_fail: 战斗失败
@@ -44,6 +45,10 @@ class ComplexService:
             if is_fail:
                 logger.debug("战斗失败")
                 image_service.wait(fight_fail, timeout=1, is_click=True, interval=2)
+                return False
+            is_none = image_service.wait(fight_none, timeout=1)
+            if is_none:
+                logger.debug("未正常退出，已有下一次挑战")
                 return False
         return None
 

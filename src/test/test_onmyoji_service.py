@@ -26,15 +26,17 @@ class TestOnmyojiService(TestCase):
         OnmyojiService.initialization(game_task)
 
     def test_border_fight(self):
+        test_name = '5'
+        test_devices = '0'
         # 初始化测试任务信息
         game_projects = GameProjects()
         game_projects_relation = GameProjectsRelation()
-        game_account = select_game_account("4")
+        game_account = select_game_account(test_name)
         game_project = GameProject()
         game_task = [game_projects, game_projects_relation, game_account, game_project]
         logger.debug("开始测试")
         # 初始化设备信息
-        AirtestService.auto_setup("0")
+        AirtestService.auto_setup(test_devices)
         # 当前状态初始化
         OnmyojiService.initialization(game_task)
         # 执行测试任务
@@ -47,3 +49,21 @@ class TestOnmyojiService(TestCase):
         AirtestService.auto_setup("1")
         # 执行点击角色头像和退出挑战
         OnmyojiService.soul_fight_thug()
+
+    def test_awakening(self):
+        test_name = '5'
+        test_devices = '0'
+        # 初始化测试任务信息
+        game_projects = GameProjects()
+        game_projects_relation = GameProjectsRelation()
+        game_projects_relation.project_num_times=1
+        game_account = select_game_account(test_name)
+        game_project = GameProject()
+        game_task = [game_projects, game_projects_relation, game_account, game_project]
+        logger.debug("开始测试")
+        # 初始化设备信息
+        AirtestService.auto_setup(test_devices)
+        # 当前状态初始化
+        OnmyojiService.initialization(game_task)
+        # 执行测试任务
+        OnmyojiService.awakening(game_task)
