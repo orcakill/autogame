@@ -348,12 +348,18 @@ class OnmyojiService:
             :param game_task:  任务信息
             :return:
             """
+        # 项目组项目关系
+        game_projects_relation = GameProjectsRelation(game_task[1])
         # 账号信息
         game_account = GameAccount(game_task[2])
+        fight_time = game_projects_relation.project_num
+        if fight_time is None:
+            fight_time = 1
         # 获取当前日期
         today = datetime.date.today()
         # 获取本日是周几（周一为0，周日为6）
         weekday = today.weekday() + 1
+
         logger.debug(game_account.game_name)
         logger.debug("进入探索")
         image_service.touch(Onmyoji.home_TS)
@@ -375,11 +381,19 @@ class OnmyojiService:
         logger.debug("选择层号")
         complex_service.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 3)
         logger.debug("开启加成")
-        logger.debug("挑战")
-        logger.debug("点击预设觉醒,防止协战阵容干扰")
-        logger.debug("准备")
-        logger.debug("判断战斗结果")
+        complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 1)
+        for i in range(fight_time):
+            logger.debug("挑战")
+            image_service.touch(Onmyoji.awaken_TZ)
+            logger.debug("等待战斗结果")
+            complex_service.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
+                                      Onmyoji.awaken_TCTZ, 20)
+        logger.debug("关闭加成")
+        complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
         logger.debug("战斗结束，返回首页")
+        image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
+        logger.debug("返回首页")
+        image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
 
     @staticmethod
     def friend_management(game_task: []):

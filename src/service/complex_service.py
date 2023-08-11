@@ -78,24 +78,37 @@ class ComplexService:
         else:
             logger.debug("有目标层号")
 
-        def top_addition(word:str,type:str,add_open:str,add_close:str,add_switch:int):
-            """
+    @staticmethod
+    def top_addition(word: str, add_type: str, add_open: str, add_close: str, add_switch: int):
+        """
 
-            :param word:  加成文字
-            :param type:  加成类型
-            :param add_open: 打开加成
-            :param add_close: 关闭加成
-            :param add_switch:  加成开关
-            :return:
-            """
+        :param word:  加成文字
+        :param add_type:  加成类型
+        :param add_open: 打开加成
+        :param add_close: 关闭加成
+        :param add_switch:  加成开关
+        :return:
+        """
 
-            place_word=image_service.exists(word)
-            if place_word:
-                airtest_service.touch(place_word)
-                if add_switch == 0:
-                    logger.debug("关闭加成")
-                    is_close=image_service.exists(add_close)
-                else:
-                    logger.debug("打开加成")
-
-
+        coordinate_word = image_service.exists(word)
+        if coordinate_word:
+            logger.debug("点击顶部加成")
+            coordinate_top = airtest_service.touch_coordinate(coordinate_word)
+            logger.debug("根据类型确定纵坐标")
+            coordinate_type = image_service.exists(add_type)
+            if add_switch == 0:
+                logger.debug("关闭加成")
+                logger.debug("根据类型确定横坐标")
+                coordinate_switch = image_service.exists(add_open)
+                logger.debug("点击计算出的关闭坐标")
+                airtest_service.touch_coordinate((coordinate_switch[0], coordinate_type[1]))
+            else:
+                logger.debug("打开加成")
+                logger.debug("根据类型确定横坐标")
+                coordinate_switch = image_service.exists(add_close)
+                logger.debug("点击计算出的打开坐标")
+                airtest_service.touch_coordinate((coordinate_switch[0], coordinate_type[1]))
+            logger.debug("关闭顶部加成")
+            airtest_service.touch_coordinate(coordinate_top)
+        else:
+            logger.debug("没找到顶部加成")

@@ -13,6 +13,8 @@ class Onmyoji:
     awaken_XZSS = r"探索\觉醒\协战式神"
     awaken_C = r"探索\觉醒\层字"
     awaken_ZDSL = r"探索\觉醒\战斗胜利"
+    awaken_ZDSB = r"探索\觉醒\战斗失败"
+    awaken_ZCTZ = r"探索\觉醒\再次挑战"
     awaken_TZ = r"探索\觉醒\挑战"
     awaken_HBD = r"探索\觉醒\换白蛋"
     awaken_DJDB = r"探索\觉醒\点击地板"
