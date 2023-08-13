@@ -18,6 +18,9 @@ from src.utils.my_logger import my_logger as logger
 log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
 
+# 图片识别间隔(秒）·
+INTERVAL = 1
+
 
 class AirtestService:
     @staticmethod
@@ -110,7 +113,8 @@ class AirtestService:
                 logger.debug("异常：{}", e)
 
     @staticmethod
-    def touch_coordinate(v: []):
+    def touch_coordinate(v: [], interval: float = INTERVAL):
+        time.sleep(interval)
         if touch(v):
             logger.debug("坐标点击成功")
             return True

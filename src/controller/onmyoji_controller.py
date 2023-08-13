@@ -45,6 +45,8 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
                     OnmyojiService.soul_fight(game_task[j])
                 elif game_project.project_name in ["个人突破"]:
                     OnmyojiService.border_fight(game_task[j])
+                elif game_project.project_name in ["每日奖励"]:
+                    OnmyojiService.daily_rewards(game_task[j])
                 elif game_project.project_name in ["好友管理"]:
                     OnmyojiService.friend_management(game_task[j])
             else:

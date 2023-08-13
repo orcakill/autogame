@@ -267,7 +267,10 @@ class OnmyojiService:
             if i == 0:
                 logger.debug("第一次战斗，获取当前结界挑战劵数")
                 num_securities = ocr_service.border_bond()
-            if num_false % 3 == 0:
+                if num_securities == "0":
+                    logger.debug("无结界挑战劵")
+                    break
+            if num_false % 3 == 0 and num_false != 0:
                 logger.debug("战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
                 is_fail = image_service.exists(Onmyoji.border_ZBBZ, timeouts=3)
                 if is_fail:
@@ -280,7 +283,7 @@ class OnmyojiService:
                         image_service.touch(Onmyoji.border_SXQD)
             logger.debug("点击个人结界")
             # 判断是否可以正常点击个人结界
-            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default)
+            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, interval=2)
             if not is_border:
                 logger.debug("未正常点击，有意外情况")
                 for i_border in range(3):
@@ -293,13 +296,18 @@ class OnmyojiService:
                     logger.debug("战斗结束未成功点击")
                     complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                               Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ, 5)
-                    is_border = image_service.exists(Onmyoji.border_JJSY, timeouts=2)
+                    is_border = image_service.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, interval=2)
                     if is_border:
                         logger.debug("重新点击个人结界")
                         airtest_service.touch_coordinate(is_border)
                         break
             logger.debug("点击进攻")
             is_attack = image_service.touch(Onmyoji.border_JG, interval=1)
+            if not is_attack:
+                logger.debug("未点击个人结界，重新点击")
+                image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, interval=2)
+                logger.debug("再次点击进攻")
+                is_attack = image_service.touch(Onmyoji.border_JG, interval=1)
             logger.debug("判断是否仍有进攻")
             is_attack1 = image_service.exists(Onmyoji.border_JG, interval=1, timeouts=2)
             if is_attack and is_attack1:
@@ -307,7 +315,7 @@ class OnmyojiService:
                 image_service.touch(Onmyoji.border_XH)
                 logger.debug("判断是否存在结界挑战劵0/30")
                 is_securities = ocr_service.border_bond()
-                if not is_securities and is_securities == 0:
+                if is_securities == "0":
                     logger.debug("无结界挑战劵，跳出循环")
                     break
             else:
@@ -382,17 +390,23 @@ class OnmyojiService:
             logger.debug("雷麒麟")
             image_service.touch(Onmyoji.awaken_QL_L)
         logger.debug("选择层号")
-        complex_service.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 3)
+        complex_service.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 4)
         logger.debug("开启加成")
-        complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 1)
+        complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 1)
         for i in range(fight_time):
-            logger.debug("挑战")
-            image_service.touch(Onmyoji.awaken_TZ)
+            logger.debug("觉醒挑战{}次", i + 1)
+            is_fight = image_service.touch(Onmyoji.awaken_TZ)
+            if is_fight:
+                logger.debug("判断是否未挑战")
+                is_fight = image_service.touch(Onmyoji.awaken_TZ, interval=2)
+                if is_fight:
+                    logger.debug("再次点击挑战")
             logger.debug("等待战斗结果")
             complex_service.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
-                                      Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, 20)
+                                      Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, 60)
+        time.sleep(2)
         logger.debug("关闭加成")
-        complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
+        complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 0)
         logger.debug("战斗结束，返回首页")
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
         logger.debug("返回首页")
@@ -404,3 +418,170 @@ class OnmyojiService:
         game_account = GameAccount(game_task[2])
         logger.debug(game_account.game_name)
         logger.debug("好友管理")
+
+    @staticmethod
+    def daily_rewards(game_task: []):
+        # 账号信息
+        game_account = GameAccount(game_task[2])
+        logger.debug(game_account.game_name)
+        logger.debug("判断是否有签到小纸人")
+        is_sign_in = image_service.exists(Onmyoji.home_reward_QDXZR, timeouts=2)
+        if is_sign_in:
+            logger.debug("有签到小纸人")
+            airtest_service.touch_coordinate(is_sign_in)
+            logger.debug("点击每日一签")
+            image_service.touch(Onmyoji.home_reward_MRYQ)
+            logger.debug("点击退出挑战")
+            image_service.touch(Onmyoji.home_reward_TCTZ)
+            logger.debug("返回首页")
+            image_service.touch(Onmyoji.comm_FH_SYHDBSCH)
+        logger.debug("判断是否有体力小纸人")
+        is_strength = image_service.exists(Onmyoji.home_reward_TLXZR, timeouts=2, interval=3)
+        if is_strength:
+            logger.debug("有体力小纸人")
+            airtest_service.touch_coordinate(is_strength)
+            logger.debug("获得体力奖励，退出")
+            is_reward = image_service.exists(Onmyoji.home_reward_HDJL, interval=3)
+            if is_reward:
+                airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+        logger.debug("判断是否有勾玉小纸人")
+        is_jade = image_service.exists(Onmyoji.home_reward_GYXZR, timeouts=2, interval=3)
+        if is_jade:
+            logger.debug("有勾玉小纸人")
+            airtest_service.touch_coordinate(is_jade)
+            logger.debug("获得勾玉奖励，退出")
+            is_reward = image_service.exists(Onmyoji.home_reward_HDJL, interval=3)
+            if is_reward:
+                airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+        logger.debug("判断是否有御魂觉醒加成小纸人")
+        is_soul_addition = image_service.exists(Onmyoji.home_reward_YHJXJCXZR, timeouts=2, interval=3)
+        if is_soul_addition:
+            logger.debug("有御魂觉醒加成小纸人")
+            airtest_service.touch_coordinate(is_soul_addition)
+            logger.debug("获得奖励，退出")
+            is_reward = image_service.exists(Onmyoji.home_reward_HDJL, interval=3)
+            if is_reward:
+                airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+        logger.debug("检查邮箱，领取奖励")
+        is_mail = image_service.exists(Onmyoji.home_reward_YX)
+        if is_mail:
+            logger.debug("点击邮箱")
+            airtest_service.touch_coordinate(is_mail)
+            logger.debug("判断是否有全部领取")
+            is_get = image_service.exists(Onmyoji.home_reward_QBLQ, interval=3)
+            if is_get:
+                logger.debug("点击全部领取")
+                airtest_service.touch_coordinate(is_get)
+                logger.debug("点击确定")
+                image_service.touch(Onmyoji.home_reward_QD, interval=3)
+                logger.debug("获得奖励，退出")
+                is_reward = image_service.exists(Onmyoji.home_reward_HDJL, interval=3)
+                if is_reward:
+                    airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+            logger.debug("返回首页")
+            image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH, interval=3)
+        logger.debug("检查礼包屋，每日一点")
+        is_store = image_service.exists(Onmyoji.store_SDTB)
+        if is_store:
+            logger.debug("点击商店图标")
+            airtest_service.touch_coordinate(is_store)
+            logger.debug("判断是否有右上角返回")
+            is_right = image_service.exists(Onmyoji.comm_FH_SYHDBSCH)
+            if is_right:
+                airtest_service.touch_coordinate(is_right)
+            logger.debug("点击礼包屋")
+            image_service.touch(Onmyoji.store_LBW)
+            logger.debug("判断是否有每日领取")
+            is_day = image_service.exists(Onmyoji.store_MRLQ, interval=2)
+            if is_day:
+                airtest_service.touch_coordinate(is_day)
+                logger.debug("获得每日免费奖励，退出")
+                is_reward = image_service.exists(Onmyoji.store_HDJL, interval=3)
+                if is_reward:
+                    airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+            else:
+                logger.debug("无每日免费奖励")
+            logger.debug("返回首页")
+            image_service.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
+            image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
+
+    @staticmethod
+    def encounter_demons(game_task: []):
+        # 账号信息
+        game_account = GameAccount(game_task[2])
+        logger.debug(game_account.game_name)
+        now = datetime.datetime.now()
+        current_hour = now.hour
+        if 17 <= current_hour <= 22:
+            logger.debug("进入町中")
+            image_service.touch(Onmyoji.home_DZ)
+            logger.debug("判断是否有庭院")
+            is_courtyard = image_service.exists(Onmyoji.demon_TY)
+            if is_courtyard:
+                logger.debug("旧版町中，点击旧版逢魔之时入口")
+                image_service.touch(Onmyoji.demon_JBFMZSRK)
+            logger.debug("判断是否已领取奖励")
+            is_get_reward = image_service.exists(Onmyoji.demon_HSDMYLQ)
+            if not is_get_reward:
+                logger.debug("未点击")
+                logger.debug("点击现时逢魔")
+                for i_present in range(4):
+                    image_service.touch(Onmyoji.demon_XSFM, interval=3)
+                logger.debug("领取奖励")
+                image_service.touch(Onmyoji.demon_HSDM, interval=3)
+                logger.debug("识别获得奖励")
+                is_reward = image_service.exists(Onmyoji.store_HDJL, interval=3)
+                if is_reward:
+                    airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+                logger.debug("逢魔boss")
+                logger.debug("判断是否有首领极")
+                is_extremely = image_service.exists(Onmyoji.demon_SLJ)
+                for i_boss in range(10):
+                    if is_extremely and game_account.account_class == 0:
+                        logger.debug("有首领极，且是大号")
+                        image_service.touch(Onmyoji.demon_SLJ)
+                    else:
+                        logger.debug("无首领极或是小号")
+                        image_service.touch(Onmyoji.demon_SL)
+                    logger.debug("判断是否有集结挑战")
+                    is_fight = image_service.touch(Onmyoji.demon_JJTZ)
+                    if is_fight:
+                        logger.debug("连点5次")
+                        airtest_service.touch_coordinate(is_fight)
+                        airtest_service.touch_coordinate(is_fight)
+                        airtest_service.touch_coordinate(is_fight)
+                        airtest_service.touch_coordinate(is_fight)
+                        airtest_service.touch_coordinate(is_fight)
+                    logger.debug("判断是否有集结")
+                    is_gathering = image_service.exists(Onmyoji.demon_ZCJJ)
+                    if is_gathering:
+                        break
+                    else:
+                        logger.debug("返回到逢魔页面")
+                        image_service.touch(Onmyoji.demon_YSJYXHDBSCH, interval=2)
+                logger.debug("进入boss挑战")
+                for i_fight in range(100):
+                    logger.debug("判断是否有准备")
+                    image_service.touch(Onmyoji.demon_ZB)
+                    logger.debug("判断是否战斗胜利")
+                    image_service.touch(Onmyoji.demon_ZDSL)
+                    logger.debug("判断是否有战绩")
+                    is_achievements = image_service.exists(Onmyoji.demon_ZCZJ)
+                    logger.debug("等待10s")
+                    time.sleep(10)
+                    if is_achievements:
+                        break
+                logger.debug("退出集结场景")
+                image_service.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
+                logger.debug("确定")
+                image_service.touch(Onmyoji.demon_QD)
+            else:
+                logger.debug("已完成逢魔之时")
+            logger.debug("退出逢魔之时")
+            image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
+            logger.debug("退出町中")
+            if is_courtyard:
+                logger.debug("旧版町中，点击旧版逢魔之时入口")
+                image_service.touch(Onmyoji.demon_TY)
+        else:
+            logger.debug("不在逢魔时间内")

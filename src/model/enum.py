@@ -59,12 +59,31 @@ class Onmyoji:
     comm_FH_SYHDBSCH = r"通用\返回\首页红底白色叉号"
     comm_FH_XSFYHSCH = r"通用\返回\悬赏封印红色叉号"
     comm_FH_YSJZDHBSCH = r"通用\返回\右上角棕底红白色叉号"
+    comm_FH_ZSJHKHSXYH = r"通用\返回\左上角黄框黄色小于号"
+    comm_FH_ZSJZKDZSHXJT = r"通用\返回\左上角棕框淡棕色回型箭头"
 
     home_DBCD = r"首页\底部菜单"
     home_DBCDDK = r"首页\底部菜单打开"
     home_QX = r"首页\取消"
     home_TS = r"首页\探索"
     home_XZ = r"首页\下载"
+
+    home_reward_GYXZR = r"首页\奖励\勾玉小纸人"
+    home_reward_QBLQ = r"首页\奖励\全部领取"
+    home_reward_TLXZR = r"首页\奖励\体力小纸人"
+    home_reward_YHJXJCXZR = r"首页\奖励\御魂觉醒加成小纸人"
+    home_reward_MRYQ = r"首页\奖励\每日一签"
+    home_reward_QDXZR = r"首页\奖励\签到小纸人"
+    home_reward_HDJL = r"首页\奖励\获得奖励"
+    home_reward_YX = r"首页\奖励\邮箱"
+    home_reward_QD = r"首页\奖励\确定"
+    home_reward_TCTZ = r"首页\奖励\退出挑战"
+    home_DZ = r"首页\町中"
+
+    store_SDTB = r"商店\商店图标"
+    store_LBW = r"商店\礼包屋"
+    store_MRLQ = r"商店\每日领取"
+    store_HDJL = r"商店\获得奖励"
 
     login_CY = r"登录\常用"
     login_DLAN = r"登录\登录按钮"
@@ -100,6 +119,24 @@ class Onmyoji:
 
     user_SYTX = r"用户\首页头像"
     user_XZZH = r"用户\选择账号"
+
+    demon_TY = r"町中\逢魔之时\庭院"
+    demon_ZXJJ = r"町中\逢魔之时\左下集结"
+    demon_ZCZJ = r"町中\逢魔之时\左侧战绩"
+    demon_ZCJJ = r"町中\逢魔之时\左侧集结"
+    demon_QD = r"町中\逢魔之时\确定"
+    demon_ZDSL = r"町中\逢魔之时\战斗胜利"
+    demon_JBFMZSRK = r"町中\逢魔之时\旧版逢魔之时入口"
+    demon_XBFMZSRK = r"町中\逢魔之时\新版逢魔之时入口"
+    demon_XSFM = r"町中\逢魔之时\现世逢魔"
+    demon_HSDM = r"町中\逢魔之时\红色达摩"
+    demon_HSDMYLQ = r"町中\逢魔之时\红色达摩已领取"
+    demon_HDJL = r"町中\逢魔之时\获得奖励"
+    demon_JJTZ = r"町中\逢魔之时\集结挑战"
+    demon_SL = r"町中\逢魔之时\首领"
+    demon_SLJ = r"町中\逢魔之时\首领极"
+    demon_YSJYXHDBSCH = r"町中\逢魔之时\右上角圆形红底白色叉号"
+    demon_ZB = r"町中\逢魔之时\准备"
 
 
 class Cvstrategy:
