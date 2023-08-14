@@ -521,7 +521,7 @@ class OnmyojiService:
                 logger.debug("旧版町中，点击旧版逢魔之时入口")
                 image_service.touch(Onmyoji.demon_JBFMZSRK)
             logger.debug("判断是否已领取奖励")
-            is_get_reward = image_service.exists(Onmyoji.demon_HSDMYLQ)
+            is_get_reward = image_service.exists(Onmyoji.demon_HSDMYLQ,interval=5,rgb=True)
             if not is_get_reward:
                 logger.debug("未点击")
                 logger.debug("点击现时逢魔")
@@ -543,15 +543,14 @@ class OnmyojiService:
                     else:
                         logger.debug("无首领极或是小号")
                         image_service.touch(Onmyoji.demon_SL)
+                    logger.debug("点击左下集结")
+                    image_service.touch(Onmyoji.demon_ZXJJ)
                     logger.debug("判断是否有集结挑战")
-                    is_fight = image_service.touch(Onmyoji.demon_JJTZ)
+                    is_fight = image_service.exists(Onmyoji.demon_JJTZ)
                     if is_fight:
                         logger.debug("连点5次")
-                        airtest_service.touch_coordinate(is_fight)
-                        airtest_service.touch_coordinate(is_fight)
-                        airtest_service.touch_coordinate(is_fight)
-                        airtest_service.touch_coordinate(is_fight)
-                        airtest_service.touch_coordinate(is_fight)
+                        for i_click in range(5):
+                            airtest_service.touch_coordinate(is_fight,interval=1)
                     logger.debug("判断是否有集结")
                     is_gathering = image_service.exists(Onmyoji.demon_ZCJJ)
                     if is_gathering:
