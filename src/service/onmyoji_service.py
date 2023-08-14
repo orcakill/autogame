@@ -585,3 +585,29 @@ class OnmyojiService:
                 image_service.touch(Onmyoji.demon_TY)
         else:
             logger.debug("不在逢魔时间内")
+
+    @staticmethod
+    def ghost_king(game_task: []):
+        # 账号信息
+        game_account = GameAccount(game_task[2])
+        logger.debug(game_account.game_name)
+        now = datetime.datetime.now()
+        current_hour = now.hour
+        if 6 <= current_hour <= 24:
+            logger.debug("进入探索")
+            logger.debug("进入地域鬼王")
+            logger.debug("确定目标鬼王，1鸟巢2少林3黄鹤4丹霞")
+            logger.debug("点击今日挑战")
+            logger.debug("判断是否有未挑战")
+            logger.debug("点击筛选")
+            logger.debug("判断是否有目标鬼王")
+            logger.debug("没有目标鬼王向下滑动")
+            logger.debug("点击目标鬼王")
+            logger.debug("判读是否有无字")
+            logger.debug("判读是否是极地域鬼王")
+            logger.debug("小号打1级")
+            logger.debug("点击挑战")
+            logger.debug("点击准备")
+            logger.debug("结束战斗")
+            logger.debug("返回鬼王首页")
+            logger.debug("返回首页")
