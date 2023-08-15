@@ -24,7 +24,7 @@ class TestImageService(TestCase):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
         # is_border = image_service.exists(Onmyoji.border_JJTZJWP)
-        is_border = image_service.touch(Onmyoji.border_TCTZ, timeouts=1)
+        is_border = image_service.exists(Onmyoji.demon_FMLD, interval=1, is_throw=True)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -33,7 +33,7 @@ class TestImageService(TestCase):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
         complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS,Onmyoji.border_GRJJ,60)
+                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS, Onmyoji.border_GRJJ, 60)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
