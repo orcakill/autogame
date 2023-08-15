@@ -521,7 +521,7 @@ class OnmyojiService:
                 logger.debug("旧版町中，点击旧版逢魔之时入口")
                 image_service.touch(Onmyoji.demon_JBFMZSRK)
             logger.debug("判断是否已领取奖励")
-            is_get_reward = image_service.exists(Onmyoji.demon_HSDMYLQ,interval=5,rgb=True)
+            is_get_reward = image_service.exists(Onmyoji.demon_HSDMYLQ, interval=5, rgb=True)
             if not is_get_reward:
                 logger.debug("未点击")
                 logger.debug("点击现时逢魔")
@@ -550,10 +550,11 @@ class OnmyojiService:
                     if is_fight:
                         logger.debug("连点5次")
                         for i_click in range(5):
-                            airtest_service.touch_coordinate(is_fight,interval=1)
+                            airtest_service.touch_coordinate(is_fight, interval=1)
                     logger.debug("判断是否有集结")
                     is_gathering = image_service.exists(Onmyoji.demon_ZCJJ)
                     if is_gathering:
+                        logger.debug("已进入逢魔集结")
                         break
                     else:
                         logger.debug("返回到逢魔页面")
@@ -566,10 +567,11 @@ class OnmyojiService:
                     image_service.touch(Onmyoji.demon_ZDSL)
                     logger.debug("判断是否有战绩")
                     is_achievements = image_service.exists(Onmyoji.demon_ZCZJ)
+                    if is_achievements:
+                        logger.debug("已有战绩，结束战斗")
+                        break
                     logger.debug("等待10s")
                     time.sleep(10)
-                    if is_achievements:
-                        break
                 logger.debug("退出集结场景")
                 image_service.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
                 logger.debug("确定")
@@ -580,7 +582,7 @@ class OnmyojiService:
             image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
             logger.debug("退出町中")
             if is_courtyard:
-                logger.debug("旧版町中，点击旧版逢魔之时入口")
+                logger.debug("旧版町中，点击庭院")
                 image_service.touch(Onmyoji.demon_TY)
         else:
             logger.debug("不在逢魔时间内")
@@ -594,19 +596,43 @@ class OnmyojiService:
         current_hour = now.hour
         if 6 <= current_hour <= 24:
             logger.debug("进入探索")
+            image_service.touch(Onmyoji.home_TS)
             logger.debug("进入地域鬼王")
-            logger.debug("确定目标鬼王，1鸟巢2少林3黄鹤4丹霞")
+            image_service.touch(Onmyoji.ghost_DYGWTB)
             logger.debug("点击今日挑战")
+            image_service.touch(Onmyoji.ghost_JRTZ)
             logger.debug("判断是否有未挑战")
-            logger.debug("点击筛选")
-            logger.debug("判断是否有目标鬼王")
-            logger.debug("没有目标鬼王向下滑动")
-            logger.debug("点击目标鬼王")
-            logger.debug("判读是否有无字")
-            logger.debug("判读是否是极地域鬼王")
-            logger.debug("小号打1级")
-            logger.debug("点击挑战")
-            logger.debug("点击准备")
-            logger.debug("结束战斗")
-            logger.debug("返回鬼王首页")
+            is_select=image_service.exists(Onmyoji.ghost_WXZ)
+            if is_select:
+                logger.debug("收藏鬼王")
+                for i in range(3):
+                    logger.debug("点击筛选")
+                    image_service.touch(Onmyoji.ghost_SX)
+                    logger.debug("点击收藏")
+                    image_service.touch(Onmyoji.ghost_SC)
+                    if i==0:
+                        logger.debug("鸟巢")
+                        image_service.touch(Onmyoji.ghost_SCGW_NC)
+                    elif i==1:
+                        logger.debug("少林寺藏经阁")
+                        image_service.touch(Onmyoji.ghost_SCGW_SLSCJG)
+                    elif i==2:
+                        logger.debug("丹霞山")
+                        image_service.touch(Onmyoji.ghost_SCGW_DXS)
+                    logger.debug("进入鬼王挑战页面")
+                    if game_account.account_class==0:
+                        logger.debug("大号，挑战极地域鬼王")
+                    is_ordinary=image_service.exists(Onmyoji.ghost_PTBZ)
+                    if is_ordinary:
+                        logger.debug("点击普通标志，切换成极地域鬼王")
+                        airtest_service.touch_coordinate(is_ordinary)
+                    logger.debug("判读是否有无字")
+
+                logger.debug("小号打1级")
+                logger.debug("点击挑战")
+                logger.debug("点击准备")
+                logger.debug("结束战斗")
+                logger.debug("返回鬼王首页")
+            else:
+                logger.debug("无未选择，退出地域鬼王")
             logger.debug("返回首页")

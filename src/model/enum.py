@@ -138,6 +138,25 @@ class Onmyoji:
     demon_YSJYXHDBSCH = r"町中\逢魔之时\右上角圆形红底白色叉号"
     demon_ZB = r"町中\逢魔之时\准备"
 
+    ghost_JRTZ = r"探索\地域鬼王\今日挑战"
+    ghost_ZB = r"探索\地域鬼王\准备"
+    ghost_DYGWTB = r"探索\地域鬼王\地域鬼王图标"
+    ghost_TZ = r"探索\地域鬼王\挑战"
+    ghost_SC = r"探索\地域鬼王\收藏"
+    ghost_SCGW_NC = r"探索\地域鬼王\收藏鬼王\鸟巢"
+    ghost_SCGW_SLSCJG = r"探索\地域鬼王\收藏鬼王\少林寺藏经阁"
+    ghost_SCGW_DXS = r"探索\地域鬼王\收藏鬼王\丹霞山"
+    ghost_W = r"探索\地域鬼王\无"
+    ghost_PTBZ = r"探索\地域鬼王\普通标志"
+    ghost_WXZ = r"探索\地域鬼王\未选择"
+    ghost_JBZ = r"探索\地域鬼王\极标志"
+    ghost_SX = r"探索\地域鬼王\筛选"
+    ghost_SXGW = r"探索\地域鬼王\筛选鬼王"
+    ghost_SXGW_NC = r"探索\地域鬼王\筛选鬼王\鸟巢"
+    ghost_SXGW_SLSCJG = r"探索\地域鬼王\筛选鬼王\少林寺藏经阁"
+    ghost_SXGW_DXS = r"探索\地域鬼王\筛选鬼王\丹霞山"
+    ghost_SXGW_HHL = r"探索\地域鬼王\筛选鬼王\黄鹤楼"
+
 
 class Cvstrategy:
     # 图像文字识别类型
