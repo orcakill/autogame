@@ -39,14 +39,18 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
             if is_initialization:
                 if game_project.project_name in ["登录"]:
                     OnmyojiService.initialization(game_task[j])
+                elif game_project.project_name in ["每日奖励"]:
+                    OnmyojiService.daily_rewards(game_task[j])
+                elif game_project.project_name in ["逢魔之时"]:
+                    OnmyojiService.encounter_demons(game_task[j])
+                elif game_project.project_name in ["地域鬼王"]:
+                    OnmyojiService.ghost_king(game_task[j])
                 elif game_project.project_name in ["觉醒十"]:
                     OnmyojiService.awakening(game_task[j])
                 elif game_project.project_name in ["魂一", "魂十", "魂十一"]:
                     OnmyojiService.soul_fight(game_task[j])
                 elif game_project.project_name in ["个人突破"]:
                     OnmyojiService.border_fight(game_task[j])
-                elif game_project.project_name in ["每日奖励"]:
-                    OnmyojiService.daily_rewards(game_task[j])
                 elif game_project.project_name in ["好友管理"]:
                     OnmyojiService.friend_management(game_task[j])
             else:

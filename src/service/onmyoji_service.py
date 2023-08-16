@@ -4,6 +4,7 @@
 # @Description: 服务接口
 import datetime
 import os
+import sys
 import time
 
 from src.model.enum import Onmyoji, Cvstrategy
@@ -75,7 +76,11 @@ class OnmyojiService:
             logger.debug("登录")
             image_service.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, interval=3)
             logger.debug("切换服务器")
-            image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, interval=2)
+            for i_switch in range(3):
+                is_switch = image_service.exists(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, interval=2,
+                                                 is_click=True)
+                if not is_switch:
+                    break
             logger.debug("点击小三角")
             pos_TCS = image_service.exists(Onmyoji.login_TYCS, interval=2)
             pos_JSX = image_service.exists(Onmyoji.login_ZXJS, interval=2)
@@ -83,7 +88,9 @@ class OnmyojiService:
                 airtest_service.touch_coordinate((pos_TCS[0], pos_JSX[1]))
             logger.debug("选择服务器:{}", game_account.game_region)
             server = os.path.join(Onmyoji.login_FWQ, game_account.game_region)
-            image_service.touch(server, interval=2)
+            is_select = image_service.touch(server, interval=2)
+            if not is_select:
+                sys.exit()
             logger.debug("开始游戏")
             image_service.touch(Onmyoji.login_KSYX, interval=2)
             time.sleep(15)
@@ -127,102 +134,45 @@ class OnmyojiService:
         game_projects_relation = GameProjectsRelation(game_task[1])
         game_account = GameAccount(game_task[2])
         game_project = GameProject(game_task[3])
+        fight_time = game_projects_relation.project_num_times
         logger.debug("进入探索")
         image_service.touch(Onmyoji.home_TS)
         logger.debug("进入御魂")
-        image_service.touch(Onmyoji.soul_YHTB)
+        image_service.touch(Onmyoji.soul_BQ_YHTB)
         logger.debug("进入八岐大蛇")
-        image_service.touch(Onmyoji.soul_BQXZ)
+        image_service.touch(Onmyoji.soul_BQ_XZ)
         logger.debug("开启加成")
-        logger.debug("选择层数")
+        logger.debug("八岐大蛇-选择层号")
         if game_project.project_name == "魂一":
-            logger.debug("魂一,拉协战式神：阿修罗 协战")
-            is_soul = image_service.exists(Onmyoji.soul_HONE)
-            if not is_soul:
-                logger.debug("循环3次")
-                for i_soul in range(3):
-                    logger.debug("当前无{}，向上滑动三次", game_project.project_name)
-                    # 获取层字的横坐标，向上滑动3次
-                    layer_coordinates = image_service.exists(Onmyoji.soul_CZ, cvstrategy=Cvstrategy.default)
-                    if layer_coordinates:
-                        xy1 = (layer_coordinates[0], layer_coordinates[1])
-                        xy2 = (layer_coordinates[0], 2 * layer_coordinates[1])
-                        airtest_service.swipe(xy1, xy2)
-                        airtest_service.swipe(xy1, xy2)
-                        airtest_service.swipe(xy1, xy2)
-                        is_soul = image_service.exists(Onmyoji.soul_HONE)
-                        if is_soul:
-                            break
-                logger.debug("结束循环")
-                image_service.touch(Onmyoji.soul_HONE)
-        if game_project.project_name in ["魂十"]:
-            logger.debug(game_project.project_name)
-            is_soul = image_service.exists(Onmyoji.soul_HTEN)
-            if not is_soul:
-                logger.debug("循环3次")
-                for i_soul in range(3):
-                    logger.debug("当前无{}，向下滑动三次", game_project.project_name)
-                    # 获取层字的横坐标，向下滑动3次
-                    layer_coordinates = image_service.exists(Onmyoji.soul_CZ, cvstrategy=Cvstrategy.default)
-                    if layer_coordinates:
-                        xy1 = (layer_coordinates[0], layer_coordinates[1])
-                        xy2 = (layer_coordinates[0], 1 / 4 * layer_coordinates[1])
-                        airtest_service.swipe(xy1, xy2)
-                        airtest_service.swipe(xy1, xy2)
-                        airtest_service.swipe(xy1, xy2)
-                        is_soul = image_service.exists(Onmyoji.soul_HTEN)
-                        if is_soul:
-                            break
-                logger.debug("结束循环")
-                if game_project.project_name == "魂十":
-                    image_service.touch(Onmyoji.soul_HTEN)
-                if game_project.project_name == "魂十一":
-                    image_service.touch(Onmyoji.soul_HELEVEN)
-        logger.debug("准备完成，开始御魂挑战循环{}次", game_projects_relation.project_num)
-        project_start_time = time.time()
-        for i in range(game_projects_relation.project_num):
-            start_time = time.time()
-            logger.debug("第{}次{}挑战", i + 1, game_project.project_name)
-            image_service.touch(Onmyoji.soul_TZ)
-            logger.debug("退出挑战-角色头像、宝箱、失败")
-            if i == 0:
-                time.sleep(2)
-                logger.debug("第一次战斗，判断是否需要喂食")
-                is_food = image_service.touch(Onmyoji.soul_WSXSJ)
-                if is_food:
-                    logger.debug("喂食")
-                    image_service.touch(Onmyoji.soul_WS)
-            time.sleep(15)
-            # 循环30次
-            for j in range(30):
-                logger.debug("御魂战斗第{}次识别", j + 1)
-                # 如果是大号，走角色头像大号，小号则走角色头像小号
-                if game_account.account_class == 0:
-                    logger.debug("御魂战斗-点击角色头像大号")
-                    image_service.touch(Onmyoji.soul_JSTXDH, timeouts=1)
-                else:
-                    logger.debug("御魂战斗-点击角色头像小号")
-                    image_service.touch(Onmyoji.soul_JSTXXH, timeouts=1)
-                logger.debug("御魂战斗-判断退出挑战")
-                is_win = image_service.exists(Onmyoji.soul_TCTZ, timeouts=5)
-                if is_win:
-                    time.sleep(1)
-                    airtest_service.touch_coordinate(is_win)
-                    logger.debug("御魂战斗-战斗胜利")
-                    break
-                else:
-                    image_service.touch(Onmyoji.soul_ZDSB)
-                time.sleep(1)
-            end_time = time.time()
-            logger.debug("本次{}战斗结束，用时{}秒", game_project.project_name, end_time - start_time)
-        project_end_time = time.time()
-        logger.debug("本轮{}战斗结束，总用时{}秒，平均用时{}秒", game_project.project_name,
-                     round(project_end_time - project_start_time, 3),
-                     round((project_end_time - project_start_time) / game_projects_relation.project_num), 3)
-        if game_account.account_class == 0:
-            logger.debug("关闭加成")
-        logger.debug("返回首页")
+            complex_service.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HONE, 0, 4)
+        elif game_project.project_name == "魂十":
+            complex_service.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
+        elif game_project.project_name == "魂十一":
+            complex_service.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HELEVEN, 1, 4)
+        logger.debug("开启御魂加成")
+        complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
+                                     1)
+        for i in range(fight_time):
+            logger.debug("御魂-挑战{}次", i + 1)
+            if game_account.account_class != 0 and i == 0:
+                logger.debug("小号,第一次战斗走预设阵容")
+                logger.debug("解锁阵容")
+            is_fight = image_service.touch(Onmyoji.soul_BQ_TZ)
+            if is_fight:
+                logger.debug("判断是否八岐大蛇-未挑战")
+                is_fight = image_service.touch(Onmyoji.soul_BQ_TZ, interval=2)
+                if is_fight:
+                    logger.debug("再次点击挑战")
+            logger.debug("等待战斗结果")
+            complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
+                                      Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 60)
+        time.sleep(3)
+        logger.debug("关闭御魂加成")
+        complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
+                                     0)
+        logger.debug("战斗结束，返回首页")
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
+        logger.debug("返回首页")
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
 
     @staticmethod
@@ -233,8 +183,8 @@ class OnmyojiService:
         """
         for i in range(1000):
             logger.debug("御魂组队第{}次识别", i + 1)
-            complex_service.fight_end(Onmyoji.soul_JSTXDS, Onmyoji.soul_TCTZ, Onmyoji.soul_ZDSB,
-                                      Onmyoji.soul_ZDSB, Onmyoji.soul_TZ, 60)
+            complex_service.fight_end(Onmyoji.soul_BQ_JSTXDS, Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_ZDSB,
+                                      Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_TZ, 60)
             time.sleep(1)
 
     @staticmethod
@@ -610,29 +560,29 @@ class OnmyojiService:
         current_hour = now.hour
         if 6 <= current_hour <= 24:
             logger.debug("进入探索")
-            image_service.touch(Onmyoji.home_TS,interval=2)
+            image_service.touch(Onmyoji.home_TS, interval=2)
             logger.debug("进入地域鬼王")
-            image_service.touch(Onmyoji.ghost_DYGWTB,interval=2)
+            image_service.touch(Onmyoji.ghost_DYGWTB, interval=2)
             logger.debug("点击今日挑战")
-            image_service.touch(Onmyoji.ghost_JRTZ,interval=2)
+            image_service.touch(Onmyoji.ghost_JRTZ, interval=2)
             logger.debug("判断是否有未挑战")
-            is_select = image_service.exists(Onmyoji.ghost_WXZ,interval=2)
+            is_select = image_service.exists(Onmyoji.ghost_WXZ, interval=2)
             if is_select:
                 logger.debug("收藏鬼王")
                 for i in range(3):
                     logger.debug("点击筛选")
-                    image_service.touch(Onmyoji.ghost_SX,interval=2)
+                    image_service.touch(Onmyoji.ghost_SX, interval=2)
                     logger.debug("点击收藏")
-                    image_service.touch(Onmyoji.ghost_SC,interval=2)
+                    image_service.touch(Onmyoji.ghost_SC, interval=2)
                     if i == 0:
                         logger.debug("鸟巢")
-                        image_service.touch(Onmyoji.ghost_SCGW_NC,interval=2)
+                        image_service.touch(Onmyoji.ghost_SCGW_NC, interval=2)
                     elif i == 1:
                         logger.debug("少林寺藏经阁")
-                        image_service.touch(Onmyoji.ghost_SCGW_SLSCJG,interval=2)
+                        image_service.touch(Onmyoji.ghost_SCGW_SLSCJG, interval=2)
                     elif i == 2:
                         logger.debug("丹霞山")
-                        image_service.touch(Onmyoji.ghost_SCGW_DXS,interval=2)
+                        image_service.touch(Onmyoji.ghost_SCGW_DXS, interval=2)
                     logger.debug("进入鬼王挑战页面")
                     if game_account.account_class == 0:
                         logger.debug("大号，挑战极地域鬼王")
@@ -643,10 +593,10 @@ class OnmyojiService:
                             airtest_service.touch_coordinate(is_ordinary)
                     if game_account.account_class != 0:
                         logger.debug("小号，挑战等级一的地域鬼王")
-                        is_first=image_service.exists(Onmyoji.ghost_DJY)
+                        is_first = image_service.exists(Onmyoji.ghost_DJY)
                         if not is_first:
                             logger.debug("不是等级一,点击减号")
-                            is_minus=image_service.exists(Onmyoji.ghost_JH)
+                            is_minus = image_service.exists(Onmyoji.ghost_JH)
                             for i_minus in range(60):
                                 airtest_service.touch_coordinate(is_minus)
                                 is_first = image_service.exists(Onmyoji.ghost_DJY)
@@ -679,5 +629,3 @@ class OnmyojiService:
             logger.debug("返回首页")
             image_service.touch(Onmyoji.comm_FH_LSYXBSXYH, interval=3)
             image_service.touch(Onmyoji.comm_FH_LSYXBSXYH, interval=3)
-
-
