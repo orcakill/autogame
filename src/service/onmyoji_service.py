@@ -636,13 +636,13 @@ class OnmyojiService:
                     logger.debug("进入鬼王挑战页面")
                     if game_account.account_class == 0:
                         logger.debug("大号，挑战极地域鬼王")
-                        logger.debug("判断是否有普通标志")
-                        is_ordinary = image_service.exists(Onmyoji.ghost_PTBZ)
+                        logger.debug("判断是否有极标志")
+                        is_ordinary = image_service.exists(Onmyoji.ghost_JBZ)
                         if is_ordinary:
-                            logger.debug("点击普通标志，切换成极地域鬼王")
+                            logger.debug("点击极标志，切换成极地域鬼王")
                             airtest_service.touch_coordinate(is_ordinary)
                     if game_account.account_class != 0:
-                        logger.debug("小号，判断是否是等级一")
+                        logger.debug("小号，挑战等级一的地域鬼王")
                         is_first=image_service.exists(Onmyoji.ghost_DJY)
                         if not is_first:
                             logger.debug("不是等级一,点击减号")
@@ -679,3 +679,5 @@ class OnmyojiService:
             logger.debug("返回首页")
             image_service.touch(Onmyoji.comm_FH_LSYXBSXYH, interval=3)
             image_service.touch(Onmyoji.comm_FH_LSYXBSXYH, interval=3)
+
+
