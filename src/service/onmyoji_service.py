@@ -82,10 +82,13 @@ class OnmyojiService:
             pos_JSX = image_service.exists(Onmyoji.login_ZXJS, interval=2)
             if not pos_TCS or not pos_JSX:
                 logger.debug("没找到小三角，重新判断是否已点击切换服务器")
-                image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, interval=3)
-                logger.debug("判断是否有小三角")
-                pos_TCS = image_service.exists(Onmyoji.login_TYCS, interval=2)
-                pos_JSX = image_service.exists(Onmyoji.login_ZXJS, interval=2)
+                for i_triangle in range(5):
+                    image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, interval=3)
+                    logger.debug("判断是否有小三角")
+                    pos_TCS = image_service.exists(Onmyoji.login_TYCS, interval=2)
+                    pos_JSX = image_service.exists(Onmyoji.login_ZXJS, interval=2)
+                    if pos_TCS and pos_JSX:
+                        break
             if pos_TCS and pos_JSX:
                 logger.debug("有小三角")
                 airtest_service.touch_coordinate((pos_TCS[0], pos_JSX[1]))
@@ -323,7 +326,6 @@ class OnmyojiService:
         today = datetime.date.today()
         # 获取本日是周几（周一为0，周日为6）
         weekday = today.weekday() + 1
-
         logger.debug(game_account.game_name)
         logger.debug("进入探索")
         image_service.touch(Onmyoji.home_TS)
@@ -364,7 +366,6 @@ class OnmyojiService:
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
         logger.debug("返回首页")
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
-
 
     @staticmethod
     def daily_rewards(game_task: []):
@@ -521,7 +522,6 @@ class OnmyojiService:
                 while time.time() - time_start < 10 * 60:
                     image_service.exists(Onmyoji.demon_ZB, is_click=True)
                     image_service.exists(Onmyoji.demon_ZDSL, is_click=True)
-                    image_service.exists(Onmyoji.demon_ZDSB, is_click=True)
                     is_again = image_service.exists(Onmyoji.demon_ZCTZ, timeouts=1)
                     if is_again:
                         image_service.touch(Onmyoji.demon_ZDSB)
@@ -647,28 +647,96 @@ class OnmyojiService:
                 complex_service.get_reward(Onmyoji.friends_HDJL)
             else:
                 logger.debug("无一键收取")
+        logger.debug("吉闻祝福")
+        image_service.touch(Onmyoji.friends_JW)
+        logger.debug("一键祝福")
+        is_blessing = image_service.touch(Onmyoji.friends_YJZF)
+        if is_blessing:
+            logger.debug("祝福按钮")
+            image_service.touch(Onmyoji.friends_ZFAN)
+            logger.debug("获得奖励")
+            complex_service.get_reward(Onmyoji.friends_HDJL)
+        logger.debug("返回到好友添加界面")
+        image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
         logger.debug("好友添加")
-        is_friend_is_full=False
-        logger.debug("进入添加")
-        logger.debug("判断是否有添加好友")
-        logger.debug("点击申请")
+        is_friend_is_full = image_service.exists(Onmyoji.friends_HYYM)
+        if not is_friend_is_full:
+            logger.debug("好友不满200，进入添加")
+            image_service.touch(Onmyoji.friends_YCTJ)
+            for i_add in range(20):
+                logger.debug("点击添加好友")
+                is_add = image_service.touch(Onmyoji.friends_TJHY)
+                if is_add:
+                    logger.debug("申请")
+                    image_service.touch(Onmyoji.friends_SQ)
+                else:
+                    logger.debug("无添加按钮")
+                    break
+        logger.debug("返回首页")
+        image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
         logger.debug("好友协战")
-        if True:
-            logger.debug("进入协战")
-            logger.debug("判断每日协战次数")
-            logger.debug("返回首页")
-            if True:
-                logger.debug("开始协战")
-                logger.debug("进入八岐大蛇-魂十")
-                logger.debug("解锁阵容")
-                logger.debug("开始挑战")
-                logger.debug("预设阵容-上白蛋,清洗位置")
-                logger.debug("预设阵容-上协战阵容")
-                logger.debug("点地板")
-                logger.debug("查看是否有协战阿修罗")
-                logger.debug("有-拉阿修罗换白蛋")
-                logger.debug("无-退出")
-                logger.debug("准备完成，开始挑战")
-                logger.debug("循环挑战15次，出现失败则退出协战")
-                logger.debug("检查协战次数，不满15次继续挑战")
+        for i_cooperative_warfare in range(3):
+            logger.debug("进入好友界面")
+            image_service.touch(Onmyoji.friends_HYTB)
+            logger.debug("进入右侧协战")
+            image_service.touch(Onmyoji.friends_YCXZ)
+            is_cooperative_warfare = image_service.exists(Onmyoji.friends_XZYM)
+            if is_cooperative_warfare:
+                logger.debug("已完成协战")
+                break
+            else:
+                logger.debug("返回首页")
+                image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+                logger.debug("好友协战-进入探索")
+                image_service.touch(Onmyoji.home_TS)
+                logger.debug("好友协战-进入御魂")
+                image_service.touch(Onmyoji.soul_BQ_YHTB)
+                logger.debug("好友协战-进入八岐大蛇")
+                image_service.touch(Onmyoji.soul_BQ_XZ)
+                logger.debug("好友协战-开启加成")
+                logger.debug("好友协战-八岐大蛇-选择层号")
+                complex_service.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
+                logger.debug("好友协战-开启御魂加成")
+                complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG,
+                                             Onmyoji.soul_BQ_JCG,
+                                             1)
+                for i in range(15):
+                    logger.debug("好友协战-御魂-挑战{}次", i + 1)
+                    if i == 0:
+                        logger.debug("好友协战-小号-协战-第一次")
+                        logger.debug("解锁阵容")
+                        logger.debug("挑战")
+                        logger.debug("点击预设")
+                        logger.debug("点击御魂")
+                        logger.debug("点击白蛋队伍")
+                        logger.debug("点击预设")
+                        logger.debug("点击御魂")
+                        logger.debug("点击协战队伍")
+                        logger.debug("点击地板")
+                        logger.debug("判断是否有协战式神")
+                        logger.debug("拖拽协战式神，更换白蛋")
+                        logger.debug("准备完成")
+                        logger.debug("点击宠物")
+                        logger.debug("点击喂食")
+                        logger.debug("获得奖励")
+                        logger.debug("退出挑战")
+                    else:
+                        is_fight = image_service.touch(Onmyoji.soul_BQ_TZ)
+                        if is_fight:
+                            logger.debug("好友协战-判断是否八岐大蛇-未挑战")
+                            is_fight = image_service.touch(Onmyoji.soul_BQ_TZ, interval=2)
+                            if is_fight:
+                                logger.debug("好友协战-再次点击挑战")
+                        logger.debug("好友协战-等待战斗结果")
+                        complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
+                                                  Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 60)
+                time.sleep(3)
+                logger.debug("好友协战-关闭御魂加成")
+                complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG,
+                                             Onmyoji.soul_BQ_JCG,
+                                             0)
+                logger.debug("好友协战-战斗结束，返回首页")
+                image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
+                logger.debug("好友协战-返回首页")
+                image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
         logger.debug("返回首页")

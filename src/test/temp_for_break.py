@@ -5,9 +5,5 @@
 # @Description: 测试循环
 """
 if __name__ == '__main__':
-    for i in range(40):
+    for i in range(10):
         print(i)
-        if i == 10:
-            print(i)
-            if i == 10:
-                break

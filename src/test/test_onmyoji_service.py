@@ -87,6 +87,7 @@ class TestOnmyojiService(TestCase):
 
     def test_encounter_demons(self):
         logger.debug("逢魔之时")
+        # test_names = ['2','3','4','5']
         test_names = ['5']
         test_devices = '0'
         # 初始化设备信息
@@ -99,9 +100,7 @@ class TestOnmyojiService(TestCase):
             game_account = select_game_account(test_name)
             game_project = GameProject()
             game_task = [game_projects, game_projects_relation, game_account, game_project]
-            logger.debug("开始测试-逢魔之时")
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
+            logger.debug("开始测试-逢魔之时{}",test_name)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 执行测试任务

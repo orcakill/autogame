@@ -52,20 +52,26 @@ class ImageService:
         :param threshold: 图像识别阈值
         :return:
         """
-        time.sleep(interval)
-        template_list = get_template_list(folder_path, rgb)
-        time_start = time.time()
-        while time.time() - time_start < timeouts:
-            for template in template_list:
-                pos = airtest_service.exists(template, cvstrategy, timeout, threshold, is_throw)
-                if pos and not is_click:
-                    logger.debug("图像识别成功:{}", folder_path)
-                    return pos
-                if pos and is_click:
-                    logger.debug("图像识别点击成功:{}", folder_path)
-                    airtest_service.touch_coordinate(pos)
-                    return True
-        return False
+        try:
+            time.sleep(interval)
+            template_list = get_template_list(folder_path, rgb)
+            time_start = time.time()
+            while time.time() - time_start < timeouts:
+                for template in template_list:
+                    pos = airtest_service.exists(template, cvstrategy, timeout, threshold, is_throw)
+                    if pos and not is_click:
+                        logger.debug("图像识别成功:{}", folder_path)
+                        return pos
+                    if pos and is_click:
+                        logger.debug("图像识别点击成功:{}", folder_path)
+                        airtest_service.touch_coordinate(pos)
+                        return True
+            return False
+        except Exception as e:
+            if is_throw:
+                logger.debug("异常：{}", e)
+                return False
+
 
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
