@@ -83,14 +83,14 @@ class ComplexService:
                     xy2 = (layer_coordinates[0], layer_coordinates[1])
                 logger.debug("开始滑动")
                 for i in range(times):
-                    logger.debug("滑动{}次",i+1)
+                    logger.debug("滑动{}次", i + 1)
                     airtest_service.swipe(xy1, xy2)
-                    is_target = image_service.exists(target, is_click=True,timeouts=1,interval=1)
+                    is_target = image_service.exists(target, is_click=True, timeouts=1, interval=1)
                     if is_target:
-                        logger.debug("发现目标{}",target)
+                        logger.debug("发现目标{}", target)
                         break
         else:
-            logger.debug("发现目标{}",target)
+            logger.debug("发现目标{}", target)
 
     @staticmethod
     def top_addition(word: str, add_type: str, add_open: str, add_close: str, add_switch: int):
@@ -103,22 +103,20 @@ class ComplexService:
         :param add_switch:  加成开关
         :return:
         """
-
-        coordinate_switch=()
         coordinate_word = image_service.exists(word)
         if coordinate_word:
             logger.debug("点击顶部加成")
-            coordinate_top = airtest_service.touch_coordinate(coordinate_word)
+            airtest_service.touch_coordinate(coordinate_word)
             logger.debug("根据类型确定纵坐标")
-            coordinate_type = image_service.exists(add_type,timeouts=1)
+            coordinate_type = image_service.exists(add_type, timeouts=1)
             if add_switch == 0:
                 logger.debug("关闭加成")
                 logger.debug("根据类型确定横坐标")
-                coordinate_switch = image_service.exists(add_open,timeouts=1)
+                coordinate_switch = image_service.exists(add_open, timeouts=1)
             else:
                 logger.debug("打开加成")
                 logger.debug("根据类型确定横坐标")
-                coordinate_switch = image_service.exists(add_close,timeouts=1)
+                coordinate_switch = image_service.exists(add_close, timeouts=1)
             if coordinate_switch and coordinate_type:
                 logger.debug("点击计算出的关闭坐标")
                 airtest_service.touch_coordinate((coordinate_switch[0], coordinate_type[1]))
@@ -128,3 +126,9 @@ class ComplexService:
             airtest_service.touch_coordinate(coordinate_word)
         else:
             logger.debug("没找到顶部加成")
+
+    @staticmethod
+    def get_reward(reward: str):
+        is_reward = image_service.exists(reward, interval=3)
+        if is_reward:
+            airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))

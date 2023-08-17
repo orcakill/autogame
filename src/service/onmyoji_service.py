@@ -76,15 +76,18 @@ class OnmyojiService:
             logger.debug("登录")
             image_service.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, interval=3)
             logger.debug("切换服务器")
-            for i_switch in range(3):
-                is_switch = image_service.exists(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, interval=2,
-                                                 is_click=True)
-                if not is_switch:
-                    break
+            image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, interval=3)
             logger.debug("点击小三角")
             pos_TCS = image_service.exists(Onmyoji.login_TYCS, interval=2)
             pos_JSX = image_service.exists(Onmyoji.login_ZXJS, interval=2)
+            if not pos_TCS or not pos_JSX:
+                logger.debug("没找到小三角，重新判断是否已点击切换服务器")
+                image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, interval=3)
+                logger.debug("判断是否有小三角")
+                pos_TCS = image_service.exists(Onmyoji.login_TYCS, interval=2)
+                pos_JSX = image_service.exists(Onmyoji.login_ZXJS, interval=2)
             if pos_TCS and pos_JSX:
+                logger.debug("有小三角")
                 airtest_service.touch_coordinate((pos_TCS[0], pos_JSX[1]))
             logger.debug("选择服务器:{}", game_account.game_region)
             server = os.path.join(Onmyoji.login_FWQ, game_account.game_region)
@@ -362,12 +365,6 @@ class OnmyojiService:
         logger.debug("返回首页")
         image_service.touch(Onmyoji.comm_FH_LSYXBSXYH)
 
-    @staticmethod
-    def friend_management(game_task: []):
-        # 账号信息
-        game_account = GameAccount(game_task[2])
-        logger.debug(game_account.game_name)
-        logger.debug("好友管理")
 
     @staticmethod
     def daily_rewards(game_task: []):
@@ -629,3 +626,49 @@ class OnmyojiService:
             logger.debug("返回首页")
             image_service.touch(Onmyoji.comm_FH_LSYXBSXYH, interval=3)
             image_service.touch(Onmyoji.comm_FH_LSYXBSXYH, interval=3)
+
+    @staticmethod
+    def friends(game_task: []):
+        # 账号信息
+        game_account = GameAccount(game_task[2])
+        logger.debug(game_account.game_name)
+        logger.debug("进入好友界面")
+        is_friends = image_service.touch(Onmyoji.friends_HYTB)
+        logger.debug("好友友情点收取")
+        if is_friends:
+            logger.debug("点击好友-右侧添加")
+            image_service.touch(Onmyoji.friends_YCTJ)
+            logger.debug("点击左下好友")
+            image_service.touch(Onmyoji.friends_ZXHY)
+            logger.debug("点击一键收取")
+            is_collect = image_service.exists(Onmyoji.friends_YJSQ)
+            if is_collect:
+                logger.debug("获得奖励")
+                complex_service.get_reward(Onmyoji.friends_HDJL)
+            else:
+                logger.debug("无一键收取")
+        logger.debug("好友添加")
+        is_friend_is_full=False
+        logger.debug("进入添加")
+        logger.debug("判断是否有添加好友")
+        logger.debug("点击申请")
+        logger.debug("好友协战")
+        if True:
+            logger.debug("进入协战")
+            logger.debug("判断每日协战次数")
+            logger.debug("返回首页")
+            if True:
+                logger.debug("开始协战")
+                logger.debug("进入八岐大蛇-魂十")
+                logger.debug("解锁阵容")
+                logger.debug("开始挑战")
+                logger.debug("预设阵容-上白蛋,清洗位置")
+                logger.debug("预设阵容-上协战阵容")
+                logger.debug("点地板")
+                logger.debug("查看是否有协战阿修罗")
+                logger.debug("有-拉阿修罗换白蛋")
+                logger.debug("无-退出")
+                logger.debug("准备完成，开始挑战")
+                logger.debug("循环挑战15次，出现失败则退出协战")
+                logger.debug("检查协战次数，不满15次继续挑战")
+        logger.debug("返回首页")

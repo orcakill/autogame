@@ -174,6 +174,13 @@ class Onmyoji:
     ghost_ZDSB = r"探索\结界突破\战斗失败"
     ghost_ZDSL = r"探索\结界突破\战斗胜利"
 
+    friends_YJSQ = r"好友\一键收取"
+    friends_YCTJ = r"好友\右侧添加"
+    friends_YCHY = r"好友\右侧好友"
+    friends_HYTB = r"好友\好友图标"
+    friends_ZXHY = r"好友\左下好友"
+    friends_HDJL = r"好友\获得奖励"
+
 
 class Cvstrategy:
     # 图像文字识别类型
