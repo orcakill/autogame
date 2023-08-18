@@ -206,6 +206,7 @@ class Onmyoji:
     friends_HDJL = r"好友\获得奖励"
     friends_SQ = r"好友\申请"
     friends_ZFAN = r"好友\祝福按钮"
+    friends_HYJBTS = r"好友\好友羁绊提升"
 
 
 class Cvstrategy:

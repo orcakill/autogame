@@ -87,8 +87,8 @@ class TestOnmyojiService(TestCase):
 
     def test_encounter_demons(self):
         logger.debug("逢魔之时")
-        # test_names = ['2','3','4','5']
-        test_names = ['5']
+        test_names = ['2','4','5']
+        # test_names = ['5']
         test_devices = '0'
         # 初始化设备信息
         AirtestService.auto_setup(test_devices)
@@ -132,7 +132,7 @@ class TestOnmyojiService(TestCase):
     def test_friends_manage(self):
         logger.debug("好友管理")
         # test_names = ['2', '3', '4', '5']
-        test_names = ['2']
+        test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
         AirtestService.auto_setup(test_devices)

@@ -120,12 +120,14 @@ class ComplexService:
             if coordinate_switch and coordinate_type:
                 logger.debug("点击计算出的关闭坐标")
                 airtest_service.touch_coordinate((coordinate_switch[0], coordinate_type[1]))
+                return True
             else:
                 logger.debug("未找到加成坐标")
-            logger.debug("关闭顶部加成")
+            logger.debug("退出顶部加成")
             airtest_service.touch_coordinate(coordinate_word)
         else:
             logger.debug("没找到顶部加成")
+        return False
 
     @staticmethod
     def get_reward(reward: str):

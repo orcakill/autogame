@@ -51,7 +51,7 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
                     OnmyojiService.soul_fight(game_task[j])
                 elif game_project.project_name in ["个人突破"]:
                     OnmyojiService.border_fight(game_task[j])
-                elif game_project.project_name in ["好友管理"]:
+                elif game_project.project_name in ["好友协战及管理"]:
                     OnmyojiService.friends_manage(game_task[j])
             else:
                 logger.debug("当前状态初始化失败{}", game_account.game_name)
