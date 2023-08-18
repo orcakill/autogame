@@ -628,7 +628,7 @@ class OnmyojiService:
             image_service.touch(Onmyoji.comm_FH_LSYXBSXYH, interval=3)
 
     @staticmethod
-    def friends(game_task: []):
+    def friends_manage(game_task: []):
         # 账号信息
         game_account = GameAccount(game_task[2])
         logger.debug(game_account.game_name)
@@ -636,12 +636,12 @@ class OnmyojiService:
         is_friends = image_service.touch(Onmyoji.friends_HYTB)
         logger.debug("好友友情点收取")
         if is_friends:
-            logger.debug("点击好友-右侧添加")
-            image_service.touch(Onmyoji.friends_YCTJ)
+            logger.debug("点击好友-右侧好友")
+            image_service.touch(Onmyoji.friends_YCHY)
             logger.debug("点击左下好友")
             image_service.touch(Onmyoji.friends_ZXHY)
             logger.debug("点击一键收取")
-            is_collect = image_service.exists(Onmyoji.friends_YJSQ)
+            is_collect = image_service.exists(Onmyoji.friends_YJSQ,is_click=True)
             if is_collect:
                 logger.debug("获得奖励")
                 complex_service.get_reward(Onmyoji.friends_HDJL)
@@ -650,13 +650,13 @@ class OnmyojiService:
         logger.debug("吉闻祝福")
         image_service.touch(Onmyoji.friends_JW)
         logger.debug("一键祝福")
-        is_blessing = image_service.touch(Onmyoji.friends_YJZF)
+        is_blessing = image_service.exists(Onmyoji.friends_YJZF,is_click=True)
         if is_blessing:
             logger.debug("祝福按钮")
             image_service.touch(Onmyoji.friends_ZFAN)
             logger.debug("获得奖励")
             complex_service.get_reward(Onmyoji.friends_HDJL)
-        logger.debug("返回到好友添加界面")
+        logger.debug("返回到好友界面")
         image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
         logger.debug("好友添加")
         is_friend_is_full = image_service.exists(Onmyoji.friends_HYYM)
@@ -700,36 +700,72 @@ class OnmyojiService:
                 complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG,
                                              Onmyoji.soul_BQ_JCG,
                                              1)
+                # 默认有协战式神
+                is_assist_shikigami = True
                 for i in range(15):
                     logger.debug("好友协战-御魂-挑战{}次", i + 1)
                     if i == 0:
                         logger.debug("好友协战-小号-协战-第一次")
                         logger.debug("解锁阵容")
+                        image_service.touch(Onmyoji.soul_BQ_JSZR)
                         logger.debug("挑战")
-                        logger.debug("点击预设")
-                        logger.debug("点击御魂")
-                        logger.debug("点击白蛋队伍")
-                        logger.debug("点击预设")
-                        logger.debug("点击御魂")
-                        logger.debug("点击协战队伍")
+                        image_service.touch(Onmyoji.soul_BQ_TZ)
+                        logger.debug("点击预设-御魂-白蛋队伍，清洗位置")
+                        image_service.touch(Onmyoji.soul_BQ_YS)
+                        image_service.touch(Onmyoji.soul_BQ_YSFZYH)
+                        image_service.touch(Onmyoji.soul_BQ_YSZRBD)
+                        image_service.touch(Onmyoji.soul_BQ_YSZRCZ)
+                        logger.debug("点击预设-御魂-协战队伍")
+                        image_service.touch(Onmyoji.soul_BQ_YS)
+                        image_service.touch(Onmyoji.soul_BQ_YSFZYH)
+                        image_service.touch(Onmyoji.soul_BQ_YSZRXZ)
+                        image_service.touch(Onmyoji.soul_BQ_YSZRCZ)
                         logger.debug("点击地板")
+                        image_service.touch(Onmyoji.soul_BQ_DJDB)
                         logger.debug("判断是否有协战式神")
-                        logger.debug("拖拽协战式神，更换白蛋")
-                        logger.debug("准备完成")
-                        logger.debug("点击宠物")
-                        logger.debug("点击喂食")
-                        logger.debug("获得奖励")
-                        logger.debug("退出挑战")
+                        is_assist_shikigami = image_service.exists(Onmyoji.soul_BQ_XZSS)
+                        if is_assist_shikigami:
+                            logger.debug("拖拽协战式神，更换白蛋")
+                            is_white_egg = image_service.exists(Onmyoji.soul_BQ_BD)
+                            if is_white_egg:
+                                airtest_service.swipe(is_assist_shikigami, is_white_egg)
+                            logger.debug("准备完成")
+                            image_service.touch(Onmyoji.soul_BQ_ZB)
+                            logger.debug("点击宠物")
+                            is_pets = image_service.touch(Onmyoji.soul_BQ_CW)
+                            if is_pets:
+                                logger.debug("点击喂食")
+                                image_service.touch(Onmyoji.soul_BQ_WS)
+                            logger.debug("等待战斗结果")
+                            complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
+                                                      Onmyoji.soul_BQ_ZCTZ,
+                                                      Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 60)
+                            if is_pets:
+                                logger.debug("发现宝藏")
+                                complex_service.get_reward(Onmyoji.soul_BQ_FXBZ)
+                        else:
+                            logger.debug("退出战斗")
+                            image_service.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
+                            logger.debug("确定")
+                            image_service.touch(Onmyoji.soul_BQ_QD)
+                            logger.debug("战斗失败")
+                            image_service.touch(Onmyoji.soul_BQ_ZDSB)
                     else:
                         is_fight = image_service.touch(Onmyoji.soul_BQ_TZ)
                         if is_fight:
-                            logger.debug("好友协战-判断是否八岐大蛇-未挑战")
+                            logger.debug("好友协战-判断是否还有八岐大蛇-未挑战")
                             is_fight = image_service.touch(Onmyoji.soul_BQ_TZ, interval=2)
                             if is_fight:
                                 logger.debug("好友协战-再次点击挑战")
                         logger.debug("好友协战-等待战斗结果")
-                        complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
-                                                  Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 60)
+                        is_result = complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
+                                                              Onmyoji.soul_BQ_ZCTZ,
+                                                              Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 60)
+                        if not is_result:
+                            logger.debug("战斗失败，阵容有问题，结束循环")
+                    if not is_assist_shikigami:
+                        logger.debug("无协战式神，结束循环")
+                        break
                 time.sleep(3)
                 logger.debug("好友协战-关闭御魂加成")
                 complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG,
