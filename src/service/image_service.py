@@ -72,7 +72,6 @@ class ImageService:
                 logger.debug("异常：{}", e)
                 return False
 
-
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
               threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False, times: int = TIMES,
@@ -117,18 +116,22 @@ class ImageService:
         :param is_throw: 是否显示异常,默认不显示异常
         :return: bool
         """
-        time.sleep(interval)
-        template_list = get_template_list(folder_path)
-        for template in template_list:
-            pos = airtest_service.wait(template, cvstrategy, timeout, threshold, interval, is_throw)
-            if pos and not is_click:
-                logger.debug("图像识别成功:{}", folder_path)
-                return pos
-            if pos and is_click:
-                airtest_service.touch_coordinate(pos)
-                logger.debug("图像识别点击成功:{}", folder_path)
-                return pos
-        return False
+        try:
+            time.sleep(interval)
+            template_list = get_template_list(folder_path)
+            for template in template_list:
+                pos = airtest_service.wait(template, cvstrategy, timeout, threshold, interval, is_throw)
+                if pos and not is_click:
+                    logger.debug("图像识别成功:{}", folder_path)
+                    return pos
+                if pos and is_click:
+                    airtest_service.touch_coordinate(pos)
+                    logger.debug("图像识别点击成功:{}", folder_path)
+                    return pos
+            return False
+        except Exception as e:
+            if is_throw:
+                logger.debug("异常：{}", e)
 
 
 def get_template_list(folder_path: str, rgb: bool = False):

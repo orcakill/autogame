@@ -265,7 +265,7 @@ class OnmyojiService:
                 logger.debug("再次点击进攻")
                 is_attack = image_service.touch(Onmyoji.border_JG, interval=1)
             logger.debug("判断是否仍有进攻")
-            is_attack1 = image_service.exists(Onmyoji.border_JG, interval=1, timeouts=2)
+            is_attack1 = image_service.exists(Onmyoji.border_JG, interval=3, timeouts=2)
             if is_attack and is_attack1:
                 logger.debug("可能已无结界挑战劵,点击消耗退出")
                 image_service.touch(Onmyoji.border_XH)
