@@ -32,7 +32,7 @@ class TestComplexService(TestCase):
             is_fight = image_service.touch(fight_fight)
             if is_fight:
                 logger.debug("判断是否未挑战")
-                is_fight = image_service.touch(fight_fight, interval=2)
+                is_fight = image_service.touch(fight_fight, wait=2)
                 if is_fight:
                     logger.debug("再次点击挑战")
             logger.debug("等待战斗结果")
@@ -45,9 +45,9 @@ class TestComplexService(TestCase):
         airtest_service.auto_setup("0")
         logger.debug("开始")
         now = datetime.datetime.now()
-        complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB, Onmyoji.border_ZCTZ,
-                                  Onmyoji.border_TCTZ, Onmyoji.border_GRJJ, 60)
-
+        complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
+                                  Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,
+                                  300,1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

@@ -18,8 +18,8 @@ from src.utils.my_logger import my_logger as logger
 log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
 
-# 图片识别间隔(秒）·
-INTERVAL = 1
+# 图片点击识别等待时间(秒）·
+WAIT = 1
 
 
 class AirtestService:
@@ -89,32 +89,8 @@ class AirtestService:
                 logger.debug("异常：{}", e)
 
     @staticmethod
-    def wait(template: Template, cvstrategy: [], timeout: float, threshold: float, interval: float, is_throw: bool):
-        """
-        判断图片是否存在
-        :param interval: 间隔时间
-        :param is_throw: 是否显示异常
-        :param template: 图片类
-        :param cvstrategy: 图像识别算法
-        :param timeout: 超时时间
-        :param threshold: 图像识别阈值
-        :return: bool
-        """
-        Settings.CVSTRATEGY = cvstrategy
-        Settings.THRESHOLD = threshold
-        try:
-            pos = wait(template, timeout=timeout, interval=interval)
-            if pos:
-                return pos
-            else:
-                return False
-        except Exception as e:
-            if is_throw:
-                logger.debug("异常：{}", e)
-
-    @staticmethod
-    def touch_coordinate(v: [], interval: float = INTERVAL):
-        time.sleep(interval)
+    def touch_coordinate(v: [], wait_time: float = WAIT):
+        time.sleep(wait_time)
         if touch(v):
             logger.debug("坐标点击成功")
             return True

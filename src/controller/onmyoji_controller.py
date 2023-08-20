@@ -57,7 +57,7 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
                 logger.debug("当前状态初始化失败{}", game_account.game_name)
         if game_is_email:
             logger.info("发送邮件")
-    interrupt_flag=True
+    interrupt_flag = True
 
 
 def assist():

@@ -4,6 +4,7 @@
 # @Description : 图像识别接口
 import os
 import random
+import threading
 import time
 
 from airtest.core.cv import Template
@@ -26,6 +27,8 @@ TIMEOUTS = 5
 THRESHOLD = 0.7
 # 图片识别轮次
 REC_ROUND = 1
+# 图片等待识别时间(秒）·
+WAIT = 2
 # 图片识别间隔(秒）·
 INTERVAL = 1
 # 点击次数
@@ -37,13 +40,14 @@ DURATION = 0.01
 class ImageService:
     @staticmethod
     def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
-               threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False,
+               threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = False,
                is_click: bool = False, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
+        :param interval: 图片识别点击间隔时间
         :param rgb: 带颜色
         :param timeouts: 图片组超时时间
-        :param interval: 间隔时间
+        :param wait: 图片等待识别时间
         :param is_click: 是否点击坐标
         :param is_throw: 是否显示异常
         :param folder_path: 图片文件夹路径
@@ -53,7 +57,7 @@ class ImageService:
         :return:
         """
         try:
-            time.sleep(interval)
+            time.sleep(wait)
             template_list = get_template_list(folder_path, rgb)
             time_start = time.time()
             while time.time() - time_start < timeouts:
@@ -63,6 +67,7 @@ class ImageService:
                         logger.debug("图像识别成功:{}", folder_path)
                         return pos
                     if pos and is_click:
+                        time.sleep(interval)
                         logger.debug("图像识别点击成功:{}", folder_path)
                         airtest_service.touch_coordinate(pos)
                         return True
@@ -74,13 +79,13 @@ class ImageService:
 
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
-              threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False, times: int = TIMES,
+              threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = False, times: int = TIMES,
               duration: float = DURATION, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，点击图片
         :param rgb: rgb
         :param timeouts: 图片组超时时间
-        :param interval: 点击间隔时间
+        :param wait: 点击间隔时间
         :param times: 点击次数
         :param duration: 按住时间
         :param folder_path: 图片文件夹路径
@@ -90,7 +95,7 @@ class ImageService:
         :param is_throw: 是否显示异常,默认不显示异常
         :return: bool
         """
-        time.sleep(interval)
+        time.sleep(wait)
         template_list = get_template_list(folder_path, rgb)
         time_start = time.time()
         while time.time() - time_start < timeouts:
@@ -102,36 +107,79 @@ class ImageService:
         return False
 
     @staticmethod
-    def wait(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = 20,
-             threshold: float = THRESHOLD, interval: float = INTERVAL, is_throw: bool = False,
-             is_click: bool = False):
+    def auto_setup(game_device: str):
         """
-        根据文件夹名获取图片进行图像识别，等待图片出现并点击
-        :param is_click: 是否点击坐标
-        :param interval: 图像识别间隔
-        :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 超时时间
-        :param threshold: 图像识别阈值
-        :param is_throw: 是否显示异常,默认不显示异常
-        :return: bool
+        设备连接
+        :param game_device:
+        :return:
         """
-        try:
-            time.sleep(interval)
-            template_list = get_template_list(folder_path)
-            for template in template_list:
-                pos = airtest_service.wait(template, cvstrategy, timeout, threshold, interval, is_throw)
-                if pos and not is_click:
-                    logger.debug("图像识别成功:{}", folder_path)
-                    return pos
-                if pos and is_click:
-                    airtest_service.touch_coordinate(pos)
-                    logger.debug("图像识别点击成功:{}", folder_path)
-                    return pos
-            return False
-        except Exception as e:
-            if is_throw:
-                logger.debug("异常：{}", e)
+        airtest_service.auto_setup(game_device)
+
+    @staticmethod
+    def snapshot():
+        """
+        设备截图
+        :return:
+        """
+        airtest_service.snapshot()
+
+    @staticmethod
+    def touch_coordinate(v: [], wait: float = WAIT):
+        """
+        点击坐标
+        :param v: 坐标
+        :param wait: 等待开始时间
+        :return:
+        """
+        airtest_service.touch_coordinate(v, wait)
+
+    @staticmethod
+    def restart_app(app: str):
+        """
+        重启APP
+        :param app: 包名
+        :return:
+        """
+        airtest_service.restart_app(app)
+
+    @staticmethod
+    def swipe(v1: [], v2: []):
+        """
+        滑动
+        :param v1: 坐标1
+        :param v2: 坐标2
+        :return:
+        """
+        airtest_service.swipe(v1, v2)
+
+    @staticmethod
+    def crop_image(x1, y1, x2, y2):
+        """
+        局部截图
+        :param x1: x1
+        :param y1: y1
+        :param x2: x2
+        :param y2: y2
+        :return:
+        """
+        airtest_service.crop_image(x1, y1, x2, y2)
+
+    @staticmethod
+    def resolving_power():
+        """
+        获取分辨率
+        :return:
+        """
+        airtest_service.resolving_power()
+
+    @staticmethod
+    def cv2_2_pil(local):
+        """
+        转换图片格式
+        :param local:图片
+        :return:
+        """
+        airtest_service.cv2_2_pil(local)
 
 
 def get_template_list(folder_path: str, rgb: bool = False):
