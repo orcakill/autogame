@@ -20,6 +20,7 @@ if __name__ == '__main__':
     game_type = "2"
     game_round = "1"
     game_device = "0"
+    game_relation_num = "19"
     # 0 每个节点都发送邮件 1 进程结束后发送邮件  2不发送邮件
     game_is_email = "0"
     logger.info("**************")
@@ -29,7 +30,7 @@ if __name__ == '__main__':
     # 连接android设备
     airtest_service.auto_setup(game_device)
     logger.info("创建任务线程")
-    thread1 = threading.Thread(target=task, args=(game_type, game_round, game_is_email))
+    thread1 = threading.Thread(target=task, args=(game_type, game_round, game_is_email, game_relation_num))
     thread2 = threading.Thread(target=assist, args=())
     thread1.start()
     thread2.start()

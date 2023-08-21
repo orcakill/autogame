@@ -8,11 +8,11 @@ from src.service.onmyoji_service import OnmyojiService
 from src.utils.my_logger import my_logger as logger
 
 image_service = ImageService()
-interrupt_flag = False
+project_interrupt_flag = False
 
 
-def task(game_type: str, game_round: str, game_is_email: str) -> None:
-    global interrupt_flag
+def task(game_type: str, game_round: str, game_is_email: str, relation_num: str) -> None:
+    global project_interrupt_flag
     """
     项目组任务
     :param game_type: 项目类型
@@ -32,37 +32,40 @@ def task(game_type: str, game_round: str, game_is_email: str) -> None:
             game_projects_relation = GameProjectsRelation(game_task[j][1])
             game_account = GameAccount(game_task[j][2])
             game_project = GameProject(game_task[j][3])
-            logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
-                        game_account.game_name)
-            logger.info("当前状态初始化")
-            is_initialization = OnmyojiService.initialization(game_task[j])
-            if is_initialization:
-                if game_project.project_name in ["登录"]:
-                    OnmyojiService.initialization(game_task[j])
-                elif game_project.project_name in ["每日奖励"]:
-                    OnmyojiService.daily_rewards(game_task[j])
-                elif game_project.project_name in ["逢魔之时"]:
-                    OnmyojiService.encounter_demons(game_task[j])
-                elif game_project.project_name in ["地域鬼王"]:
-                    OnmyojiService.ghost_king(game_task[j])
-                elif game_project.project_name in ["觉醒十"]:
-                    OnmyojiService.awakening(game_task[j])
-                elif game_project.project_name in ["魂一", "魂十", "魂十一"]:
-                    OnmyojiService.soul_fight(game_task[j])
-                elif game_project.project_name in ["个人突破"]:
-                    OnmyojiService.border_fight(game_task[j])
-                elif game_project.project_name in ["好友协战及管理"]:
-                    OnmyojiService.friends_manage(game_task[j])
-            else:
-                logger.debug("当前状态初始化失败{}", game_account.game_name)
+            if game_projects_relation.relation_num >= int(relation_num):
+                logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
+                            game_account.game_name)
+                logger.info("当前状态初始化")
+                is_initialization = OnmyojiService.initialization(game_task[j])
+                if is_initialization:
+                    if game_project.project_name in ["登录"]:
+                        OnmyojiService.initialization(game_task[j])
+                    elif game_project.project_name in ["每日奖励"]:
+                        OnmyojiService.daily_rewards(game_task[j])
+                    elif game_project.project_name in ["逢魔之时"]:
+                        OnmyojiService.encounter_demons(game_task[j])
+                    elif game_project.project_name in ["地域鬼王"]:
+                        OnmyojiService.ghost_king(game_task[j])
+                    elif game_project.project_name in ["觉醒十"]:
+                        OnmyojiService.awakening(game_task[j])
+                    elif game_project.project_name in ["魂一", "魂十", "魂十一"]:
+                        OnmyojiService.soul_fight(game_task[j])
+                    elif game_project.project_name in ["个人突破"]:
+                        OnmyojiService.border_fight(game_task[j])
+                    elif game_project.project_name in ["好友管理"]:
+                        OnmyojiService.friends_manage(game_task[j])
+                    elif game_project.project_name in ["好友协战"]:
+                        OnmyojiService.friends_fight(game_task[j])
+                else:
+                    logger.debug("当前状态初始化失败{}", game_account.game_name)
         if game_is_email:
             logger.info("发送邮件")
-    interrupt_flag = True
+    project_interrupt_flag = True
 
 
 def assist():
-    global interrupt_flag
+    global project_interrupt_flag
     logger.debug("开启拒接协战")
-    while not interrupt_flag:
+    while not project_interrupt_flag:
         time.sleep(30)
         image_service.touch(Onmyoji.comm_FH_XSFYHSCH)

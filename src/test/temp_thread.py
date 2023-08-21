@@ -2,13 +2,13 @@ import threading
 import time
 
 # 共享的中断标志
-interrupt_flag = False
+project_interrupt_flag = False
 # 共享的返回结果
 fight_result = 0
 
 
 def func1(name: str, num: int):
-    global interrupt_flag
+    global project_interrupt_flag
     global fight_result
     print("函数" + name + "开始执行")
     for i in range(num):

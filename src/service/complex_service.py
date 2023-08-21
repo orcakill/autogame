@@ -14,7 +14,7 @@ image_service = ImageService()
 airtest_service = AirtestService()
 
 # 共享的中断标志
-interrupt_flag = False
+fight_interrupt_flag = False
 # 战斗识别结果
 fight_result = None
 
@@ -37,21 +37,21 @@ class ComplexService:
         :param fight_quit:  退出挑战
         :return:
         """
-        global interrupt_flag
+        global fight_interrupt_flag
         global fight_result
-        interrupt_flag = False
+        fight_interrupt_flag = False
         fight_result = None
         # 创建线程1，战斗胜利，退出挑战
-        thread1 = threading.Thread(target=ComplexService.fight_end_thread,
+        thread1 = threading.Thread(target=ComplexService.fight_end_thread,name="fight-11",
                                    args=(fight_win, True, fight_quit, True, timeouts, timeout))
         # 创建线程2，退出挑战,无
-        thread2 = threading.Thread(target=ComplexService.fight_end_thread,
+        thread2 = threading.Thread(target=ComplexService.fight_end_thread,name="fight-12",
                                    args=(fight_quit, True, None, True, timeouts, timeout))
         # 创建线程3，再次挑战，战斗失败
-        thread3 = threading.Thread(target=ComplexService.fight_end_thread,
+        thread3 = threading.Thread(target=ComplexService.fight_end_thread,name="fight-13",
                                    args=(fight_again, False, fight_fail, True, timeouts, timeout))
         # 创建线程4，未挑战
-        thread4 = threading.Thread(target=ComplexService.fight_end_thread,
+        thread4 = threading.Thread(target=ComplexService.fight_end_thread,name="fight-14",
                                    args=(fight_none, False, None, True, timeouts, timeout))
         thread1.start()
         thread2.start()
@@ -72,23 +72,23 @@ class ComplexService:
 
     @staticmethod
     def fight_end_thread(first, first_click, second, second_click, timeouts, timeout):
-        global interrupt_flag
+        global fight_interrupt_flag
         global fight_result
         time_start = time.time()
         cvstrategy = Cvstrategy.sift
         if first == Onmyoji.border_GRJJ:
             cvstrategy = Cvstrategy.default
-        while time.time() - time_start < timeouts and not interrupt_flag:
+        while time.time() - time_start < timeouts and not fight_interrupt_flag:
             is_first = image_service.exists(first, timeouts=timeout, is_click=first_click,
                                             cvstrategy=cvstrategy)
             if is_first:
                 if second is not None:
                     image_service.exists(second, timeouts=timeout, is_click=second_click)
-                interrupt_flag = True
+                fight_interrupt_flag = True
                 fight_result = first
                 logger.debug("提前结束：{}", first)
                 return True
-        logger.debug("识别结束{}：", first)
+        logger.debug("识别结束：{}", first)
         return False
 
     @staticmethod

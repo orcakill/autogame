@@ -11,7 +11,7 @@ image_service = ImageService()
 airtest_service = AirtestService()
 
 # 共享的中断标志
-interrupt_flag = False
+project_interrupt_flag = False
 # 战斗结果
 fight_result = None
 
@@ -61,7 +61,7 @@ class TempComplexService:
 
     @staticmethod
     def fight_end_thread(first, first_click, second, second_click, timeouts, timeout):
-        global interrupt_flag
+        global project_interrupt_flag
         global fight_result
         time_start = time.time()
         while time.time() - time_start < timeouts and not interrupt_flag:
