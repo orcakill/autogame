@@ -310,9 +310,10 @@ class OnmyojiService:
             time_all, num_securities, time_fight_all, len_time_fight_list, num_win, num_false, time_fight_avg)
 
     @staticmethod
-    def awakening(game_task: []):
+    def awakening(game_task: [], awakening_type: int = 0):
         """
             觉醒十 风、火、水、雷（默认雷）  开加成，选觉醒阵容
+            :param awakening_type: 默认类型
             :param game_task:  任务信息
             :return:
             """
@@ -333,6 +334,9 @@ class OnmyojiService:
         logger.debug("进入觉醒")
         image_service.touch(Onmyoji.awaken_JXBT)
         logger.debug("本日周{}", weekday)
+        if awakening_type != 0:
+            logger.debug("修改麒麟类型")
+            weekday = awakening_type
         if weekday == 1:
             logger.debug("火麒麟")
             image_service.touch(Onmyoji.awaken_QL_H)
@@ -349,6 +353,8 @@ class OnmyojiService:
         complex_service.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 4)
         logger.debug("开启加成")
         complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 1)
+        logger.debug("锁定阵容")
+        image_service.touch(Onmyoji.awaken_JSZR)
         for i in range(fight_time):
             logger.debug("觉醒挑战{}次", i + 1)
             is_fight = image_service.touch(Onmyoji.awaken_TZ)
@@ -456,16 +462,16 @@ class OnmyojiService:
             image_service.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
             image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
         logger.debug("4-花合战奖励")
-        is_flower_battle=image_service.exists(Onmyoji.reward_HHZTB,is_click=True)
+        is_flower_battle = image_service.exists(Onmyoji.reward_HHZTB, is_click=True)
         if is_flower_battle:
             logger.debug("点击右侧任务")
             image_service.touch(Onmyoji.reward_YCRW)
             logger.debug("点击全部领取")
-            image_service.exists(Onmyoji.reward_HHZQBLQ,is_click=True)
+            image_service.exists(Onmyoji.reward_HHZQBLQ, is_click=True)
             logger.debug("获得奖励")
             complex_service.get_reward(Onmyoji.reward_HDJL)
             logger.debug("返回首页")
-            image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            image_service.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH)
 
     @staticmethod
     def encounter_demons(game_task: []):
@@ -516,9 +522,10 @@ class OnmyojiService:
                         for i_click in range(5):
                             image_service.touch_coordinate(is_fight, wait=1)
                     logger.debug("判断是否有一天一层")
-                    is_one = image_service.exists(Onmyoji.demon_YTYC)
+                    is_one = image_service.exists(Onmyoji.demon_YTYC, wait=0)
                     if is_one:
                         logger.debug("当日已完成挑战")
+                        image_service.touch(Onmyoji.demon_YSJYXHDBSCH, wait=2)
                         break
                     logger.debug("判断是否有集结")
                     is_gathering = image_service.exists(Onmyoji.demon_ZCJJ)
@@ -802,7 +809,7 @@ class OnmyojiService:
                         is_result = complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
                                                               Onmyoji.soul_BQ_ZCTZ,
                                                               Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 120, 1)
-                        if not is_result:
+                        if not is_result and is_result is not None:
                             logger.debug("战斗失败，阵容有问题，结束循环")
                             break
                     if not is_assist_shikigami:
@@ -810,7 +817,7 @@ class OnmyojiService:
                         break
                 time.sleep(3)
                 logger.debug("好友协战-关闭御魂加成")
-                if not is_top_addition:
+                if is_top_addition:
                     complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG,
                                                  Onmyoji.soul_BQ_JCG,
                                                  0)

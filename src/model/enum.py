@@ -56,6 +56,7 @@ class Onmyoji:
     border_ZDSL = r"探索\结界突破\战斗胜利"
 
     comm_FH_ZSJLDYXBSXYH = r"通用\返回\左上角蓝底圆形白色小于号"
+    comm_FH_ZSJLDBKBSXYH = r"通用\返回\左上角蓝底白框白色小于号"
     comm_FH_YSJHDBSCH = r"通用\返回\右上角红底白色叉号"
     comm_FH_XSFYHSCH = r"通用\返回\悬赏封印红色叉号"
     comm_FH_YSJZDHBSCH = r"通用\返回\右上角棕底红白色叉号"

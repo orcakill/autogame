@@ -55,43 +55,50 @@ class TestOnmyojiService(TestCase):
         OnmyojiService.soul_fight_thug()
 
     def test_awakening(self):
-        test_name = '5'
+        logger.debug("结界突破")
+        # test_names = ['2','3','4','5']
+        test_names = ['2']
         test_devices = '0'
-        # 初始化测试任务信息
-        game_projects = GameProjects()
-        game_projects_relation = GameProjectsRelation()
-        game_projects_relation.project_num_times = 1
-        game_account = select_game_account(test_name)
-        game_project = GameProject()
-        game_task = [game_projects, game_projects_relation, game_account, game_project]
-        logger.debug("开始测试")
         # 初始化设备信息
         AirtestService.auto_setup(test_devices)
-        # 当前状态初始化
-        OnmyojiService.initialization(game_task)
-        # 执行测试任务
-        OnmyojiService.awakening(game_task)
+        for i in range(len(test_names)):
+            test_name = test_names[i]
+            # 初始化测试任务信息
+            game_projects = GameProjects()
+            game_projects_relation = GameProjectsRelation()
+            game_account = select_game_account(test_name)
+            game_project = GameProject()
+            game_task = [game_projects, game_projects_relation, game_account, game_project]
+            logger.debug("开始测试-觉醒{}", test_name)
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 执行测试任务
+            OnmyojiService.awakening(game_task)
 
     def test_daily_rewards(self):
         logger.debug("每日奖励领取")
-        test_name, test_devices = '5', '0'
-        # 初始化测试任务信息
-        game_projects = GameProjects()
-        game_projects_relation = GameProjectsRelation()
-        game_account = select_game_account(test_name)
-        game_project = GameProject()
-        game_task = [game_projects, game_projects_relation, game_account, game_project]
-        logger.debug("开始测试-每日奖励领取")
+        # test_names = ['2','3','4','5']
+        test_names = ['5']
+        test_devices = '0'
         # 初始化设备信息
         AirtestService.auto_setup(test_devices)
-        # 当前状态初始化
-        OnmyojiService.initialization(game_task)
-        # 执行测试任务
-        OnmyojiService.daily_rewards(game_task)
+        for i in range(len(test_names)):
+            test_name = test_names[i]
+            # 初始化测试任务信息
+            game_projects = GameProjects()
+            game_projects_relation = GameProjectsRelation()
+            game_account = select_game_account(test_name)
+            game_project = GameProject()
+            game_task = [game_projects, game_projects_relation, game_account, game_project]
+            logger.debug("开始测试-每日奖励{}", test_name)
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 执行测试任务
+            OnmyojiService.daily_rewards(game_task)
 
     def test_encounter_demons(self):
         logger.debug("逢魔之时")
-        test_names = ['2','4','5']
+        test_names = ['4', '5']
         # test_names = ['5']
         test_devices = '0'
         # 初始化设备信息
@@ -157,8 +164,8 @@ class TestOnmyojiService(TestCase):
 
     def test_friends_fight(self):
         logger.debug("好友协战")
-        test_names = ['2', '3', '4', '5']
-        # test_names = ['4']
+        # test_names = ['2', '3', '4', '5']
+        test_names = ['4','5']
         test_devices = '0'
         # 初始化设备信息
         AirtestService.auto_setup(test_devices)
