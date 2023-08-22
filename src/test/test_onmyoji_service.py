@@ -98,7 +98,7 @@ class TestOnmyojiService(TestCase):
 
     def test_encounter_demons(self):
         logger.debug("逢魔之时")
-        test_names = ['4', '5']
+        test_names = ['2', '3', '4', '5']
         # test_names = ['5']
         test_devices = '0'
         # 初始化设备信息
@@ -165,7 +165,7 @@ class TestOnmyojiService(TestCase):
     def test_friends_fight(self):
         logger.debug("好友协战")
         # test_names = ['2', '3', '4', '5']
-        test_names = ['4','5']
+        test_names = ['4', '5']
         test_devices = '0'
         # 初始化设备信息
         AirtestService.auto_setup(test_devices)
@@ -182,4 +182,26 @@ class TestOnmyojiService(TestCase):
             OnmyojiService.initialization(game_task)
             # 执行测试任务
             OnmyojiService.friends_fight(game_task)
+            logger.debug("{}测试完成", test_name)
+
+    def test_foster_care(self):
+        logger.debug("式神寄养")
+        # test_names = ['2', '3', '4', '5']
+        test_names = ['2']
+        test_devices = '0'
+        # 初始化设备信息
+        AirtestService.auto_setup(test_devices)
+        for i in range(len(test_names)):
+            test_name = test_names[i]
+            # 初始化测试任务信息
+            game_projects = GameProjects()
+            game_projects_relation = GameProjectsRelation()
+            game_account = select_game_account(test_name)
+            game_project = GameProject()
+            game_task = [game_projects, game_projects_relation, game_account, game_project]
+            logger.debug("开始测试-式神寄养")
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 执行测试任务
+            OnmyojiService.foster_care(game_task)
             logger.debug("{}测试完成", test_name)

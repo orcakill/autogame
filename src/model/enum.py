@@ -62,6 +62,7 @@ class Onmyoji:
     comm_FH_YSJZDHBSCH = r"通用\返回\右上角棕底红白色叉号"
     comm_FH_ZSJHKHSXYH = r"通用\返回\左上角黄框黄色小于号"
     comm_FH_ZSJZKDZSHXJT = r"通用\返回\左上角棕框淡棕色回型箭头"
+    comm_FH_ZSJHKZDHSXYH= r"通用\返回\左上角黑框棕底黄色小于号"
 
     demon_FMCSL = r"町中\逢魔之时\逢魔次数零"
     demon_FMLD = r"町中\逢魔之时\逢魔蓝点"
@@ -209,6 +210,28 @@ class Onmyoji:
     store_SDTB = r"商店\商店图标"
     user_SYTX = r"用户\首页头像"
     user_XZZH = r"用户\选择账号"
+    
+    foster_SSYC = r"阴阳寮\式神寄养\式神育成"
+    foster_JJTB = r"阴阳寮\式神寄养\结界图标"
+    foster_YYLTB = r"阴阳寮\式神寄养\阴阳寮图标"
+    foster_SFHY = r"阴阳寮\式神寄养\上方好友"
+    foster_SFKQ = r"阴阳寮\式神寄养\上方跨区"
+    foster_KJYBZ = r"阴阳寮\式神寄养\可寄养标志"
+    foster_DMDJDM = r"阴阳寮\式神寄养\大吉达摩"
+    foster_DMFWDM = r"阴阳寮\式神寄养\奉为达摩"
+    foster_DMZFDM = r"阴阳寮\式神寄养\招福达摩"
+    foster_HYKJY = r"阴阳寮\式神寄养\好友可寄养"
+    foster_QD = r"阴阳寮\式神寄养\确定"
+    foster_JRJJ = r"阴阳寮\式神寄养\进入结界"
+    foster_JJK_SXTG = r"阴阳寮\式神寄养\结界卡\三星太鼓"
+    foster_JJK_SXTG1 = r"阴阳寮\式神寄养\结界卡\四星太鼓"
+    foster_JJK_SXDY1 = r"阴阳寮\式神寄养\结界卡\四星斗鱼"
+    foster_JJK_WXTG = r"阴阳寮\式神寄养\结界卡\五星太鼓"
+    foster_JJK_WXDY = r"阴阳寮\式神寄养\结界卡\五星斗鱼"
+    foster_JJK_LXTG = r"阴阳寮\式神寄养\结界卡\六星太鼓"
+    foster_JJK_LXDY = r"阴阳寮\式神寄养\结界卡\六星斗鱼"
+    foster_JJK_WFZ = r"阴阳寮\式神寄养\结界卡\未放置"
+    
 
 
 class Cvstrategy:

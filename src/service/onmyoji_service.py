@@ -147,8 +147,10 @@ class OnmyojiService:
                 image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
                 image_service.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
                 image_service.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
+                image_service.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
                 logger.debug("点击可能存在的退出挑战")
                 image_service.touch(Onmyoji.soul_BQ_TCTZ)
+                logger.debug("重新判断是否返回首页")
                 is_index = image_service.exists(account_index)
                 is_explore = image_service.exists(Onmyoji.home_TS)
                 if is_index and is_explore:
@@ -863,14 +865,100 @@ class OnmyojiService:
         image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
 
     @staticmethod
-    def hut_manage(game_task: []):
+    def foster_care(game_task: []):
         """
-        阴阳寮管理  式神寄养、集体任务、体力食盒、经验酒壶、结界卡奖励领取、结界卡放置
+        式神寄养
         :param game_task:
         :return:
         """
         # 账号信息
         game_account = GameAccount(game_task[2])
         logger.debug(game_account.game_name)
-        logger.debug("阴阳寮管理")
-
+        logger.debug("式神寄养")
+        for i_time in range(2):
+            logger.debug("点击阴阳寮")
+            image_service.touch(Onmyoji.foster_YYLTB)
+            logger.debug("点击结界")
+            image_service.touch(Onmyoji.foster_JJTB)
+            logger.debug("点击式神育成")
+            image_service.touch(Onmyoji.foster_SSYC)
+            logger.debug("判断是否可寄养")
+            is_foster = image_service.exists(Onmyoji.foster_KJYBZ)
+            if is_foster:
+                logger.debug("可寄养")
+                logger.debug("开始寄养，从六星太鼓到三星斗鱼")
+                # 结界卡，默认六星太鼓
+                target_card = Onmyoji.foster_JJK_LXTG
+                for i_type in range(7):
+                    logger.debug("初始化目标结界卡")
+                    if i_type == 0:
+                        target_card = Onmyoji.foster_JJK_LXTG
+                    elif i_type == 1:
+                        target_card = Onmyoji.foster_JJK_WXTG
+                    elif i_type == 2:
+                        target_card = Onmyoji.foster_JJK_SXTG
+                    elif i_type == 3:
+                        target_card = Onmyoji.foster_JJK_LXDY
+                    elif i_type == 4:
+                        target_card = Onmyoji.foster_JJK_LXDY
+                    elif i_type == 5:
+                        target_card = Onmyoji.foster_JJK_SXTG
+                    elif i_type == 6:
+                        target_card = Onmyoji.foster_JJK_SXTG1
+                    logger.debug("目标结界卡：{}", target_card)
+                    image_service.touch(Onmyoji.foster_KJYBZ)
+                    logger.debug("确定上方好友坐标")
+                    coordinate_friend = image_service.exists(Onmyoji.foster_SFHY)
+                    logger.debug("确定上方跨区坐标")
+                    coordinate_region = image_service.exists(Onmyoji.foster_SFKQ)
+                    logger.debug("计算位置1")
+                    coordinate_difference = coordinate_region[0] - coordinate_friend[0]
+                    coordinate_start = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
+                    logger.debug("计算位置2")
+                    coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
+                    is_target = False
+                    if coordinate_start and coordinate_end:
+                        for i_friends in range(100):
+                            logger.debug("当前第{}个好友",i_friends+1)
+                            logger.debug("点击位置1")
+                            image_service.touch_coordinate(coordinate_start)
+                            logger.debug("判断结界卡是否是目标结界卡:{}", target_card)
+                            is_target = image_service.exists(target_card,rgb=True)
+                            if is_target:
+                                logger.debug("已找到目标结界卡,跳出一层循环,进入好友结界")
+                                break
+                            logger.debug("判断是否是未放置")
+                            is_place = image_service.exists(Onmyoji.foster_JJK_WFZ)
+                            if is_place:
+                                logger.debug("未放置,跳出一层循环，更换目标结界卡或结束寄养查找")
+                                complex_service.get_reward(Onmyoji.foster_SFHY)
+                                break
+                            if not is_target and not is_place:
+                                logger.debug("没找到目标，且当前不是未放置，向下滑动")
+                                image_service.swipe(coordinate_end, coordinate_start)
+                    if is_target:
+                        logger.debug("已找到目标结界卡,跳出二层循环")
+                        break
+                logger.debug("进入好友结界")
+                image_service.touch(Onmyoji.foster_JRJJ)
+                logger.debug("点击达摩")
+                is_dharma = image_service.touch(Onmyoji.foster_DMDJDM)
+                if not is_dharma:
+                    is_dharma = image_service.touch(Onmyoji.foster_DMFWDM)
+                    if not is_dharma:
+                        image_service.touch(Onmyoji.foster_DMZFDM)
+                logger.debug("确定")
+                image_service.touch(Onmyoji.foster_QD)
+                logger.debug("返回首页")
+                image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                image_service.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+            else:
+                logger.debug("返回首页")
+                image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                image_service.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+            logger.debug("确认返回首页")
+            OnmyojiService.return_home(game_task)
