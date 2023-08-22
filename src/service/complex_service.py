@@ -152,11 +152,11 @@ class ComplexService:
             if add_switch == 0:
                 logger.debug("关闭加成")
                 logger.debug("根据类型确定横坐标")
-                coordinate_switch = image_service.exists(add_open, timeouts=2)
+                coordinate_switch = image_service.exists(add_open, timeouts=2,cvstrategy=Cvstrategy.default)
             else:
                 logger.debug("打开加成")
                 logger.debug("根据类型确定横坐标")
-                coordinate_switch = image_service.exists(add_close, timeouts=2)
+                coordinate_switch = image_service.exists(add_close, timeouts=2,cvstrategy=Cvstrategy.default)
             if coordinate_switch and coordinate_type:
                 logger.debug("点击计算出的开关坐标")
                 airtest_service.touch_coordinate((coordinate_switch[0], coordinate_type[1]), wait_time=2)

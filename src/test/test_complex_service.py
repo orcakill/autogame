@@ -65,7 +65,7 @@ class TestComplexService(TestCase):
         airtest_service.auto_setup("0")
         logger.debug("开始")
         now = datetime.datetime.now()
-        complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 0)
+        complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG, 1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

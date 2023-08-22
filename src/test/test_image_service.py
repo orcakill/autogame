@@ -23,7 +23,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         airtest_service.auto_setup("0")
         now = datetime.datetime.now()
-        is_border = image_service.exists(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        is_border = image_service.exists(Onmyoji.soul_BQ_TZ)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -45,3 +45,13 @@ class TestImageService(TestCase):
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
+
+    def test_get_files(self):
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        list=ImageService.get_template_list(r"通用\返回", False)
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+

@@ -4,7 +4,6 @@
 # @Description : 图像识别接口
 import os
 import random
-import threading
 import time
 
 from airtest.core.cv import Template
@@ -58,7 +57,7 @@ class ImageService:
         """
         try:
             time.sleep(wait)
-            template_list = get_template_list(folder_path, rgb)
+            template_list = ImageService.get_template_list(folder_path, rgb)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
@@ -96,7 +95,7 @@ class ImageService:
         :return: bool
         """
         time.sleep(wait)
-        template_list = get_template_list(folder_path, rgb)
+        template_list = ImageService.get_template_list(folder_path, rgb)
         time_start = time.time()
         while time.time() - time_start < timeouts:
             for template in template_list:
@@ -181,28 +180,28 @@ class ImageService:
         """
         airtest_service.cv2_2_pil(local)
 
-
-def get_template_list(folder_path: str, rgb: bool = False):
-    """
-    根据文件夹名获取图片集合，转为template列表
-    :param rgb: RGB
-    :param folder_path: 图片文件夹路径
-    :return:
-    """
-    template_list = []
-    folder_all_path = os.path.join(get_onmyoji_image_path(), folder_path)
-    folder_list = os.listdir(folder_all_path)
-    random.shuffle(folder_list)
-    for file_name in folder_list:
-        file_path = os.path.abspath(os.path.join(folder_all_path, file_name))
-        # 判断文件是否存在
-        if os.path.isfile(file_path):
-            # 判断文件是否是图片类型
-            file_ext = file_path.split('.')[-1].lower()
-            if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp']:
-                # 图片类赋值
-                template = Template(filename=file_path, rgb=rgb)
-                template_list.append(template)
-        else:
-            logger.debug("{}文件不存在", file_path)
-    return template_list
+    @staticmethod
+    def get_template_list(folder_path: str, rgb: bool = False):
+        """
+        根据文件夹名获取图片集合，转为template列表
+        :param rgb: RGB
+        :param folder_path: 图片文件夹路径
+        :return:
+        """
+        template_list = []
+        folder_all_path = os.path.join(get_onmyoji_image_path(), folder_path)
+        folder_list = os.listdir(folder_all_path)
+        random.shuffle(folder_list)
+        for file_name in folder_list:
+            file_path = os.path.abspath(os.path.join(folder_all_path, file_name))
+            # 判断文件是否存在
+            if os.path.isfile(file_path):
+                # 判断文件是否是图片类型
+                file_ext = file_path.split('.')[-1].lower()
+                if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp']:
+                    # 图片类赋值
+                    template = Template(filename=file_path, rgb=rgb)
+                    template_list.append(template)
+            else:
+                logger.debug("{}文件不存在", file_path)
+        return template_list
