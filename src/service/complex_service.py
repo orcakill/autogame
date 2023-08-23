@@ -180,3 +180,5 @@ class ComplexService:
         is_reward = image_service.exists(reward, wait=3)
         if is_reward:
             airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+            return True
+        return False

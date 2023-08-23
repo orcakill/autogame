@@ -39,7 +39,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, rgb=True, wait=2,threshold=0.6)
+        image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, rgb=True, wait=2, threshold=0.6)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -50,6 +50,16 @@ class TestImageService(TestCase):
         # 测试代码
         logger.debug("开始")
         image_service.snapshot(True)
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
+    def test_crop_image(self):
+        image_service.auto_setup("0")
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        screen=image_service.crop_image(100, 100, 200, 200)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

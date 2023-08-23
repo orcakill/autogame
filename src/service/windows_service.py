@@ -8,7 +8,7 @@ import os
 
 class WindowsService:
     @staticmethod
-    def start_exe(process,name):
+    def start_exe(process, name):
         process_name = process  # 替换为你的应用程序进程名称
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
         shortcut_path = os.path.join(desktop_path, name + ".lnk")  # 替换为你的桌面快捷方式路径
@@ -24,8 +24,8 @@ class WindowsService:
     @staticmethod
     def check_process_running(process_name):
         # 使用tasklist命令检查进程是否正在运行
-        output = os.popen('tasklist /FI "IMAGENAME eq {}.exe"'.format(process_name)).read()
-        # 检查输出结果中是否包含进程名称
+        with os.popen('tasklist /FI "IMAGENAME eq {}.exe"'.format(process_name)) as proc:
+            output = proc.read()  # 检查输出结果中是否包含进程名称
         if process_name in output:
             return True
         else:

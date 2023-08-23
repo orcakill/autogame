@@ -5,6 +5,7 @@
 # @Description: airtest接口
 """
 import logging
+from datetime import datetime as imp_datetime
 
 from airtest import aircv
 from airtest.aircv import cv2_2_pil
@@ -19,7 +20,7 @@ log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
 
 # 图片点击识别等待时间(秒）·
-WAIT = 1
+WAIT = 2
 
 
 class AirtestService:
@@ -35,12 +36,20 @@ class AirtestService:
             auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/127.0.0.1:62001"])
 
     @staticmethod
-    def snapshot():
+    def snapshot(print_image: bool = False):
         """
         这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
         """
-        return G.DEVICE.snapshot()
+        screen = G.DEVICE.snapshot()
+        if print_image:
+            pil_image = cv2_2_pil(screen)
+            # 获取当前时间
+            now = imp_datetime.now()
+            # 将时间转换为字符串
+            time_str = now.strftime("%Y-%m-%d-%H-%M-%S")
+            pil_image.save("D:/image/" + time_str + ".png", quality=99, optimize=True)
+        return screen
 
     @staticmethod
     def exists(template: Template, cvstrategy: [], timeout: float, is_throw: bool):

@@ -532,8 +532,15 @@ class OnmyojiService:
             is_get_reward = image_service.exists(Onmyoji.demon_FMLD, wait=5)
             if is_get_reward:
                 logger.debug("未点击现时逢魔，开始点击")
-                for i_present in range(4):
+                for i_present in range(2):
                     image_service.touch(Onmyoji.demon_XSFM, wait=3)
+                    image_service.touch(Onmyoji.demon_XSFM, wait=3)
+                    image_service.touch(Onmyoji.demon_XSFM, wait=3)
+                    image_service.touch(Onmyoji.demon_XSFM, wait=3)
+                    logger.debug("重新判断是否已领取现世奖励")
+                    is_get_reward = image_service.exists(Onmyoji.demon_FMLD, wait=1)
+                    if not is_get_reward:
+                        break
                 logger.debug("领取奖励")
                 image_service.touch(Onmyoji.demon_HSDM, wait=3)
                 logger.debug("识别获得奖励")
@@ -931,9 +938,10 @@ class OnmyojiService:
                             is_target = image_service.exists(target_card,rgb=True)
                             if is_target:
                                 # 截图,记录识别结果
-                                image_service.snapshot()
+                                image_service.snapshot(print_image=True)
                                 logger.debug("已找到目标结界卡,跳出一层循环,进入好友结界")
-                                break
+                                sys.exit()
+                                # break
                             logger.debug("判断是否是未放置")
                             is_place = image_service.exists(Onmyoji.foster_JJK_WFZ)
                             if is_place:

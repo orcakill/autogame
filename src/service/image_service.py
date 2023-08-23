@@ -13,7 +13,6 @@ from src.service.airtest_service import AirtestService
 from src.service.windows_service import WindowsService
 from src.utils.my_logger import my_logger as logger
 from src.utils.project_path import get_onmyoji_image_path
-from datetime import datetime as imp_datetime
 
 # 导入 airtest服务接口
 airtest_service = AirtestService()
@@ -135,15 +134,7 @@ class ImageService:
         设备截图
         :return:
         """
-        img = airtest_service.snapshot()
-        if img and print_image:
-            pil_image = ImageService.cv2_2_pil(img)
-            # 获取当前时间
-            now = imp_datetime.now()
-            # 将时间转换为字符串
-            time_str = now.strftime("%Y-%m-%d %H:%M:%S")
-            pil_image.save("D:/" + time_str + ".png", quality=99, optimize=True)
-        return img
+        return airtest_service.snapshot(print_image)
 
     @staticmethod
     def touch_coordinate(v: [], wait: float = WAIT):
@@ -184,7 +175,7 @@ class ImageService:
         :param y2: y2
         :return:
         """
-        airtest_service.crop_image(x1, y1, x2, y2)
+        return airtest_service.crop_image(x1, y1, x2, y2)
 
     @staticmethod
     def resolving_power():
