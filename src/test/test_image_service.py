@@ -7,51 +7,49 @@ import datetime
 from unittest import TestCase
 
 from src.model.enum import Onmyoji, Cvstrategy
-from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
 from src.utils.my_logger import logger
 
 image_service = ImageService
-airtest_service = AirtestService
 complex_service = ComplexService
 ocr_service = OcrService
 
 
 class TestImageService(TestCase):
     def test_exists(self):
-        airtest_service.auto_setup("0")
+        image_service.auto_setup("0")
         now = datetime.datetime.now()
-        is_border = image_service.exists(Onmyoji.foster_JJK_WXTG,rgb=True)
+        is_border = image_service.exists(Onmyoji.foster_JJK_WXTG, rgb=True)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
     def test_exists_coordinate(self):
-        airtest_service.auto_setup("0")
+        image_service.auto_setup("0")
         now = datetime.datetime.now()
         complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS, Onmyoji.border_GRJJ, 60)
+                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS, Onmyoji.border_GRJJ, 60, 1)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
     def test_touch(self):
-        airtest_service.auto_setup("0")
+        image_service.auto_setup("0")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        image_service.touch(Onmyoji.soul_BQ_CW)
+        image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, rgb=True, wait=2,threshold=0.6)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
 
-    def test_get_files(self):
+    def test_snapshot(self):
+        image_service.auto_setup("0")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        list=ImageService.get_template_list(r"通用\返回", False)
+        image_service.snapshot(True)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
-

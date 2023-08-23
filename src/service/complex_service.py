@@ -76,10 +76,14 @@ class ComplexService:
         global fight_result
         time_start = time.time()
         cvstrategy = Cvstrategy.sift
+        rgb=False
+        threshold = 0.7
         if first == Onmyoji.border_GRJJ:
             cvstrategy = Cvstrategy.default
+            rgb=True
+            threshold=0.6
         while time.time() - time_start < timeouts and not fight_interrupt_flag:
-            is_first = image_service.exists(first, timeouts=timeout, cvstrategy=cvstrategy)
+            is_first = image_service.exists(first, timeouts=timeout, cvstrategy=cvstrategy,rgb=rgb,threshold=threshold)
             if is_first and not fight_interrupt_flag:
                 if first_click:
                     image_service.touch_coordinate(is_first)

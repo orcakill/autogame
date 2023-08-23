@@ -2,6 +2,9 @@
 # @Author: orcakill
 # @File: temp_class.py
 # @Description: 测试类方法自我调用
+from datetime import datetime
+
+
 class MyClass:
     @staticmethod
     def method1():
@@ -14,6 +17,10 @@ class MyClass:
 
 
 if __name__ == '__main__':
-    for i in range(1,9):
-        print(i)
-    MyClass.method2()
+
+    # 获取当前时间
+    now = datetime.now()
+    # 将时间转换为字符串
+    time_str = now.strftime("%Y-%m-%d %H:%M:%S")
+
+    print(time_str)

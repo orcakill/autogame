@@ -10,8 +10,10 @@ from airtest.core.cv import Template
 
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
+from src.service.windows_service import WindowsService
 from src.utils.my_logger import my_logger as logger
 from src.utils.project_path import get_onmyoji_image_path
+from datetime import datetime as imp_datetime
 
 # 导入 airtest服务接口
 airtest_service = AirtestService()
@@ -34,6 +36,7 @@ INTERVAL = 1
 TIMES = 1
 # 按住时间
 DURATION = 0.01
+windows_service = WindowsService()
 
 
 class ImageService:
@@ -57,11 +60,11 @@ class ImageService:
         """
         try:
             time.sleep(wait)
-            template_list = ImageService.get_template_list(folder_path, rgb)
+            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
-                    pos = airtest_service.exists(template, cvstrategy, timeout, threshold, is_throw)
+                    pos = airtest_service.exists(template, cvstrategy, timeout, is_throw)
                     if pos and not is_click:
                         logger.debug("图像识别成功:{}", folder_path)
                         return pos
@@ -95,11 +98,11 @@ class ImageService:
         :return: bool
         """
         time.sleep(wait)
-        template_list = ImageService.get_template_list(folder_path, rgb)
+        template_list = ImageService.get_template_list(folder_path, rgb, threshold)
         time_start = time.time()
         while time.time() - time_start < timeouts:
             for template in template_list:
-                is_click = airtest_service.touch(template, cvstrategy, timeout, threshold, is_throw, times, duration)
+                is_click = airtest_service.touch(template, cvstrategy, timeout, is_throw, times, duration)
                 if is_click:
                     logger.debug("图像识别点击成功:{}", folder_path)
                     return True
@@ -112,15 +115,35 @@ class ImageService:
         :param game_device:
         :return:
         """
+        if game_device == "0":
+            logger.debug("检查是否启动云手机")
+            is_state = windows_service.start_exe("YsConsole", "云帅云手机")
+            if not is_state:
+                logger.debug("等待20秒")
+                time.sleep(20)
+        if game_device == "1":
+            logger.debug("检查是否启动夜神模拟器")
+            is_state = windows_service.start_exe("Nox", "夜神模拟器")
+            if not is_state:
+                logger.debug("等待20秒")
+                time.sleep(20)
         airtest_service.auto_setup(game_device)
 
     @staticmethod
-    def snapshot():
+    def snapshot(print_image: bool = False):
         """
         设备截图
         :return:
         """
-        airtest_service.snapshot()
+        img = airtest_service.snapshot()
+        if img and print_image:
+            pil_image = ImageService.cv2_2_pil(img)
+            # 获取当前时间
+            now = imp_datetime.now()
+            # 将时间转换为字符串
+            time_str = now.strftime("%Y-%m-%d %H:%M:%S")
+            pil_image.save("D:/" + time_str + ".png", quality=99, optimize=True)
+        return img
 
     @staticmethod
     def touch_coordinate(v: [], wait: float = WAIT):
@@ -181,9 +204,10 @@ class ImageService:
         airtest_service.cv2_2_pil(local)
 
     @staticmethod
-    def get_template_list(folder_path: str, rgb: bool = False):
+    def get_template_list(folder_path: str, rgb: bool = False, threshold: float = THRESHOLD):
         """
         根据文件夹名获取图片集合，转为template列表
+        :param threshold: 图像识别阈值
         :param rgb: RGB
         :param folder_path: 图片文件夹路径
         :return:
@@ -200,7 +224,7 @@ class ImageService:
                 file_ext = file_path.split('.')[-1].lower()
                 if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp']:
                     # 图片类赋值
-                    template = Template(filename=file_path, rgb=rgb)
+                    template = Template(filename=file_path, rgb=rgb, threshold=threshold)
                     template_list.append(template)
             else:
                 logger.debug("{}文件不存在", file_path)

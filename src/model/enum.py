@@ -63,6 +63,7 @@ class Onmyoji:
     comm_FH_ZSJHKHSXYH = r"通用\返回\左上角黄框黄色小于号"
     comm_FH_ZSJZKDZSHXJT = r"通用\返回\左上角棕框淡棕色回型箭头"
     comm_FH_ZSJHKZDHSXYH= r"通用\返回\左上角黑框棕底黄色小于号"
+    comm_FH_YSJGGCH = r"通用\返回\右上角公告叉号"
 
     demon_FMCSL = r"町中\逢魔之时\逢魔次数零"
     demon_FMLD = r"町中\逢魔之时\逢魔蓝点"

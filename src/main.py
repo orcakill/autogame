@@ -1,11 +1,11 @@
 import threading
 
 from src.controller.onmyoji_controller import task, assist
-from src.service.airtest_service import AirtestService
+from src.service.image_service import ImageService
 from utils.my_logger import my_logger as logger
 
 # 导入 airtest服务接口
-airtest_service = AirtestService()
+image_service = ImageService()
 
 if __name__ == '__main__':
     logger.info("脚本启动")
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     game_type = "2"
     game_round = "1"
     game_device = "0"
-    game_relation_num = "1"
+    game_relation_num = "32"
     # 0 每个节点都发送邮件 1 进程结束后发送邮件  2不发送邮件
     game_is_email = "0"
     logger.info("**************")
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     logger.info("**************")
     logger.info("连接Android设备")
     # 连接android设备
-    airtest_service.auto_setup(game_device)
+    image_service.auto_setup(game_device)
     logger.info("创建任务线程")
     thread1 = threading.Thread(target=task, args=(game_type, game_round, game_is_email, game_relation_num))
     thread2 = threading.Thread(target=assist, args=())
@@ -55,8 +55,9 @@ if __name__ == '__main__':
 #         地域鬼王
 #             (1)极地域鬼王
 #             (2)地域鬼王
-#         结界管理
-#             (1)寄养检查领取
+#         式神寄养检查
+#         阴阳寮管理
+#            （1）集体任务、体力、寮资金
 #             (2)式神育成
 #             (2)结界卡放置、领取结界奖励
 #             (3)体力食盒、经验食盒
@@ -88,7 +89,6 @@ if __name__ == '__main__':
 #         阴界之门
 #         御魂整理
 #            (1)贪吃鬼，清理五星以下御魂
-#            (2)五星御魂，六星不足4条副属性御魂奉纳
+#            (2)五星御魂，六星不足4条副属性御魂弃置加奉纳
 #            (3)六星御魂4条副属性强化
-#            (4)弃置御魂处理
 #         百鬼夜行

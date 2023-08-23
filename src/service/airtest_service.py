@@ -43,19 +43,17 @@ class AirtestService:
         return G.DEVICE.snapshot()
 
     @staticmethod
-    def exists(template: Template, cvstrategy: [], timeout: float, threshold: float, is_throw: bool):
+    def exists(template: Template, cvstrategy: [], timeout: float, is_throw: bool):
         """
         判断图片是否存在并返回坐标
         :param template: 图片类
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
-        :param threshold: 图像识别阈值
         :param is_throw: 是否显示异常
         :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT_TMP = timeout
-        Settings.THRESHOLD = threshold
         try:
             return exists(template)
         except Exception as e:
@@ -63,7 +61,7 @@ class AirtestService:
                 logger.debug("异常：{}", e)
 
     @staticmethod
-    def touch(template: Template, cvstrategy: [], timeout: float, threshold: float, is_throw: bool, times: int,
+    def touch(template: Template, cvstrategy: [], timeout: float, is_throw: bool, times: int,
               duration: float):
         """
         判断图片是否存在
@@ -72,13 +70,11 @@ class AirtestService:
         :param template: 图片类
         :param cvstrategy: 图像识别算法
         :param timeout: 超时时间
-        :param threshold: 图像识别阈值
         :param is_throw: 是否显示异常
         :return: bool
         """
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT = timeout
-        Settings.THRESHOLD = threshold
         try:
             if touch(template, times=times, duration=duration):
                 return True

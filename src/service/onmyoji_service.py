@@ -52,6 +52,8 @@ class OnmyojiService:
                 for i_ageAppropriateReminder in range(5):
                     logger.debug("点击左上角，防止有开场动画")
                     image_service.touch_coordinate([10, 10])
+                    logger.debug("点击公告返回")
+                    image_service.touch_coordinate([10, 10])
                     logger.debug("重新判断适龄提示")
                     is_ageAppropriateReminder = image_service.exists(Onmyoji.login_SLTS)
                     if is_ageAppropriateReminder:
@@ -272,7 +274,7 @@ class OnmyojiService:
                         image_service.touch(Onmyoji.border_SXQD)
             logger.debug("点击个人结界")
             # 判断是否可以正常点击个人结界
-            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
+            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,wait=2,rgb=True,threshold=0.6)
             if not is_border:
                 logger.debug("未正常点击，有意外情况")
                 for i_border in range(3):
@@ -280,13 +282,15 @@ class OnmyojiService:
                     image_service.touch(Onmyoji.border_GTRQ, timeouts=1)
                     logger.debug("点击可能存在的退出挑战")
                     image_service.touch(Onmyoji.border_TCTZ, timeouts=1)
+                    logger.debug("点击可能存在的刷新确定")
+                    image_service.touch(Onmyoji.border_SXQD)
                     logger.debug("点击可能存在的准备")
                     image_service.touch(Onmyoji.border_ZB, timeouts=1)
                     logger.debug("点击可能存在的退出挑战")
                     image_service.touch(Onmyoji.border_TCTZ, timeouts=1)
                     logger.debug("点击可能存在的战斗失败")
                     image_service.touch(Onmyoji.border_ZDSB, timeouts=1)
-                    is_border = image_service.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
+                    is_border = image_service.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,wait=2,rgb=True,threshold=0.6)
                     if is_border:
                         logger.debug("重新点击个人结界")
                         image_service.touch_coordinate(is_border)
@@ -295,7 +299,7 @@ class OnmyojiService:
             is_attack = image_service.touch(Onmyoji.border_JG, wait=1)
             if not is_attack:
                 logger.debug("未点击个人结界，重新点击")
-                image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
+                image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2,rgb=True,threshold=0.6)
                 logger.debug("再次点击进攻")
                 is_attack = image_service.touch(Onmyoji.border_JG, wait=1)
             logger.debug("判断是否仍有进攻")
@@ -873,6 +877,8 @@ class OnmyojiService:
         """
         # 账号信息
         game_account = GameAccount(game_task[2])
+        # 默认未找到目标
+        is_target = False
         logger.debug(game_account.game_name)
         logger.debug("式神寄养")
         for i_time in range(2):
@@ -916,7 +922,6 @@ class OnmyojiService:
                     coordinate_start = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
                     logger.debug("计算位置2")
                     coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
-                    is_target = False
                     if coordinate_start and coordinate_end:
                         for i_friends in range(100):
                             logger.debug("当前第{}个好友",i_friends+1)
@@ -925,6 +930,8 @@ class OnmyojiService:
                             logger.debug("判断结界卡是否是目标结界卡:{}", target_card)
                             is_target = image_service.exists(target_card,rgb=True)
                             if is_target:
+                                # 截图,记录识别结果
+                                image_service.snapshot()
                                 logger.debug("已找到目标结界卡,跳出一层循环,进入好友结界")
                                 break
                             logger.debug("判断是否是未放置")
@@ -939,16 +946,17 @@ class OnmyojiService:
                     if is_target:
                         logger.debug("已找到目标结界卡,跳出二层循环")
                         break
-                logger.debug("进入好友结界")
-                image_service.touch(Onmyoji.foster_JRJJ)
-                logger.debug("点击达摩")
-                is_dharma = image_service.touch(Onmyoji.foster_DMDJDM)
-                if not is_dharma:
-                    is_dharma = image_service.touch(Onmyoji.foster_DMFWDM)
+                if is_target:
+                    logger.debug("进入好友结界")
+                    image_service.touch(Onmyoji.foster_JRJJ)
+                    logger.debug("点击达摩")
+                    is_dharma = image_service.touch(Onmyoji.foster_DMDJDM)
                     if not is_dharma:
-                        image_service.touch(Onmyoji.foster_DMZFDM)
-                logger.debug("确定")
-                image_service.touch(Onmyoji.foster_QD)
+                        is_dharma = image_service.touch(Onmyoji.foster_DMFWDM)
+                        if not is_dharma:
+                            image_service.touch(Onmyoji.foster_DMZFDM)
+                    logger.debug("确定")
+                    image_service.touch(Onmyoji.foster_QD)
                 logger.debug("返回首页")
                 image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
                 image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
