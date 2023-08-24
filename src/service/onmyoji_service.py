@@ -274,7 +274,7 @@ class OnmyojiService:
                         image_service.touch(Onmyoji.border_SXQD)
             logger.debug("点击个人结界")
             # 判断是否可以正常点击个人结界
-            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,wait=2,rgb=True,threshold=0.6)
+            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,wait=2)
             if not is_border:
                 logger.debug("未正常点击，有意外情况")
                 for i_border in range(3):
@@ -290,7 +290,7 @@ class OnmyojiService:
                     image_service.touch(Onmyoji.border_TCTZ, timeouts=1)
                     logger.debug("点击可能存在的战斗失败")
                     image_service.touch(Onmyoji.border_ZDSB, timeouts=1)
-                    is_border = image_service.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,wait=2,rgb=True,threshold=0.6)
+                    is_border = image_service.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,wait=2)
                     if is_border:
                         logger.debug("重新点击个人结界")
                         image_service.touch_coordinate(is_border)
@@ -299,7 +299,7 @@ class OnmyojiService:
             is_attack = image_service.touch(Onmyoji.border_JG, wait=1)
             if not is_attack:
                 logger.debug("未点击个人结界，重新点击")
-                image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2,rgb=True,threshold=0.6)
+                image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("再次点击进攻")
                 is_attack = image_service.touch(Onmyoji.border_JG, wait=1)
             logger.debug("判断是否仍有进攻")

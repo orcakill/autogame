@@ -39,7 +39,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, rgb=True, wait=2, threshold=0.6)
+        image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,  wait=2, threshold=0.7)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
