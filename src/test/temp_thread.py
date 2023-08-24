@@ -12,7 +12,7 @@ def func1(name: str, num: int):
     global fight_result
     print("函数" + name + "开始执行")
     for i in range(num):
-        if not interrupt_flag:
+        if not project_interrupt_flag:
             if name == "1":
                 print("函数" + name + "提前结束")
                 interrupt_flag = True
@@ -35,6 +35,10 @@ def main():
     thread1.start()
     thread2.start()
     thread3.start()
+
+    for i in range(100):
+        print("主线程等待1秒")
+        time.sleep(1)
 
     print("等待线程结束")
     thread1.join()

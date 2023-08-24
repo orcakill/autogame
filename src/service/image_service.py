@@ -129,12 +129,12 @@ class ImageService:
         airtest_service.auto_setup(game_device)
 
     @staticmethod
-    def snapshot(print_image: bool = False):
+    def snapshot(name:str,print_image: bool = False):
         """
         设备截图
         :return:
         """
-        return airtest_service.snapshot(print_image)
+        return airtest_service.snapshot(name,print_image)
 
     @staticmethod
     def touch_coordinate(v: [], wait: float = WAIT):

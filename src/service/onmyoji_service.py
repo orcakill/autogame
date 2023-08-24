@@ -274,7 +274,7 @@ class OnmyojiService:
                         image_service.touch(Onmyoji.border_SXQD)
             logger.debug("点击个人结界")
             # 判断是否可以正常点击个人结界
-            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,wait=2)
+            is_border = image_service.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
             if not is_border:
                 logger.debug("未正常点击，有意外情况")
                 for i_border in range(3):
@@ -290,7 +290,7 @@ class OnmyojiService:
                     image_service.touch(Onmyoji.border_TCTZ, timeouts=1)
                     logger.debug("点击可能存在的战斗失败")
                     image_service.touch(Onmyoji.border_ZDSB, timeouts=1)
-                    is_border = image_service.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default,wait=2)
+                    is_border = image_service.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
                     if is_border:
                         logger.debug("重新点击个人结界")
                         image_service.touch_coordinate(is_border)
@@ -882,6 +882,14 @@ class OnmyojiService:
         :param game_task:
         :return:
         """
+        # 寄养开始时间
+        time_start = time.time()
+        # 寄养轮次
+        num_round = 0
+        # 寄养检查好友
+        num_friend = 0
+        # 寄养结果
+        foster_result = None
         # 账号信息
         game_account = GameAccount(game_task[2])
         # 默认未找到目标
@@ -903,6 +911,7 @@ class OnmyojiService:
                 # 结界卡，默认六星太鼓
                 target_card = Onmyoji.foster_JJK_LXTG
                 for i_type in range(7):
+                    num_round = num_round + 1
                     logger.debug("初始化目标结界卡")
                     if i_type == 0:
                         target_card = Onmyoji.foster_JJK_LXTG
@@ -931,17 +940,20 @@ class OnmyojiService:
                     coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
                     if coordinate_start and coordinate_end:
                         for i_friends in range(100):
-                            logger.debug("当前第{}个好友",i_friends+1)
+                            num_friend = num_friend + 1
+                            logger.debug("当前第{}个好友", i_friends + 1)
                             logger.debug("点击位置1")
                             image_service.touch_coordinate(coordinate_start)
                             logger.debug("判断结界卡是否是目标结界卡:{}", target_card)
-                            is_target = image_service.exists(target_card,rgb=True)
+                            is_target = image_service.exists(target_card, rgb=True,threshold=0.8)
                             if is_target:
                                 # 截图,记录识别结果
-                                image_service.snapshot(print_image=True)
+                                name=game_account.game_name
+                                name=name+"_"+target_card.replace("阴阳寮\\式神寄养\\结界卡\\","")
+                                image_service.snapshot(name,print_image=True)
+                                foster_result = target_card
                                 logger.debug("已找到目标结界卡,跳出一层循环,进入好友结界")
-                                sys.exit()
-                                # break
+                                break
                             logger.debug("判断是否是未放置")
                             is_place = image_service.exists(Onmyoji.foster_JJK_WFZ)
                             if is_place:
@@ -978,3 +990,13 @@ class OnmyojiService:
                 image_service.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
             logger.debug("确认返回首页")
             OnmyojiService.return_home(game_task)
+            time_end = time.time()
+            time_time = round(time_end - time_start, 3)
+            time_avg_friend = 0
+            if num_friend > 0:
+                time_avg_friend = round(time_time / num_friend)
+            if is_foster:
+                logger.debug("寄养用时{}秒,检查好友{}轮{}个，平均用时{}秒，寄养结果{}", time_time, num_round, num_friend,
+                             time_avg_friend, foster_result)
+            else:
+                logger.debug("已寄养，无需寄养,用时{}秒",time_time)

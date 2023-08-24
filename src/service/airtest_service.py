@@ -36,7 +36,7 @@ class AirtestService:
             auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/127.0.0.1:62001"])
 
     @staticmethod
-    def snapshot(print_image: bool = False):
+    def snapshot(name:str,print_image: bool = False):
         """
         这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
@@ -47,7 +47,7 @@ class AirtestService:
             # 获取当前时间
             now = imp_datetime.now()
             # 将时间转换为字符串
-            time_str = now.strftime("%Y-%m-%d-%H-%M-%S")
+            time_str = now.strftime("%Y-%m-%d-%H-%M-%S")+"_"+name
             pil_image.save("D:/image/" + time_str + ".png", quality=99, optimize=True)
         return screen
 

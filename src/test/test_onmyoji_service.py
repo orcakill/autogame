@@ -2,18 +2,31 @@
 # @Author: orcakill
 # @File: test_onmyoji_service.py
 # @Description: 服务测试类
+import threading
+import time
 from unittest import TestCase
 
 from src.dao.mapper import select_game_account
+from src.model.enum import Onmyoji
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.utils.my_logger import logger
 
 image_service = ImageService()
+project_interrupt_flag = False
+
+
+def assist_onmyoji():
+    global project_interrupt_flag
+    logger.debug("开启拒接协战")
+    while not project_interrupt_flag:
+        time.sleep(30)
+        image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
 
 
 class TestOnmyojiService(TestCase):
+
     def test_initialization(self):
         # 测试登录功能
         game_projects = GameProjects()
@@ -171,6 +184,7 @@ class TestOnmyojiService(TestCase):
         test_devices = '1'
         # 初始化设备信息
         image_service.auto_setup(test_devices)
+        # 拒接协战
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -187,12 +201,16 @@ class TestOnmyojiService(TestCase):
             logger.debug("{}测试完成", test_name)
 
     def test_foster_care(self):
+        global project_interrupt_flag
         logger.debug("式神寄养")
-        # test_names = ['2', '3', '4', '5']
-        test_names = ['1']
+        test_names = ['5']
+        # test_names = ['1']
         test_devices = '0'
         # 初始化设备信息
         image_service.auto_setup(test_devices)
+        # 拒接协战
+        thread2 = threading.Thread(target=assist_onmyoji, args=())
+        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -207,3 +225,5 @@ class TestOnmyojiService(TestCase):
             # 执行测试任务
             OnmyojiService.foster_care(game_task)
             logger.debug("{}测试完成", test_name)
+            project_interrupt_flag = True
+        thread2.join()

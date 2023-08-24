@@ -1,6 +1,4 @@
-import threading
-
-from src.controller.onmyoji_controller import task, assist
+from src.controller.onmyoji_controller import OnmyojiController
 from src.service.image_service import ImageService
 from utils.my_logger import my_logger as logger
 
@@ -29,13 +27,8 @@ if __name__ == '__main__':
     logger.info("连接Android设备")
     # 连接android设备
     image_service.auto_setup(game_device)
-    logger.info("创建任务线程")
-    thread1 = threading.Thread(target=task, args=(game_type, game_round, game_is_email, game_relation_num))
-    thread2 = threading.Thread(target=assist, args=())
-    thread1.start()
-    thread2.start()
-    thread1.join()
-    thread2.join()
+    logger.info("执行任务")
+    OnmyojiController.game_thread(game_type, game_round, game_is_email, game_relation_num)
 
     # 执行项目组、每个节点整理邮件报告
 

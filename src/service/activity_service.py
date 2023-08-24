@@ -35,23 +35,23 @@ class ActivityService:
         game_account = GameAccount(game_task[2])
         logger.debug("爬塔-真火切磋-{}", game_account.game_name)
         # 初始化图片路径
-        p_buy = r"活动\20230823\购买"
-        p_fight = r"活动\20230823\挑战"
-        p_fight_win = r"活动\20230823\战斗胜利"
-        p_fight_fail = r"活动\20230823\战斗失败"
-        p_fight_again = r"活动\20230823\再次挑战"
-        p_fight_quit = r"活动\20230823\退出挑战"
-        p_return = r"活动\20230823\返回"
-        p_reward = r"活动\20230823\获得奖励"
-        p_select = r"活动\20230823\选定"
-        p_soul_select = r"活动\20230823\御魂选定"
-        p_step1 = r"活动\20230823\入口1"
-        p_step2 = r"活动\20230823\入口2"
-        p_shiShenLu = r"活动\20230823\式神录"
-        p_top_plus_sign = r"活动\20230823\顶部加号"
-        p_unlock = r"活动\20230823\解锁阵容"
-        p_double_up_arrow = r"活动\20230823\双向上箭头"
-        p_gift = r"活动\20230823\礼包"
+        p_buy = r"活动\20230823\爬塔\购买"
+        p_fight = r"活动\20230823\爬塔\挑战"
+        p_fight_win = r"活动\20230823\爬塔\战斗胜利"
+        p_fight_fail = r"活动\20230823\爬塔\战斗失败"
+        p_fight_again = r"活动\20230823\爬塔\再次挑战"
+        p_fight_quit = r"活动\20230823\爬塔\退出挑战"
+        p_return = r"活动\20230823\爬塔\返回"
+        p_reward = r"活动\20230823\爬塔\获得奖励"
+        p_select = r"活动\20230823\爬塔\选定"
+        p_soul_select = r"活动\20230823\爬塔\御魂选定"
+        p_step1 = r"活动\20230823\爬塔\入口1"
+        p_step2 = r"活动\20230823\爬塔\入口2"
+        p_shiShenLu = r"活动\20230823\爬塔\式神录"
+        p_top_plus_sign = r"活动\20230823\爬塔\顶部加号"
+        p_unlock = r"活动\20230823\爬塔\解锁阵容"
+        p_double_up_arrow = r"活动\20230823\爬塔\双向上箭头"
+        p_gift = r"活动\20230823\爬塔\礼包"
         # 开始活动
         logger.debug("进入")
         image_service.touch(p_step1)
@@ -91,14 +91,14 @@ class ActivityService:
                     num = 0
             time.sleep(3)
             is_result = complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_fight, 60,
-                                                  1)
+                                                  3)
             if is_result is None:
                 if num > 1:
                     num = num + 1
                 else:
                     num = 0
-                if num > 10:
-                    logger.debug("连续10次战斗结果判断为空")
+                if num > 3:
+                    logger.debug("连续3次战斗结果判断为空")
                     break
         logger.debug("返回首页")
         image_service.touch(p_return)
