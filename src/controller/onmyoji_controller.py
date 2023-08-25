@@ -2,7 +2,7 @@ import threading
 import time
 
 from src.dao.mapper_extend import MapperExtend
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import *
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
@@ -82,4 +82,4 @@ class OnmyojiController:
         logger.debug("开启拒接协战")
         while not project_interrupt_flag:
             time.sleep(30)
-            image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
+            image_service.touch(Onmyoji.comm_FH_XSFYHSCH,cvstrategy=Cvstrategy.default)

@@ -52,8 +52,10 @@ class OnmyojiService:
                 for i_ageAppropriateReminder in range(5):
                     logger.debug("点击左上角，防止有开场动画")
                     image_service.touch_coordinate([10, 10])
+                    logger.debug("接受协议")
+                    image_service.touch(Onmyoji.login_JSXY)
                     logger.debug("点击公告返回")
-                    image_service.touch_coordinate([10, 10])
+                    image_service.touch(Onmyoji.comm_FH_YSJGGCH)
                     logger.debug("重新判断适龄提示")
                     is_ageAppropriateReminder = image_service.exists(Onmyoji.login_SLTS)
                     if is_ageAppropriateReminder:
@@ -69,7 +71,7 @@ class OnmyojiService:
                 logger.debug("切换账号")
                 image_service.touch(Onmyoji.login_QHZH, wait=2)
             logger.debug("常用")
-            image_service.touch(Onmyoji.login_CY,cvstrategy=Cvstrategy.default,wait=2)
+            image_service.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
             logger.debug("选择账号")
             account = os.path.join(Onmyoji.user_XZZH, game_account.account_name)
             image_service.touch(account, cvstrategy=Cvstrategy.default, wait=2)
@@ -897,7 +899,7 @@ class OnmyojiService:
         # 默认未找到目标
         is_target = False
         # 获取设备分辨率
-        resolution=image_service.resolving_power()
+        resolution = image_service.resolving_power()
         logger.debug(game_account.game_name)
         logger.debug("式神寄养")
         for i_time in range(2):
@@ -906,7 +908,7 @@ class OnmyojiService:
             logger.debug("点击结界")
             image_service.touch(Onmyoji.foster_JJTB)
             logger.debug("点击式神育成")
-            is_growing=image_service.touch(Onmyoji.foster_SSYC)
+            is_growing = image_service.touch(Onmyoji.foster_SSYC)
             if not is_growing:
                 logger.debug("式神育成点击失败，重新点击")
                 image_service.touch(Onmyoji.foster_SSYC)
@@ -963,8 +965,8 @@ class OnmyojiService:
                             is_type = image_service.exists(target_type)
                             if is_type:
                                 logger.debug("判断结界卡是否是目标结界卡:{}", target_card)
-                                is_target = image_service.exists(target_card, rgb=True,threshold=0.8)
-                                if is_target and is_target[0]>1/2*resolution[0]:
+                                is_target = image_service.exists(target_card)
+                                if is_target and is_target[0] > 1 / 2 * resolution[0]:
                                     # sys.exit()
                                     # 截图,记录识别结果
                                     name = game_account.game_name
@@ -973,7 +975,7 @@ class OnmyojiService:
                                     foster_result = target_card
                                     logger.debug("已找到目标结界卡,且X坐标在右侧,跳出一层循环,进入好友结界")
                                     break
-                            logger.debug("判断是否是未放置")
+                            logger.debug("从第10个开始，每3个检查未放置；判断是否是未放置")
                             is_place = image_service.exists(Onmyoji.foster_JJK_WFZ)
                             if is_place:
                                 logger.debug("未放置,跳出一层循环，更换目标结界卡或结束寄养查找")

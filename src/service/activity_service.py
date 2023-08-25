@@ -52,6 +52,7 @@ class ActivityService:
         p_unlock = r"活动\20230823\爬塔\解锁阵容"
         p_double_up_arrow = r"活动\20230823\爬塔\双向上箭头"
         p_gift = r"活动\20230823\爬塔\礼包"
+        p_chat = r"活动\20230823\爬塔\左侧聊天"
         # 开始活动
         logger.debug("进入")
         image_service.touch(p_step1)
@@ -79,13 +80,15 @@ class ActivityService:
         logger.debug("锁定阵容")
         image_service.touch(p_unlock)
         num = 0
-        for i in range(80):
+        for i in range(240):
             logger.debug("第{}次挑战", i + 1)
             is_fight = image_service.touch(p_fight)
             if not is_fight:
                 logger.debug("挑战未点击成功，判断是否有退出挑战")
                 is_quit = image_service.touch(p_fight_quit)
                 logger.debug("挑战未点击成功，判断是否悬赏封印")
+                is_offer_reward = image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
+                logger.debug("挑战未点击成功，判断是否进入左侧聊天")
                 is_offer_reward = image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
                 if is_quit or is_offer_reward:
                     num = 0
