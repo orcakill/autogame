@@ -183,7 +183,7 @@ class ImageService:
         获取分辨率
         :return:
         """
-        airtest_service.resolving_power()
+        return  airtest_service.resolving_power()
 
     @staticmethod
     def cv2_2_pil(local):

@@ -68,7 +68,7 @@ class TestActivityService(TestCase):
         global project_interrupt_flag
         logger.debug("当前活动测试-夜神模拟器")
         # test_names = ['2', '3', '4', '5']
-        test_names = ['4']
+        test_names =  ['1','2', '3', '4', '5']
         test_devices = '1'
         # 初始化设备信息
         image_service.auto_setup(test_devices)

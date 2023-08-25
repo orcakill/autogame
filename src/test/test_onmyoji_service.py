@@ -203,7 +203,7 @@ class TestOnmyojiService(TestCase):
     def test_foster_care(self):
         global project_interrupt_flag
         logger.debug("式神寄养")
-        test_names = ['5']
+        test_names = ['1', '2', '3', '4', '5']
         # test_names = ['1']
         test_devices = '0'
         # 初始化设备信息

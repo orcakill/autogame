@@ -31,7 +31,7 @@ class AirtestService:
         :return:
         """
         if game_device == "0":
-            auto_setup(__file__, logdir=False, devices=["android://"])
+            auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/127.0.0.1:50000"])
         if game_device == "1":
             auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/127.0.0.1:62001"])
 

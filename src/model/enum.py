@@ -224,6 +224,8 @@ class Onmyoji:
     foster_HYKJY = r"阴阳寮\式神寄养\好友可寄养"
     foster_QD = r"阴阳寮\式神寄养\确定"
     foster_JRJJ = r"阴阳寮\式神寄养\进入结界"
+    foster_JJK_TG = r"阴阳寮\式神寄养\结界卡\太鼓"
+    foster_JJK_DY = r"阴阳寮\式神寄养\结界卡\斗鱼"
     foster_JJK_SXTG = r"阴阳寮\式神寄养\结界卡\三星太鼓"
     foster_JJK_SXTG1 = r"阴阳寮\式神寄养\结界卡\四星太鼓"
     foster_JJK_SXDY1 = r"阴阳寮\式神寄养\结界卡\四星斗鱼"
@@ -232,6 +234,9 @@ class Onmyoji:
     foster_JJK_LXTG = r"阴阳寮\式神寄养\结界卡\六星太鼓"
     foster_JJK_LXDY = r"阴阳寮\式神寄养\结界卡\六星斗鱼"
     foster_JJK_WFZ = r"阴阳寮\式神寄养\结界卡\未放置"
+
+
+    region_= r"阴阳寮\式神寄养\结界卡\未放置"
     
 
 

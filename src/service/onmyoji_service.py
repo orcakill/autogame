@@ -69,7 +69,7 @@ class OnmyojiService:
                 logger.debug("切换账号")
                 image_service.touch(Onmyoji.login_QHZH, wait=2)
             logger.debug("常用")
-            image_service.touch(Onmyoji.login_CY, wait=2)
+            image_service.touch(Onmyoji.login_CY,cvstrategy=Cvstrategy.default,wait=2)
             logger.debug("选择账号")
             account = os.path.join(Onmyoji.user_XZZH, game_account.account_name)
             image_service.touch(account, cvstrategy=Cvstrategy.default, wait=2)
@@ -458,6 +458,8 @@ class OnmyojiService:
                 is_reward = image_service.exists(Onmyoji.reward_HDJL, wait=3)
                 if is_reward:
                     image_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+            logger.debug("返回首页")
+            OnmyojiService.return_home(game_task)
         logger.debug("2-邮箱奖励")
         is_mail = image_service.exists(Onmyoji.reward_YX)
         if is_mail:
@@ -894,6 +896,8 @@ class OnmyojiService:
         game_account = GameAccount(game_task[2])
         # 默认未找到目标
         is_target = False
+        # 获取设备分辨率
+        resolution=image_service.resolving_power()
         logger.debug(game_account.game_name)
         logger.debug("式神寄养")
         for i_time in range(2):
@@ -902,31 +906,42 @@ class OnmyojiService:
             logger.debug("点击结界")
             image_service.touch(Onmyoji.foster_JJTB)
             logger.debug("点击式神育成")
-            image_service.touch(Onmyoji.foster_SSYC)
+            is_growing=image_service.touch(Onmyoji.foster_SSYC)
+            if not is_growing:
+                logger.debug("式神育成点击失败，重新点击")
+                image_service.touch(Onmyoji.foster_SSYC)
             logger.debug("判断是否可寄养")
             is_foster = image_service.exists(Onmyoji.foster_KJYBZ)
             if is_foster:
                 logger.debug("可寄养")
-                logger.debug("开始寄养，从六星太鼓到三星斗鱼")
+                logger.debug("开始寄养，从六星太鼓到四星斗鱼")
                 # 结界卡，默认六星太鼓
+                target_type = Onmyoji.foster_JJK_TG
                 target_card = Onmyoji.foster_JJK_LXTG
                 for i_type in range(7):
                     num_round = num_round + 1
                     logger.debug("初始化目标结界卡")
                     if i_type == 0:
+                        target_type = Onmyoji.foster_JJK_TG
                         target_card = Onmyoji.foster_JJK_LXTG
                     elif i_type == 1:
+                        target_type = Onmyoji.foster_JJK_TG
                         target_card = Onmyoji.foster_JJK_WXTG
                     elif i_type == 2:
-                        target_card = Onmyoji.foster_JJK_SXTG
+                        target_type = Onmyoji.foster_JJK_TG
+                        target_card = Onmyoji.foster_JJK_SXTG1
                     elif i_type == 3:
+                        target_type = Onmyoji.foster_JJK_DY
                         target_card = Onmyoji.foster_JJK_LXDY
                     elif i_type == 4:
-                        target_card = Onmyoji.foster_JJK_LXDY
+                        target_type = Onmyoji.foster_JJK_DY
+                        target_card = Onmyoji.foster_JJK_WXDY
                     elif i_type == 5:
+                        target_type = Onmyoji.foster_JJK_TG
                         target_card = Onmyoji.foster_JJK_SXTG
                     elif i_type == 6:
-                        target_card = Onmyoji.foster_JJK_SXTG1
+                        target_type = Onmyoji.foster_JJK_TG
+                        target_card = Onmyoji.foster_JJK_SXDY1
                     logger.debug("目标结界卡：{}", target_card)
                     image_service.touch(Onmyoji.foster_KJYBZ)
                     logger.debug("确定上方好友坐标")
@@ -944,16 +959,20 @@ class OnmyojiService:
                             logger.debug("当前第{}个好友", i_friends + 1)
                             logger.debug("点击位置1")
                             image_service.touch_coordinate(coordinate_start)
-                            logger.debug("判断结界卡是否是目标结界卡:{}", target_card)
-                            is_target = image_service.exists(target_card, rgb=True,threshold=0.8)
-                            if is_target:
-                                # 截图,记录识别结果
-                                name=game_account.game_name
-                                name=name+"_"+target_card.replace("阴阳寮\\式神寄养\\结界卡\\","")
-                                image_service.snapshot(name,print_image=True)
-                                foster_result = target_card
-                                logger.debug("已找到目标结界卡,跳出一层循环,进入好友结界")
-                                break
+                            logger.debug("判断结界卡是否是目标类型:{}", target_type)
+                            is_type = image_service.exists(target_type)
+                            if is_type:
+                                logger.debug("判断结界卡是否是目标结界卡:{}", target_card)
+                                is_target = image_service.exists(target_card, rgb=True,threshold=0.8)
+                                if is_target and is_target[0]>1/2*resolution[0]:
+                                    # sys.exit()
+                                    # 截图,记录识别结果
+                                    name = game_account.game_name
+                                    name = name + "_" + target_card.replace("阴阳寮\\式神寄养\\结界卡\\", "")
+                                    image_service.snapshot(name, print_image=True)
+                                    foster_result = target_card
+                                    logger.debug("已找到目标结界卡,且X坐标在右侧,跳出一层循环,进入好友结界")
+                                    break
                             logger.debug("判断是否是未放置")
                             is_place = image_service.exists(Onmyoji.foster_JJK_WFZ)
                             if is_place:
@@ -999,4 +1018,4 @@ class OnmyojiService:
                 logger.debug("寄养用时{}秒,检查好友{}轮{}个，平均用时{}秒，寄养结果{}", time_time, num_round, num_friend,
                              time_avg_friend, foster_result)
             else:
-                logger.debug("已寄养，无需寄养,用时{}秒",time_time)
+                logger.debug("已寄养，无需寄养,用时{}秒", time_time)
