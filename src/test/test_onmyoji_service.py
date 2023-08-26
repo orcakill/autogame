@@ -22,7 +22,7 @@ def assist_onmyoji():
     logger.debug("开启拒接协战")
     while not project_interrupt_flag:
         time.sleep(30)
-        image_service.touch(Onmyoji.comm_FH_XSFYHSCH,cvstrategy=Cvstrategy.default)
+        image_service.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
 
 
 class TestOnmyojiService(TestCase):
@@ -203,7 +203,7 @@ class TestOnmyojiService(TestCase):
     def test_foster_care(self):
         global project_interrupt_flag
         logger.debug("式神寄养")
-        test_names = ['2', '3', '4', '5']
+        test_names = ['1', '2', '3', '4', '5']
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息

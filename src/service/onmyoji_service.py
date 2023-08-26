@@ -77,6 +77,8 @@ class OnmyojiService:
             image_service.touch(account, cvstrategy=Cvstrategy.default, wait=2)
             logger.debug("登录")
             image_service.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=3)
+            logger.debug("接受协议")
+            image_service.touch(Onmyoji.login_JSXY, wait=3)
             logger.debug("切换服务器")
             image_service.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, wait=3)
             logger.debug("点击小三角")
@@ -892,6 +894,8 @@ class OnmyojiService:
         num_round = 0
         # 寄养检查好友
         num_friend = 0
+        # 连续类型判断失败次数
+        num_type_fail = 0
         # 寄养结果
         foster_result = None
         # 账号信息
@@ -955,7 +959,7 @@ class OnmyojiService:
                     coordinate_start = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
                     logger.debug("计算位置2")
                     coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
-                    if coordinate_start and coordinate_end:
+                    if coordinate_start and coordinate_end and coordinate_end[1]-coordinate_start[1]>0:
                         for i_friends in range(100):
                             num_friend = num_friend + 1
                             logger.debug("当前第{}个好友", i_friends + 1)
@@ -975,19 +979,24 @@ class OnmyojiService:
                                     foster_result = target_card
                                     logger.debug("已找到目标结界卡,且X坐标在右侧,跳出一层循环,进入好友结界")
                                     break
-                            logger.debug("从第10个开始，每3个检查未放置；判断是否是未放置")
-                            is_place = image_service.exists(Onmyoji.foster_JJK_WFZ)
-                            if is_place:
-                                logger.debug("未放置,跳出一层循环，更换目标结界卡或结束寄养查找")
-                                complex_service.get_reward(Onmyoji.foster_SFHY)
-                                break
+                            else:
+                                num_type_fail = num_type_fail + 1
+                            logger.debug("好友数大于10，且连续3次不是太鼓和斗鱼，判断是否是未放置")
+                            if i_friends > 10 and num_type_fail % 3 == 0:
+                                is_place = image_service.exists(Onmyoji.foster_JJK_WFZ)
+                                if is_place:
+                                    logger.debug("未放置,跳出一层循环，更换目标结界卡或结束寄养查找")
+                                    complex_service.get_reward(Onmyoji.foster_SFHY)
+                                    break
+                            else:
+                                is_place = False
                             if not is_target and not is_place:
                                 logger.debug("没找到目标，且当前不是未放置，向下滑动")
                                 image_service.swipe(coordinate_end, coordinate_start)
-                    if is_target:
+                    if is_target and foster_result:
                         logger.debug("已找到目标结界卡,跳出二层循环")
                         break
-                if is_target:
+                if is_target and foster_result:
                     logger.debug("进入好友结界")
                     image_service.touch(Onmyoji.foster_JRJJ)
                     logger.debug("点击达摩")

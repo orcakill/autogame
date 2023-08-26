@@ -69,7 +69,7 @@ class AirtestService:
             return exists(template)
         except Exception as e:
             if is_throw:
-                logger.debug("异常：{}", e)
+                logger.error("异常：{}", e)
 
     @staticmethod
     def touch(template: Template, cvstrategy: [], timeout: float, is_throw: bool, times: int,
@@ -93,7 +93,7 @@ class AirtestService:
                 return False
         except Exception as e:
             if is_throw:
-                logger.debug("异常：{}", e)
+                logger.error("异常：{}", e)
 
     @staticmethod
     def touch_coordinate(v: [], wait_time: float = WAIT):

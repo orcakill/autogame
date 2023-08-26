@@ -37,11 +37,13 @@ TIMES = 1
 DURATION = 0.01
 windows_service = WindowsService()
 
+THROW = False
+
 
 class ImageService:
     @staticmethod
     def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
-               threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = False,
+               threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
                is_click: bool = False, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
@@ -75,12 +77,12 @@ class ImageService:
             return False
         except Exception as e:
             if is_throw:
-                logger.debug("异常：{}", e)
+                logger.error("异常：{}", e)
                 return False
 
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
-              threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = False, times: int = TIMES,
+              threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW, times: int = TIMES,
               duration: float = DURATION, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，点击图片
@@ -129,12 +131,12 @@ class ImageService:
         airtest_service.auto_setup(game_device)
 
     @staticmethod
-    def snapshot(name:str,print_image: bool = False):
+    def snapshot(name: str, print_image: bool = False):
         """
         设备截图
         :return:
         """
-        return airtest_service.snapshot(name,print_image)
+        return airtest_service.snapshot(name, print_image)
 
     @staticmethod
     def touch_coordinate(v: [], wait: float = WAIT):
@@ -183,7 +185,7 @@ class ImageService:
         获取分辨率
         :return:
         """
-        return  airtest_service.resolving_power()
+        return airtest_service.resolving_power()
 
     @staticmethod
     def cv2_2_pil(local):
