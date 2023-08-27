@@ -62,7 +62,7 @@ class Onmyoji:
     comm_FH_YSJZDHBSCH = r"通用\返回\右上角棕底红白色叉号"
     comm_FH_ZSJHKHSXYH = r"通用\返回\左上角黄框黄色小于号"
     comm_FH_ZSJZKDZSHXJT = r"通用\返回\左上角棕框淡棕色回型箭头"
-    comm_FH_ZSJHKZDHSXYH= r"通用\返回\左上角黑框棕底黄色小于号"
+    comm_FH_ZSJHKZDHSXYH = r"通用\返回\左上角黑框棕底黄色小于号"
     comm_FH_YSJGGCH = r"通用\返回\右上角公告叉号"
 
     demon_FMCSL = r"町中\逢魔之时\逢魔次数零"
@@ -162,7 +162,7 @@ class Onmyoji:
     reward_TLXZR = r"奖励\体力小纸人"
     reward_YHJXJCXZR = r"奖励\御魂觉醒加成小纸人"
     reward_YX = r"奖励\邮箱"
-    reward_HHZTB=r"奖励\花合战图标"
+    reward_HHZTB = r"奖励\花合战图标"
     reward_YCRW = r"奖励\右侧任务"
     reward_HHZQBLQ = r"奖励\花合战全部领取"
 
@@ -212,7 +212,7 @@ class Onmyoji:
     store_SDTB = r"商店\商店图标"
     user_SYTX = r"用户\首页头像"
     user_XZZH = r"用户\选择账号"
-    
+
     foster_SSYC = r"阴阳寮\式神寄养\式神育成"
     foster_JJTB = r"阴阳寮\式神寄养\结界图标"
     foster_YYLTB = r"阴阳寮\式神寄养\阴阳寮图标"
@@ -236,9 +236,21 @@ class Onmyoji:
     foster_JJK_LXDY = r"阴阳寮\式神寄养\结界卡\六星斗鱼"
     foster_JJK_WFZ = r"阴阳寮\式神寄养\结界卡\未放置"
 
+    region_ZCTZ = r"探索\阴阳寮突破\再次挑战"
+    region_ZB = r"探索\阴阳寮突破\准备"
+    region_YCYYL = r"探索\阴阳寮突破\右侧阴阳寮"
+    region_GTRQ = r"探索\阴阳寮突破\呱太入侵"
+    region_LJJ = r"探索\阴阳寮突破\寮结界"
+    region_ZDSB = r"探索\阴阳寮突破\战斗失败"
+    region_ZDSL = r"探索\阴阳寮突破\战斗胜利"
+    region_WTZCS = r"探索\阴阳寮突破\无挑战次数"
+    region_JJTPTB = r"探索\阴阳寮突破\结界突破图标"
+    region_JSZR = r"探索\阴阳寮突破\解锁阵容"
+    region_JG = r"探索\阴阳寮突破\进攻"
+    region_TCTZ= r"探索\阴阳寮突破\退出挑战"
+    region_SDZR = r"探索\阴阳寮突破\锁定阵容"
+    region_ZCTPJD = r"探索\阴阳寮突破\左侧突破进度"
 
-    region_= r"阴阳寮\式神寄养\结界卡\未放置"
-    
 
 
 class Cvstrategy:

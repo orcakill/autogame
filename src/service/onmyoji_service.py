@@ -325,9 +325,9 @@ class OnmyojiService:
                 is_result = complex_service.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                                       Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,
                                                       300, 1)
-                if is_result:
+                if is_result in [Onmyoji.border_ZDSL, Onmyoji.border_ZDSB]:
                     num_win = num_win + 1
-                elif not is_result:
+                elif is_result == Onmyoji.border_ZCTZ:
                     num_false = num_false + 1
                 time_fight_end = time.time()
                 time_fight = time_fight_end - time_fight_start
@@ -795,7 +795,7 @@ class OnmyojiService:
                     if i == 0:
                         logger.debug("好友协战-小号-协战-第一次")
                         logger.debug("解锁阵容")
-                        image_service.touch(Onmyoji.soul_BQ_SDZR, wait=3)
+                        image_service.touch(Onmyoji.soul_BQ_JSZR, wait=3)
                         logger.debug("挑战")
                         image_service.touch(Onmyoji.soul_BQ_TZ, wait=3)
                         logger.debug("点击宠物")
@@ -848,21 +848,20 @@ class OnmyojiService:
                             logger.debug("战斗失败")
                             image_service.touch(Onmyoji.soul_BQ_ZDSB)
                     else:
-                        if i == 1:
-                            logger.debug("锁定阵容")
-                            image_service.touch(Onmyoji.soul_BQ_JSZR)
+                        logger.debug("锁定阵容")
+                        image_service.touch(Onmyoji.soul_BQ_SDZR)
                         logger.debug("点击挑战")
                         is_fight = image_service.touch(Onmyoji.soul_BQ_TZ)
-                        if is_fight:
+                        if not is_fight:
                             logger.debug("好友协战-判断是否还有八岐大蛇-未挑战")
-                            is_fight = image_service.touch(Onmyoji.soul_BQ_TZ, wait=2)
-                            if is_fight:
-                                logger.debug("好友协战-再次点击挑战")
+                            image_service.touch(Onmyoji.soul_BQ_TZ, wait=2)
+                            logger.debug("好友协战-判断是否还有准备")
+                            image_service.touch(Onmyoji.soul_BQ_ZB)
                         logger.debug("好友协战-等待战斗结果")
                         is_result = complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
                                                               Onmyoji.soul_BQ_ZCTZ,
                                                               Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 120, 1)
-                        if not is_result and is_result is not None:
+                        if is_result == Onmyoji.border_ZCTZ:
                             logger.debug("战斗失败，阵容有问题，结束循环")
                             break
                     if not is_assist_shikigami:
@@ -938,13 +937,13 @@ class OnmyojiService:
                         target_card = Onmyoji.foster_JJK_SXTG1
                     elif i_type == 3:
                         target_type = Onmyoji.foster_JJK_DY
-                        target_card = Onmyoji.foster_JJK_LXDY
+                        target_card = Onmyoji.foster_JJK_SXTG
                     elif i_type == 4:
                         target_type = Onmyoji.foster_JJK_DY
-                        target_card = Onmyoji.foster_JJK_WXDY
+                        target_card = Onmyoji.foster_JJK_LXDY
                     elif i_type == 5:
                         target_type = Onmyoji.foster_JJK_TG
-                        target_card = Onmyoji.foster_JJK_SXTG
+                        target_card = Onmyoji.foster_JJK_WXDY
                     elif i_type == 6:
                         target_type = Onmyoji.foster_JJK_TG
                         target_card = Onmyoji.foster_JJK_SXDY1
@@ -954,12 +953,12 @@ class OnmyojiService:
                     coordinate_friend = image_service.exists(Onmyoji.foster_SFHY)
                     logger.debug("确定上方跨区坐标")
                     coordinate_region = image_service.exists(Onmyoji.foster_SFKQ)
-                    logger.debug("计算位置1")
-                    coordinate_difference = coordinate_region[0] - coordinate_friend[0]
+                    logger.debug("计算位置1,测试系数0.9")
+                    coordinate_difference = 0.9 * (coordinate_region[0] - coordinate_friend[0])
                     coordinate_start = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
                     logger.debug("计算位置2")
                     coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
-                    if coordinate_start and coordinate_end and coordinate_end[1]-coordinate_start[1]>0:
+                    if coordinate_start and coordinate_end and coordinate_end[1] - coordinate_start[1] > 0:
                         for i_friends in range(100):
                             num_friend = num_friend + 1
                             logger.debug("当前第{}个好友", i_friends + 1)
@@ -1030,3 +1029,63 @@ class OnmyojiService:
                              time_avg_friend, foster_result)
             else:
                 logger.debug("已寄养，无需寄养,用时{}秒", time_time)
+
+    @staticmethod
+    def region_border(game_task: []):
+        # 开始时间
+        time_start = time.time()
+        # 战斗胜利次数
+        num_win = 0
+        # 战斗失败次数
+        num_fail = 0
+        # 账号信息
+        game_account = GameAccount(game_task[2])
+        logger.debug(game_account.game_name)
+        logger.debug("进入探索")
+        image_service.touch(Onmyoji.home_TS)
+        logger.debug("进入结界突破")
+        image_service.touch(Onmyoji.region_JJTPTB)
+        logger.debug("进入寮突破")
+        image_service.touch(Onmyoji.region_YCYYL)
+        logger.debug("锁定阵容")
+        image_service.touch(Onmyoji.region_SDZR)
+        logger.debug("判断有寮结界")
+        is_fight = image_service.exists(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
+        logger.debug("判断是否无寮结界挑战")
+        is_fight_times = image_service.exists(Onmyoji.region_WTZCS)
+        if is_fight and is_fight_times:
+            logger.debug("阴阳寮突破开始")
+            for i_fight in range(9):
+                logger.debug("阴阳寮突破{}次", i_fight + 1)
+                logger.debug("点击寮结界")
+                is_fight = image_service.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
+                if not is_fight:
+                    logger.debug("再次点击寮结界")
+                    image_service.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
+                logger.debug("点击进攻")
+                image_service.touch(Onmyoji.region_JG)
+                logger.debug("判断是否还有进攻")
+                is_attack = image_service.exists(Onmyoji.region_JG, wait=3)
+                if is_attack:
+                    logger.debug("可能已被挑战,点击左侧突破进度")
+                    image_service.touch(Onmyoji.region_ZCTPJD)
+                else:
+                    logger.debug("等待战斗结果")
+                    is_result = complex_service.fight_end(Onmyoji.region_ZDSL, Onmyoji.region_ZDSB, Onmyoji.region_ZCTZ,
+                                                          Onmyoji.region_TCTZ, Onmyoji.region_LJJ, 300, 2)
+                    if is_result in [Onmyoji.region_ZDSL, Onmyoji.region_TCTZ]:
+                        num_win = num_win + 1
+                    elif is_result == Onmyoji.border_ZCTZ:
+                        num_fail = num_fail + 1
+        else:
+            logger.debug("无寮结界或者无挑战次数")
+        logger.debug("返回首页")
+        image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
+        image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        logger.debug("确认返回首页")
+        OnmyojiService.return_home(game_task)
+        # 结束时间
+        time_end = time.time()
+        # 总用时
+        time_time = time_end - time_start
+        logger.debug("本轮阴阳寮总用时{}秒", time_time)

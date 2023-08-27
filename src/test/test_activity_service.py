@@ -39,8 +39,8 @@ class TestActivityService(TestCase):
     def test_current_activity0(self):
         global project_interrupt_flag
         logger.debug("当前活动测试-云手机")
-        # test_names = ['2', '3', '4', '5']
-        test_names = ['3']
+        test_names = ['2', '3', '4', '5']
+        # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
         image_service.auto_setup(test_devices)
@@ -56,6 +56,8 @@ class TestActivityService(TestCase):
             game_project = GameProject()
             game_task = [game_projects, game_projects_relation, game_account, game_project]
             logger.debug("开始测试-当前活动-云手机")
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 执行测试任务

@@ -81,27 +81,21 @@ class ActivityService:
         image_service.touch(p_unlock)
         num = 0
         for i in range(240):
-            logger.debug("第{}次挑战", i + 1)
+            logger.debug("{}:第{}次挑战", game_account.game_name, i + 1)
             is_fight = image_service.touch(p_fight)
             if not is_fight:
                 logger.debug("挑战未点击成功，判断是否有退出挑战")
-                is_quit = image_service.touch(p_fight_quit)
-                logger.debug("挑战未点击成功，判断是否悬赏封印")
-                is_offer_reward = image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
+                image_service.touch(p_fight_quit)
                 logger.debug("挑战未点击成功，判断是否进入左侧聊天")
-                is_offer_reward = image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
-                if is_quit or is_offer_reward:
-                    num = 0
+                image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
             time.sleep(3)
+            logger.debug("等待战斗结果")
             is_result = complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_fight, 60,
                                                   3)
             if is_result is None:
-                if num > 1:
-                    num = num + 1
-                else:
-                    num = 0
-                if num > 3:
-                    logger.debug("连续3次战斗结果判断为空")
+                is_gift = complex_service.get_reward(p_gift)
+                if is_gift:
+                    logger.debug("需要买票，可能已无票")
                     break
         logger.debug("返回首页")
         image_service.touch(p_return)

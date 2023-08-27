@@ -70,6 +70,8 @@ class OnmyojiController:
                             OnmyojiService.friends_manage(game_task[j])
                         elif game_project.project_name in ["好友协战"]:
                             OnmyojiService.friends_fight(game_task[j])
+                        elif game_project.project_name in ["式神寄养"]:
+                            OnmyojiService.foster_care(game_task[j])
                     else:
                         logger.debug("当前状态初始化失败{}", game_account.game_name)
             if game_is_email:

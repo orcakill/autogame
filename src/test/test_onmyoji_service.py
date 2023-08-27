@@ -11,6 +11,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
+from src.utils.folder_utils import FolderUtils
 from src.utils.my_logger import logger
 
 image_service = ImageService()
@@ -43,8 +44,8 @@ class TestOnmyojiService(TestCase):
     def test_border_fight(self):
         logger.debug("结界突破")
         # test_names = ['2','3','4','5']
-        test_names = ['5']
-        test_devices = '0'
+        test_names = ['1']
+        test_devices = '2'
         # 初始化设备信息
         image_service.auto_setup(test_devices)
         for i in range(len(test_names)):
@@ -113,9 +114,10 @@ class TestOnmyojiService(TestCase):
 
     def test_encounter_demons(self):
         logger.debug("逢魔之时")
-        test_names = ['2', '3', '4', '5']
+        test_names = ['3', '4', '5', '2']
         # test_names = ['5']
         test_devices = '0'
+        FolderUtils.clear_folder_shutil(r"D:\image")
         # 初始化设备信息
         image_service.auto_setup(test_devices)
         for i in range(len(test_names)):
@@ -129,6 +131,9 @@ class TestOnmyojiService(TestCase):
             logger.debug("开始测试-逢魔之时{}", test_name)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
+            OnmyojiService.initialization(game_task)
+            # 寄养检查
+            OnmyojiService.foster_care(game_task)
             # 执行测试任务
             OnmyojiService.encounter_demons(game_task)
 
@@ -203,7 +208,7 @@ class TestOnmyojiService(TestCase):
     def test_foster_care(self):
         global project_interrupt_flag
         logger.debug("式神寄养")
-        test_names = ['1', '2', '3', '4', '5']
+        test_names = ['2', '3', '4', '5', '2']
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
@@ -222,8 +227,40 @@ class TestOnmyojiService(TestCase):
             logger.debug("开始测试-式神寄养")
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
             # 执行测试任务
             OnmyojiService.foster_care(game_task)
+            logger.debug("{}测试完成", test_name)
+            project_interrupt_flag = True
+        thread2.join()
+
+    def test_region_border(self):
+        global project_interrupt_flag
+        logger.debug("阴阳寮突破")
+        test_names = ['2']
+        # test_names = ['3']
+        test_devices = '0'
+        # 初始化设备信息
+        image_service.auto_setup(test_devices)
+        # 拒接协战
+        thread2 = threading.Thread(target=assist_onmyoji, args=())
+        thread2.start()
+        for i in range(len(test_names)):
+            test_name = test_names[i]
+            # 初始化测试任务信息
+            game_projects = GameProjects()
+            game_projects_relation = GameProjectsRelation()
+            game_account = select_game_account(test_name)
+            game_project = GameProject()
+            game_task = [game_projects, game_projects_relation, game_account, game_project]
+            logger.debug("开始测试-阴阳寮突破")
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 执行测试任务
+            OnmyojiService.region_border(game_task)
             logger.debug("{}测试完成", test_name)
             project_interrupt_flag = True
         thread2.join()

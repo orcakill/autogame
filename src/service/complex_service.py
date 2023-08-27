@@ -21,7 +21,7 @@ fight_result = None
 
 class ComplexService:
     @staticmethod
-    def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_none: str,
+    def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_none: str = None,
                   timeouts: float = 60, timeout: float = 1):
         """
         结界战斗，结束战斗
@@ -29,7 +29,7 @@ class ComplexService:
         2、退出挑战
         3、再次挑战（只识别不点击），战斗失败
         :param timeouts: 识别最大时间
-        :param fight_none: 已有挑战，什么都不做
+        :param fight_none: 挑战（挑战）
         :param timeout: 超时时间
         :param fight_win: 战斗胜利
         :param fight_fail: 战斗失败
@@ -43,7 +43,7 @@ class ComplexService:
         fight_result = None
         # 创建线程1，战斗胜利，退出挑战
         thread1 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-11",
-                                   args=(fight_win, True, fight_quit, True, timeouts, timeout))
+                                   args=(fight_win, True, fight_quit, True, timeouts, timeout, True))
         # 创建线程2，退出挑战,无
         thread2 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-12",
                                    args=(fight_quit, True, None, True, timeouts, timeout, True))
@@ -63,12 +63,7 @@ class ComplexService:
         thread3.join()
         thread4.join()
         logger.debug("战斗结果:{}", fight_result)
-        if fight_result in [fight_win, fight_quit]:
-            return True
-        elif fight_result in [fight_again]:
-            return False
-        else:
-            return None
+        return fight_result
 
     @staticmethod
     def fight_end_thread(first, first_click, second, second_click, timeouts, timeout, again: bool = False):
@@ -78,21 +73,21 @@ class ComplexService:
         cvstrategy = Cvstrategy.sift
         rgb = False
         threshold = 0.7
-        if first == Onmyoji.border_GRJJ:
+        if first in [Onmyoji.border_GRJJ, Onmyoji.region_LJJ]:
             cvstrategy = Cvstrategy.default
         while time.time() - time_start < timeouts and not fight_interrupt_flag:
             is_first = image_service.exists(first, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
-                                            threshold=threshold,wait=timeout)
+                                            threshold=threshold, wait=timeout)
             if is_first and not fight_interrupt_flag:
                 if first_click and again:
                     image_service.exists(first, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
-                                         is_click=True,wait=timeout)
+                                         is_click=True, wait=timeout)
                 elif first_click and not again:
                     image_service.touch_coordinate(is_first)
                 fight_interrupt_flag = True
                 fight_result = first
                 if second is not None:
-                    image_service.exists(second, timeouts=timeout, is_click=second_click,wait=timeout)
+                    image_service.exists(second, timeouts=timeout, is_click=second_click, wait=timeout)
                 logger.debug("提前结束：{}", first)
                 return True
         logger.debug("识别结束：{}", first)
