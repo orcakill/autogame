@@ -31,40 +31,26 @@ class AirtestService:
         设备连接
         :return:
         """
+        devices_name = None
         if game_device == "0":
             logger.debug("检查是否启动云手机")
             WindowsService.start_exe("YsConsole", "云帅云手机")
-            logger.debug("判断设备是否已就绪")
-            is_state = WindowsService.get_device_status_by_ip("127.0.0.1:50000")
-            while is_state != "device":
-                logger.debug("未就绪，设备状态{},等待10s",is_state)
-                time.sleep(10)
-                logger.debug("重新判断是否已就绪")
-                is_state = WindowsService.get_device_status_by_ip("127.0.0.1:50000")
-            logger.debug("设备已就绪")
-            auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/127.0.0.1:50000"])
+            devices_name = "127.0.0.1:50000"
         if game_device == "1":
             logger.debug("检查是否启动夜神模拟器")
             WindowsService.start_exe("Nox", "夜神模拟器")
-            logger.debug("判断设备是否已就绪")
-            is_state = WindowsService.get_device_status_by_ip("127.0.0.1:62001")
-            while is_state != "device":
-                logger.debug("未就绪，设备状态{},等待10s",is_state)
-                time.sleep(10)
-                logger.debug("重新判断是否已就绪")
-                is_state = device().connected(port='62001')
-            logger.debug("设备已就绪")
-            auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/127.0.0.1:62001"])
+            devices_name = "127.0.0.1:62001"
         if game_device == "2":
-            logger.debug("判断设备是否已就绪")
-            is_state = WindowsService.get_device_status_by_ip("E8X9X19719000371")
-            while is_state != "device":
-                logger.debug("未就绪，设备状态{},等待10s",is_state)
-                time.sleep(10)
-                logger.debug("重新判断是否已就绪")
-                is_state = WindowsService.get_device_status_by_ip("E8X9X19719000371")
-            logger.debug("设备已就绪")
-            auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/E8X9X19719000371"])
+            devices_name = "E8X9X19719000371"
+        logger.debug("判断设备是否已就绪")
+        is_state = WindowsService.get_device_status_by_ip(devices_name)
+        while is_state != "device":
+            logger.debug("未就绪，设备状态{},等待10s", is_state)
+            time.sleep(10)
+            logger.debug("重新判断是否已就绪")
+            is_state = WindowsService.get_device_status_by_ip(devices_name)
+        logger.debug("设备已就绪")
+        auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/" + devices_name])
 
     @staticmethod
     def snapshot(name: str, print_image: bool = False):

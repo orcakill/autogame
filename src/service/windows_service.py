@@ -50,7 +50,11 @@ class WindowsService:
             device_list_string = output.replace('List of devices attached', '').strip()
             # 拆分设备列表字符串为设备和状态的元组列表
             devices = [tuple(device.split('\t')) for device in device_list_string.split('\r\n') if device]
-            index = next((i for i, device in enumerate(devices) if device[0] == ip), -1)
-            return devices[index][1]
+            if devices:
+                for item in devices:
+                    if item[0] == ip:
+                        return item[1]
+            else:
+                return False
         else:
-            return None
+            return False
