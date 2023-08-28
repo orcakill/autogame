@@ -52,26 +52,39 @@ class OnmyojiController:
                     logger.info("当前状态初始化")
                     is_initialization = OnmyojiService.initialization(game_task[j])
                     if is_initialization:
+                        # 项目 1、24 每日奖励领取
                         if game_project.project_name in ["登录"]:
                             OnmyojiService.initialization(game_task[j])
+                        # 项目 2
                         elif game_project.project_name in ["每日奖励"]:
                             OnmyojiService.daily_rewards(game_task[j])
+                        # 项目 3
                         elif game_project.project_name in ["逢魔之时"]:
                             OnmyojiService.encounter_demons(game_task[j])
+                        # 项目 4
                         elif game_project.project_name in ["地域鬼王"]:
                             OnmyojiService.ghost_king(game_task[j])
-                        elif game_project.project_name in ["觉醒十"]:
-                            OnmyojiService.awakening(game_task[j])
-                        elif game_project.project_name in ["魂一", "魂十", "魂十一"]:
-                            OnmyojiService.soul_fight(game_task[j])
-                        elif game_project.project_name in ["个人突破"]:
-                            OnmyojiService.border_fight(game_task[j])
-                        elif game_project.project_name in ["好友管理"]:
-                            OnmyojiService.friends_manage(game_task[j])
-                        elif game_project.project_name in ["好友协战"]:
-                            OnmyojiService.friends_fight(game_task[j])
+                        # 项目 5
                         elif game_project.project_name in ["式神寄养"]:
                             OnmyojiService.foster_care(game_task[j])
+                        # 项目 7
+                        elif game_project.project_name in ["阴阳寮突破"]:
+                            OnmyojiService.region_border(game_task[j])
+                        # 项目 8
+                        elif game_project.project_name in ["个人突破"]:
+                            OnmyojiService.border_fight(game_task[j])
+                        # 项目 9
+                        elif game_project.project_name in ["好友管理"]:
+                            OnmyojiService.friends_manage(game_task[j])
+                        # 项目 10
+                        elif game_project.project_name in ["好友协战"]:
+                            OnmyojiService.friends_fight(game_task[j])
+                        # 项目 11
+                        elif game_project.project_name in ["觉醒十"]:
+                            OnmyojiService.awakening(game_task[j])
+                        # 项目 12,13,14,15
+                        elif game_project.project_name in ["魂一", "魂十", "魂十一","魂十二"]:
+                            OnmyojiService.soul_fight(game_task[j])
                     else:
                         logger.debug("当前状态初始化失败{}", game_account.game_name)
             if game_is_email:

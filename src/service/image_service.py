@@ -116,18 +116,6 @@ class ImageService:
         :param game_device:
         :return:
         """
-        if game_device == "0":
-            logger.debug("检查是否启动云手机")
-            is_state = windows_service.start_exe("YsConsole", "云帅云手机")
-            if not is_state:
-                logger.debug("等待30秒")
-                time.sleep(30)
-        if game_device == "1":
-            logger.debug("检查是否启动夜神模拟器")
-            is_state = windows_service.start_exe("Nox", "夜神模拟器")
-            if not is_state:
-                logger.debug("等待30秒")
-                time.sleep(30)
         airtest_service.auto_setup(game_device)
 
     @staticmethod

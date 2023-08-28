@@ -62,6 +62,8 @@ class OnmyojiService:
                         break
                     logger.debug("等待10秒")
                     time.sleep(10)
+            logger.debug("接受协议")
+            image_service.touch(Onmyoji.login_JSXY)
             logger.debug("登录账号")
             logger.debug("判断当前账号选择")
             is_account_select = image_service.exists(Onmyoji.login_WYYX)
@@ -69,7 +71,10 @@ class OnmyojiService:
                 logger.debug("用户中心")
                 image_service.touch(Onmyoji.login_YHZX, wait=2)
                 logger.debug("切换账号")
-                image_service.touch(Onmyoji.login_QHZH, wait=2)
+                is_switch = image_service.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2)
+                if not is_switch:
+                    logger.debug("重新点击切换账号")
+                    image_service.touch(Onmyoji.login_QHZH, wait=2)
             logger.debug("常用")
             image_service.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
             logger.debug("选择账号")
@@ -142,27 +147,34 @@ class OnmyojiService:
         is_index = image_service.exists(account_index)
         is_explore = image_service.exists(Onmyoji.home_TS)
         if not is_index or not is_explore:
-            logger.debug("不在账号首页，循环5次，5次不成功则返回失败")
-            # 获取返回列表
-            for i_return in range(5):
-                logger.debug("点击可能存在的返回按钮")
-                image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-                image_service.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH)
-                image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
-                image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
-                image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
-                image_service.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
-                image_service.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
-                image_service.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
-                logger.debug("点击可能存在的退出挑战")
-                image_service.touch(Onmyoji.soul_BQ_TCTZ)
-                logger.debug("重新判断是否返回首页")
-                is_index = image_service.exists(account_index)
-                is_explore = image_service.exists(Onmyoji.home_TS)
-                if is_index and is_explore:
-                    logger.debug("返回首页成功")
-                    return True
+            logger.debug("判断是否在桌面")
+            is_desktop = image_service.exists(Onmyoji.login_YYSTB)
+            if not is_desktop:
+                logger.debug("不在账号首页且不是桌面，循环5次，5次不成功则返回失败")
+                # 获取返回列表
+                for i_return in range(5):
+                    logger.debug("点击可能存在的返回按钮")
+                    image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                    image_service.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH)
+                    image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
+                    image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
+                    image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+                    image_service.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
+                    image_service.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
+                    image_service.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+                    logger.debug("点击可能存在的退出挑战")
+                    image_service.touch(Onmyoji.soul_BQ_TCTZ)
+                    logger.debug("重新判断是否返回首页")
+                    is_index = image_service.exists(account_index)
+                    is_explore = image_service.exists(Onmyoji.home_TS)
+                    if is_index and is_explore:
+                        logger.debug("返回首页成功")
+                        return True
+            else:
+                logger.debug("在桌面，重新登录")
+                return False
         else:
+            logger.debug("有探索，有账号，在首页")
             return True
         return False
 
@@ -397,15 +409,17 @@ class OnmyojiService:
         logger.debug("开启加成")
         complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 1)
         logger.debug("锁定阵容")
-        image_service.touch(Onmyoji.awaken_JSZR)
+        image_service.touch(Onmyoji.awaken_SDZR)
         for i in range(fight_time):
             logger.debug("觉醒挑战{}次", i + 1)
             is_fight = image_service.touch(Onmyoji.awaken_TZ)
-            if is_fight:
-                logger.debug("判断是否未挑战")
-                is_fight = image_service.touch(Onmyoji.awaken_TZ, wait=2)
-                if is_fight:
-                    logger.debug("再次点击挑战")
+            if not is_fight:
+                logger.debug("再次锁定阵容")
+                image_service.touch(Onmyoji.awaken_SDZR)
+                logger.debug("再次点击挑战")
+                image_service.touch(Onmyoji.awaken_TZ, wait=2)
+                logger.debug("点击准备")
+                image_service.touch(Onmyoji.awaken_ZB, wait=2)
             logger.debug("等待战斗结果")
             complex_service.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
                                       Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, 60, 1)
@@ -636,32 +650,37 @@ class OnmyojiService:
             logger.debug("点击今日挑战")
             image_service.touch(Onmyoji.ghost_JRTZ, wait=2)
             logger.debug("判断是否有未挑战")
-            is_select = image_service.exists(Onmyoji.ghost_WXZ, wait=2)
+            is_select = image_service.exists(Onmyoji.ghost_WXZ, cvstrategy=Cvstrategy.default, wait=3)
             if is_select:
                 logger.debug("收藏鬼王")
-                for i in range(3):
+                for i in range(6):
                     logger.debug("点击筛选")
-                    image_service.touch(Onmyoji.ghost_SX, wait=2)
+                    image_service.touch(Onmyoji.ghost_SX, wait=3)
                     logger.debug("点击收藏")
-                    image_service.touch(Onmyoji.ghost_SC, wait=2)
-                    if i == 0:
+                    is_collection = image_service.touch(Onmyoji.ghost_SC, wait=2)
+                    if not is_collection:
+                        logger.debug("无收藏，重新点击筛选")
+                        image_service.touch(Onmyoji.ghost_SX, wait=2)
+                        logger.debug("点击收藏")
+                        image_service.touch(Onmyoji.ghost_SC, wait=2)
+                    if i in [0, 3]:
                         logger.debug("鸟巢")
                         image_service.touch(Onmyoji.ghost_SCGW_NC, wait=2)
-                    elif i == 1:
+                    elif i in [1, 4]:
                         logger.debug("少林寺藏经阁")
                         image_service.touch(Onmyoji.ghost_SCGW_SLSCJG, wait=2)
-                    elif i == 2:
-                        logger.debug("丹霞山")
-                        image_service.touch(Onmyoji.ghost_SCGW_DXS, wait=2)
+                    elif i in [2, 5]:
+                        logger.debug("黄鹤楼")
+                        image_service.touch(Onmyoji.ghost_SXGW_HHL, wait=2)
                     logger.debug("进入鬼王挑战页面")
-                    if game_account.account_class == 0:
+                    if game_account.account_class == "0":
                         logger.debug("大号，挑战极地域鬼王")
                         logger.debug("判断是否有极标志")
                         is_ordinary = image_service.exists(Onmyoji.ghost_JBZ)
                         if is_ordinary:
                             logger.debug("点击极标志，切换成极地域鬼王")
                             image_service.touch_coordinate(is_ordinary)
-                    if game_account.account_class != 0:
+                    if game_account.account_class != "0":
                         logger.debug("小号，挑战等级一的地域鬼王")
                         is_first = image_service.exists(Onmyoji.ghost_DJY)
                         if not is_first:
@@ -697,6 +716,7 @@ class OnmyojiService:
             else:
                 logger.debug("无未选择，退出地域鬼王")
             logger.debug("返回首页")
+            image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
             image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
             image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
 

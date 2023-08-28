@@ -2,6 +2,8 @@
 # @Author: orcakill
 # @File: windows_service.py
 # @Description: window 相关服务接口
+import subprocess
+
 from src.utils.my_logger import logger
 import os
 
@@ -35,3 +37,20 @@ class WindowsService:
     def start_process(shortcut_path):
         # 使用快捷方式启动应用程序
         os.startfile(shortcut_path)
+
+    @staticmethod
+    def get_device_status_by_ip(ip):
+        try:
+            result = subprocess.run(['adb', 'devices'], stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            return None
+        output = result.stdout.decode('utf-8')
+        if output.startswith('List of devices attached'):
+            # 删除开头的"List of devices attached"和结尾的空行
+            device_list_string = output.replace('List of devices attached', '').strip()
+            # 拆分设备列表字符串为设备和状态的元组列表
+            devices = [tuple(device.split('\t')) for device in device_list_string.split('\r\n') if device]
+            index = next((i for i, device in enumerate(devices) if device[0] == ip), -1)
+            return devices[index][1]
+        else:
+            return None

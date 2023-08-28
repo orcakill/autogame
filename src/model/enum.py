@@ -151,6 +151,7 @@ class Onmyoji:
     login_YHZX = r"登录\用户中心"
     login_ZXJS = r"登录\注销角色"
     login_JSXY = r"登录\接受协议"
+    login_YYSTB = r"登录\阴阳师图标"
 
     reward_GYXZR = r"奖励\勾玉小纸人"
     reward_HDJL = r"奖励\获得奖励"

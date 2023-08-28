@@ -12,3 +12,15 @@ def test_select_task():
     # 查询测试
     task = MapperExtend.select_game_task("", "2")
     logger.info(task)
+
+
+def test_select_game_account():
+    # 查询测试
+    task = MapperExtend.select_game_thread("2")
+    logger.info(task)
+
+
+def test_select_game_project():
+    # 查询测试
+    task = MapperExtend.select_game_project("", "2")
+    logger.info(task)
