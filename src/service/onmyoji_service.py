@@ -319,7 +319,7 @@ class OnmyojiService:
                         logger.debug("无结界挑战劵，跳出循环")
                         break
             time_fight_end = time.time()
-            time_fight = time_fight_end - time_fight_start
+            time_fight = time_fight_end -  time_fight_start
             logger.debug("本次结界突破战斗结束，用时{}秒", round(time_fight, 3))
             time_fight_list.append(time_fight)
         logger.debug("返回探索界面")
