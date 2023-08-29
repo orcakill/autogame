@@ -211,6 +211,7 @@ class Onmyoji:
     store_LBW = r"商店\礼包屋"
     store_MRLQ = r"商店\每日领取"
     store_SDTB = r"商店\商店图标"
+    store_TJ = r"商店\推荐"
     user_SYTX = r"用户\首页头像"
     user_XZZH = r"用户\选择账号"
 
@@ -248,10 +249,9 @@ class Onmyoji:
     region_JJTPTB = r"探索\阴阳寮突破\结界突破图标"
     region_JSZR = r"探索\阴阳寮突破\解锁阵容"
     region_JG = r"探索\阴阳寮突破\进攻"
-    region_TCTZ= r"探索\阴阳寮突破\退出挑战"
+    region_TCTZ = r"探索\阴阳寮突破\退出挑战"
     region_SDZR = r"探索\阴阳寮突破\锁定阵容"
     region_ZCTPJD = r"探索\阴阳寮突破\左侧突破进度"
-
 
 
 class Cvstrategy:

@@ -334,9 +334,9 @@ class TestOnmyojiService(TestCase):
         """
         global project_interrupt_flag
         logger.debug("觉醒十")
-        test_names = ['1']
+        test_names = ['4']
         # test_names = ['3']
-        test_devices = '1'
+        test_devices = '0'
         # 初始化设备信息
         image_service.auto_setup(test_devices)
         # 拒接协战
@@ -356,7 +356,7 @@ class TestOnmyojiService(TestCase):
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 执行测试任务
-            OnmyojiService.awakening(game_task)
+            OnmyojiService.awakening(game_task,1)
             logger.debug("{}测试完成", test_name)
             project_interrupt_flag = True
         thread2.join()

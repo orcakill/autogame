@@ -19,9 +19,9 @@ ocr_service = OcrService
 
 class TestImageService(TestCase):
     def test_exists(self):
-        image_service.auto_setup("1")
+        image_service.auto_setup("0")
         now = datetime.datetime.now()
-        is_border = image_service.touch(r"活动\20230823\LBS鬼王\组队挑战",cvstrategy=Cvstrategy.default)
+        is_border = image_service.touch(Onmyoji.soul_BQ_SDZR)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -49,7 +49,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        image_service.snapshot(True)
+        image_service.snapshot("1")
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -59,7 +59,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        screen = image_service.crop_image(100, 100, 200, 200)
+        image_service.crop_image(100, 100, 200, 200)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

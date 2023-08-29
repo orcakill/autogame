@@ -489,6 +489,8 @@ class OnmyojiService:
                 image_service.touch_coordinate(is_right)
             logger.debug("点击礼包屋")
             image_service.touch(Onmyoji.store_LBW)
+            logger.debug("点击推荐")
+            image_service.touch(Onmyoji.store_TJ)
             logger.debug("判断是否有每日领取")
             is_day = image_service.exists(Onmyoji.store_MRLQ, wait=2)
             if is_day:

@@ -85,7 +85,6 @@ class ActivityService:
                 complex_service.get_reward(p_gift)
         logger.debug("锁定阵容")
         image_service.touch(p_unlock)
-        num = 0
         for i in range(240):
             logger.debug("{}:第{}次挑战", game_account.game_name, i + 1)
             is_fight = image_service.touch(p_fight)
@@ -93,7 +92,7 @@ class ActivityService:
                 logger.debug("挑战未点击成功，判断是否有退出挑战")
                 image_service.touch(p_fight_quit)
                 logger.debug("挑战未点击成功，判断是否进入左侧聊天")
-                image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
+                image_service.touch(p_chat)
             time.sleep(3)
             logger.debug("等待战斗结果")
             is_result = complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_fight, 60,
@@ -128,23 +127,30 @@ class ActivityService:
         logger.debug("进入现世妖约")
         for i in range(50):
             logger.debug("点击LBS鬼王入口")
-            is_entrance=image_service.touch(p_RK)
+            is_entrance = image_service.touch(p_RK)
             if not is_entrance:
                 logger.debug("点击首页入口")
                 image_service.touch(p_RK1)
             logger.debug("点击组队挑战")
-            image_service.touch(p_TEAM,wait=3,cvstrategy=Cvstrategy.default)
+            image_service.touch(p_TEAM, wait=3, cvstrategy=Cvstrategy.default)
             logger.debug("点击所有人")
             image_service.touch(p_SYL)
             logger.debug("点击创建")
-            image_service.touch(p_CJ,cvstrategy=Cvstrategy.default)
+            image_service.touch(p_CJ, cvstrategy=Cvstrategy.default)
             logger.debug("点击挑战")
-            image_service.touch(p_TZ)
+            is_fight = image_service.touch(p_TZ)
+            if not is_fight:
+                logger.debug("点击创建后，无挑战")
+                is_team = image_service.exists(p_TEAM, wait=3, cvstrategy=Cvstrategy.default)
+                if is_team:
+                    logger.debug("有组队，可能无挑战次数，退出循环")
+                    break
             logger.debug("点击准备")
-            image_service.touch(p_ZB,wait=5)
+            image_service.touch(p_ZB, wait=5)
             logger.debug("等待战斗结果")
-            complex_service.fight_end(p_fight_win,p_fight_fail,p_fight_again,p_fight_quit,p_TEAM,30,1)
+            complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_TEAM, 300, 1)
         logger.debug("返回首页")
+        image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
         image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
         logger.debug("确认返回首页")
         OnmyojiService.return_home(game_task)
