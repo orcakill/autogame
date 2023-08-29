@@ -6,11 +6,12 @@
 """
 import time
 
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
+from src.service.onmyoji_service import OnmyojiService
 from src.utils.my_logger import logger
 
 # 服务接口
@@ -24,6 +25,11 @@ class ActivityService:
     def current_activity(game_task: []):
         # 当前活动 2023-08-23 至 2023-08-30   爬塔-真火切磋
         ActivityService.climbing_tower_20230823(game_task)
+
+    @staticmethod
+    def current_lbs(game_task: []):
+        # 当前活动 2023-08-23 至 2023-08-30   lbs鬼王
+        ActivityService.lbs_20230823(game_task)
 
     @staticmethod
     def climbing_tower_20230823(game_task: []):
@@ -100,3 +106,45 @@ class ActivityService:
         logger.debug("返回首页")
         image_service.touch(p_return)
         image_service.touch(p_return)
+
+    @staticmethod
+    def lbs_20230823(game_task: []):
+        """
+        lbs鬼王 20230823
+        :param game_task:
+        :return:
+        """
+        p_RK = r"活动\20230823\LBS鬼王\LBS鬼王入口"
+        p_RK1 = r"活动\20230823\LBS鬼王\入口1"
+        p_ZB = r"活动\20230823\LBS鬼王\准备"
+        p_CJ = r"活动\20230823\LBS鬼王\创建"
+        p_fight_win = r"活动\20230823\LBS鬼王\战斗胜利"
+        p_fight_fail = r"活动\20230823\LBS鬼王\战斗失败"
+        p_fight_again = r"活动\20230823\LBS鬼王\再次挑战"
+        p_fight_quit = r"活动\20230823\LBS鬼王\退出挑战"
+        p_SYL = r"活动\20230823\LBS鬼王\所有人"
+        p_TZ = r"活动\20230823\LBS鬼王\挑战"
+        p_TEAM = r"活动\20230823\LBS鬼王\组队挑战"
+        logger.debug("进入现世妖约")
+        for i in range(50):
+            logger.debug("点击LBS鬼王入口")
+            is_entrance=image_service.touch(p_RK)
+            if not is_entrance:
+                logger.debug("点击首页入口")
+                image_service.touch(p_RK1)
+            logger.debug("点击组队挑战")
+            image_service.touch(p_TEAM,wait=3,cvstrategy=Cvstrategy.default)
+            logger.debug("点击所有人")
+            image_service.touch(p_SYL)
+            logger.debug("点击创建")
+            image_service.touch(p_CJ,cvstrategy=Cvstrategy.default)
+            logger.debug("点击挑战")
+            image_service.touch(p_TZ)
+            logger.debug("点击准备")
+            image_service.touch(p_ZB,wait=5)
+            logger.debug("等待战斗结果")
+            complex_service.fight_end(p_fight_win,p_fight_fail,p_fight_again,p_fight_quit,p_TEAM,30,1)
+        logger.debug("返回首页")
+        image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        logger.debug("确认返回首页")
+        OnmyojiService.return_home(game_task)

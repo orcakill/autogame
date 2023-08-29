@@ -4,6 +4,8 @@
 # @Description: window 相关服务接口
 import subprocess
 
+from win32com.client import Dispatch
+
 from src.utils.my_logger import logger
 import os
 
@@ -36,7 +38,11 @@ class WindowsService:
     @staticmethod
     def start_process(shortcut_path):
         # 使用快捷方式启动应用程序
-        os.startfile(shortcut_path)
+        shell = Dispatch('WScript.Shell')
+        shortcut = shell.CreateShortCut(shortcut_path)
+        target_file_path = shortcut.Targetpath
+        # 使用subprocess模块运行程序
+        subprocess.Popen(target_file_path)
 
     @staticmethod
     def get_device_status_by_ip(ip):

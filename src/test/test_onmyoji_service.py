@@ -165,7 +165,7 @@ class TestOnmyojiService(TestCase):
         global project_interrupt_flag
         logger.debug("式神寄养")
         test_names = ['2', '3', '4', '5']
-        # test_names = ['3']
+        # test_names = ['1']
         test_devices = '0'
         # 初始化设备信息
         image_service.auto_setup(test_devices)
@@ -254,7 +254,7 @@ class TestOnmyojiService(TestCase):
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 执行测试任务
-            OnmyojiService.border_fight(game_task,3)
+            OnmyojiService.border_fight(game_task, 3)
             logger.debug("{}测试完成", test_name)
             project_interrupt_flag = True
         thread2.join()
@@ -300,9 +300,9 @@ class TestOnmyojiService(TestCase):
         """
         global project_interrupt_flag
         logger.debug("好友协战")
-        test_names = ['1']
+        test_names = ['3']
         # test_names = ['3']
-        test_devices = '1'
+        test_devices = '0'
         # 初始化设备信息
         image_service.auto_setup(test_devices)
         # 拒接协战
@@ -368,5 +368,3 @@ class TestOnmyojiService(TestCase):
         image_service.auto_setup("1")
         # 执行点击角色头像和退出挑战
         OnmyojiService.soul_fight_thug()
-
-
