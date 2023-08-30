@@ -11,6 +11,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
+from src.utils.folder_utils import FolderUtils
 from src.utils.my_logger import logger
 
 image_service = ImageService()
@@ -21,8 +22,8 @@ def assist_onmyoji():
     global project_interrupt_flag
     logger.debug("开启拒接协战")
     while not project_interrupt_flag:
-        time.sleep(30)
         image_service.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
+        time.sleep(30)
 
 
 class TestOnmyojiService(TestCase):
@@ -164,13 +165,15 @@ class TestOnmyojiService(TestCase):
         """
         global project_interrupt_flag
         logger.debug("式神寄养")
-        test_names = ['2', '3', '4', '5']
+        test_names = ['3', '4', '5']
         # test_names = ['1']
         test_devices = '0'
         # 初始化设备信息
         image_service.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
+        # 清理历史文件
+        FolderUtils.clear_folder_shutil(r"D:\image")
         thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]

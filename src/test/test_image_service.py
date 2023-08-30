@@ -65,7 +65,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_faster(self):
-        image_service.auto_setup("1")
+        image_service.auto_setup("0")
         logger.debug("循环识别测试")
         now = datetime.datetime.now()
         target_card = False
@@ -96,7 +96,7 @@ class TestImageService(TestCase):
                 target_card = Onmyoji.foster_JJK_SXDY1
             type1 = image_service.exists(target_type)
             if type1:
-                result = image_service.exists(target_card)
+                result = image_service.exists(target_card,threshold=0.8)
                 if result and result[0] < 1 / 2 * resolution[0]:
                     result = False
                 logger.debug("{}：{}", target_card, result)
