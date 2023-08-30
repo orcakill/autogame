@@ -83,7 +83,7 @@ class OnmyojiController:
                         elif game_project.project_name in ["觉醒十"]:
                             OnmyojiService.awakening(game_task[j])
                         # 项目 12,13,14,15
-                        elif game_project.project_name in ["魂一", "魂十", "魂十一","魂十二"]:
+                        elif game_project.project_name in ["魂一", "魂十", "魂十一", "魂十二"]:
                             OnmyojiService.soul_fight(game_task[j])
                     else:
                         logger.debug("当前状态初始化失败{}", game_account.game_name)
@@ -97,4 +97,4 @@ class OnmyojiController:
         logger.debug("开启拒接协战")
         while not project_interrupt_flag:
             time.sleep(30)
-            image_service.touch(Onmyoji.comm_FH_XSFYHSCH,cvstrategy=Cvstrategy.default)
+            image_service.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)

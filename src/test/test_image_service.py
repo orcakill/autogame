@@ -65,7 +65,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_faster(self):
-        image_service.auto_setup("0")
+        image_service.auto_setup("1")
         logger.debug("循环识别测试")
         now = datetime.datetime.now()
         target_card = False
@@ -92,7 +92,7 @@ class TestImageService(TestCase):
                 target_type = Onmyoji.foster_JJK_TG
                 target_card = Onmyoji.foster_JJK_SXTG
             elif i_type == 7:
-                target_type = Onmyoji.foster_JJK_TG
+                target_type = Onmyoji.foster_JJK_DY
                 target_card = Onmyoji.foster_JJK_SXDY1
             type1 = image_service.exists(target_type)
             if type1:

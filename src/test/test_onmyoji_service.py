@@ -356,7 +356,7 @@ class TestOnmyojiService(TestCase):
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 执行测试任务
-            OnmyojiService.awakening(game_task,1)
+            OnmyojiService.awakening(game_task, 1)
             logger.debug("{}测试完成", test_name)
             project_interrupt_flag = True
         thread2.join()

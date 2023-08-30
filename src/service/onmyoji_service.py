@@ -4,7 +4,6 @@
 # @Description: 服务接口
 import datetime
 import os
-import sys
 import time
 
 from src.model.enum import Onmyoji, Cvstrategy
@@ -25,10 +24,13 @@ class OnmyojiService:
     @staticmethod
     def initialization(game_task: []):
         """
-        当前状态初始化
+        项目1 当前状态初始化
         :param game_task: 任务信息
         :return:
         """
+        # 开始时间
+        time_start = time.time()
+        # 账号信息
         game_account = GameAccount(game_task[2])
         # 判断是否是待登录账号首页
         logger.debug("初始化-判断当前状态")
@@ -50,6 +52,8 @@ class OnmyojiService:
             if not is_ageAppropriateReminder:
                 logger.debug("不存在适龄提示")
                 for i_ageAppropriateReminder in range(5):
+                    logger.debug("点击可能存在的重新打开应用")
+                    image_service.touch(Onmyoji.login_CXDKYY)
                     logger.debug("点击左上角，防止有开场动画")
                     image_service.touch_coordinate([10, 10])
                     logger.debug("接受协议")
@@ -110,23 +114,36 @@ class OnmyojiService:
             server = os.path.join(Onmyoji.login_FWQ, game_account.game_region)
             is_select = image_service.touch(server, wait=2)
             if not is_select:
-                sys.exit()
+                logger.debug("未选择服务器")
             logger.debug("开始游戏")
-            image_service.touch(Onmyoji.login_KSYX, wait=2)
+            is_start=image_service.touch(Onmyoji.login_KSYX, wait=2)
+            if not is_start:
+                logger.debug("未开始游戏，点击服务器")
+                image_service.touch(server, wait=2)
+                logger.debug("再次点击开始游戏")
+                image_service.touch(Onmyoji.login_KSYX, wait=2)
             time.sleep(15)
         logger.debug("{}首页,判断底部菜单", game_account.game_name)
         is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
         if not is_openBottom:
             for i_openBottom in range(4):
                 logger.debug("当前页面无底部菜单打开")
-                logger.debug("点击可能存在的右上角返回")
-                image_service.touch(Onmyoji.comm_FH_YSJHDBSCH, timeouts=3)
-                logger.debug("点击可能存在的下载")
-                image_service.touch(Onmyoji.home_XZ, timeouts=3)
                 logger.debug("点击可能存在的底部菜单")
                 image_service.touch(Onmyoji.home_DBCD, timeouts=3)
+                is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
+                if is_openBottom:
+                    logger.debug("底部菜单已打开")
+                    break
+                logger.debug("点击可能存在的右上角返回")
+                image_service.touch(Onmyoji.comm_FH_YSJHDBSCH, timeouts=3)
+                logger.debug("点击可能存在的左上角返回")
+                image_service.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH, timeouts=3)
+                logger.debug("点击可能存在的下载")
+                image_service.touch(Onmyoji.home_XZ, timeouts=3)
                 logger.debug("点击可能存在的取消，不打开加成")
                 image_service.touch(Onmyoji.home_QX, timeouts=3)
+                logger.debug("点击可能存在的底部菜单")
+                image_service.touch(Onmyoji.home_DBCD, timeouts=3)
                 logger.debug("重新判断是否存在底部菜单打开")
                 is_openBottom = image_service.exists(Onmyoji.home_DBCDDK)
                 if is_openBottom:
@@ -134,11 +151,15 @@ class OnmyojiService:
                     break
         logger.debug("重新判断是否在账号首页")
         is_index = image_service.exists(account_index)
+        # 结束时间
+        time_end = time.time()
+        # 总用时
+        time_all = time_end - time_start
         if is_index:
-            logger.info("初始化当前状态完成:{}", game_account.game_name)
+            logger.info("初始化当前状态完成:{}，用时{}秒", game_account.game_name, round(time_all))
             return True
         else:
-            logger.info("初始化当前状态失败:{}", game_account.game_name)
+            logger.info("初始化当前状态失败:{}，用时{}秒", game_account.game_name, round(time_all))
             return False
 
     @staticmethod
@@ -193,8 +214,17 @@ class OnmyojiService:
         :param game_task: 项目组信息
         :return:
         """
+        # 开始时间
+        time_start = time.time()
+        # 战斗胜利次数
+        num_win = 0
+        # 战斗失败次数
+        num_fail = 0
+        # 结界突破战斗用时
+        time_fight_list = []
         game_projects_relation = GameProjectsRelation(game_task[1])
         game_account = GameAccount(game_task[2])
+        logger.debug(game_account.game_name)
         game_project = GameProject(game_task[3])
         fight_time = game_projects_relation.project_num_times
         logger.debug("进入探索")
@@ -214,28 +244,66 @@ class OnmyojiService:
         logger.debug("开启御魂加成")
         complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
                                      1)
+        logger.debug("锁定阵容")
+        image_service.touch(Onmyoji.soul_BQ_SDZR)
+        # 默认锁定阵容
+        is_lock = False
         for i in range(fight_time):
+            time_fight_start = time.time()
             logger.debug("御魂-挑战{}次", i + 1)
-            if game_account.account_class != 0 and i == 0:
-                logger.debug("小号,第一次战斗走预设阵容")
-                logger.debug("解锁阵容")
+            if is_lock:
+                logger.debug("可能存在锁定阵容")
+                image_service.touch(Onmyoji.soul_BQ_SDZR)
             is_fight = image_service.touch(Onmyoji.soul_BQ_TZ)
-            if is_fight:
-                logger.debug("判断是否八岐大蛇-未挑战")
-                is_fight = image_service.touch(Onmyoji.soul_BQ_TZ, wait=2)
-                if is_fight:
-                    logger.debug("再次点击挑战")
+            if not is_fight:
+                logger.debug("点击可能的准备")
+                is_lock = image_service.touch(Onmyoji.soul_BQ_ZB)
+            if i == 0:
+                logger.debug("喂食")
+                is_pets = image_service.touch(Onmyoji.soul_BQ_CW, wait=5)
+                if is_pets:
+                    logger.debug("点击喂食")
+                    image_service.touch(Onmyoji.soul_BQ_WS)
+                    logger.debug("获得奖励")
+                    complex_service.get_reward(Onmyoji.soul_BQ_HDJL)
             logger.debug("等待战斗结果")
-            complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
-                                      Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 60, 1)
+            is_result = complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
+                                                  Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 60, 1)
+            # 记录战斗结果
+            if is_result in [Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ]:
+                num_win = num_win + 1
+            elif is_result in [Onmyoji.soul_BQ_ZCTZ]:
+                num_fail = num_fail + 1
+            if i == 0:
+                logger.debug("发现宝藏")
+                complex_service.get_reward(Onmyoji.soul_BQ_FXBZ)
+            time_fight_end = time.time()
+            time_fight_time = time_fight_end - time_fight_start
+            logger.debug("本次{}，用时{}秒", game_project.project_name, round(time_fight_time))
+            time_fight_list.append(time_fight_time)
         time.sleep(3)
         logger.debug("关闭御魂加成")
         complex_service.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
                                      0)
-        logger.debug("战斗结束，返回首页")
+        logger.debug("御魂-返回首页")
         image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-        logger.debug("返回首页")
+        logger.debug("御魂-返回首页")
         image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        # 御魂结束时间
+        time_end = time.time()
+        # 御魂总用时
+        time_all = time_end - time_start
+        # 御魂战斗总用时
+        time_fight_all = round(sum(time_fight_list))
+        # 御魂战斗次数
+        len_time_fight_list = len(time_fight_list)
+        # 御魂平均战斗用时
+        time_fight_avg = 0
+        if len_time_fight_list > 0:
+            time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+        logger.debug("本轮{}御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+                     game_project.project_name, round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list,
+                     num_win, num_fail)
 
     @staticmethod
     def soul_fight_thug():
@@ -312,7 +380,7 @@ class OnmyojiService:
                 num_win = num_win + 1
             elif is_result == Onmyoji.border_ZCTZ:
                 num_false = num_false + 1
-            elif is_result == Onmyoji.border_GRJJ:
+            elif is_result == Onmyoji.border_GRJJ or is_result is None:
                 logger.debug("判断是否仍有进攻")
                 is_attack1 = image_service.exists(Onmyoji.border_JG, wait=5, timeouts=2, is_click=True)
                 if is_attack1:
@@ -354,6 +422,14 @@ class OnmyojiService:
             :param game_task:  任务信息
             :return:
             """
+        # 开始时间
+        time_start = time.time()
+        # 战斗胜利次数
+        num_win = 0
+        # 战斗失败次数
+        num_fail = 0
+        # 结界突破战斗用时
+        time_fight_list = []
         # 项目组项目关系
         game_projects_relation = GameProjectsRelation(game_task[1])
         # 账号信息
@@ -393,6 +469,7 @@ class OnmyojiService:
         logger.debug("锁定阵容")
         image_service.touch(Onmyoji.awaken_SDZR)
         for i in range(fight_time):
+            time_fight_start = time.time()
             logger.debug("觉醒挑战{}次", i + 1)
             is_fight = image_service.touch(Onmyoji.awaken_TZ)
             logger.debug("点击准备")
@@ -405,61 +482,80 @@ class OnmyojiService:
             logger.debug("等待战斗结果")
             complex_service.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
                                       Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, 60, 1)
+            time_fight_end = time.time()
+            time_fight_time = time_fight_end - time_fight_start
+            logger.debug("本次阴阳寮突破，用时{}秒", round(time_fight_time))
+            time_fight_list.append(time_fight_time)
         time.sleep(2)
-        logger.debug("关闭加成")
+        logger.debug("关闭觉醒加成")
         complex_service.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 0)
-        logger.debug("战斗结束，返回首页")
+        logger.debug("觉醒-返回首页")
         image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-        logger.debug("返回首页")
+        logger.debug("觉醒-返回首页")
         image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        # 结束时间
+        time_end = time.time()
+        # 总用时
+        time_all = time_end - time_start
+        # 战斗次数
+        len_time_fight_list = len(time_fight_list)
+        # 战斗总用时
+        time_fight_all = round(sum(time_fight_list))
+        # 平均战斗用时
+        time_fight_avg = 0
+        if len_time_fight_list > 0:
+            time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+        logger.debug("本轮觉醒十总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+                     round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
 
     @staticmethod
     def daily_rewards(game_task: []):
+        # 开始时间
+        time_start = time.time()
         # 账号信息
         game_account = GameAccount(game_task[2])
         logger.debug(game_account.game_name)
         logger.debug("1-首页小纸人奖励")
-        for i_index in range(3):
-            logger.debug("判断是否有签到小纸人")
-            is_sign_in = image_service.exists(Onmyoji.reward_QDXZR, timeouts=2)
-            if is_sign_in:
-                logger.debug("有签到小纸人")
-                image_service.touch_coordinate(is_sign_in)
-                logger.debug("点击每日一签")
-                image_service.touch(Onmyoji.reward_MRYQ)
-                logger.debug("点击退出挑战")
-                image_service.touch(Onmyoji.reward_TCTZ)
-                logger.debug("返回首页")
-                image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
-            logger.debug("判断是否有体力小纸人")
-            is_strength = image_service.exists(Onmyoji.reward_TLXZR, timeouts=2, wait=3)
-            if is_strength:
-                logger.debug("有体力小纸人")
-                image_service.touch_coordinate(is_strength)
-                logger.debug("获得体力奖励，退出")
-                is_reward = image_service.exists(Onmyoji.reward_HDJL, wait=3)
-                if is_reward:
-                    image_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
-            logger.debug("判断是否有勾玉小纸人")
-            is_jade = image_service.exists(Onmyoji.reward_GYXZR, timeouts=2, wait=3)
-            if is_jade:
-                logger.debug("有勾玉小纸人")
-                image_service.touch_coordinate(is_jade)
-                logger.debug("获得勾玉奖励，退出")
-                is_reward = image_service.exists(Onmyoji.reward_HDJL, wait=3)
-                if is_reward:
-                    image_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
-            logger.debug("判断是否有御魂觉醒加成小纸人")
-            is_soul_addition = image_service.exists(Onmyoji.reward_YHJXJCXZR, timeouts=2, wait=3)
-            if is_soul_addition:
-                logger.debug("有御魂觉醒加成小纸人")
-                image_service.touch_coordinate(is_soul_addition)
-                logger.debug("获得奖励，退出")
-                is_reward = image_service.exists(Onmyoji.reward_HDJL, wait=3)
-                if is_reward:
-                    image_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+        logger.debug("判断是否有签到小纸人")
+        is_sign_in = image_service.exists(Onmyoji.reward_QDXZR, timeouts=2)
+        if is_sign_in:
+            logger.debug("有签到小纸人")
+            image_service.touch_coordinate(is_sign_in)
+            logger.debug("点击每日一签")
+            image_service.touch(Onmyoji.reward_MRYQ)
+            logger.debug("点击退出挑战")
+            image_service.touch(Onmyoji.reward_TCTZ)
             logger.debug("返回首页")
-            OnmyojiService.return_home(game_task)
+            image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
+        logger.debug("判断是否有体力小纸人")
+        is_strength = image_service.exists(Onmyoji.reward_TLXZR, timeouts=2, wait=3)
+        if is_strength:
+            logger.debug("有体力小纸人")
+            image_service.touch_coordinate(is_strength)
+            logger.debug("获得体力奖励，退出")
+            is_reward = image_service.exists(Onmyoji.reward_HDJL, wait=3)
+            if is_reward:
+                image_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+        logger.debug("判断是否有勾玉小纸人")
+        is_jade = image_service.exists(Onmyoji.reward_GYXZR, timeouts=2, wait=3)
+        if is_jade:
+            logger.debug("有勾玉小纸人")
+            image_service.touch_coordinate(is_jade)
+            logger.debug("获得勾玉奖励，退出")
+            is_reward = image_service.exists(Onmyoji.reward_HDJL, wait=3)
+            if is_reward:
+                image_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+        logger.debug("判断是否有御魂觉醒加成小纸人")
+        is_soul_addition = image_service.exists(Onmyoji.reward_YHJXJCXZR, timeouts=2, wait=3)
+        if is_soul_addition:
+            logger.debug("有御魂觉醒加成小纸人")
+            image_service.touch_coordinate(is_soul_addition)
+            logger.debug("获得奖励，退出")
+            is_reward = image_service.exists(Onmyoji.reward_HDJL, wait=3)
+            if is_reward:
+                image_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+        logger.debug("返回首页")
+        OnmyojiService.return_home(game_task)
         logger.debug("2-邮箱奖励")
         is_mail = image_service.exists(Onmyoji.reward_YX)
         if is_mail:
@@ -515,9 +611,18 @@ class OnmyojiService:
             complex_service.get_reward(Onmyoji.reward_HDJL)
             logger.debug("返回首页")
             image_service.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH)
+        time_end = time.time() - time_start
+        logger.info("每日奖励,用时{}秒", round(time_end))
 
     @staticmethod
     def encounter_demons(game_task: []):
+        """
+        逢魔之时
+        :param game_task: 任务信息
+        :return:
+        """
+        # 开始时间
+        time_start = time.time()
         # 账号信息
         game_account = GameAccount(game_task[2])
         logger.debug(game_account.game_name)
@@ -619,9 +724,13 @@ class OnmyojiService:
                 image_service.touch(Onmyoji.demon_TY)
         else:
             logger.debug("不在逢魔时间内")
+        time_end = time.time() - time_start
+        logger.info("逢魔之时,用时{}秒", round(time_end))
 
     @staticmethod
     def ghost_king(game_task: []):
+        # 开始时间
+        time_start = time.time()
         # 账号信息
         game_account = GameAccount(game_task[2])
         logger.debug(game_account.game_name)
@@ -704,9 +813,13 @@ class OnmyojiService:
             image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
             image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
             image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
+        time_end = time.time() - time_start
+        logger.info("地域鬼王,用时{}秒", round(time_end))
 
     @staticmethod
     def friends_manage(game_task: []):
+        # 开始时间
+        time_start = time.time()
         # 账号信息
         game_account = GameAccount(game_task[2])
         logger.debug(game_account.game_name)
@@ -761,9 +874,19 @@ class OnmyojiService:
                     break
         logger.debug("返回首页")
         image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+        time_end = time.time() - time_start
+        logger.info("好友管理,用时{}秒", round(time_end))
 
     @staticmethod
     def friends_fight(game_task: []):
+        # 开始时间
+        time_start = time.time()
+        # 战斗胜利次数
+        num_win = 0
+        # 战斗失败次数
+        num_fail = 0
+        # 协战用时
+        time_fight_list = []
         # 账号信息
         game_account = GameAccount(game_task[2])
         logger.debug(game_account.game_name)
@@ -796,6 +919,7 @@ class OnmyojiService:
                 # 默认有协战式神
                 is_assist_shikigami = True
                 for i in range(15):
+                    time_fight_start = time.time()
                     logger.debug("好友协战-御魂-挑战{}次", i + 1)
                     if i == 0:
                         logger.debug("好友协战-小号-协战-第一次")
@@ -870,8 +994,18 @@ class OnmyojiService:
                             complex_service.get_reward(Onmyoji.soul_BQ_FXBZ)
                         logger.debug("好友协战-等待战斗结果")
                         is_result = complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
-                                                              Onmyoji.soul_BQ_ZCTZ,
-                                                              Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 120, 1)
+                                                              Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_TCTZ,
+                                                              Onmyoji.soul_BQ_TZ, 120, 1)
+                        if is_result in [Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ]:
+                            logger.debug("好友协战-战斗胜利")
+                            num_win = num_win + 1
+                        elif is_result == Onmyoji.soul_BQ_ZCTZ:
+                            logger.debug("好友协战-战斗失败")
+                            num_fail = num_fail + 1
+                        time_fight_end = time.time()
+                        time_fight_time = time_fight_end - time_fight_start
+                        logger.debug("本次阴阳寮突破，用时{}秒", round(time_fight_time))
+                        time_fight_list.append(time_fight_time)
                         if is_result == Onmyoji.border_ZCTZ:
                             logger.debug("战斗失败，阵容有问题，结束循环")
                             break
@@ -888,8 +1022,23 @@ class OnmyojiService:
                 image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
                 logger.debug("好友协战-返回首页")
                 image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-        logger.debug("返回首页")
+        logger.debug("好友协战-返回首页")
         image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+        # 结束时间
+        time_end = time.time()
+        # 战斗总用时
+        time_fight_all = round(sum(time_fight_list))
+        # 战斗次数
+        len_time_fight_list = len(time_fight_list)
+        # 平均战斗用时
+        time_fight_avg = 0
+        # 总用时
+        time_all = time_end - time_start
+        if len_time_fight_list > 0:
+            time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+        logger.debug("本轮好友协战总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+                     round(time_all, 3),
+                     time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
 
     @staticmethod
     def foster_care(game_task: []):
@@ -947,16 +1096,16 @@ class OnmyojiService:
                         target_type = Onmyoji.foster_JJK_TG
                         target_card = Onmyoji.foster_JJK_SXTG1
                     elif i_type == 3:
-                        target_type = Onmyoji.foster_JJK_DY
+                        target_type = Onmyoji.foster_JJK_TG
                         target_card = Onmyoji.foster_JJK_SXTG
                     elif i_type == 4:
                         target_type = Onmyoji.foster_JJK_DY
                         target_card = Onmyoji.foster_JJK_LXDY
                     elif i_type == 5:
-                        target_type = Onmyoji.foster_JJK_TG
+                        target_type = Onmyoji.foster_JJK_DY
                         target_card = Onmyoji.foster_JJK_WXDY
                     elif i_type == 6:
-                        target_type = Onmyoji.foster_JJK_TG
+                        target_type = Onmyoji.foster_JJK_DY
                         target_card = Onmyoji.foster_JJK_SXDY1
                     logger.debug("目标结界卡：{}", target_card)
                     image_service.touch(Onmyoji.foster_KJYBZ)
@@ -1073,12 +1222,14 @@ class OnmyojiService:
                 time_fight_start = time.time()
                 logger.debug("阴阳寮突破{}次", i_fight + 1)
                 logger.debug("点击寮结界")
-                is_fight = image_service.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
-                if not is_fight:
+                image_service.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
+                logger.debug("点击进攻")
+                is_attack = image_service.touch(Onmyoji.region_JG)
+                if not is_attack:
                     logger.debug("再次点击寮结界")
                     image_service.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
-                logger.debug("点击进攻")
-                image_service.touch(Onmyoji.region_JG)
+                    logger.debug("再次点击进攻")
+                    image_service.touch(Onmyoji.region_JG)
                 logger.debug("判断是否还有进攻")
                 is_attack = image_service.exists(Onmyoji.region_JG, wait=3)
                 if is_attack:
@@ -1116,7 +1267,8 @@ class OnmyojiService:
         if len_time_fight_list > 0:
             time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
         if is_fight and not is_fight_times:
-            logger.debug("本轮阴阳寮总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次", round(time_all,3),
+            logger.debug("本轮阴阳寮总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+                         round(time_all, 3),
                          time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
         else:
             logger.debug("无寮结界或无战斗次数，总用时{}秒", time_all)
