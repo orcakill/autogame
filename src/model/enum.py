@@ -279,6 +279,19 @@ class Onmyoji:
     shack_JXRW = r"阴阳寮\寮管理\觉醒任务"
     shack_ZJLQ = r"阴阳寮\寮管理\资金领取"
     shack_LQAN = r"阴阳寮\寮管理\领取按钮"
+    shack_YYLTB = r"阴阳寮\寮管理\阴阳寮图标"
+    shack_SSYC = r"阴阳寮\寮管理\式神育成"
+    shack_JJTB = r"阴阳寮\寮管理\结界图标"
+    shack_JYJH = r"阴阳寮\寮管理\经验酒壶"
+    shack_QD = r"阴阳寮\寮管理\确定"
+    shack_JJKDQ = r"阴阳寮\寮管理\结界卡到期"
+    shack_TG = r"阴阳寮\寮管理\太鼓"
+    shack_DY = r"阴阳寮\寮管理\斗鱼"
+    shack_TY = r"阴阳寮\寮管理\太阴"
+    shack_MZ = r"阴阳寮\寮管理\满字"
+    shack_BD = r"阴阳寮\寮管理\白当"
+    shack_ZXSC= r"阴阳寮\寮管理\左下素材"
+    shack_SCSC = r"阴阳寮\寮管理\素材素材"
 
 class Cvstrategy:
     # 图像文字识别类型

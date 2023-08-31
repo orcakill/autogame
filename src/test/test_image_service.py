@@ -94,7 +94,7 @@ class TestImageService(TestCase):
             elif i_type == 7:
                 target_type = Onmyoji.foster_JJK_DY
                 target_card = Onmyoji.foster_JJK_SXDY1
-            type1 = image_service.exists(target_type)
+            type1 = image_service.exists(target_type,threshold=0.8)
             if type1:
                 result = image_service.exists(target_card,threshold=0.8)
                 if result and result[0] < 1 / 2 * resolution[0]:

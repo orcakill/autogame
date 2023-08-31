@@ -1,7 +1,7 @@
 """
 # @Time: 2023年08月31日01:40
 # @Author: orcakill
-# @File: impl_friends_fight.py
+# @File: impl_friends.py
 # @Description: 好友协战
 """
 import time
@@ -124,6 +124,8 @@ def friends_fight(game_task: []):
                             if is_fail:
                                 break
                 else:
+                    logger.debug("锁定阵容")
+                    image_service.touch(Onmyoji.soul_BQ_SDZR)
                     logger.debug("点击挑战")
                     is_fight = image_service.touch(Onmyoji.soul_BQ_TZ)
                     if not is_fight:
@@ -133,6 +135,8 @@ def friends_fight(game_task: []):
                         image_service.touch(Onmyoji.soul_BQ_ZB)
                         logger.debug("发现宝藏")
                         complex_service.get_reward(Onmyoji.soul_BQ_FXBZ)
+                    logger.debug("点击准备")
+                    image_service.touch(Onmyoji.soul_BQ_ZB, wait=3)
                     logger.debug("好友协战-等待战斗结果")
                     is_result = complex_service.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
                                                           Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_TCTZ,
@@ -145,7 +149,7 @@ def friends_fight(game_task: []):
                         num_fail = num_fail + 1
                     time_fight_end = time.time()
                     time_fight_time = time_fight_end - time_fight_start
-                    logger.debug("本次阴阳寮突破，用时{}秒", round(time_fight_time))
+                    logger.debug("本次好友协战，用时{}秒", round(time_fight_time))
                     time_fight_list.append(time_fight_time)
                     if is_result == Onmyoji.border_ZCTZ:
                         logger.debug("战斗失败，阵容有问题，结束循环")
@@ -180,4 +184,3 @@ def friends_fight(game_task: []):
     logger.debug("本轮好友协战总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  round(time_all, 3),
                  time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
-

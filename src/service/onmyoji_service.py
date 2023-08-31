@@ -11,7 +11,8 @@ from src.model.models import GameAccount, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
-from src.service.onmyoji_service_impl import impl_region_border, impl_foster_care, impl_return_home, impl_friends_fight
+from src.service_onmyoji_impl import impl_border, impl_friends
+from src.service_onmyoji_impl import impl_house
 from src.utils.my_logger import logger
 
 # 服务接口
@@ -514,7 +515,7 @@ class OnmyojiService:
             if is_reward:
                 image_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
         logger.debug("返回首页")
-        impl_return_home.return_home(game_task)
+        ComplexService.return_home(game_task)
         logger.debug("2-邮箱奖励")
         is_mail = image_service.exists(Onmyoji.reward_YX)
         if is_mail:
@@ -843,7 +844,7 @@ class OnmyojiService:
         :param game_task:
         :return:
         """
-        impl_friends_fight.friends_fight(game_task)
+        impl_friends.friends_fight(game_task)
 
     @staticmethod
     def foster_care(game_task: []):
@@ -852,7 +853,7 @@ class OnmyojiService:
         :param game_task:
         :return:
         """
-        impl_foster_care.foster_care(game_task)
+        impl_house.foster_care(game_task)
 
     @staticmethod
     def region_border(game_task: []):
@@ -861,4 +862,13 @@ class OnmyojiService:
         :param game_task: 任务信息
         :return:
         """
-        impl_region_border.region_border(game_task)
+        impl_border.region_border(game_task)
+
+    @staticmethod
+    def shack_house(game_task: []):
+        """
+        阴阳寮管理
+        :param game_task: 阴阳寮管理
+        :return:
+        """
+        impl_house.shack_house(game_task)

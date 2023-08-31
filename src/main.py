@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # game_type = input("请输入一个脚本类型：")
     # game_round = input("请输入一个脚本轮次：")
     # game_device=input("请输入一个脚本设备：")
-    game_type = "1"
+    game_type = "2"
     game_round = "1"
     game_device = "0"
     game_relation_num = "1"

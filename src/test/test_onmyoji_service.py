@@ -9,12 +9,13 @@ from unittest import TestCase
 from src.dao.mapper import select_game_account
 from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
+from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.utils.folder_utils import FolderUtils
 from src.utils.my_logger import logger
 
-image_service = ImageService()
+
 project_interrupt_flag = False
 
 
@@ -22,7 +23,7 @@ def assist_onmyoji():
     global project_interrupt_flag
     logger.debug("开启拒接协战")
     while not project_interrupt_flag:
-        image_service.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
+        ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
         time.sleep(30)
 
 
@@ -40,7 +41,7 @@ class TestOnmyojiService(TestCase):
         # 测试设备 0 云手机 1 夜神模拟器 2荣耀平板
         test_devices = '1'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -70,7 +71,7 @@ class TestOnmyojiService(TestCase):
         test_names = ['1']
         test_devices = '1'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -102,7 +103,7 @@ class TestOnmyojiService(TestCase):
         test_names = ['2', '3', '4', '5']
         test_devices = '0'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -134,7 +135,7 @@ class TestOnmyojiService(TestCase):
         test_names = ['1']
         test_devices = '1'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -147,7 +148,7 @@ class TestOnmyojiService(TestCase):
             game_project = GameProject()
             game_task = [game_projects, game_projects_relation, game_account, game_project]
             logger.debug("测试开始-地域鬼王{}", test_name)
-            OnmyojiService.return_home(game_task)
+            ComplexService.return_home(game_task)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 当前状态初始化
@@ -165,11 +166,11 @@ class TestOnmyojiService(TestCase):
         """
         global project_interrupt_flag
         logger.debug("式神寄养")
-        test_names = ['3', '4', '5']
+        test_names = ['1', '2', '3', '4', '5']
         # test_names = ['1']
         test_devices = '0'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         # 清理历史文件
@@ -193,6 +194,41 @@ class TestOnmyojiService(TestCase):
             logger.debug("{}测试完成", test_name)
             project_interrupt_flag = True
         thread2.join()
+    
+    @staticmethod
+    def test_shack_house():
+        """
+        项目6 阴阳寮管理
+        :return:
+        """
+        global project_interrupt_flag
+        logger.debug("阴阳寮管理")
+        # test_names = ['1', '2', '3', '4', '5']
+        test_names = ['1']
+        test_devices = '1'
+        # 初始化设备信息
+        ImageService.auto_setup(test_devices)
+        # 拒接协战
+        thread2 = threading.Thread(target=assist_onmyoji, args=())
+        thread2.start()
+        for i in range(len(test_names)):
+            test_name = test_names[i]
+            # 初始化测试任务信息
+            game_projects = GameProjects()
+            game_projects_relation = GameProjectsRelation()
+            game_account = select_game_account(test_name)
+            game_project = GameProject()
+            game_task = [game_projects, game_projects_relation, game_account, game_project]
+            logger.debug("开始测试-阴阳寮管理")
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 执行测试任务
+            OnmyojiService.shack_house(game_task)
+            logger.debug("{}测试完成", test_name)
+            project_interrupt_flag = True
+        thread2.join()
 
     def test_region_border(self):
         """
@@ -205,7 +241,7 @@ class TestOnmyojiService(TestCase):
         # test_names = ['3']
         test_devices = '1'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -239,7 +275,7 @@ class TestOnmyojiService(TestCase):
         # test_names = ['3']
         test_devices = '1'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -273,7 +309,7 @@ class TestOnmyojiService(TestCase):
         # test_names = ['3']
         test_devices = '1'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -307,7 +343,7 @@ class TestOnmyojiService(TestCase):
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -341,7 +377,7 @@ class TestOnmyojiService(TestCase):
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
-        image_service.auto_setup(test_devices)
+        ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
@@ -368,6 +404,6 @@ class TestOnmyojiService(TestCase):
         # 御魂打手
         logger.debug("开始测试")
         # 初始化设备信息
-        image_service.auto_setup("1")
+        ImageService.auto_setup("1")
         # 执行点击角色头像和退出挑战
         OnmyojiService.soul_fight_thug()
