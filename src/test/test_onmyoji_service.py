@@ -339,7 +339,7 @@ class TestOnmyojiService(TestCase):
         """
         global project_interrupt_flag
         logger.debug("好友协战")
-        test_names = ['3']
+        test_names = ['5']
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息

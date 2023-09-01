@@ -97,19 +97,22 @@ def foster_care(game_task: []):
                         logger.debug("点击位置1")
                         ImageService.touch_coordinate(coordinate_start)
                         logger.debug("判断结界卡是否是目标类型:{}", target_type)
-                        is_type = ImageService.exists(target_type,threshold=0.8)
+                        is_type = ImageService.exists(target_type, threshold=0.8)
                         if is_type:
-                            logger.debug("判断结界卡是否是目标结界卡:{}", target_card)
-                            is_target = ImageService.exists(target_card, threshold=0.8)
-                            if is_target and is_target[0] > 1 / 2 * resolution[0]:
-                                # sys.exit()
-                                # 截图,记录识别结果
-                                name = game_account.game_name
-                                name = name + "_" + target_card.replace("阴阳寮\\式神寄养\\结界卡\\", "")
-                                ImageService.snapshot(name, print_image=True)
-                                foster_result = target_card
-                                logger.debug("已找到目标结界卡,且X坐标在右侧,跳出一层循环,进入好友结界")
-                                break
+                            if target_type == Onmyoji.foster_JJK_TG:
+                                logger.debug("如果是太鼓，重新判断一下")
+                                is_type = ImageService.exists(Onmyoji.foster_JJK_GY)
+                            if is_type:
+                                logger.debug("判断结界卡是否是目标结界卡:{}", target_card)
+                                is_target = ImageService.exists(target_card, threshold=0.8)
+                                if is_target and is_target[0] > 1 / 2 * resolution[0]:
+                                    # 截图,记录识别结果
+                                    name = game_account.game_name
+                                    name = name + "_" + target_card.replace("阴阳寮\\式神寄养\\结界卡\\", "")
+                                    ImageService.snapshot(name, print_image=True)
+                                    foster_result = target_card
+                                    logger.debug("已找到目标结界卡,且X坐标在右侧,跳出一层循环,进入好友结界")
+                                    break
                         else:
                             num_type_fail = num_type_fail + 1
                         if i_friends > 10 and num_type_fail % 3 == 0:

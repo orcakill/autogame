@@ -86,7 +86,7 @@ class OnmyojiController:
                         elif game_project.project_name in ["魂一", "魂十", "魂十一", "魂十二"]:
                             OnmyojiService.soul_fight(game_task[j])
                     else:
-                        logger.debug("当前状态初始化失败{}", game_account.game_name)
+                        logger.debug("当前状态初始化失败{}，不执行项目", game_account.game_name)
             if game_is_email:
                 logger.info("发送邮件")
         project_interrupt_flag = True
