@@ -17,7 +17,7 @@ class OnmyojiService:
         :param game_task: 任务信息
         :return:
         """
-        impl_initialization.initialization(game_task)
+        return  impl_initialization.initialization(game_task)
 
     @staticmethod
     def soul_fight(game_task: []):

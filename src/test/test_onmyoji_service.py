@@ -399,11 +399,3 @@ class TestOnmyojiService(TestCase):
             logger.debug("{}测试完成", test_name)
             project_interrupt_flag = True
         thread2.join()
-
-    def test_soul_fight_thug(self):
-        # 御魂打手
-        logger.debug("开始测试")
-        # 初始化设备信息
-        ImageService.auto_setup("1")
-        # 执行点击角色头像和退出挑战
-        OnmyojiService.soul_fight_thug()

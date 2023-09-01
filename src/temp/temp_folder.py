@@ -14,13 +14,13 @@ def get_subdirectories(folder_path):
 
 if __name__ == '__main__':
     # 指定文件夹路径
-    folder_path = r'D:\study\Project\***REMOVED***code\python\autogame\src\resources\static\onmyoji\阴阳寮\寮管理'
+    folder_path = r'D:\study\Project\***REMOVED***code\python\autogame\src\resources\static\onmyoji\探索\探索'
 
     # 获取所有文件夹
     subdirectories = get_subdirectories(folder_path)
 
     # 打印所有文件夹路径（去除指定路径部分）
-    path = r'D:\study\Project\***REMOVED***code\python\autogame\src\resources\static\onmyoji\阴阳寮'
+    path = r'D:\study\Project\***REMOVED***code\python\autogame\src\resources\static\onmyoji\探索'
     for subdir in subdirectories:
         subdir = subdir.replace(path, "阴阳寮")
         parts = subdir.split("\\")
@@ -32,4 +32,4 @@ if __name__ == '__main__':
         # 将拼音列表转换为字符串并转换为大写
         pinyin_text = ''.join([item[0].upper() for item in pinyin_text])
 
-        print("shack_"+pinyin_text+"=r"+"\""+subdir+"\"")
+        print("explore_"+pinyin_text+"=r"+"\""+subdir+"\"")

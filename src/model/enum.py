@@ -291,8 +291,15 @@ class Onmyoji:
     shack_TY = r"阴阳寮\寮管理\太阴"
     shack_MZ = r"阴阳寮\寮管理\满字"
     shack_BD = r"阴阳寮\寮管理\白当"
-    shack_ZXSC= r"阴阳寮\寮管理\左下素材"
+    shack_ZXSC = r"阴阳寮\寮管理\左下素材"
     shack_SCSC = r"阴阳寮\寮管理\素材素材"
+
+    explore_ZCTZ = r"探索\探索\再次挑战"
+    explore_ZDSB = r"探索\探索\战斗失败"
+    explore_ZDSL = r"探索\探索\战斗胜利"
+    explore_SPTZ = r"探索\探索\碎片挑战"
+    explore_TCTZ = r"探索\探索\退出挑战"
+
 
 class Cvstrategy:
     # 图像文字识别类型
