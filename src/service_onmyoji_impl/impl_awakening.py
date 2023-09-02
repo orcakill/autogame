@@ -68,6 +68,8 @@ def awakening(game_task: [], awakening_type: int = 0):
     for i in range(fight_time):
         time_fight_start = time.time()
         logger.debug("觉醒挑战{}次", i + 1)
+        logger.debug("锁定阵容")
+        ImageService.touch(Onmyoji.awaken_SDZR)
         is_fight = ImageService.touch(Onmyoji.awaken_TZ)
         logger.debug("点击准备")
         ImageService.touch(Onmyoji.awaken_ZB, wait=2)

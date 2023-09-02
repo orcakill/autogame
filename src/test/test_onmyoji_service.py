@@ -92,7 +92,8 @@ class TestOnmyojiService(TestCase):
         thread2.join()
         logger.debug("测试-每日奖励结束")
 
-    def test_encounter_demons(self):
+    @staticmethod
+    def test_encounter_demons():
         """
         项目3 逢魔之时
         :return:

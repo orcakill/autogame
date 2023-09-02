@@ -26,7 +26,7 @@ def daily_rewards(game_task: []):
         logger.debug("点击每日一签")
         ImageService.touch(Onmyoji.reward_MRYQ)
         logger.debug("点击退出挑战")
-        ImageService.touch(Onmyoji.reward_TCTZ)
+        ImageService.touch(Onmyoji.reward_TCTZ,wait=5)
         logger.debug("返回首页")
         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
     logger.debug("判断是否有体力小纸人")

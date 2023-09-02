@@ -26,7 +26,7 @@ def ghost_king(game_task: []):
         logger.debug("进入地域鬼王")
         ImageService.touch(Onmyoji.ghost_DYGWTB, wait=3)
         logger.debug("点击今日挑战")
-        ImageService.touch(Onmyoji.ghost_JRTZ, wait=3)
+        ImageService.touch(Onmyoji.ghost_JRTZ, wait=6)
         logger.debug("判断是否有未挑战")
         is_select = ImageService.exists(Onmyoji.ghost_WXZ, cvstrategy=Cvstrategy.default, wait=3)
         if is_select:
@@ -76,7 +76,7 @@ def ghost_king(game_task: []):
                     logger.debug("挑战")
                     ImageService.touch(Onmyoji.ghost_TZ, wait=3)
                     logger.debug("准备一次")
-                    ImageService.touch(Onmyoji.ghost_ZB, wait=3)
+                    ImageService.touch(Onmyoji.ghost_ZB, wait=6)
                     logger.debug("准备两次")
                     ImageService.touch(Onmyoji.ghost_ZB, wait=3)
                     logger.debug("等待战斗结果")
@@ -85,10 +85,10 @@ def ghost_king(game_task: []):
                 logger.debug("已挑战,返回到鬼王首页")
                 ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
                 logger.debug("点击今日挑战")
-                ImageService.touch(Onmyoji.ghost_JRTZ)
+                is_day_fight=ImageService.touch(Onmyoji.ghost_JRTZ,wait=5)
                 logger.debug("判断是否有未挑战")
                 is_select = ImageService.exists(Onmyoji.ghost_WXZ)
-                if not is_select:
+                if is_day_fight and not is_select:
                     logger.debug("结束地域鬼王")
                     break
         else:
