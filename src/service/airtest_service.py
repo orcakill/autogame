@@ -85,6 +85,8 @@ class AirtestService:
         except Exception as e:
             if is_throw:
                 logger.error("异常：{}", e)
+            else:
+                pass
 
     @staticmethod
     def touch(template: Template, cvstrategy: [], timeout: float, is_throw: bool, times: int,
@@ -109,6 +111,8 @@ class AirtestService:
         except Exception as e:
             if is_throw:
                 logger.error("异常：{}", e)
+            else:
+                pass
 
     @staticmethod
     def touch_coordinate(v: [], wait_time: float = WAIT):
@@ -164,3 +168,24 @@ class AirtestService:
     @staticmethod
     def cv2_2_pil(local):
         return cv2_2_pil(local)
+
+    @staticmethod
+    def find_all(template: Template, cvstrategy: [], timeout: float, is_throw: bool):
+        """
+        多图查找
+        :param template: 图片类
+        :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
+        :param is_throw: 是否显示异常
+        :return:
+        """
+        Settings.CVSTRATEGY = cvstrategy
+        Settings.FIND_TIMEOUT = timeout
+        try:
+            result = find_all(template)
+            return result
+        except Exception as e:
+            if is_throw:
+                logger.error("异常：{}", e)
+            else:
+                pass

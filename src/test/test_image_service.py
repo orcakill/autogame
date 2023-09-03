@@ -19,9 +19,9 @@ ocr_service = OcrService
 
 class TestImageService(TestCase):
     def test_exists(self):
-        image_service.auto_setup("0")
+        image_service.auto_setup("1")
         now = datetime.datetime.now()
-        is_border = image_service.touch(Onmyoji.soul_BQ_SDZR)
+        is_border = ImageService.touch(Onmyoji.ghost_TZ, wait=3)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -94,12 +94,30 @@ class TestImageService(TestCase):
             elif i_type == 7:
                 target_type = Onmyoji.foster_JJK_DY
                 target_card = Onmyoji.foster_JJK_SXDY1
-            type1 = image_service.exists(target_type,threshold=0.8)
+            type1 = image_service.exists(target_type, threshold=0.8)
             if type1:
-                result = image_service.exists(target_card,threshold=0.8)
+                result = image_service.exists(target_card, threshold=0.8)
                 if result and result[0] < 1 / 2 * resolution[0]:
                     result = False
                 logger.debug("{}：{}", target_card, result)
 
         now1 = datetime.datetime.now()
         print(now1 - now)
+
+    @staticmethod
+    def test_find_all():
+        """
+        多图查找
+        :return:
+        """
+
+        image_service.auto_setup("1")
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        result = image_service.find_all(Onmyoji.border_GP)
+        logger.debug(result)
+        logger.debug(len(result))
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)

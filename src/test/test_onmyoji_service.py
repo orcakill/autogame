@@ -15,7 +15,6 @@ from src.service.onmyoji_service import OnmyojiService
 from src.utils.folder_utils import FolderUtils
 from src.utils.my_logger import logger
 
-
 project_interrupt_flag = False
 
 
@@ -24,7 +23,7 @@ def assist_onmyoji():
     logger.debug("开启拒接协战")
     while not project_interrupt_flag:
         ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
-        time.sleep(30)
+        time.sleep(5)
 
 
 class TestOnmyojiService(TestCase):
@@ -195,9 +194,8 @@ class TestOnmyojiService(TestCase):
             logger.debug("{}测试完成", test_name)
             project_interrupt_flag = True
         thread2.join()
-    
-    @staticmethod
-    def test_shack_house():
+
+    def test_shack_house(self):
         """
         项目6 阴阳寮管理
         :return:
@@ -205,31 +203,34 @@ class TestOnmyojiService(TestCase):
         global project_interrupt_flag
         logger.debug("阴阳寮管理")
         # test_names = ['1', '2', '3', '4', '5']
-        test_names = ['1']
-        test_devices = '1'
+        test_names = ['2']
+        test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
-        for i in range(len(test_names)):
-            test_name = test_names[i]
-            # 初始化测试任务信息
-            game_projects = GameProjects()
-            game_projects_relation = GameProjectsRelation()
-            game_account = select_game_account(test_name)
-            game_project = GameProject()
-            game_task = [game_projects, game_projects_relation, game_account, game_project]
-            logger.debug("开始测试-阴阳寮管理")
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 执行测试任务
-            OnmyojiService.shack_house(game_task)
-            logger.debug("{}测试完成", test_name)
+        try:
+            for i in range(len(test_names)):
+                test_name = test_names[i]
+                # 初始化测试任务信息
+                game_projects = GameProjects()
+                game_projects_relation = GameProjectsRelation()
+                game_account = select_game_account(test_name)
+                game_project = GameProject()
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                logger.debug("开始测试-阴阳寮管理")
+                # 当前状态初始化
+                OnmyojiService.initialization(game_task)
+                # 当前状态初始化
+                OnmyojiService.initialization(game_task)
+                # 执行测试任务
+                OnmyojiService.shack_house(game_task)
+                logger.debug("{}测试完成", test_name)
+                project_interrupt_flag = True
+            thread2.join()
+        except KeyboardInterrupt:
             project_interrupt_flag = True
-        thread2.join()
 
     def test_region_border(self):
         """
@@ -294,7 +295,7 @@ class TestOnmyojiService(TestCase):
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 执行测试任务
-            OnmyojiService.border_fight(game_task, 3)
+            OnmyojiService.border_fight(game_task, 40)
             logger.debug("{}测试完成", test_name)
             project_interrupt_flag = True
         thread2.join()
@@ -340,7 +341,7 @@ class TestOnmyojiService(TestCase):
         """
         global project_interrupt_flag
         logger.debug("好友协战")
-        test_names = ['5']
+        test_names = ['3']
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
@@ -348,22 +349,26 @@ class TestOnmyojiService(TestCase):
         # 拒接协战
         thread2 = threading.Thread(target=assist_onmyoji, args=())
         thread2.start()
-        for i in range(len(test_names)):
-            test_name = test_names[i]
-            # 初始化测试任务信息
-            game_projects = GameProjects()
-            game_projects_relation = GameProjectsRelation()
-            game_account = select_game_account(test_name)
-            game_project = GameProject()
-            game_task = [game_projects, game_projects_relation, game_account, game_project]
-            logger.debug("开始测试-好友协战")
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 执行测试任务
-            OnmyojiService.friends_fight(game_task)
-            logger.debug("{}测试完成", test_name)
+        try:
+            for i in range(len(test_names)):
+                test_name = test_names[i]
+                # 初始化测试任务信息
+                game_projects = GameProjects()
+                game_projects_relation = GameProjectsRelation()
+                game_projects_relation.project_num_times = 15
+                game_account = select_game_account(test_name)
+                game_project = GameProject()
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                logger.debug("开始测试-好友协战")
+                # 当前状态初始化
+                OnmyojiService.initialization(game_task)
+                # 当前状态初始化
+                OnmyojiService.initialization(game_task)
+                # 执行测试任务
+                OnmyojiService.friends_fight(game_task)
+                logger.debug("{}测试完成", test_name)
+                project_interrupt_flag = True
+        except KeyboardInterrupt:
             project_interrupt_flag = True
         thread2.join()
 
@@ -374,7 +379,7 @@ class TestOnmyojiService(TestCase):
         """
         global project_interrupt_flag
         logger.debug("觉醒十")
-        test_names = ['4']
+        test_names = ['3']
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
@@ -387,6 +392,7 @@ class TestOnmyojiService(TestCase):
             # 初始化测试任务信息
             game_projects = GameProjects()
             game_projects_relation = GameProjectsRelation()
+            game_projects_relation.project_num_times = 20
             game_account = select_game_account(test_name)
             game_project = GameProject()
             game_task = [game_projects, game_projects_relation, game_account, game_project]

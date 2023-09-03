@@ -15,6 +15,7 @@ from src.utils.my_logger import logger
 def awakening(game_task: [], awakening_type: int = 0):
     """
         觉醒十 风、火、水、雷（默认雷）  开加成，选觉醒阵容
+        :param awakening_times: 觉醒次数
         :param awakening_type: 默认类型
         :param game_task:  任务信息
         :return:
@@ -42,7 +43,14 @@ def awakening(game_task: [], awakening_type: int = 0):
     logger.debug("进入探索")
     ImageService.touch(Onmyoji.home_TS)
     logger.debug("进入觉醒")
-    ImageService.touch(Onmyoji.awaken_JXBT)
+    is_awakening = ImageService.touch(Onmyoji.awaken_JXBT)
+    if not is_awakening:
+        logger.debug("未进入觉醒")
+        time.sleep(30)
+        logger.debug("进入探索")
+        ImageService.touch(Onmyoji.home_TS)
+        logger.debug("进入觉醒")
+        ImageService.touch(Onmyoji.awaken_JXBT)
     logger.debug("本日周{}", weekday)
     if awakening_type != 0:
         logger.debug("修改麒麟类型")
@@ -65,22 +73,25 @@ def awakening(game_task: [], awakening_type: int = 0):
     ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 1)
     logger.debug("锁定阵容")
     ImageService.touch(Onmyoji.awaken_SDZR)
+    # 是否有准备按钮
+    is_prepare = False
     for i in range(fight_time):
         time_fight_start = time.time()
         logger.debug("觉醒挑战{}次", i + 1)
-        logger.debug("锁定阵容")
-        ImageService.touch(Onmyoji.awaken_SDZR)
+        if is_prepare:
+            logger.debug("锁定阵容")
+            ImageService.touch(Onmyoji.awaken_SDZR)
         is_fight = ImageService.touch(Onmyoji.awaken_TZ)
         logger.debug("点击准备")
-        ImageService.touch(Onmyoji.awaken_ZB, wait=2)
+        is_prepare = ImageService.touch(Onmyoji.awaken_ZB, wait=5)
         if not is_fight:
             logger.debug("再次点击挑战")
             ImageService.touch(Onmyoji.awaken_TZ, wait=2)
             logger.debug("点击准备")
-            ImageService.touch(Onmyoji.awaken_ZB, wait=2)
+            ImageService.touch(Onmyoji.awaken_ZB, wait=5)
         logger.debug("等待战斗结果")
         ComplexService.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
-                                 Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, 60, 1)
+                                 Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, 60, 2)
         time_fight_end = time.time()
         time_fight_time = time_fight_end - time_fight_start
         logger.debug("本次觉醒挑战，用时{}秒", round(time_fight_time))

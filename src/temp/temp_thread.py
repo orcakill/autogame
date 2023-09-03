@@ -1,52 +1,43 @@
 import threading
 import time
 
-# 共享的中断标志
-project_interrupt_flag = False
-# 共享的返回结果
-fight_result = 0
 
+# 定义一个线程类
+class MyThread(threading.Thread):
+    def __init__(self, thread_id, stop_event):
+        super().__init__()
+        self.thread_id = thread_id
+        self.stop_event = stop_event
 
-def func1(name: str, num: int):
-    global project_interrupt_flag
-    global fight_result
-    print("函数" + name + "开始执行")
-    for i in range(num):
-        if not project_interrupt_flag:
-            if name == "1":
-                print("函数" + name + "提前结束")
-                interrupt_flag = True
-                fight_result = name
-                return True
-            else:
+    def run(self):
+        # 线程1执行的代码
+        if self.thread_id == 1:
+            while not self.stop_event.is_set():
+                print("Thread 1 is running...")
                 time.sleep(1)
-    print("函数" + name + "执行结束")
-    return False
-
-
-def main():
-    print("创建线程1")
-    thread1 = threading.Thread(target=func1, args=("1", 10,))
-    print("创建线程2")
-    thread2 = threading.Thread(target=func1, args=("2", 20,))
-    print("创建线程3")
-    thread3 = threading.Thread(target=func1, args=("3", 30,))
-
-    thread1.start()
-    thread2.start()
-    thread3.start()
-
-    for i in range(100):
-        print("主线程等待1秒")
-        time.sleep(1)
-
-    print("等待线程结束")
-    thread1.join()
-    thread2.join()
-    thread3.join()
-    print("主函数执行完毕")
-    print(fight_result)
+        # 线程2执行的代码
+        elif self.thread_id == 2:
+            while not self.stop_event.is_set():
+                print("Thread 2 is running...")
+                time.sleep(1)
 
 
 if __name__ == '__main__':
-    main()
+    # 创建一个 Event 对象用于线程间通信
+    stop_event = threading.Event()
+
+    # 创建线程1和线程2，并传入共享的 Event 对象
+    thread1 = MyThread(1, stop_event)
+    thread2 = MyThread(2, stop_event)
+
+    # 启动线程1和线程2
+    thread1.start()
+    thread2.start()
+
+    # 模拟线程1意外中断
+    # 这里使用 time.sleep 来模拟线程1中断，实际中可能是其他中断方式
+
+
+    # 等待线程1和线程2结束
+    thread1.join()
+    thread2.join()

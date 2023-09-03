@@ -10,6 +10,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service_onmyoji_impl import impl_awakening
 from src.utils.my_logger import logger
 
 
@@ -36,13 +37,20 @@ def friends_fight(game_task: []):
         ImageService.touch(Onmyoji.friends_HYTB)
         logger.debug("进入右侧协战")
         ImageService.touch(Onmyoji.friends_YCXZ)
+        logger.debug("判断是否已完成协战，1次")
         is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
+        if not is_cooperative_warfare:
+            logger.debug("判断是否已完成协战，2次")
+            is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
         if is_cooperative_warfare:
             logger.debug("已完成协战")
             break
         else:
             logger.debug("未完成协战，返回首页")
             ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+            if i_cooperative_warfare == 0:
+                logger.debug("觉醒挑战")
+                impl_awakening.awakening(game_task)
             logger.debug("好友协战-进入探索")
             ImageService.touch(Onmyoji.home_TS)
             logger.debug("好友协战-进入御魂")

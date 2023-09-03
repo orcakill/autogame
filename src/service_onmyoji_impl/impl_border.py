@@ -145,6 +145,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                     logger.debug("有战败标志，战斗失败累计{}次，3的倍数，点击刷新", num_false)
                     ImageService.touch(Onmyoji.border_SX, wait=2)
                     ImageService.touch(Onmyoji.border_SXQD, wait=2)
+        # 待补充逻辑，检查当前攻破数，不到8个继续，8个时退4次打掉，解锁阵容-挑战-（退出-再次挑战）4次，准备，等待战斗结果，退出挑战，锁定阵容
         for i_attack in range(3):
             logger.debug("点击个人结界")
             ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
@@ -153,7 +154,7 @@ def border_fight(game_task: [], fight_times: int = 40):
             if is_attack:
                 break
         logger.debug("点击准备")
-        ImageService.touch(Onmyoji.border_ZB, timeouts=3)
+        ImageService.touch(Onmyoji.border_ZB, timeouts=5)
         logger.debug("等待战斗结果")
         is_result = ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                              Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,

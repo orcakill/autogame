@@ -128,7 +128,12 @@ def initialization(game_task: []):
             logger.debug("点击可能存在的左上角返回")
             ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH, timeouts=3)
             logger.debug("点击可能存在的下载")
-            ImageService.touch(Onmyoji.home_XZ, timeouts=3)
+            is_download = ImageService.exists(Onmyoji.home_XZ, timeouts=3)
+            if is_download:
+                logger.debug("点击不再提示")
+                ImageService.touch(Onmyoji.home_BZTS)
+                logger.debug("点击下载")
+                ImageService.touch(Onmyoji.home_XZ)
             logger.debug("点击可能存在的取消，不打开加成")
             ImageService.touch(Onmyoji.home_QX, timeouts=3)
             logger.debug("点击可能存在的底部菜单")

@@ -16,13 +16,17 @@ class OnmyojiController:
 
     @staticmethod
     def game_thread(game_type: str, game_round: str, game_is_email: str, game_relation_num: str):
-        thread1 = threading.Thread(target=OnmyojiController.tasks,
-                                   args=(game_type, game_round, game_is_email, game_relation_num))
-        thread2 = threading.Thread(target=OnmyojiController.assist, args=())
-        thread1.start()
-        thread2.start()
-        thread1.join()
-        thread2.join()
+        global project_interrupt_flag
+        try:
+            thread1 = threading.Thread(target=OnmyojiController.tasks,
+                                       args=(game_type, game_round, game_is_email, game_relation_num))
+            thread2 = threading.Thread(target=OnmyojiController.assist, args=())
+            thread1.start()
+            thread2.start()
+            thread1.join()
+            thread2.join()
+        except KeyboardInterrupt:
+            project_interrupt_flag = True
 
     @staticmethod
     def tasks(game_type: str, game_round: str, game_is_email: str, relation_num: str) -> None:
@@ -34,6 +38,7 @@ class OnmyojiController:
         :param game_is_email:  项目是否发送邮件报告
         :return: None
         """
+        time_start = time.time()
         logger.info("任务开始")
         # 获取项目组
         game_task = MapperExtend.select_game_task("", game_type)

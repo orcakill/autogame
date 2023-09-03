@@ -54,6 +54,7 @@ class Onmyoji:
     border_ZCTZ = r"探索\结界突破\再次挑战"
     border_ZDSB = r"探索\结界突破\战斗失败"
     border_ZDSL = r"探索\结界突破\战斗胜利"
+    border_GP = r"探索\结界突破\攻破"
 
     comm_FH_ZSJLDYXBSXYH = r"通用\返回\左上角蓝底圆形白色小于号"
     comm_FH_ZSJLDBKBSXYH = r"通用\返回\左上角蓝底白框白色小于号"
@@ -137,6 +138,7 @@ class Onmyoji:
     home_QX = r"首页\取消"
     home_TS = r"首页\探索"
     home_XZ = r"首页\下载"
+    home_BZTS = r"首页\不再提示"
 
     login_CY = r"登录\常用"
     login_DLAN = r"登录\登录按钮"
@@ -293,6 +295,7 @@ class Onmyoji:
     shack_BD = r"阴阳寮\寮管理\白当"
     shack_ZXSC = r"阴阳寮\寮管理\左下素材"
     shack_SCSC = r"阴阳寮\寮管理\素材素材"
+    shack_TQJY = r"阴阳寮\寮管理\提取经验"
 
     explore_ZCTZ = r"探索\探索\再次挑战"
     explore_ZDSB = r"探索\探索\战斗失败"
