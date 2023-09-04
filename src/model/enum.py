@@ -256,7 +256,6 @@ class Onmyoji:
     region_TCTZ = r"探索\阴阳寮突破\退出挑战"
     region_SDZR = r"探索\阴阳寮突破\锁定阵容"
     region_ZCTPJD = r"探索\阴阳寮突破\左侧突破进度"
-
     shack_XLTY = r"阴阳寮\寮管理\下拉太阴"
     shack_XLTG = r"阴阳寮\寮管理\下拉太鼓"
     shack_XLDY = r"阴阳寮\寮管理\下拉斗鱼"
@@ -292,7 +291,9 @@ class Onmyoji:
     shack_DY = r"阴阳寮\寮管理\斗鱼"
     shack_TY = r"阴阳寮\寮管理\太阴"
     shack_MZ = r"阴阳寮\寮管理\满字"
-    shack_BD = r"阴阳寮\寮管理\白当"
+    shack_FRSS = r"阴阳寮\寮管理\放入式神"
+    shack_BD = r"阴阳寮\寮管理\白蛋"
+    shack_ZXQB = r"阴阳寮\寮管理\左下全部"
     shack_ZXSC = r"阴阳寮\寮管理\左下素材"
     shack_SCSC = r"阴阳寮\寮管理\素材素材"
     shack_TQJY = r"阴阳寮\寮管理\提取经验"
@@ -302,6 +303,12 @@ class Onmyoji:
     explore_ZDSL = r"探索\探索\战斗胜利"
     explore_SPTZ = r"探索\探索\碎片挑战"
     explore_TCTZ = r"探索\探索\退出挑战"
+
+    deed_ZCTZ = r"探索\契灵\再次挑战"
+    deed_ZDSB = r"探索\契灵\战斗失败"
+    deed_ZDSL = r"探索\契灵\战斗胜利"
+    deed_TC = r"探索\契灵\探查"
+    deed_TCTZ = r"探索\契灵\退出挑战"
 
 
 class Cvstrategy:

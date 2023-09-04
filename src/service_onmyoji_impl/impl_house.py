@@ -6,7 +6,7 @@
 """
 import time
 
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
@@ -210,8 +210,9 @@ def shack_house(game_task: []):
             logger.debug("集体任务，判断是否提交")
             is_commit = ImageService.exists(Onmyoji.shack_TJ)
             if is_awaken and is_commit:
-                logger.debug("确定有觉醒任务和提交")
-                ImageService.touch_coordinate(is_awaken[0], is_commit[1])
+                coordinate_commit = (is_awaken[0], is_commit[1])
+                logger.debug("确定有觉醒任务和提交,{}", coordinate_commit)
+                ImageService.touch_coordinate(coordinate_commit)
                 logger.debug("四种觉醒材料的坐标")
                 is_fire = ImageService.exists(Onmyoji.shack_RWCLYHL)
                 is_mine = ImageService.exists(Onmyoji.shack_RWCLTLG)
@@ -265,18 +266,17 @@ def shack_house(game_task: []):
             ImageService.touch(Onmyoji.shack_QCTL)
             logger.debug("获得奖励")
             ComplexService.get_reward(Onmyoji.shack_HDJL)
-            logger.debug("点击返回")
-            ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+            logger.debug("点击可能存在的返回")
+            ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH, rgb=True)
         logger.debug("判断是否有经验待领取")
         is_wine_pot = ImageService.touch(Onmyoji.shack_JYJH)
         if is_wine_pot:
             logger.debug("领取经验")
             ImageService.touch(Onmyoji.shack_TQJY)
             logger.debug("点击可能存在的确定")
-            is_confirm = ImageService.touch(Onmyoji.shack_QD)
-            if is_confirm:
-                logger.debug("点击可能存在的返回")
-                ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+            ImageService.touch(Onmyoji.shack_QD)
+            logger.debug("点击可能存在的返回")
+            ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH, rgb=True)
     logger.debug("5.结界卡奖励领取")
     is_card_rewards = ImageService.touch(Onmyoji.shack_JJKJLLQ)
     if is_card_rewards:
@@ -332,23 +332,35 @@ def shack_house(game_task: []):
     is_care = ImageService.touch(Onmyoji.shack_SSYC)
     if is_care:
         logger.debug("判断是否有满")
-        is_full = ImageService.exists(Onmyoji.shack_MZ)
+        is_full = ImageService.exists(Onmyoji.shack_MZ, cvstrategy=Cvstrategy.default)
         if is_full:
-            for i_full in range(6):
-                is_full = ImageService.exists(Onmyoji.shack_MZ)
-                if is_full and is_full[1] > 1 / 2 * resolution[1]:
-                    logger.debug("点击满字，去掉已满的式神")
-                    ImageService.touch_coordinate(is_full)
-                else:
+            for i_full in range(8):
+                logger.debug("点击满字，去掉已满的式神")
+                is_full = ImageService.touch(Onmyoji.shack_MZ, cvstrategy=Cvstrategy.default)
+                if not is_full:
+                    logger.debug("已无经验已满的式神")
                     break
+        logger.debug("判断是否有放入式神")
+        is_insert = ImageService.exists(Onmyoji.shack_FRSS)
+        if is_insert:
             logger.debug("点击左下的全部")
-            ImageService.touch(Onmyoji.shack_ZXSC)
+            ImageService.touch(Onmyoji.shack_ZXQB)
             logger.debug("点击左下的素材")
             ImageService.touch(Onmyoji.shack_SCSC)
-            logger.debug("点击不带育成的白蛋，6次")
-            ImageService.touch(Onmyoji.shack_BD)
-        else:
-            logger.debug("无经验已满的式神，退出")
+            is_white_egg = ImageService.exists(Onmyoji.shack_BD)
+            if is_white_egg:
+                logger.debug("点击白蛋，至少6次")
+                for i_growing in range(8):
+                    logger.debug("点击1级白蛋")
+                    ImageService.touch_coordinate(is_white_egg)
+                    if i_growing > 5:
+                        logger.debug("判断是否还有放入式神")
+                        is_insert = ImageService.exists(Onmyoji.shack_FRSS)
+                        if not is_insert:
+                            logger.debug("已全部寄养")
+                            break
+            else:
+                logger.debug("没找1级白蛋")
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)

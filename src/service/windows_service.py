@@ -2,12 +2,13 @@
 # @Author: orcakill
 # @File: windows_service.py
 # @Description: window 相关服务接口
+import os
 import subprocess
 
+import psutil
 from win32com.client import Dispatch
 
 from src.utils.my_logger import logger
-import os
 
 
 class WindowsService:
@@ -64,3 +65,10 @@ class WindowsService:
                 return False
         else:
             return False
+
+    @staticmethod
+    def limit_cpu_percentage(percentage):
+        process = psutil.Process(os.getpid())
+        cpu_count = psutil.cpu_count()
+        cpu_limit = int(cpu_count * (percentage / 100))
+        process.cpu_affinity(list(range(cpu_limit)))

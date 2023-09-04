@@ -55,7 +55,13 @@ def region_border(game_task: []):
             is_attack = ImageService.touch(Onmyoji.region_JG)
             if not is_attack:
                 logger.debug("再次点击寮结界")
-                ImageService.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
+                is_fight = ImageService.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
+                if not is_fight:
+                    logger.debug("仍未找到寮结界")
+                    is_break_through = ImageService.find_all(Onmyoji.region_GP)
+                    if is_break_through >= 8:
+                        logger.debug("当前寮结界已全部攻破")
+                        break
                 logger.debug("再次点击进攻")
                 ImageService.touch(Onmyoji.region_JG)
             logger.debug("判断是否还有进攻")

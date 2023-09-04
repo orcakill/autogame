@@ -21,7 +21,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         image_service.auto_setup("0")
         now = datetime.datetime.now()
-        is_border = ImageService.exists(Onmyoji.home_DBCDDK)
+        is_border = ImageService.touch(Onmyoji.shack_MZ,cvstrategy=Cvstrategy.default)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -104,18 +104,17 @@ class TestImageService(TestCase):
         now1 = datetime.datetime.now()
         print(now1 - now)
 
-    @staticmethod
-    def test_find_all():
+    def test_find_all(self):
         """
         多图查找
         :return:
         """
 
-        image_service.auto_setup("1")
+        image_service.auto_setup("0")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        result = image_service.find_all(Onmyoji.border_GP)
+        result = image_service.find_all(Onmyoji.region_GP)
         logger.debug(result)
         logger.debug(len(result))
         logger.debug("结束")

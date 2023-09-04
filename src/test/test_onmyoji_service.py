@@ -91,8 +91,7 @@ class TestOnmyojiService(TestCase):
         thread2.join()
         logger.debug("测试-每日奖励结束")
 
-    @staticmethod
-    def test_encounter_demons():
+    def test_encounter_demons(self):
         """
         项目3 逢魔之时
         :return:
@@ -241,7 +240,7 @@ class TestOnmyojiService(TestCase):
         logger.debug("阴阳寮突破")
         test_names = ['1']
         # test_names = ['3']
-        test_devices = '1'
+        test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
         # 拒接协战
