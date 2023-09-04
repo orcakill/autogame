@@ -1,3 +1,4 @@
+import random
 import threading
 import time
 
@@ -75,6 +76,12 @@ class OnmyojiController:
                         # 项目 7
                         elif game_project.project_name in ["阴阳寮突破"]:
                             OnmyojiService.region_border(game_task[j])
+                            if game_projects_relation.wait_after_time > 0:
+                                time_time = game_projects_relation.wait_after_time
+                                logger.debug("战斗结束后等待一段时间")
+                                result_time = random.randint(time_time - 5, time_time + 5)
+                                logger.debug("等待{}分钟", result_time)
+                                time.sleep(result_time*60)
                         # 项目 8
                         elif game_project.project_name in ["个人突破"]:
                             OnmyojiService.border_fight(game_task[j])

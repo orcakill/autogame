@@ -67,7 +67,10 @@ class ImageService:
                 for template in template_list:
                     pos = airtest_service.exists(template, cvstrategy, timeout, is_throw)
                     if pos and not is_click:
-                        logger.debug("图像识别成功:{}", folder_path)
+                        if is_throw:
+                            logger.debug("图像识别成功:{},{}", folder_path, template.filename)
+                        else:
+                            logger.debug("图像识别成功:{}", folder_path)
                         return pos
                     if pos and is_click:
                         time.sleep(interval)

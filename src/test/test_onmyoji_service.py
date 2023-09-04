@@ -166,7 +166,7 @@ class TestOnmyojiService(TestCase):
         """
         global project_interrupt_flag
         logger.debug("式神寄养")
-        test_names = ['1', '2', '3', '4', '5']
+        test_names = ['2', '3', '4', '5']
         # test_names = ['1']
         test_devices = '0'
         # 初始化设备信息
@@ -203,7 +203,7 @@ class TestOnmyojiService(TestCase):
         global project_interrupt_flag
         logger.debug("阴阳寮管理")
         # test_names = ['1', '2', '3', '4', '5']
-        test_names = ['2']
+        test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)

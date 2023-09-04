@@ -42,7 +42,7 @@ class WindowsService:
         shortcut = shell.CreateShortCut(shortcut_path)
         target_file_path = shortcut.Targetpath
         # 使用subprocess模块运行程序
-        subprocess.Popen(target_file_path)
+        subprocess.Popen(target_file_path, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
 
     @staticmethod
     def get_device_status_by_ip(ip):
