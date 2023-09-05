@@ -16,12 +16,12 @@ project_interrupt_flag = False
 class OnmyojiController:
 
     @staticmethod
-    def game_thread(game_type: str, game_round: str, game_is_email: str, game_relation_num: str):
+    def game_thread(game_type: str, game_round: str, game_is_email: str, game_relation_num: str, game_device: str):
         global project_interrupt_flag
         try:
             thread1 = threading.Thread(target=OnmyojiController.tasks,
                                        args=(game_type, game_round, game_is_email, game_relation_num))
-            thread2 = threading.Thread(target=OnmyojiController.assist, args=())
+            thread2 = threading.Thread(target=OnmyojiController.assist, args=(game_device))
             thread1.start()
             thread2.start()
             thread1.join()
@@ -81,7 +81,7 @@ class OnmyojiController:
                                 logger.debug("战斗结束后等待一段时间")
                                 result_time = random.randint(time_time - 5, time_time + 5)
                                 logger.debug("等待{}分钟", result_time)
-                                time.sleep(result_time*60)
+                                time.sleep(result_time * 60)
                         # 项目 8
                         elif game_project.project_name in ["个人突破"]:
                             OnmyojiService.border_fight(game_task[j])
@@ -104,9 +104,15 @@ class OnmyojiController:
         project_interrupt_flag = True
 
     @staticmethod
-    def assist():
+    def assist(game_device:str):
         global project_interrupt_flag
+        logger.info("连接Android设备")
+        image_service.auto_setup(game_device)
         logger.debug("开启拒接协战")
         while not project_interrupt_flag:
             time.sleep(30)
-            image_service.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
+            try:
+                image_service.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
+            except TypeError:
+                logger.debug("丢失连接，重连")
+                image_service.auto_setup(game_device)

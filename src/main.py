@@ -24,11 +24,8 @@ if __name__ == '__main__':
     logger.info("**************")
     logger.info("脚本类型{},脚本轮次 {},连接设备{}", game_type, game_round, game_device)
     logger.info("**************")
-    logger.info("连接Android设备")
-    # 连接android设备
-    image_service.auto_setup(game_device)
     logger.info("执行任务")
-    OnmyojiController.game_thread(game_type, game_round, game_is_email, game_relation_num)
+    OnmyojiController.game_thread(game_type, game_round, game_is_email, game_relation_num,game_device)
 
     # 执行项目组、每个节点整理邮件报告
 

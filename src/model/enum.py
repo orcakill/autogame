@@ -247,6 +247,7 @@ class Onmyoji:
     region_YCYYL = r"探索\阴阳寮突破\右侧阴阳寮"
     region_GTRQ = r"探索\阴阳寮突破\呱太入侵"
     region_LJJ = r"探索\阴阳寮突破\寮结界"
+    region_GP = r"探索\阴阳寮突破\攻破"
     region_ZDSB = r"探索\阴阳寮突破\战斗失败"
     region_ZDSL = r"探索\阴阳寮突破\战斗胜利"
     region_WTZCS = r"探索\阴阳寮突破\无挑战次数"

@@ -59,7 +59,7 @@ def region_border(game_task: []):
                 if not is_fight:
                     logger.debug("仍未找到寮结界")
                     is_break_through = ImageService.find_all(Onmyoji.region_GP)
-                    if is_break_through >= 8:
+                    if len(is_break_through) >= 8:
                         logger.debug("当前寮结界已全部攻破")
                         break
                 logger.debug("再次点击进攻")
