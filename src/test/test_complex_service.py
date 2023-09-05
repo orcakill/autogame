@@ -9,6 +9,8 @@ from src.model.enum import Onmyoji
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.windows_service import WindowsService
+from src.temp.temp_fight_end import TempComplexService1
 from src.utils.my_logger import logger
 
 
@@ -88,15 +90,16 @@ class TestComplexService(TestCase):
         契灵-探查，临时
         :return:
         """
-        # WindowsService.limit_cpu_percentage(30)
+        WindowsService.limit_cpu_percentage(30)
         AirtestService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()
         for i in range(50):
             logger.debug("点击探查{}", i + 1)
             ImageService.touch(Onmyoji.deed_TC)
+            ImageService.touch(Onmyoji.comm_FH_XSFYHSCH)
             logger.debug("等待战斗结果")
-            ComplexService.fight_end(Onmyoji.deed_ZDSL, Onmyoji.deed_ZDSB, Onmyoji.deed_ZCTZ,
+            TempComplexService1.fight_end(Onmyoji.deed_ZDSL, Onmyoji.deed_ZDSB, Onmyoji.deed_ZCTZ,
                                      Onmyoji.deed_TCTZ, Onmyoji.deed_TC, 60, 4)
         logger.debug("结束")
         now1 = datetime.datetime.now()

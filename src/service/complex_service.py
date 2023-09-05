@@ -3,7 +3,6 @@
 # @File: complex_service.py
 # @Description: 复杂逻辑处理
 import os
-import threading
 import time
 
 from src.model.enum import Cvstrategy, Onmyoji
@@ -12,24 +11,18 @@ from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
 
-image_service = ImageService()
-airtest_service = AirtestService()
-
-# 共享的中断标志
-fight_interrupt_flag = False
-# 战斗识别结果
-fight_result = None
-
 
 class ComplexService:
+
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_none: str = None,
-                  timeouts: float = 60, timeout: float = 1):
+                  timeouts: int = 60, timeout: int = 1):
         """
         结界战斗，结束战斗
         1、战斗胜利,退出挑战
         2、退出挑战
         3、再次挑战（只识别不点击），战斗失败
+        4、挑战（只识别不点击）
         :param timeouts: 识别最大时间
         :param fight_none: 挑战（挑战）
         :param timeout: 超时时间
@@ -39,61 +32,41 @@ class ComplexService:
         :param fight_quit:  退出挑战
         :return:
         """
-        global fight_interrupt_flag
-        global fight_result
-        fight_interrupt_flag = False
-        fight_result = None
-        # 创建线程1，战斗胜利，退出挑战
-        thread1 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-11",
-                                   args=(fight_win, True, fight_quit, True, timeouts, timeout, True))
-        # 创建线程2，退出挑战,无
-        thread2 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-12",
-                                   args=(fight_quit, True, None, True, timeouts, timeout, True))
-        # 创建线程3，再次挑战，战斗失败
-        thread3 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-13",
-                                   args=(fight_again, False, fight_fail, True, timeouts, timeout))
-        # 创建线程4，未挑战
-        thread4 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-14",
-                                   args=(fight_none, False, None, True, timeouts, timeout))
-        thread1.start()
-        thread2.start()
-        thread3.start()
-        thread4.start()
 
-        thread1.join()
-        thread2.join()
-        thread3.join()
-        thread4.join()
-        logger.debug("战斗结果:{}", fight_result)
-        return fight_result
-
-    @staticmethod
-    def fight_end_thread(first, first_click, second, second_click, timeouts, timeout, again: bool = False):
-        global fight_interrupt_flag
-        global fight_result
-        time_start = time.time()
+        # 识别算法
         cvstrategy = Cvstrategy.sift
         rgb = False
         threshold = 0.7
-        if first in [Onmyoji.border_GRJJ, Onmyoji.region_LJJ]:
+        if fight_win in [Onmyoji.border_GRJJ, Onmyoji.region_LJJ]:
             cvstrategy = Cvstrategy.default
-        while time.time() - time_start < timeouts and not fight_interrupt_flag:
-            is_first = image_service.exists(first, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+        time_start = time.time()
+        while time.time() - time_start < timeouts:
+            is_first = ImageService.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+                                           threshold=threshold, wait=timeout)
+            if is_first:
+                ImageService.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
+                                    is_click=True, wait=timeout)
+                ImageService.exists(fight_quit, timeouts=timeout, is_click=True, wait=timeout)
+                return fight_win
+            is_second = ImageService.exists(fight_quit, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                             threshold=threshold, wait=timeout)
-            if is_first and not fight_interrupt_flag:
-                if first_click and again:
-                    image_service.exists(first, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
-                                         is_click=True, wait=timeout)
-                elif first_click and not again:
-                    image_service.touch_coordinate(is_first)
-                fight_interrupt_flag = True
-                fight_result = first
-                if second is not None:
-                    image_service.exists(second, timeouts=timeout, is_click=second_click, wait=timeout)
-                logger.debug("提前结束：{}", first)
-                return True
-        logger.debug("识别结束：{}", first)
-        return False
+            if is_second:
+                ImageService.exists(fight_quit, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
+                                    is_click=True, wait=timeout)
+                return fight_quit
+            if time.time() - time_start > 1 / 2 * timeouts:
+                is_third = ImageService.exists(fight_again, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+                                               threshold=threshold, wait=timeout)
+                if is_third:
+                    ImageService.exists(fight_fail, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+                                        threshold=threshold,
+                                        is_click=True, wait=timeout)
+                    return fight_fail
+                is_fourth = ImageService.exists(fight_none, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+                                                threshold=threshold, wait=timeout)
+                if is_fourth:
+                    return fight_none
+        return None
 
     @staticmethod
     def swipe_floor(basis: str, target: str, swipe: int, times: int):
@@ -105,12 +78,12 @@ class ComplexService:
         :param times:  滑动次数
         :return:
         """
-        is_target = image_service.exists(target, is_click=True)
+        is_target = ImageService.exists(target, is_click=True)
         xy1, xy2 = (), ()
         if not is_target:
             logger.debug("无目标{}", target)
             # 获取基础图片的坐标
-            layer_coordinates = image_service.exists(basis, cvstrategy=Cvstrategy.default)
+            layer_coordinates = ImageService.exists(basis, cvstrategy=Cvstrategy.default)
             if layer_coordinates:
                 if swipe == 0:
                     xy1 = (layer_coordinates[0], 1 / 4 * layer_coordinates[1])
@@ -127,8 +100,8 @@ class ComplexService:
                 logger.debug("开始滑动")
                 for i in range(times):
                     logger.debug("滑动{}次", i + 1)
-                    airtest_service.swipe(xy1, xy2)
-                    is_target = image_service.exists(target, is_click=True, timeouts=1, wait=1)
+                    AirtestService.swipe(xy1, xy2)
+                    is_target = ImageService.exists(target, is_click=True, timeouts=1, wait=1)
                     if is_target:
                         logger.debug("发现目标{}", target)
                         break
@@ -146,39 +119,39 @@ class ComplexService:
         :param add_switch:  加成开关
         :return:
         """
-        coordinate_word = image_service.exists(word)
+        coordinate_word = ImageService.exists(word)
         if coordinate_word:
             logger.debug("点击顶部加成")
-            airtest_service.touch_coordinate(coordinate_word)
+            AirtestService.touch_coordinate(coordinate_word)
             logger.debug("根据类型确定纵坐标")
-            coordinate_type = image_service.exists(add_type, timeouts=2)
+            coordinate_type = ImageService.exists(add_type, timeouts=2)
             if add_switch == 0:
                 logger.debug("关闭加成")
                 logger.debug("根据类型确定横坐标")
-                coordinate_switch = image_service.exists(add_open, timeouts=2, cvstrategy=Cvstrategy.default)
+                coordinate_switch = ImageService.exists(add_open, timeouts=2, cvstrategy=Cvstrategy.default)
             else:
                 logger.debug("打开加成")
                 logger.debug("根据类型确定横坐标")
-                coordinate_switch = image_service.exists(add_close, timeouts=2, cvstrategy=Cvstrategy.default)
+                coordinate_switch = ImageService.exists(add_close, timeouts=2, cvstrategy=Cvstrategy.default)
             if coordinate_switch and coordinate_type:
                 logger.debug("点击计算出的开关坐标")
-                airtest_service.touch_coordinate((coordinate_switch[0], coordinate_type[1]), wait_time=2)
+                AirtestService.touch_coordinate((coordinate_switch[0], coordinate_type[1]), wait_time=2)
                 logger.debug("退出顶部加成")
-                airtest_service.touch_coordinate(coordinate_word, wait_time=2)
+                AirtestService.touch_coordinate(coordinate_word, wait_time=2)
                 return True
             else:
                 logger.debug("未找到加成坐标")
                 logger.debug("退出顶部加成")
-                airtest_service.touch_coordinate(coordinate_word, wait_time=2)
+                AirtestService.touch_coordinate(coordinate_word, wait_time=2)
         else:
             logger.debug("没找到顶部加成")
         return False
 
     @staticmethod
     def get_reward(reward: str):
-        is_reward = image_service.exists(reward, wait=3)
+        is_reward = ImageService.exists(reward, wait=3)
         if is_reward:
-            airtest_service.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+            AirtestService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
             return True
         return False
 
@@ -190,29 +163,29 @@ class ComplexService:
         # 当前状态 账号首页 1，2,3，4，5
         #        其它，不在账号首页
         account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
-        is_index = image_service.exists(account_index)
-        is_explore = image_service.exists(Onmyoji.home_TS)
+        is_index = ImageService.exists(account_index)
+        is_explore = ImageService.exists(Onmyoji.home_TS)
         if not is_index or not is_explore:
             logger.debug("判断是否在桌面")
-            is_desktop = image_service.exists(Onmyoji.login_YYSTB)
+            is_desktop = ImageService.exists(Onmyoji.login_YYSTB)
             if not is_desktop:
                 logger.debug("不在账号首页且不是桌面，循环5次，5次不成功则返回失败")
                 # 获取返回列表
                 for i_return in range(5):
                     logger.debug("点击可能存在的返回按钮")
-                    image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-                    image_service.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH)
-                    image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
-                    image_service.touch(Onmyoji.comm_FH_XSFYHSCH)
-                    image_service.touch(Onmyoji.comm_FH_YSJZDHBSCH)
-                    image_service.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
-                    image_service.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
-                    image_service.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+                    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                    ImageService.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH)
+                    ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+                    ImageService.touch(Onmyoji.comm_FH_XSFYHSCH)
+                    ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+                    ImageService.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
+                    ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
+                    ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
                     logger.debug("点击可能存在的退出挑战")
-                    image_service.touch(Onmyoji.soul_BQ_TCTZ)
+                    ImageService.touch(Onmyoji.soul_BQ_TCTZ)
                     logger.debug("重新判断是否返回首页")
-                    is_index = image_service.exists(account_index)
-                    is_explore = image_service.exists(Onmyoji.home_TS)
+                    is_index = ImageService.exists(account_index)
+                    is_explore = ImageService.exists(Onmyoji.home_TS)
                     if is_index and is_explore:
                         logger.debug("返回首页成功")
                         return True

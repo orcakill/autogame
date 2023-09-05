@@ -4,6 +4,7 @@
 # @Description: 服务测试类
 import threading
 import time
+import warnings
 from unittest import TestCase
 
 from src.dao.mapper import select_game_account
@@ -163,6 +164,7 @@ class TestOnmyojiService(TestCase):
         项目5 式神寄养
         :return:
         """
+        warnings.simplefilter('ignore', ResourceWarning)
         global project_interrupt_flag
         logger.debug("式神寄养")
         test_names = ['2', '3', '4', '5']

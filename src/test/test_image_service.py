@@ -21,7 +21,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         image_service.auto_setup("0")
         now = datetime.datetime.now()
-        is_border = ImageService.touch(Onmyoji.shack_MZ,cvstrategy=Cvstrategy.default)
+        is_border = ImageService.touch(Onmyoji.home_DBCDDK)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)

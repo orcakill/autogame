@@ -30,7 +30,6 @@ if __name__ == '__main__':
     logger.info("**************")
     logger.info("脚本类型{},脚本轮次 {},连接设备夜神模拟器", game_type, game_round)
     logger.info("**************")
-    logger.info("连接Android设备")
     # 连接android设备
     image_service.auto_setup(game_device)
     logger.info("执行任务")

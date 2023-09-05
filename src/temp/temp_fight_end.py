@@ -5,12 +5,10 @@
 import datetime
 import time
 
-import logger
-
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
-from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.utils.my_logger import logger
 
 image_service = ImageService()
 airtest_service = AirtestService()
@@ -30,6 +28,7 @@ class TempComplexService1:
         1、战斗胜利,退出挑战
         2、退出挑战
         3、再次挑战（只识别不点击），战斗失败
+        4、挑战（只识别不点击）
         :param timeouts: 识别最大时间
         :param fight_none: 挑战（挑战）
         :param timeout: 超时时间
@@ -46,36 +45,45 @@ class TempComplexService1:
             cvstrategy = Cvstrategy.default
         time_start = time.time()
         while time.time() - time_start < timeouts:
+            logger.debug("判断是否是战斗胜利")
             is_first = image_service.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                             threshold=threshold, wait=timeout)
             if is_first:
+                logger.debug("战斗胜利")
                 image_service.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
                                      is_click=True, wait=timeout)
                 image_service.exists(fight_quit, timeouts=timeout, is_click=True, wait=timeout)
                 return fight_win
+            logger.debug("判断是否是退出挑战")
             is_second = image_service.exists(fight_quit, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                              threshold=threshold, wait=timeout)
             if is_second:
+                logger.debug("退出挑战")
                 image_service.exists(fight_quit, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
                                      is_click=True, wait=timeout)
                 return fight_quit
             if time.time() - time_start > 1 / 2 * timeouts:
-                is_third = image_service.exists(fight_again, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
-                                                threshold=threshold, wait=timeout)
-                if is_third:
+                logger.debug("判断是否是战斗失败")
+                is_third1 = image_service.exists(fight_again, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+                                                 threshold=threshold, wait=timeout)
+                if is_third1:
+                    logger.debug("战斗失败")
                     image_service.exists(fight_fail, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                          threshold=threshold,
                                          is_click=True, wait=timeout)
                     return fight_fail
+                logger.debug("判断是否是未挑战")
                 is_fourth = image_service.exists(fight_none, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                                  threshold=threshold, wait=timeout)
                 if is_fourth:
+                    logger.debug("未挑战")
                     return fight_none
 
 
 if __name__ == '__main__':
     image_service.auto_setup("1")
     now = datetime.datetime.now()
+    logger.debug("探查测试")
     ImageService.touch(Onmyoji.deed_TC)
     TempComplexService1.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                   Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,
