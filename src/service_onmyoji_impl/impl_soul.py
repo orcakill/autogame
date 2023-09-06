@@ -14,9 +14,12 @@ from src.utils.my_logger import logger
 def soul_fight(game_task: []):
     """
     御魂战斗  八岐大蛇
-    魂一  第一次战斗检查协战，有协战上协战，没协战直接退出到首页，不开加成
-    魂十  第一次战斗检查协战，有协战上协战，开加成，
-    魂十一  不检查协战，不上协战，开加成
+    魂一   不御魂开加成
+    魂十   开御魂加成
+    魂十一  开御魂加成
+    业原火  无加成
+    日轮之陨  检查加成次数，无加成不挑战
+    永生之海  限定周三和周五，无加成不挑战
     :param game_task: 项目组信息
     :return:
     """
@@ -26,20 +29,21 @@ def soul_fight(game_task: []):
     num_win = 0
     # 战斗失败次数
     num_fail = 0
-    # 结界突破战斗用时
+    # 战斗用时列表
     time_fight_list = []
     game_projects_relation = GameProjectsRelation(game_task[1])
     game_account = GameAccount(game_task[2])
     logger.debug(game_account.game_name)
     game_project = GameProject(game_task[3])
+    project_name=game_project.project_name
     fight_time = game_projects_relation.project_num_times
-    logger.debug("进入探索")
+    logger.debug("{}-进入探索")
     ImageService.touch(Onmyoji.home_TS)
-    logger.debug("进入御魂")
+    logger.debug("{}-进入御魂",project_name)
     ImageService.touch(Onmyoji.soul_BQ_YHTB)
-    logger.debug("进入八岐大蛇")
+    logger.debug("进入{}",project_name)
     ImageService.touch(Onmyoji.soul_BQ_XZ)
-    logger.debug("开启加成")
+    logger.debug("八岐大蛇-开启加成")
     logger.debug("八岐大蛇-选择层号")
     if game_project.project_name == "魂一":
         ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HONE, 0, 4)
@@ -47,18 +51,18 @@ def soul_fight(game_task: []):
         ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
     elif game_project.project_name == "魂十一":
         ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HELEVEN, 1, 4)
-    logger.debug("开启御魂加成")
+    logger.debug("八岐大蛇-开启御魂加成")
     ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
                                 1)
-    logger.debug("锁定阵容")
+    logger.debug("八岐大蛇-锁定阵容")
     ImageService.touch(Onmyoji.soul_BQ_SDZR)
     # 默认锁定阵容
     is_lock = False
     for i in range(fight_time):
         time_fight_start = time.time()
-        logger.debug("御魂-挑战{}次", i + 1)
+        logger.debug("八岐大蛇御魂-挑战{}次", i + 1)
         if is_lock:
-            logger.debug("可能存在锁定阵容")
+            logger.debug("上一次战斗点击了准备，本次锁定阵容")
             ImageService.touch(Onmyoji.soul_BQ_SDZR)
         is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ)
         if not is_fight:
@@ -91,9 +95,9 @@ def soul_fight(game_task: []):
     logger.debug("关闭御魂加成")
     ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
                                 0)
-    logger.debug("御魂-返回首页")
+    logger.debug("八岐大蛇御魂-返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-    logger.debug("御魂-返回首页")
+    logger.debug("八岐大蛇御魂-返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     # 御魂结束时间
     time_end = time.time()

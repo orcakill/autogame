@@ -10,7 +10,6 @@ from airtest.core.cv import Template
 
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
-from src.service.windows_service import WindowsService
 from src.utils.my_logger import my_logger as logger
 from src.utils.project_path import get_onmyoji_image_path
 
@@ -35,7 +34,6 @@ INTERVAL = 1
 TIMES = 1
 # 按住时间
 DURATION = 0.01
-windows_service = WindowsService()
 
 THROW = False
 

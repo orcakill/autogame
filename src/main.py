@@ -25,7 +25,7 @@ if __name__ == '__main__':
     logger.info("脚本类型{},脚本轮次 {},连接设备{}", game_type, game_round, game_device)
     logger.info("**************")
     logger.info("执行任务")
-    OnmyojiController.game_thread(game_type, game_round, game_is_email, game_relation_num,game_device)
+    OnmyojiController.tasks(game_type, game_round, game_is_email, game_relation_num, game_device)
 
     # 执行项目组、每个节点整理邮件报告
 

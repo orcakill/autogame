@@ -1,36 +1,19 @@
 import random
-import threading
 import time
 
 from src.dao.mapper_extend import MapperExtend
-from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import *
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.utils.my_logger import my_logger as logger
+from src.utils.utils_time import UtilsTime
 
-image_service = ImageService()
 project_interrupt_flag = False
 
 
 class OnmyojiController:
-
     @staticmethod
-    def game_thread(game_type: str, game_round: str, game_is_email: str, game_relation_num: str, game_device: str):
-        global project_interrupt_flag
-        try:
-            thread1 = threading.Thread(target=OnmyojiController.tasks,
-                                       args=(game_type, game_round, game_is_email, game_relation_num))
-            thread2 = threading.Thread(target=OnmyojiController.assist, args=(game_device))
-            thread1.start()
-            thread2.start()
-            thread1.join()
-            thread2.join()
-        except KeyboardInterrupt:
-            project_interrupt_flag = True
-
-    @staticmethod
-    def tasks(game_type: str, game_round: str, game_is_email: str, relation_num: str) -> None:
+    def tasks(game_type: str, game_round: str, game_is_email: str, relation_num: str, game_device: str) -> None:
         global project_interrupt_flag
         """
         项目组任务
@@ -56,6 +39,7 @@ class OnmyojiController:
                     logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
                                 game_account.game_name)
                     logger.info("当前状态初始化")
+                    ImageService.auto_setup(game_device)
                     is_initialization = OnmyojiService.initialization(game_task[j])
                     if is_initialization:
                         # 项目 1、24 每日奖励领取
@@ -99,20 +83,9 @@ class OnmyojiController:
                             OnmyojiService.soul_fight(game_task[j])
                     else:
                         logger.debug("当前状态初始化失败{}，不执行项目", game_account.game_name)
+                    time_end = time.time()
+                    logger.info("{}:{},执行时间{}", game_account.game_name, game_project.project_name,
+                                UtilsTime.convert_seconds(time_end - time_start))
             if game_is_email:
                 logger.info("发送邮件")
         project_interrupt_flag = True
-
-    @staticmethod
-    def assist(game_device:str):
-        global project_interrupt_flag
-        logger.info("连接Android设备")
-        image_service.auto_setup(game_device)
-        logger.debug("开启拒接协战")
-        while not project_interrupt_flag:
-            time.sleep(30)
-            try:
-                image_service.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
-            except TypeError:
-                logger.debug("丢失连接，重连")
-                image_service.auto_setup(game_device)
