@@ -14,14 +14,16 @@ project_interrupt_flag = False
 class OnmyojiController:
     @staticmethod
     def tasks(game_type: str, game_round: str, game_is_email: str, relation_num: str, game_device: str) -> None:
-        global project_interrupt_flag
         """
         项目组任务
+        :param game_device: 设备序号
         :param game_type: 项目类型
         :param game_round: 项目执行次数
         :param game_is_email:  项目是否发送邮件报告
+        :param relation_num:  项目中断后重新执行的序号
         :return: None
         """
+        global project_interrupt_flag
         time_start = time.time()
         logger.info("任务开始")
         # 获取项目组
@@ -60,7 +62,7 @@ class OnmyojiController:
                         # 项目 7
                         elif game_project.project_name in ["阴阳寮突破"]:
                             OnmyojiService.region_border(game_task[j])
-                            if game_projects_relation.wait_after_time > 0:
+                            if game_projects_relation.wait_after_time and game_projects_relation.wait_after_time > 0:
                                 time_time = game_projects_relation.wait_after_time
                                 logger.debug("战斗结束后等待一段时间")
                                 result_time = random.randint(time_time - 5, time_time + 5)
@@ -84,7 +86,7 @@ class OnmyojiController:
                     else:
                         logger.debug("当前状态初始化失败{}，不执行项目", game_account.game_name)
                     time_end = time.time()
-                    logger.info("{}:{},执行时间{}", game_account.game_name, game_project.project_name,
+                    logger.info("{}:{},项目组累计执行时间{}", game_account.game_name, game_project.project_name,
                                 UtilsTime.convert_seconds(time_end - time_start))
             if game_is_email:
                 logger.info("发送邮件")

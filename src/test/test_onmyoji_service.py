@@ -2,29 +2,16 @@
 # @Author: orcakill
 # @File: test_onmyoji_service.py
 # @Description: 服务测试类
-import threading
-import time
 import warnings
 from unittest import TestCase
 
 from src.dao.mapper import select_game_account
-from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.utils.folder_utils import FolderUtils
 from src.utils.my_logger import logger
-
-project_interrupt_flag = False
-
-
-def assist_onmyoji():
-    global project_interrupt_flag
-    logger.debug("开启拒接协战")
-    while not project_interrupt_flag:
-        ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
-        time.sleep(5)
 
 
 class TestOnmyojiService(TestCase):
@@ -34,7 +21,6 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        global project_interrupt_flag
         logger.debug("测试-当前状态初始化开始")
         # 测试账号信息
         test_names = ['1']
@@ -42,9 +28,6 @@ class TestOnmyojiService(TestCase):
         test_devices = '1'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -56,25 +39,18 @@ class TestOnmyojiService(TestCase):
             logger.debug("准备完成-当前状态初始化{}", test_name)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
-            project_interrupt_flag = True
-        thread2.join()
-        logger.debug("测试-当前状态初始化结束")
 
     def test_daily_rewards(self):
         """
         项目2 每日奖励
         :return:
         """
-        global project_interrupt_flag
         logger.debug("每日奖励领取")
         # test_names = ['2','3','4','5']
         test_names = ['1']
         test_devices = '1'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -88,25 +64,18 @@ class TestOnmyojiService(TestCase):
             OnmyojiService.initialization(game_task)
             # 执行测试任务
             OnmyojiService.daily_rewards(game_task)
-            project_interrupt_flag = True
-        thread2.join()
-        logger.debug("测试-每日奖励结束")
 
     def test_encounter_demons(self):
         """
         项目3 逢魔之时
         :return:
         """
-        global project_interrupt_flag
         logger.debug("开始测试-逢魔之时")
         # test_names = ['2','3','4','5']-
         test_names = ['2', '3', '4', '5']
         test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -120,25 +89,18 @@ class TestOnmyojiService(TestCase):
             OnmyojiService.initialization(game_task)
             # 执行测试任务
             OnmyojiService.encounter_demons(game_task)
-            project_interrupt_flag = True
-        thread2.join()
-        logger.debug("测试-逢魔之时结束")
 
     def test_ghost_king(self):
         """
         项目4 地域鬼王
         :return:
         """
-        global project_interrupt_flag
         logger.debug("开始测试-地域鬼王")
         # test_names = ['2','3','4','5']
         test_names = ['1']
         test_devices = '1'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -155,8 +117,6 @@ class TestOnmyojiService(TestCase):
             OnmyojiService.initialization(game_task)
             # 执行测试任务
             OnmyojiService.ghost_king(game_task)
-            project_interrupt_flag = True
-        thread2.join()
         logger.debug("测试-地域鬼王结束")
 
     def test_foster_care(self):
@@ -165,18 +125,14 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         warnings.simplefilter('ignore', ResourceWarning)
-        global project_interrupt_flag
         logger.debug("式神寄养")
         test_names = ['2', '3', '4', '5']
         # test_names = ['1']
         test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
         # 清理历史文件
         FolderUtils.clear_folder_shutil(r"D:\image")
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -193,61 +149,46 @@ class TestOnmyojiService(TestCase):
             # 执行测试任务
             OnmyojiService.foster_care(game_task)
             logger.debug("{}测试完成", test_name)
-            project_interrupt_flag = True
-        thread2.join()
 
     def test_shack_house(self):
         """
         项目6 阴阳寮管理
         :return:
         """
-        global project_interrupt_flag
         logger.debug("阴阳寮管理")
         # test_names = ['1', '2', '3', '4', '5']
         test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
-        try:
-            for i in range(len(test_names)):
-                test_name = test_names[i]
-                # 初始化测试任务信息
-                game_projects = GameProjects()
-                game_projects_relation = GameProjectsRelation()
-                game_account = select_game_account(test_name)
-                game_project = GameProject()
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
-                logger.debug("开始测试-阴阳寮管理")
-                # 当前状态初始化
-                OnmyojiService.initialization(game_task)
-                # 当前状态初始化
-                OnmyojiService.initialization(game_task)
-                # 执行测试任务
-                OnmyojiService.shack_house(game_task)
-                logger.debug("{}测试完成", test_name)
-                project_interrupt_flag = True
-            thread2.join()
-        except KeyboardInterrupt:
-            project_interrupt_flag = True
+        for i in range(len(test_names)):
+            test_name = test_names[i]
+            # 初始化测试任务信息
+            game_projects = GameProjects()
+            game_projects_relation = GameProjectsRelation()
+            game_account = select_game_account(test_name)
+            game_project = GameProject()
+            game_task = [game_projects, game_projects_relation, game_account, game_project]
+            logger.debug("开始测试-阴阳寮管理")
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 执行测试任务
+            OnmyojiService.shack_house(game_task)
+            logger.debug("{}测试完成", test_name)
 
     def test_region_border(self):
         """
         项目7 阴阳寮突破
         :return:
         """
-        global project_interrupt_flag
         logger.debug("阴阳寮突破")
         test_names = ['1']
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -264,24 +205,18 @@ class TestOnmyojiService(TestCase):
             # 执行测试任务
             OnmyojiService.region_border(game_task)
             logger.debug("{}测试完成", test_name)
-            project_interrupt_flag = True
-        thread2.join()
 
     def test_border_fight(self):
         """
         项目8 个人突破
         :return:
         """
-        global project_interrupt_flag
         logger.debug("个人突破")
         test_names = ['1']
         # test_names = ['3']
         test_devices = '1'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -298,24 +233,18 @@ class TestOnmyojiService(TestCase):
             # 执行测试任务
             OnmyojiService.border_fight(game_task, 40)
             logger.debug("{}测试完成", test_name)
-            project_interrupt_flag = True
-        thread2.join()
 
     def test_friends_manage(self):
         """
         项目9 好友管理
         :return:
         """
-        global project_interrupt_flag
         logger.debug("好友管理")
         test_names = ['1']
         # test_names = ['3']
         test_devices = '1'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -332,62 +261,47 @@ class TestOnmyojiService(TestCase):
             # 执行测试任务
             OnmyojiService.friends_manage(game_task)
             logger.debug("{}测试完成", test_name)
-            project_interrupt_flag = True
-        thread2.join()
 
     def test_friends_fight(self):
         """
         项目10 好友协战
         :return:
         """
-        global project_interrupt_flag
         logger.debug("好友协战")
-        test_names = ['3']
+        test_names = ['2', '3', '4', '5']
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
-        try:
-            for i in range(len(test_names)):
-                test_name = test_names[i]
-                # 初始化测试任务信息
-                game_projects = GameProjects()
-                game_projects_relation = GameProjectsRelation()
-                game_projects_relation.project_num_times = 15
-                game_account = select_game_account(test_name)
-                game_project = GameProject()
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
-                logger.debug("开始测试-好友协战")
-                # 当前状态初始化
-                OnmyojiService.initialization(game_task)
-                # 当前状态初始化
-                OnmyojiService.initialization(game_task)
-                # 执行测试任务
-                OnmyojiService.friends_fight(game_task)
-                logger.debug("{}测试完成", test_name)
-                project_interrupt_flag = True
-        except KeyboardInterrupt:
-            project_interrupt_flag = True
-        thread2.join()
+        for i in range(len(test_names)):
+            test_name = test_names[i]
+            # 初始化测试任务信息
+            game_projects = GameProjects()
+            game_projects_relation = GameProjectsRelation()
+            game_projects_relation.project_num_times = 15
+            game_account = select_game_account(test_name)
+            game_project = GameProject()
+            game_task = [game_projects, game_projects_relation, game_account, game_project]
+            logger.debug("开始测试-好友协战")
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 执行测试任务
+            OnmyojiService.friends_fight(game_task)
+            logger.debug("{}测试完成", test_name)
 
     def test_awakening(self):
         """
         项目11 觉醒10
         :return:
         """
-        global project_interrupt_flag
         logger.debug("觉醒十")
         test_names = ['3']
         # test_names = ['3']
         test_devices = '0'
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=assist_onmyoji, args=())
-        thread2.start()
         for i in range(len(test_names)):
             test_name = test_names[i]
             # 初始化测试任务信息
@@ -405,5 +319,3 @@ class TestOnmyojiService(TestCase):
             # 执行测试任务
             OnmyojiService.awakening(game_task, 1)
             logger.debug("{}测试完成", test_name)
-            project_interrupt_flag = True
-        thread2.join()

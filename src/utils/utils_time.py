@@ -7,22 +7,22 @@ class UtilsTime():
     @staticmethod
     def convert_seconds(seconds):
         if seconds < 60:
-            return f"{seconds}秒"
+            return f"{round(seconds)}秒"
         elif seconds < 3600:
             minutes = seconds // 60
             seconds = seconds % 60
-            return f"{minutes}分钟 {seconds}秒"
+            return f"{round(minutes)}分钟 {round(seconds)}秒"
         elif seconds < 86400:
             hours = seconds // 3600
             minutes = (seconds % 3600) // 60
             seconds = (seconds % 3600) % 60
-            return f"{hours}小时 {minutes}分钟 {seconds}秒"
+            return f"{round(hours)}小时 {round(minutes)}分钟 {round(seconds)}秒"
         else:
             days = seconds // 86400
             hours = (seconds % 86400) // 3600
             minutes = ((seconds % 86400) % 3600) // 60
             seconds = ((seconds % 86400) % 3600) % 60
-            return f"{days}天 {hours}小时 {minutes}分钟 {seconds}秒"
+            return f"{round(days)}天 {round(hours)}小时 {round(minutes)}分钟 {round(seconds)}秒"
 
 
 if __name__ == '__main__':

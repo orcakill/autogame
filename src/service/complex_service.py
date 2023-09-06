@@ -41,6 +41,7 @@ class ComplexService:
             cvstrategy = Cvstrategy.default
         time_start = time.time()
         while time.time() - time_start < timeouts:
+            logger.debug("{}:{}",time.time()-time_start,timeouts)
             is_first = ImageService.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                            threshold=threshold, wait=timeout)
             if is_first:
@@ -54,7 +55,8 @@ class ComplexService:
                 ImageService.exists(fight_quit, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
                                     is_click=True, wait=timeout)
                 return fight_quit
-            if time.time() - time_start > 1 / 2 * timeouts:
+            if time.time() - time_start > 1 / 2 * timeouts or time.time() - time_start > 30:
+                ComplexService.refuse_reward()
                 is_third = ImageService.exists(fight_again, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                                threshold=threshold, wait=timeout)
                 if is_third:
@@ -156,6 +158,19 @@ class ComplexService:
         return False
 
     @staticmethod
+    def refuse_reward():
+        """
+        拒接悬赏
+        :param reward:
+        :return:
+        """
+        is_reward = ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
+        if is_reward:
+            logger.debug("拒接悬赏")
+            return True
+        return False
+
+    @staticmethod
     def return_home(game_task: []):
         game_account = GameAccount(game_task[2])
         # 判断是否是待登录账号首页
@@ -172,6 +187,8 @@ class ComplexService:
                 logger.debug("不在账号首页且不是桌面，循环5次，5次不成功则返回失败")
                 # 获取返回列表
                 for i_return in range(5):
+                    logger.debug("点击可能存在的悬赏封印")
+                    ComplexService.refuse_reward()
                     logger.debug("点击可能存在的返回按钮")
                     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
                     ImageService.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH)
@@ -183,7 +200,7 @@ class ComplexService:
                     ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
                     logger.debug("点击可能存在的退出挑战")
                     ImageService.touch(Onmyoji.soul_BQ_TCTZ)
-                    logger.debug("重新判断是否返回首页")
+                    logger.debug("重新判断是否返回首页,账号+探索")
                     is_index = ImageService.exists(account_index)
                     is_explore = ImageService.exists(Onmyoji.home_TS)
                     if is_index and is_explore:

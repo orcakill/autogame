@@ -66,13 +66,20 @@ def friends_fight(game_task: []):
                                                           1)
             # 默认有协战式神
             is_assist_shikigami = True
+            # 默认锁定阵容
+            is_unlock=False
             for i in range(20):
                 time_fight_start = time.time()
                 logger.debug("好友协战-御魂-挑战{}次", i + 1)
                 if i == 0:
                     logger.debug("好友协战-小号-协战-第一次")
                     logger.debug("解锁阵容")
-                    ImageService.touch(Onmyoji.soul_BQ_JSZR, wait=3)
+                    is_unlock = ImageService.touch(Onmyoji.soul_BQ_JSZR, wait=3)
+                    if not is_unlock:
+                        is_unlock = ImageService.touch(Onmyoji.soul_BQ_JSZR, wait=3)
+                        if not is_unlock:
+                            logger.debug("无法解锁阵容，退出")
+                            break
                     logger.debug("挑战")
                     ImageService.touch(Onmyoji.soul_BQ_TZ, wait=3)
                     logger.debug("点击宠物")
@@ -132,19 +139,21 @@ def friends_fight(game_task: []):
                             if is_fail:
                                 break
                 else:
-                    logger.debug("锁定阵容")
-                    ImageService.touch(Onmyoji.soul_BQ_SDZR)
+                    if is_unlock:
+                        logger.debug("锁定阵容")
+                        ImageService.touch(Onmyoji.soul_BQ_SDZR)
                     logger.debug("点击挑战")
                     is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ)
                     if not is_fight:
                         logger.debug("好友协战-判断是否还有八岐大蛇-未挑战")
                         ImageService.touch(Onmyoji.soul_BQ_TZ, wait=2)
                         logger.debug("好友协战-判断是否还有准备")
-                        ImageService.touch(Onmyoji.soul_BQ_ZB)
+                        is_unlock=ImageService.touch(Onmyoji.soul_BQ_ZB)
                         logger.debug("发现宝藏")
                         ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
-                    logger.debug("点击准备")
-                    ImageService.touch(Onmyoji.soul_BQ_ZB, wait=3)
+                    if is_unlock:
+                        logger.debug("点击准备")
+                        ImageService.touch(Onmyoji.soul_BQ_ZB, wait=4)
                     logger.debug("好友协战-等待战斗结果")
                     is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
                                                          Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_TCTZ,

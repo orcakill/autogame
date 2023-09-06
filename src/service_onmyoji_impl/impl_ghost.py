@@ -215,5 +215,6 @@ def encounter_demons(game_task: []):
             ImageService.touch(Onmyoji.demon_TY)
     else:
         logger.debug("不在逢魔时间内")
+    ComplexService.return_home(game_task)
     time_end = time.time() - time_start
     logger.info("逢魔之时,用时{}秒", round(time_end))
