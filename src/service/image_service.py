@@ -11,7 +11,7 @@ from airtest.core.cv import Template
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.utils.my_logger import my_logger as logger
-from src.utils.project_path import get_onmyoji_image_path
+from src.utils.utils_path import get_onmyoji_image_path
 
 # 导入 airtest服务接口
 airtest_service = AirtestService()

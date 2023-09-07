@@ -3,7 +3,7 @@ import sys
 
 from loguru import logger
 
-from src.utils.project_path import get_project_path
+from src.utils.utils_path import get_project_path
 
 BASE_DIR = get_project_path()
 # 设置主日志文件,所有日志都会记录在此文件中

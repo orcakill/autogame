@@ -3,7 +3,7 @@ import sys
 
 from loguru import logger
 
-from src.utils.project_path import get_project_path
+from src.utils.utils_path import get_project_path
 
 logger.remove()  # 移除默认的日志记录器
 

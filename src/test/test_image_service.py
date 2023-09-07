@@ -21,7 +21,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         image_service.auto_setup("0")
         now = datetime.datetime.now()
-        is_border = ImageService.touch(Onmyoji.soul_BQ_JSZR,  wait=3)
+        is_border = ComplexService.refuse_reward()
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)

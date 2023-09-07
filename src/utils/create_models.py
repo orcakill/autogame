@@ -3,7 +3,7 @@ import re
 
 from sqlalchemy import create_engine, MetaData
 
-from src.utils.project_path import get_database_url
+from src.utils.utils_path import get_database_url
 
 
 def create_models():

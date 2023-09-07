@@ -126,6 +126,7 @@ def foster_care(game_task: []):
                             is_place = False
                         if not is_target and not is_place:
                             logger.debug("没找到目标，且当前不是未放置，向下滑动")
+                            ComplexService.refuse_reward()
                             ImageService.swipe(coordinate_end, coordinate_start)
                 if is_target and foster_result:
                     logger.debug("已找到目标结界卡,跳出二层循环")

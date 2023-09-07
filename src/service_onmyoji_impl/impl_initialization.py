@@ -7,6 +7,7 @@ import time
 
 from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount
+from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
 
@@ -123,6 +124,8 @@ def initialization(game_task: []):
             if is_openBottom:
                 logger.debug("底部菜单已打开")
                 break
+            logger.debug("点击可能存在的悬赏封印")
+            ComplexService.refuse_reward()
             logger.debug("点击可能存在的右上角返回")
             ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH, timeouts=3)
             logger.debug("点击可能存在的左上角返回")

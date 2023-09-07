@@ -5,6 +5,7 @@
 # @Description: airtest接口
 """
 import logging
+import sys
 from datetime import datetime as imp_datetime
 
 from airtest import aircv
@@ -19,6 +20,20 @@ from src.utils.my_logger import my_logger as logger
 # 控制airtest的日志输出
 log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
+
+# 捕获Python标准库中的警告信息
+logging.captureWarnings(True)
+
+
+# 捕获未被捕获的异常，包括第三方包的traceback.print_exc()
+def handle_exception(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    logging.error("未被捕获的异常", exc_info=(exc_type, exc_value, exc_traceback))
+
+
+sys.excepthook = handle_exception
 
 # 图片点击识别等待时间(秒）·
 WAIT = 2

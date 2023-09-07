@@ -48,6 +48,8 @@ def friends_fight(game_task: []):
         else:
             logger.debug("未完成协战，返回首页")
             ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+            logger.debug("确认返回首页")
+            ComplexService.return_home(game_task)
             if i_cooperative_warfare == 0:
                 logger.debug("觉醒挑战")
                 impl_awakening.awakening(game_task)
@@ -141,7 +143,9 @@ def friends_fight(game_task: []):
                 else:
                     if is_unlock:
                         logger.debug("锁定阵容")
-                        ImageService.touch(Onmyoji.soul_BQ_SDZR)
+                        is_lock=ImageService.touch(Onmyoji.soul_BQ_SDZR)
+                        if is_lock:
+                            is_unlock=False
                     logger.debug("点击挑战")
                     is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ)
                     if not is_fight:
@@ -152,7 +156,7 @@ def friends_fight(game_task: []):
                         logger.debug("发现宝藏")
                         ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
                     if is_unlock:
-                        logger.debug("点击准备")
+                        logger.debug("未锁定，点击准备")
                         ImageService.touch(Onmyoji.soul_BQ_ZB, wait=4)
                     logger.debug("好友协战-等待战斗结果")
                     is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
@@ -184,8 +188,12 @@ def friends_fight(game_task: []):
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
             logger.debug("好友协战-返回首页")
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            logger.debug("确认返回首页")
+            ComplexService.return_home(game_task)
     logger.debug("好友协战-返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+    logger.debug("确认返回首页")
+    ComplexService.return_home(game_task)
     # 结束时间
     time_end = time.time()
     # 战斗总用时
