@@ -86,7 +86,7 @@ def ghost_king(game_task: []):
                     ImageService.touch(Onmyoji.ghost_ZB, wait=3)
                     logger.debug("等待战斗结果")
                     ComplexService.fight_end(Onmyoji.ghost_ZDSL, Onmyoji.ghost_ZDSB, Onmyoji.ghost_ZCTZ,
-                                             Onmyoji.ghost_TCTZ, Onmyoji.ghost_TZ, 10 * 60, 1)
+                                             Onmyoji.ghost_TCTZ, Onmyoji.ghost_TZ,None,10 * 60, 1)
                 logger.debug("已挑战,返回到鬼王首页")
                 ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
                 logger.debug("点击今日挑战")

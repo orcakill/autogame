@@ -83,6 +83,6 @@ if __name__ == '__main__':
     ImageService.touch(Onmyoji.deed_TC)
     ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                              Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,
-                             300, 1)
+                             None,300, 1)
     now1 = datetime.datetime.now()
     print(now1 - now)

@@ -91,7 +91,7 @@ def awakening(game_task: [], awakening_type: int = 0):
             ImageService.touch(Onmyoji.awaken_ZB, wait=5)
         logger.debug("等待战斗结果")
         ComplexService.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
-                                 Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, 60, 2)
+                                 Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, None,60, 2)
         time_fight_end = time.time()
         time_fight_time = time_fight_end - time_fight_start
         logger.debug("本次觉醒挑战，用时{}秒", round(time_fight_time))

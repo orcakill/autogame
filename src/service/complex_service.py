@@ -15,16 +15,17 @@ from src.utils.my_logger import logger
 class ComplexService:
 
     @staticmethod
-    def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_none: str = None,
-                  timeouts: int = 60, timeout: int = 1):
+    def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,
+                  fight_attack: str = None, timeouts: int = 60, timeout: int = 1):
         """
         结界战斗，结束战斗
         1、战斗胜利,退出挑战
         2、退出挑战
         3、再次挑战（只识别不点击），战斗失败
         4、挑战（只识别不点击）
+        :param fight_attack: 进攻
         :param timeouts: 识别最大时间
-        :param fight_none: 挑战（挑战）
+        :param fight_fight: 挑战（挑战）
         :param timeout: 超时时间
         :param fight_win: 战斗胜利
         :param fight_fail: 战斗失败
@@ -41,7 +42,7 @@ class ComplexService:
             cvstrategy = Cvstrategy.default
         time_start = time.time()
         while time.time() - time_start < timeouts:
-            logger.debug("{}:{}",time.time()-time_start,timeouts)
+            logger.debug("{}:{}", time.time() - time_start, timeouts)
             is_first = ImageService.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                            threshold=threshold, wait=timeout)
             if is_first:
@@ -64,10 +65,16 @@ class ComplexService:
                                         threshold=threshold,
                                         is_click=True, wait=timeout)
                     return fight_fail
-                is_fourth = ImageService.exists(fight_none, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+                is_fourth = ImageService.exists(fight_fight, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                                 threshold=threshold, wait=timeout)
                 if is_fourth:
-                    return fight_none
+                    return fight_fight
+                if fight_attack:
+                    is_fifth = ImageService.exists(fight_attack, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+                                                   threshold=threshold, wait=timeout)
+                    if is_fifth:
+                        return fight_attack
+
         return None
 
     @staticmethod

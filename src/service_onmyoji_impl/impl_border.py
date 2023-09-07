@@ -72,10 +72,10 @@ def region_border(game_task: []):
             else:
                 logger.debug("等待战斗结果")
                 is_result = ComplexService.fight_end(Onmyoji.region_ZDSL, Onmyoji.region_ZDSB, Onmyoji.region_ZCTZ,
-                                                     Onmyoji.region_TCTZ, Onmyoji.region_LJJ, 300, 2)
+                                                     Onmyoji.region_TCTZ, Onmyoji.region_LJJ, Onmyoji.region_JG, 300, 2)
                 if is_result in [Onmyoji.region_ZDSL, Onmyoji.region_TCTZ]:
                     num_win = num_win + 1
-                elif is_result == Onmyoji.border_ZCTZ:
+                elif is_result in [Onmyoji.border_ZCTZ, Onmyoji.border_ZDSB]:
                     num_fail = num_fail + 1
                 time_fight_end = time.time()
                 time_fight_time = time_fight_end - time_fight_start
@@ -141,7 +141,7 @@ def border_fight(game_task: [], fight_times: int = 40):
             if num_securities == "0":
                 logger.debug("无结界挑战劵")
                 break
-        if num_false % 3 == 0 and num_false != 0:
+        if num_false % 3 == 0 and num_false > 0:
             logger.debug("战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
             is_fail = ImageService.exists(Onmyoji.border_ZBBZ, timeouts=3)
             if is_fail:
@@ -164,12 +164,12 @@ def border_fight(game_task: [], fight_times: int = 40):
         logger.debug("等待战斗结果")
         is_result = ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                              Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,
-                                             300, 1)
+                                             Onmyoji.border_JG, 300, 1)
         logger.debug("再点击一次退出挑战")
         ImageService.touch(Onmyoji.border_TCTZ, wait=2, timeouts=1)
         if is_result in [Onmyoji.border_ZDSL, Onmyoji.border_TCTZ]:
             num_win = num_win + 1
-        elif is_result == Onmyoji.border_ZCTZ:
+        elif is_result in [Onmyoji.border_ZCTZ, Onmyoji.border_ZDSB]:
             num_false = num_false + 1
         elif is_result == Onmyoji.border_GRJJ or is_result is None:
             logger.debug("判断是否仍有进攻")

@@ -59,6 +59,9 @@ class OnmyojiController:
                         # 项目 5
                         elif game_project.project_name in ["式神寄养"]:
                             OnmyojiService.foster_care(game_task[j])
+                        # 项目 5
+                        elif game_project.project_name in ["阴阳寮管理"]:
+                            OnmyojiService.shack_house(game_task[j])
                         # 项目 7
                         elif game_project.project_name in ["阴阳寮突破"]:
                             OnmyojiService.region_border(game_task[j])

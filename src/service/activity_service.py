@@ -95,7 +95,7 @@ class ActivityService:
                 image_service.touch(p_chat)
             time.sleep(3)
             logger.debug("等待战斗结果")
-            is_result = complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_fight, 60,
+            is_result = complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_fight, None,60,
                                                   3)
             if is_result is None:
                 is_gift = complex_service.get_reward(p_gift)
@@ -148,7 +148,7 @@ class ActivityService:
             logger.debug("点击准备")
             image_service.touch(p_ZB, wait=5)
             logger.debug("等待战斗结果")
-            complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_TEAM, 300, 1)
+            complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_TEAM, None,300, 1)
         logger.debug("返回首页")
         image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
         image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)

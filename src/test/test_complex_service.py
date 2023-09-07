@@ -34,7 +34,7 @@ class TestComplexService(TestCase):
                 if is_fight:
                     logger.debug("再次点击挑战")
             logger.debug("等待战斗结果")
-            ComplexService.fight_end(fight_win, fight_fail, fight_again, fight_end, fight_fight, 60, 1)
+            ComplexService.fight_end(fight_win, fight_fail, fight_again, fight_end, fight_fight, None,60, 1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -45,7 +45,7 @@ class TestComplexService(TestCase):
         now = datetime.datetime.now()
         ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                  Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,
-                                 300, 1)
+                                 None,300, 1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -80,7 +80,7 @@ class TestComplexService(TestCase):
         for i in range(20):
             ImageService.touch(Onmyoji.explore_SPTZ)
             ComplexService.fight_end(Onmyoji.explore_ZDSL, Onmyoji.explore_ZDSB, Onmyoji.explore_ZCTZ,
-                                     Onmyoji.explore_TCTZ, Onmyoji.explore_SPTZ, 60, 1)
+                                     Onmyoji.explore_TCTZ, Onmyoji.explore_SPTZ, None,60, 1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

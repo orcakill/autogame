@@ -79,7 +79,7 @@ def soul_fight(game_task: []):
                 ComplexService.get_reward(Onmyoji.soul_BQ_HDJL)
         logger.debug("等待战斗结果")
         is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
-                                             Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 60, 1)
+                                             Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, None,60, 1)
         # 记录战斗结果
         if is_result in [Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ]:
             num_win = num_win + 1

@@ -124,7 +124,7 @@ def friends_fight(game_task: []):
                         logger.debug("等待战斗结果")
                         ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
                                                  Onmyoji.soul_BQ_ZCTZ,
-                                                 Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, 120, 1)
+                                                 Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ,None,120, 1)
                         time.sleep(3)
                         logger.debug("发现宝藏")
                         ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
@@ -161,7 +161,7 @@ def friends_fight(game_task: []):
                     logger.debug("好友协战-等待战斗结果")
                     is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
                                                          Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_TCTZ,
-                                                         Onmyoji.soul_BQ_TZ, 120, 1)
+                                                         Onmyoji.soul_BQ_TZ, None,120, 1)
                     if is_result in [Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ]:
                         logger.debug("好友协战-战斗胜利")
                         num_win = num_win + 1
@@ -253,7 +253,7 @@ def friends_manage(game_task: []):
     logger.debug("返回到好友界面")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("好友添加")
-    is_friend_is_full = ImageService.exists(Onmyoji.friends_HYYM)
+    is_friend_is_full = ImageService.exists(Onmyoji.friends_HYYM,cvstrategy=Cvstrategy.default)
     if not is_friend_is_full:
         logger.debug("好友不满200，进入添加")
         ImageService.touch(Onmyoji.friends_YCTJ)
