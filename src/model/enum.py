@@ -41,6 +41,7 @@ class Onmyoji:
     border_JJTZJWP = r"探索\结界突破\结界挑战劵误判"
     border_JSTXDH = r"探索\结界突破\角色头像大号"
     border_JSTXXH = r"探索\结界突破\角色头像小号"
+    border_JSZR = r"探索\结界突破\解锁阵容"
     border_SDZR = r"探索\结界突破\锁定阵容"
     border_SX = r"探索\结界突破\刷新"
     border_SXQD = r"探索\结界突破\刷新确定"

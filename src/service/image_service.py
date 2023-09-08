@@ -240,10 +240,20 @@ class ImageService:
                     if pos:
                         logger.debug("图像查找成功:{}", folder_path)
                         return pos
-            return False
+            return None
         except Exception as e:
             if is_throw:
                 logger.error("异常：{}", e)
             else:
                 pass
-        return False
+        return None
+
+    @staticmethod
+    def find_all_num(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
+                     threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
+                     rgb: bool = False):
+        result = ImageService.find_all(folder_path, cvstrategy, timeout, timeouts, threshold, wait, is_throw, rgb)
+        if result:
+            return len(result)
+        else:
+            return 0

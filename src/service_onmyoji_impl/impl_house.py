@@ -167,6 +167,172 @@ def foster_care(game_task: []):
             logger.debug("已寄养，无需寄养,用时{}秒", time_time)
 
 
+def foster_care1(game_task: []):
+    """
+    式神寄养
+    :param game_task:
+    :return:
+    """
+    # 寄养开始时间
+    time_start = time.time()
+    # 账号信息
+    game_account = GameAccount(game_task[2])
+    # 寄养结果
+    foster_result = None
+    # 默认未找到目标
+    is_target = False
+    logger.debug(game_account.game_name)
+    logger.debug("式神寄养")
+    for i_time in range(2):
+        logger.debug("点击阴阳寮图标")
+        ImageService.touch(Onmyoji.foster_YYLTB)
+        logger.debug("点击寮首页结界")
+        ImageService.touch(Onmyoji.foster_JJTB)
+        logger.debug("点击结界-式神育成")
+        is_growing = ImageService.touch(Onmyoji.foster_SSYC)
+        if not is_growing:
+            logger.debug("式神育成点击失败，重新点击")
+            ImageService.touch(Onmyoji.foster_SSYC)
+        logger.debug("判断是否可寄养")
+        is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
+        if is_foster:
+            logger.debug("可寄养")
+            logger.debug("获取寄养列表结界卡数据，计算出最优结界卡")
+            faster_place = get_optimal_card([])
+            logger.debug("重新进入寄养列表，滑动到最优位置，尝试寄养")
+            faster_place = get_optimal_card(faster_place)
+            if is_target and faster_place:
+                logger.debug("最优结界卡,进入好友结界")
+                ImageService.touch(Onmyoji.foster_JRJJ)
+                logger.debug("点击达摩,优先大吉达摩")
+                is_dharma = ImageService.touch(Onmyoji.foster_DMDJDM)
+                if not is_dharma:
+                    is_dharma = ImageService.touch(Onmyoji.foster_DMFWDM)
+                    if not is_dharma:
+                        ImageService.touch(Onmyoji.foster_DMZFDM)
+                logger.debug("确定")
+                is_ture = ImageService.touch(Onmyoji.foster_QD)
+                if is_ture:
+                    foster_result = faster_place[1]
+            logger.debug("返回首页")
+            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+        else:
+            logger.debug("返回首页")
+            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+        logger.debug("确认返回首页")
+        ComplexService.return_home(game_task)
+        time_end = time.time()
+        time_time = round(time_end - time_start, 3)
+        if is_foster:
+            logger.debug("寄养用时{}秒,寄养结果{}", time_time, foster_result)
+        else:
+            logger.debug("已寄养，无需寄养,用时{}秒", time_time)
+
+
+def get_optimal_card(faster_place: []):
+    """
+    遍历寄养列表，计算出最优结界卡位置返回，六星太鼓直接寄养
+    :return:
+    """
+    if faster_place:
+        logger.debug("根据最优结界卡寄养")
+        num_friend = faster_place[1]
+    else:
+        logger.debug("获取最优结界卡")
+        num_friend = 100
+    faster_list = []
+    is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
+    if is_foster:
+        logger.debug("点击可寄养标志")
+        ImageService.touch(Onmyoji.foster_KJYBZ)
+        logger.debug("获取上方好友坐标")
+        coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
+        logger.debug("获取上方跨区坐标")
+        coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
+        logger.debug("计算起始位置1,测试系数0.95")
+        coordinate_difference = 0.95 * (coordinate_region[0] - coordinate_friend[0])
+        coordinate_start = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
+        logger.debug("计算起始位置2")
+        coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
+        if coordinate_start and coordinate_end and coordinate_end[1] - coordinate_start[1] > 0:
+            for i_friends in range(num_friend):
+                logger.debug("当前第{}个好友", i_friends + 1)
+                if not faster_place:
+                    logger.debug("点击位置1")
+                    ImageService.touch_coordinate(coordinate_start)
+                    logger.debug("获取目前结界卡")
+                    target_card = get_card_type()
+                    faster_list.append(target_card)
+                    if target_card[1] == Onmyoji.foster_JJK_LXTG:
+                        logger.debug("六星太鼓，中断查找")
+                        ComplexService.get_reward(Onmyoji.foster_SFHY)
+                    if target_card[1] == Onmyoji.foster_JJK_WFZ:
+                        logger.debug("未放置，中断查找")
+                        ComplexService.get_reward(Onmyoji.foster_SFHY)
+                else:
+                    if i_friends == num_friend:
+                        logger.debug("找最优结界卡")
+                        logger.debug("获取目前结界卡")
+                        target_card = get_card_type()
+                        if target_card[1] == faster_place[1]:
+                            logger.debug("检查和寄养匹配成功")
+                            return faster_place
+                        else:
+                            return []
+                logger.debug("向下滑动")
+                ComplexService.refuse_reward()
+                ImageService.swipe(coordinate_end, coordinate_start)
+        min_value = min(item[0] for item in faster_list)
+        min_index = min(i for i, item in enumerate(faster_list) if item[0] == min_value)
+        faster_place = faster_list[min_index]
+        logger.debug("寄养查找的最优结果：{}", faster_place)
+        return faster_place
+
+
+def get_card_type():
+    """
+    获取当前结界卡,判断当前结界卡类型和等级，只要太鼓
+    :return:
+    """
+    # 获取设备分辨率
+    resolution = ImageService.resolving_power()
+    # 结界卡，默认六星太鼓
+    target_type = Onmyoji.foster_JJK_TG
+    target_card = Onmyoji.foster_JJK_LXTG
+    for i_type in range(1, 8):
+        if i_type == 1:
+            target_card = Onmyoji.foster_JJK_LXTG
+            target_type = Onmyoji.foster_JJK_TG
+        elif i_type == 2:
+            target_card = Onmyoji.foster_JJK_WXTG
+            target_type = Onmyoji.foster_JJK_TG
+        elif i_type == 3:
+            target_type = Onmyoji.foster_JJK_TG
+            target_card = Onmyoji.foster_JJK_SXTG1
+        elif i_type == 4:
+            target_type = Onmyoji.foster_JJK_TG
+            target_card = Onmyoji.foster_JJK_SXTG
+        elif i_type == 5:
+            target_type = Onmyoji.foster_JJK_WFZ
+            target_card = Onmyoji.foster_JJK_WFZ
+        result = ImageService.exists(target_type, threshold=0.8)
+        if result:
+            result = ImageService.exists(target_card, threshold=0.8)
+            if target_type == Onmyoji.foster_JJK_TG:
+                result = ImageService.exists(Onmyoji.foster_JJK_GY)
+            if result and result[0] < 1 / 2 * resolution[0]:
+                result = False
+            if result:
+                return [i_type, target_card]
+        return [99, None]
+
+
 def shack_house(game_task: []):
     """
     寮管理
@@ -185,8 +351,6 @@ def shack_house(game_task: []):
     time_start = time.time()
     # 账号信息
     game_account = GameAccount(game_task[2])
-    # 获取设备分辨率
-    resolution = ImageService.resolving_power()
     logger.debug(game_account.game_name)
     logger.debug("进入阴阳寮")
     ImageService.touch(Onmyoji.shack_YYLTB)

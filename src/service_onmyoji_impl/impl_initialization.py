@@ -10,6 +10,7 @@ from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
+from src.utils.utils_time import UtilsTime
 
 
 def initialization(game_task: []):
@@ -153,8 +154,8 @@ def initialization(game_task: []):
     # 总用时
     time_all = time_end - time_start
     if is_index:
-        logger.info("初始化当前状态完成:{}，用时{}秒", game_account.game_name, round(time_all))
+        logger.info("初始化当前状态完成:{}，用时{}", game_account.game_name, UtilsTime.convert_seconds(time_all))
         return True
     else:
-        logger.info("初始化当前状态失败:{}，用时{}秒", game_account.game_name, round(time_all))
+        logger.info("初始化当前状态失败:{}，用时{}", game_account.game_name, UtilsTime.convert_seconds(time_all))
         return False
