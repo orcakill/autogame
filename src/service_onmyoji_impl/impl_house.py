@@ -196,11 +196,8 @@ def foster_care1(game_task: []):
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
         if is_foster:
-            logger.debug("可寄养")
-            logger.debug("获取寄养列表结界卡数据，计算出最优结界卡")
-            faster_place = get_optimal_card([])
-            logger.debug("重新进入寄养列表，滑动到最优位置，尝试寄养")
-            faster_place = get_optimal_card(faster_place)
+            logger.debug("获取寄养列表结界卡数据，计算出最优结界卡,根据最优结界卡，重新滑动")
+            faster_place = get_optimal_card()
             if is_target and faster_place:
                 logger.debug("最优结界卡,进入好友结界")
                 ImageService.touch(Onmyoji.foster_JRJJ)
@@ -235,18 +232,18 @@ def foster_care1(game_task: []):
             logger.debug("已寄养，无需寄养,用时{}秒", time_time)
 
 
-def get_optimal_card(faster_place: []):
+def get_optimal_card():
     """
     遍历寄养列表，计算出最优结界卡位置返回，六星太鼓直接寄养
     :return:
     """
-    if faster_place:
-        logger.debug("根据最优结界卡寄养")
-        num_friend = faster_place[1]
-    else:
-        logger.debug("获取最优结界卡")
-        num_friend = 100
+    # 太鼓检查失败次数
+    num_fail_money = 0
+    # 寄养检查列表
     faster_list = []
+    # 寄养检查结果
+    faster_place = []
+    logger.debug("判断是否可寄养")
     is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
     if is_foster:
         logger.debug("点击可寄养标志")
@@ -255,82 +252,104 @@ def get_optimal_card(faster_place: []):
         coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
         logger.debug("获取上方跨区坐标")
         coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
-        logger.debug("计算起始位置1,测试系数0.95")
-        coordinate_difference = 0.95 * (coordinate_region[0] - coordinate_friend[0])
-        coordinate_start = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
+        logger.debug("计算起始位置1,测试系数0.8228571428571428")
+        coordinate_difference = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
+        coordinate_start = (coordinate_region[0], coordinate_region[1])
         logger.debug("计算起始位置2")
-        coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
+        coordinate_end = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
         if coordinate_start and coordinate_end and coordinate_end[1] - coordinate_start[1] > 0:
-            for i_friends in range(num_friend):
-                logger.debug("当前第{}个好友", i_friends + 1)
-                if not faster_place:
-                    logger.debug("点击位置1")
-                    ImageService.touch_coordinate(coordinate_start)
-                    logger.debug("获取目前结界卡")
-                    target_card = get_card_type()
-                    faster_list.append(target_card)
+            for i_friends in range(100):
+                logger.debug("当前第{}个好友，连续失败次数{}", i_friends + 1, num_fail_money)
+                if len(faster_place) == 0:
+                    logger.debug("点击位置2")
+                    ImageService.touch_coordinate(coordinate_end)
+                    if num_fail_money % 3 == 0 and num_fail_money != 0 and i_friends > 20:
+                        logger.debug("判断目前结界卡，判断未放置")
+                        target_card = get_card_type(1)
+                    else:
+                        logger.debug("判断目前结界卡，不判断未放置")
+                        target_card = get_card_type(0)
+                    faster_list.append([i_friends + 1, target_card[0], target_card[1]])
+                    if not target_card[1]:
+                        num_fail_money = num_fail_money + 1
                     if target_card[1] == Onmyoji.foster_JJK_LXTG:
                         logger.debug("六星太鼓，中断查找")
-                        ComplexService.get_reward(Onmyoji.foster_SFHY)
+                        break
                     if target_card[1] == Onmyoji.foster_JJK_WFZ:
-                        logger.debug("未放置，中断查找")
+                        logger.debug("未放置，中断查找,退出重新进入")
                         ComplexService.get_reward(Onmyoji.foster_SFHY)
-                else:
-                    if i_friends == num_friend:
-                        logger.debug("找最优结界卡")
-                        logger.debug("获取目前结界卡")
-                        target_card = get_card_type()
-                        if target_card[1] == faster_place[1]:
-                            logger.debug("检查和寄养匹配成功")
-                            return faster_place
-                        else:
-                            return []
+                        ImageService.touch(Onmyoji.foster_KJYBZ)
+                        break
                 logger.debug("向下滑动")
                 ComplexService.refuse_reward()
                 ImageService.swipe(coordinate_end, coordinate_start)
-        min_value = min(item[0] for item in faster_list)
-        min_index = min(i for i, item in enumerate(faster_list) if item[0] == min_value)
-        faster_place = faster_list[min_index]
+        if len(faster_list) > 0:
+            min_value = min(item[1] for item in faster_list)
+            min_index = min(i for i, item in enumerate(faster_list) if item[1] == min_value)
+            faster_place = faster_list[min_index]
+        faster_len = len(faster_place)
+        logger.debug(faster_list)
         logger.debug("寄养查找的最优结果：{}", faster_place)
-        return faster_place
+        # 根据最优结果寻找结界
+        if len(faster_place) > 0:
+            if faster_place[2] == Onmyoji.foster_JJK_LXTG:
+                logger.debug("无需重新寻找")
+                return faster_place
+            else:
+                logger.debug("重新滑动")
+                for i_friends in range(faster_len):
+                    if i_friends >= faster_len:
+                        logger.debug("点击位置2")
+                        ImageService.touch_coordinate(coordinate_end)
+                        logger.debug("获取目标结界卡")
+                        target_card = get_card_type(1)
+                        logger.debug(target_card)
+                        logger.debug(faster_place[i_friends])
+                        if target_card == faster_place[i_friends][1]:
+                            logger.debug("检查和寻找匹配成功")
+                            return faster_place[i_friends]
+                        else:
+                            logger.debug("检查和寻找匹配失败")
+                    logger.debug("向下滑动")
+                    ImageService.swipe(coordinate_end, coordinate_start)
+                    time.sleep(1)
+                return None
 
 
-def get_card_type():
+def get_card_type(not_placed: int = 0):
     """
     获取当前结界卡,判断当前结界卡类型和等级，只要太鼓
     :return:
     """
-    # 获取设备分辨率
-    resolution = ImageService.resolving_power()
-    # 结界卡，默认六星太鼓
-    target_type = Onmyoji.foster_JJK_TG
-    target_card = Onmyoji.foster_JJK_LXTG
-    for i_type in range(1, 8):
-        if i_type == 1:
-            target_card = Onmyoji.foster_JJK_LXTG
-            target_type = Onmyoji.foster_JJK_TG
-        elif i_type == 2:
-            target_card = Onmyoji.foster_JJK_WXTG
-            target_type = Onmyoji.foster_JJK_TG
-        elif i_type == 3:
-            target_type = Onmyoji.foster_JJK_TG
-            target_card = Onmyoji.foster_JJK_SXTG1
-        elif i_type == 4:
-            target_type = Onmyoji.foster_JJK_TG
-            target_card = Onmyoji.foster_JJK_SXTG
-        elif i_type == 5:
-            target_type = Onmyoji.foster_JJK_WFZ
-            target_card = Onmyoji.foster_JJK_WFZ
-        result = ImageService.exists(target_type, threshold=0.8)
-        if result:
-            result = ImageService.exists(target_card, threshold=0.8)
-            if target_type == Onmyoji.foster_JJK_TG:
-                result = ImageService.exists(Onmyoji.foster_JJK_GY)
-            if result and result[0] < 1 / 2 * resolution[0]:
-                result = False
-            if result:
-                return [i_type, target_card]
-        return [99, None]
+    logger.debug("判断是否是太鼓")
+    is_result = ImageService.exists(Onmyoji.foster_JJK_TG)
+    if is_result:
+        logger.debug("判断是否有勾玉")
+        is_result = ImageService.exists(Onmyoji.foster_JJK_GY)
+        if is_result:
+            logger.debug("三星太鼓")
+            is_result = ImageService.exists(Onmyoji.foster_JJK_SXTG)
+            if is_result:
+                return [4, Onmyoji.foster_JJK_SXTG]
+            logger.debug("四星太鼓")
+            is_result = ImageService.exists(Onmyoji.foster_JJK_SXTG1)
+            if is_result:
+                return [3, Onmyoji.foster_JJK_SXTG1]
+            logger.debug("五星太鼓")
+            is_result = ImageService.exists(Onmyoji.foster_JJK_WXTG)
+            if is_result:
+                return [2, Onmyoji.foster_JJK_WXTG]
+            logger.debug("六星太鼓")
+            is_result = ImageService.exists(Onmyoji.foster_JJK_LXTG)
+            if is_result:
+                return [1, Onmyoji.foster_JJK_LXTG]
+    if not_placed == 1:
+        logger.debug("判断是否是未放置")
+        is_result = ImageService.exists(Onmyoji.foster_JJK_WFZ)
+        if is_result:
+            return [5, Onmyoji.foster_JJK_WFZ]
+    logger.debug("其它情况")
+    return [99, None]
 
 
 def shack_house(game_task: []):
@@ -413,11 +432,16 @@ def shack_house(game_task: []):
                     v1 = (is_roller[0], is_wind[1])
                     v2 = (is_plus[0], is_wind[1])
                     ImageService.swipe(v1, v2)
-                logger.debug("提交")
-                ImageService.touch(Onmyoji.shack_TJCL)
-                logger.debug("获取奖励，2次")
-                ComplexService.get_reward(Onmyoji.shack_HDJL)
-                ComplexService.get_reward(Onmyoji.shack_HDJL)
+                logger.debug("判断是否获取到所需全部坐标")
+                if is_roller and is_plus and is_mine and is_fire and is_water and is_wind:
+                    logger.debug("提交")
+                    ImageService.touch(Onmyoji.shack_TJCL)
+                    logger.debug("获取奖励，2次")
+                    ComplexService.get_reward(Onmyoji.shack_HDJL)
+                    ComplexService.get_reward(Onmyoji.shack_HDJL)
+                else:
+                    logger.debug("全部坐标获取失败，尝试返回寮首页")
+                    ComplexService.get_reward(is_fire)
         logger.debug("返回到寮首页")
         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
     logger.debug("4.体力食盒和经验酒壶")

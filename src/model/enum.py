@@ -189,6 +189,7 @@ class Onmyoji:
     soul_BQ_JSTXDH = r"探索\御魂\八岐大蛇\角色头像大号"
     soul_BQ_JSTXDS = r"探索\御魂\八岐大蛇\角色头像打手"
     soul_BQ_JSZR = r"探索\御魂\八岐大蛇\解锁阵容"
+    soul_BQ_YHZX = r"探索\御魂\八岐大蛇\御魂自选"
     soul_BQ_KQJC = r"探索\御魂\八岐大蛇\开启加成"
     soul_BQ_QD = r"探索\御魂\八岐大蛇\确定"
     soul_BQ_SDZR = r"探索\御魂\八岐大蛇\锁定阵容"
@@ -342,6 +343,8 @@ class Onmyoji:
     deed_ZDSL = r"探索\契灵\战斗胜利"
     deed_TC = r"探索\契灵\探查"
     deed_TCTZ = r"探索\契灵\退出挑战"
+
+    test_TEST1 = r"通用\测试\测试1"
 
 
 class Cvstrategy:

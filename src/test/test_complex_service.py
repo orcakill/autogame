@@ -10,6 +10,7 @@ from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
+from src.service_onmyoji_impl import impl_house
 from src.temp.temp_fight_end import TempComplexService1
 from src.utils.my_logger import logger
 
@@ -34,7 +35,7 @@ class TestComplexService(TestCase):
                 if is_fight:
                     logger.debug("再次点击挑战")
             logger.debug("等待战斗结果")
-            ComplexService.fight_end(fight_win, fight_fail, fight_again, fight_end, fight_fight, None,60, 1)
+            ComplexService.fight_end(fight_win, fight_fail, fight_again, fight_end, fight_fight, None, 60, 1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -45,7 +46,7 @@ class TestComplexService(TestCase):
         now = datetime.datetime.now()
         ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                  Onmyoji.border_ZCTZ, Onmyoji.border_TCTZ, Onmyoji.border_GRJJ,
-                                 None,300, 1)
+                                 None, 300, 1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -80,7 +81,7 @@ class TestComplexService(TestCase):
         for i in range(20):
             ImageService.touch(Onmyoji.explore_SPTZ)
             ComplexService.fight_end(Onmyoji.explore_ZDSL, Onmyoji.explore_ZDSB, Onmyoji.explore_ZCTZ,
-                                     Onmyoji.explore_TCTZ, Onmyoji.explore_SPTZ, None,60, 1)
+                                     Onmyoji.explore_TCTZ, Onmyoji.explore_SPTZ, None, 60, 1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -100,7 +101,29 @@ class TestComplexService(TestCase):
             ImageService.touch(Onmyoji.comm_FH_XSFYHSCH)
             logger.debug("等待战斗结果")
             TempComplexService1.fight_end(Onmyoji.deed_ZDSL, Onmyoji.deed_ZDSB, Onmyoji.deed_ZCTZ,
-                                     Onmyoji.deed_TCTZ, Onmyoji.deed_TC, 60, 4)
+                                          Onmyoji.deed_TCTZ, Onmyoji.deed_TC, 60, 4)
         logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
+    def test_faster(self):
+        """
+        寄养检查
+        :return:
+        """
+        WindowsService.limit_cpu_percentage(30)
+        ImageService.auto_setup("1")
+        logger.debug("开始")
+        now = datetime.datetime.now()
+        impl_house.get_optimal_card()
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
+    def test_card(self):
+        ImageService.auto_setup("1")
+        logger.debug("循环识别测试")
+        now = datetime.datetime.now()
+        logger.debug(impl_house.get_card_type())
         now1 = datetime.datetime.now()
         print(now1 - now)

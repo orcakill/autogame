@@ -127,6 +127,8 @@ def border_fight(game_task: [], fight_times: int = 40):
     time_start_border = time.time()
     # 结界突破战斗用时
     time_fight_list = []
+    # 默认锁定阵容
+    is_unlock = False
     logger.debug(game_account.game_name)
     logger.debug("进入探索")
     ImageService.touch(Onmyoji.home_TS)
@@ -154,9 +156,19 @@ def border_fight(game_task: [], fight_times: int = 40):
         # 待补充逻辑，检查当前攻破数，不到8个继续，8个时退4次打掉，解锁阵容-挑战-（退出-再次挑战）4次，准备，等待战斗结果，退出挑战，锁定阵容
         break_number = ImageService.find_all_num(Onmyoji.border_GP)
         logger.debug("当前攻破数{}", break_number)
-        if break_number and break_number == 8:
-            logger.debug("保级")
-            retreat_class(0)
+        if break_number and break_number == 8 and game_account.account_class == "0":
+            logger.debug("大号保级")
+            logger.debug("保级前获取当前结界挑战劵数")
+            num_securities = OcrService.border_bond()
+            if num_securities == "0":
+                logger.debug("无结界挑战劵，退出循环")
+                break
+            else:
+                logger.debug("有结界挑战劵")
+                retreat_class(0)
+        if is_unlock:
+            logger.debug("锁定阵容")
+            ImageService.touch(Onmyoji.border_SDZR)
         for i_attack in range(3):
             logger.debug("点击个人结界")
             ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
@@ -165,7 +177,7 @@ def border_fight(game_task: [], fight_times: int = 40):
             if is_attack:
                 break
         logger.debug("点击准备")
-        ImageService.touch(Onmyoji.border_ZB, timeouts=10)
+        is_unlock = ImageService.touch(Onmyoji.border_ZB, wait=6, timeouts=10)
         logger.debug("等待战斗结果")
         is_result = ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB, Onmyoji.border_ZCTZ,
                                              Onmyoji.border_TCTZ, Onmyoji.border_GRJJ, Onmyoji.border_JG, 300, 1)
@@ -234,7 +246,7 @@ def retreat_class(fight_type: int = 0):
         logger.debug("再次挑战10次")
         for i_fight in range(num_break):
             logger.debug("点击左上角退出")
-            ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT,wait=5)
+            ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT, wait=5)
             logger.debug("点击再次挑战")
             ImageService.touch(Onmyoji.border_ZCTZ)
             logger.debug("点击确定")
