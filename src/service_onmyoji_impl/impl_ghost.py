@@ -33,24 +33,22 @@ def ghost_king(game_task: []):
         if is_select:
             logger.debug("收藏鬼王")
             for i in range(6):
-                logger.debug("点击筛选")
-                ImageService.touch(Onmyoji.ghost_SX, wait=3)
-                logger.debug("点击收藏")
-                is_collection = ImageService.touch(Onmyoji.ghost_SC, wait=2)
-                if not is_collection:
-                    logger.debug("无收藏，重新点击筛选")
-                    ImageService.touch(Onmyoji.ghost_SX, wait=2)
-                    logger.debug("点击收藏")
-                    ImageService.touch(Onmyoji.ghost_SC, wait=2)
+                for i_screen in range(1, 4):
+                    logger.debug("第{}次点击筛选", i_screen)
+                    ImageService.touch(Onmyoji.ghost_SX, wait=3)
+                    logger.debug("第{}次点击收藏", i_screen)
+                    is_collection = ImageService.touch(Onmyoji.ghost_SC, wait=3)
+                    if is_collection:
+                        break
                 if i in [0, 3]:
                     logger.debug("鸟巢")
-                    ImageService.touch(Onmyoji.ghost_SCGW_NC, wait=2)
+                    ImageService.touch(Onmyoji.ghost_SCGW_NC, wait=5)
                 elif i in [1, 4]:
                     logger.debug("少林寺藏经阁")
-                    ImageService.touch(Onmyoji.ghost_SCGW_SLSCJG, wait=2)
+                    ImageService.touch(Onmyoji.ghost_SCGW_SLSCJG, wait=5)
                 elif i in [2, 5]:
                     logger.debug("黄鹤楼")
-                    ImageService.touch(Onmyoji.ghost_SXGW_HHL, wait=2)
+                    ImageService.touch(Onmyoji.ghost_SXGW_HHL, wait=5)
                 logger.debug("进入鬼王挑战页面")
                 if game_account.account_class == "0":
                     logger.debug("大号，挑战极地域鬼王")
@@ -74,28 +72,33 @@ def ghost_king(game_task: []):
                 logger.debug("判读是否有无字")
                 is_no_word = ImageService.exists(Onmyoji.ghost_W)
                 if is_no_word:
-                    logger.debug("挑战")
-                    ImageService.touch(Onmyoji.ghost_TZ, wait=3)
-                    logger.debug("准备一次")
-                    is_prepare = ImageService.touch(Onmyoji.ghost_ZB, wait=10)
-                    if not is_prepare:
-                        logger.debug("重新挑战")
+                    for i_fight in range(1, 4):
+                        logger.debug("第{}次挑战", i_fight)
                         ImageService.touch(Onmyoji.ghost_TZ, wait=3)
-                        logger.debug("重新准备一次")
-                        ImageService.touch(Onmyoji.ghost_ZB, wait=10)
-                    logger.debug("准备两次")
-                    ImageService.touch(Onmyoji.ghost_ZB, wait=3)
+                        logger.debug("第{}次准备", i_fight)
+                        is_prepare = ImageService.touch(Onmyoji.ghost_ZB, wait=10)
+                        if not is_prepare:
+                            ComplexService.refuse_reward()
+                        is_auto = ImageService.exists(Onmyoji.ghost_ZDZD, wait=5)
+                        if is_auto:
+                            logger.debug("自动战斗中")
+                            break
                     logger.debug("等待战斗结果")
                     ComplexService.fight_end(Onmyoji.ghost_ZDSL, Onmyoji.ghost_ZDSB, Onmyoji.ghost_ZCTZ,
                                              Onmyoji.ghost_TCTZ, Onmyoji.ghost_TZ, None, 10 * 60, 1)
                 logger.debug("已挑战,返回到鬼王首页")
-                ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+                ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH, wait=5)
                 logger.debug("点击今日挑战")
                 is_day_fight = ImageService.touch(Onmyoji.ghost_JRTZ, wait=5)
+                if not is_day_fight:
+                    logger.debug("无今日挑战，重新返回")
+                    ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+                    logger.debug("点击今日挑战")
+                    is_day_fight = ImageService.touch(Onmyoji.ghost_JRTZ, wait=5)
                 logger.debug("判断是否有未挑战")
                 is_select = ImageService.exists(Onmyoji.ghost_WXZ)
                 if is_day_fight and not is_select:
-                    logger.debug("结束地域鬼王")
+                    logger.debug("有今日挑战图标，无未挑战，结束地域鬼王")
                     break
         else:
             logger.debug("无未选择，退出地域鬼王")
