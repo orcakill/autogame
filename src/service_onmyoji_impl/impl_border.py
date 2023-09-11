@@ -11,6 +11,7 @@ from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 
 
@@ -87,7 +88,7 @@ def region_border(game_task: []):
     ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=2)
     logger.debug("个人突破-确认返回首页")
-    ComplexService.return_home(game_task)
+    impl_initialization.return_home(game_task)
     # 结束时间
     time_end = time.time()
     # 战斗总用时
@@ -187,7 +188,7 @@ def border_fight(game_task: [], fight_times: int = 40):
             num_win = num_win + 1
         elif is_result in [Onmyoji.border_ZCTZ, Onmyoji.border_ZDSB]:
             num_false = num_false + 1
-        elif is_result == Onmyoji.border_GRJJ or is_result is None:
+        elif is_result in [Onmyoji.border_GRJJ,Onmyoji.border_JG]:
             logger.debug("判断是否仍有进攻")
             is_attack1 = ImageService.exists(Onmyoji.border_JG, wait=5, timeouts=2, is_click=True)
             if is_attack1:
@@ -206,6 +207,8 @@ def border_fight(game_task: [], fight_times: int = 40):
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
     time_end_border = time.time()
     # 总用时
     time_all = round(time_end_border - time_start_border, 3)

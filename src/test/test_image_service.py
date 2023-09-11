@@ -15,9 +15,9 @@ from src.utils.my_logger import logger
 
 class TestImageService(TestCase):
     def test_exists(self):
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("0")
         now = datetime.datetime.now()
-        is_border = ImageService.exists(Onmyoji.shack_MZ)
+        is_border = ImageService.exists(Onmyoji.friends_HYYM)
         logger.debug(is_border)
         now1 = datetime.datetime.now()
         print(now1 - now)

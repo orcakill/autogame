@@ -10,6 +10,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 
 
@@ -85,12 +86,12 @@ def foster_care(game_task: []):
                 coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
                 logger.debug("确定上方跨区坐标")
                 coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
-                logger.debug("计算位置1,测试系数0.95")
-                coordinate_difference = 0.95 * (coordinate_region[0] - coordinate_friend[0])
-                coordinate_start = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
-                logger.debug("计算位置2")
-                coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
-                if coordinate_start and coordinate_end and coordinate_end[1] - coordinate_start[1] > 0:
+                if coordinate_friend and coordinate_region:
+                    logger.debug("计算位置1,测试系数0.95")
+                    coordinate_difference = 0.95 * (coordinate_region[0] - coordinate_friend[0])
+                    coordinate_start = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
+                    logger.debug("计算位置2")
+                    coordinate_end = (coordinate_region[0], coordinate_region[1] + 2 * coordinate_difference)
                     for i_friends in range(100):
                         num_friend = num_friend + 1
                         logger.debug("当前第{}个好友", i_friends + 1)
@@ -154,7 +155,7 @@ def foster_care(game_task: []):
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
             ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
         logger.debug("确认返回首页")
-        ComplexService.return_home(game_task)
+        impl_initialization.return_home(game_task)
         time_end = time.time()
         time_time = round(time_end - time_start, 3)
         time_avg_friend = 0
@@ -223,7 +224,7 @@ def foster_care1(game_task: []):
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
             ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
         logger.debug("确认返回首页")
-        ComplexService.return_home(game_task)
+        impl_initialization.return_home(game_task)
         time_end = time.time()
         time_time = round(time_end - time_start, 3)
         if is_foster:
@@ -556,7 +557,7 @@ def shack_house(game_task: []):
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
     logger.debug("确认返回首页")
-    ComplexService.return_home(game_task)
+    impl_initialization.return_home(game_task)
     time_end = time.time()
     time_time = round(time_end - time_start, 3)
     logger.debug("本次寮管理，用时{}秒", time_time)

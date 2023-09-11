@@ -16,7 +16,7 @@ def get_subdirectories(folder_path):
 
 if __name__ == '__main__':
     # 指定文件夹路径
-    folder_path = utils_path.get_project_path()+r'\src\resources\static\onmyoji\探索\御魂\永生之海'
+    folder_path = utils_path.get_project_path()+r'\src\resources\static\onmyoji\探索\探索'
 
     # 获取所有文件夹
     subdirectories = get_subdirectories(folder_path)
@@ -34,4 +34,4 @@ if __name__ == '__main__':
         # 将拼音列表转换为字符串并转换为大写
         pinyin_text = ''.join([item[0].upper() for item in pinyin_text])
 
-        print("soul_YSZH_"+pinyin_text+"=r"+"\""+subdir+"\"")
+        print("explore_"+pinyin_text+"=r"+"\""+subdir+"\"")

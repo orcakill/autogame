@@ -101,15 +101,22 @@ class ImageService:
         :param is_throw: 是否显示异常,默认不显示异常
         :return: bool
         """
-        time.sleep(wait)
-        template_list = ImageService.get_template_list(folder_path, rgb, threshold)
-        time_start = time.time()
-        while time.time() - time_start < timeouts:
-            for template in template_list:
-                is_click = airtest_service.touch(template, cvstrategy, timeout, is_throw, times, duration)
-                if is_click:
-                    logger.debug("图像识别点击成功:{}", folder_path)
-                    return True
+        try:
+            time.sleep(wait)
+            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+            time_start = time.time()
+            while time.time() - time_start < timeouts:
+                for template in template_list:
+                    is_click = airtest_service.touch(template, cvstrategy, timeout, is_throw, times, duration)
+                    if is_click:
+                        logger.debug("图像识别点击成功:{}", folder_path)
+                        return True
+            return False
+        except Exception as e:
+            if is_throw:
+                logger.error("异常：{}", e)
+            else:
+                pass
         return False
 
     @staticmethod

@@ -8,6 +8,7 @@ from src.model.enum import Onmyoji
 from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 
 
@@ -63,7 +64,7 @@ def daily_rewards(game_task: []):
         if is_reward:
             ImageService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
     logger.debug("返回首页")
-    ComplexService.return_home(game_task)
+    impl_initialization.return_home(game_task)
     logger.debug("2.邮箱奖励")
     is_mail = ImageService.exists(Onmyoji.reward_YX)
     if is_mail:

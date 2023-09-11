@@ -10,7 +10,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
-from src.service_onmyoji_impl import impl_awakening
+from src.service_onmyoji_impl import impl_awakening, impl_initialization
 from src.utils.my_logger import logger
 
 
@@ -49,7 +49,7 @@ def friends_fight(game_task: []):
             logger.debug("未完成协战，返回首页")
             ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
             logger.debug("确认返回首页")
-            ComplexService.return_home(game_task)
+            impl_initialization.return_home(game_task)
             if i_cooperative_warfare == 0:
                 logger.debug("觉醒挑战")
                 impl_awakening.awakening(game_task)
@@ -79,8 +79,13 @@ def friends_fight(game_task: []):
                     is_unlock = ImageService.touch(Onmyoji.soul_BQ_JSZR, wait=3)
                     if not is_unlock:
                         is_unlock = ImageService.touch(Onmyoji.soul_BQ_JSZR, wait=3)
-                        if not is_unlock:
-                            logger.debug("无法解锁阵容，退出")
+                        if is_unlock:
+                            logger.debug("解锁阵容成功")
+                        is_lock = ImageService.exists(Onmyoji.soul_BQ_SDZR, wait=3)
+                        if is_lock:
+                            logger.debug("已解锁，无需再解锁")
+                        if not is_unlock and not is_lock:
+                            logger.debug("无解锁阵容，无锁定阵容,退出")
                             break
                     logger.debug("判断左侧是否有御魂自选")
                     is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
@@ -159,7 +164,7 @@ def friends_fight(game_task: []):
                         logger.debug("发现宝藏")
                         ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
                     logger.debug("点击准备")
-                    is_unlock=ImageService.touch(Onmyoji.soul_BQ_ZB, wait=4)
+                    is_unlock = ImageService.touch(Onmyoji.soul_BQ_ZB, wait=4)
                     logger.debug("好友协战-等待战斗结果")
                     is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
                                                          Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_TCTZ,
@@ -191,11 +196,11 @@ def friends_fight(game_task: []):
             logger.debug("好友协战-返回首页")
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
             logger.debug("确认返回首页")
-            ComplexService.return_home(game_task)
+            impl_initialization.return_home(game_task)
     logger.debug("好友协战-返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("确认返回首页")
-    ComplexService.return_home(game_task)
+    impl_initialization.return_home(game_task)
     # 结束时间
     time_end = time.time()
     # 战斗总用时

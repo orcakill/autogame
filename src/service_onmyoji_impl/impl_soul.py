@@ -8,6 +8,7 @@ from src.model.enum import Onmyoji
 from src.model.models import GameAccount, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 
 
@@ -79,7 +80,7 @@ def soul_fight(game_task: []):
                 ComplexService.get_reward(Onmyoji.soul_BQ_HDJL)
         logger.debug("等待战斗结果")
         is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
-                                             Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, None,60, 1)
+                                             Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, None, 60, 1)
         # 记录战斗结果
         if is_result in [Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ]:
             num_win = num_win + 1
@@ -101,7 +102,7 @@ def soul_fight(game_task: []):
     logger.debug("{}-返回首页", project_name)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     logger.debug("确认返回首页")
-    ComplexService.return_home(game_task)
+    impl_initialization.return_home(game_task)
     # 御魂结束时间
     time_end = time.time()
     # 御魂总用时

@@ -10,6 +10,7 @@ from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.folder_utils import FolderUtils
 from src.utils.my_logger import logger
 
@@ -110,7 +111,7 @@ class TestOnmyojiService(TestCase):
             game_project = GameProject()
             game_task = [game_projects, game_projects_relation, game_account, game_project]
             logger.debug("测试开始-地域鬼王{}", test_name)
-            ComplexService.return_home(game_task)
+            impl_initialization.return_home(game_task)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 当前状态初始化

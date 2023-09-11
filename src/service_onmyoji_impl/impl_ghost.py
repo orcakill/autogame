@@ -9,6 +9,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 
 
@@ -86,7 +87,7 @@ def ghost_king(game_task: []):
                     ImageService.touch(Onmyoji.ghost_ZB, wait=3)
                     logger.debug("等待战斗结果")
                     ComplexService.fight_end(Onmyoji.ghost_ZDSL, Onmyoji.ghost_ZDSB, Onmyoji.ghost_ZCTZ,
-                                             Onmyoji.ghost_TCTZ, Onmyoji.ghost_TZ,None,10 * 60, 1)
+                                             Onmyoji.ghost_TCTZ, Onmyoji.ghost_TZ, None, 10 * 60, 1)
                 logger.debug("已挑战,返回到鬼王首页")
                 ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
                 logger.debug("点击今日挑战")
@@ -215,6 +216,6 @@ def encounter_demons(game_task: []):
             ImageService.touch(Onmyoji.demon_TY)
     else:
         logger.debug("不在逢魔时间内")
-    ComplexService.return_home(game_task)
+    impl_initialization.return_home(game_task)
     time_end = time.time() - time_start
     logger.info("逢魔之时,用时{}秒", round(time_end))

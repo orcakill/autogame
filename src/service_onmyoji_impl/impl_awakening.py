@@ -9,13 +9,13 @@ from src.model.enum import Onmyoji
 from src.model.models import GameAccount, GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 
 
 def awakening(game_task: [], awakening_type: int = 0):
     """
         觉醒十 风、火、水、雷（默认雷）  开加成，选觉醒阵容
-        :param awakening_times: 觉醒次数
         :param awakening_type: 默认类型
         :param game_task:  任务信息
         :return:
@@ -81,17 +81,20 @@ def awakening(game_task: [], awakening_type: int = 0):
         if is_prepare:
             logger.debug("锁定阵容")
             ImageService.touch(Onmyoji.awaken_SDZR)
+        logger.debug("挑战")
         is_fight = ImageService.touch(Onmyoji.awaken_TZ)
         logger.debug("点击准备")
         is_prepare = ImageService.touch(Onmyoji.awaken_ZB, wait=5)
         if not is_fight:
+            logger.debug("点击可能存在的悬赏封印")
+            ComplexService.refuse_reward()
             logger.debug("再次点击挑战")
             ImageService.touch(Onmyoji.awaken_TZ, wait=2)
             logger.debug("点击准备")
             ImageService.touch(Onmyoji.awaken_ZB, wait=5)
         logger.debug("等待战斗结果")
         ComplexService.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
-                                 Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, None,60, 2)
+                                 Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, None, 60, 2)
         time_fight_end = time.time()
         time_fight_time = time_fight_end - time_fight_start
         logger.debug("本次觉醒挑战，用时{}秒", round(time_fight_time))
@@ -104,7 +107,7 @@ def awakening(game_task: [], awakening_type: int = 0):
     logger.debug("觉醒-返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     logger.debug("确认返回首页")
-    ComplexService.return_home(game_task)
+    impl_initialization.return_home(game_task)
     # 结束时间
     time_end = time.time()
     # 总用时
