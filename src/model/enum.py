@@ -179,6 +179,7 @@ class Onmyoji:
     soul_BQ_CW = r"探索\御魂\八岐大蛇\宠物"
     soul_BQ_CWJL = r"探索\御魂\八岐大蛇\宠物奖励"
     soul_BQ_CZ = r"探索\御魂\八岐大蛇\层字"
+    soul_BQ_BQDSSY = r"探索\御魂\八岐大蛇\八岐大蛇首页"
     soul_BQ_DJDB = r"探索\御魂\八岐大蛇\点击地板"
     soul_BQ_FXBZ = r"探索\御魂\八岐大蛇\发现宝藏"
     soul_BQ_GBJC = r"探索\御魂\八岐大蛇\关闭加成"

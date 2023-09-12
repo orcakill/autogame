@@ -5,7 +5,7 @@
 import time
 
 from src.model.enum import Onmyoji
-from src.model.models import GameAccount, GameProjectsRelation, GameProject
+from src.model.models import GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -18,9 +18,6 @@ def soul_fight(game_task: []):
     魂一   不御魂开加成
     魂十   开御魂加成
     魂十一  开御魂加成
-    业原火  无加成
-    日轮之陨  检查加成次数，无加成不挑战
-    永生之海  限定周三和周五，无加成不挑战
     :param game_task: 项目组信息
     :return:
     """
@@ -32,27 +29,39 @@ def soul_fight(game_task: []):
     num_fail = 0
     # 战斗用时列表
     time_fight_list = []
+    # 项目组项目关系
     game_projects_relation = GameProjectsRelation(game_task[1])
-    game_account = GameAccount(game_task[2])
-    logger.debug(game_account.game_name)
+    # 项目信息
     game_project = GameProject(game_task[3])
+    # 项目名称
     project_name = game_project.project_name
+    # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
-    logger.debug("{}-进入探索")
-    ImageService.touch(Onmyoji.home_TS)
-    logger.debug("{}-进入御魂", project_name)
-    ImageService.touch(Onmyoji.soul_BQ_YHTB)
-    logger.debug("进入{}", project_name)
-    ImageService.touch(Onmyoji.soul_BQ_XZ)
-    # 层号选择
-    # 魂一、魂十、魂十一、业原火三层、日轮之陨三层、永生之海三层
-    logger.debug("{}-选择层号", project_name)
+    # 层数-默认八岐大蛇 魂十一
+    fight_layer = Onmyoji.soul_BQ_HELEVEN
+    # 滑动方向,默认向下滑动
+    fight_swipe = 1
     if project_name == "魂一":
-        ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HONE, 0, 4)
+        fight_layer = Onmyoji.soul_BQ_HONE
     elif project_name == "魂十":
-        ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
-    elif project_name == "魂十一":
-        ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HELEVEN, 1, 4)
+        fight_layer = Onmyoji.soul_BQ_HTEN
+    logger.debug(project_name)
+    for i in range(3):
+        logger.debug("{}-进入探索", project_name)
+        ImageService.touch(Onmyoji.home_TS)
+        logger.debug("{}-点击御魂图标", project_name)
+        ImageService.touch(Onmyoji.soul_BQ_YHTB)
+        logger.debug("{}-选择", project_name)
+        ImageService.touch(Onmyoji.soul_BQ_XZ)
+        # 层号选择 魂一、魂十、魂十一
+        logger.debug("{}-选择层号", project_name)
+        ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, fight_layer, fight_swipe, 4)
+        logger.debug("判断是否在{}首页", project_name)
+        is_home = ImageService.touch(Onmyoji.soul_BQ_BQDSSY)
+        if is_home:
+            break
+        else:
+            ComplexService.refuse_reward()
     logger.debug("{}-开启加成", project_name)
     ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
                                 1)

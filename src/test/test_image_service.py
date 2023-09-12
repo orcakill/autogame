@@ -18,7 +18,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("0")
-        ImageService.exists(Onmyoji.explore_JLXZR)
+        ImageService.touch(Onmyoji.soul_BQ_JCK)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
@@ -72,9 +72,9 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        result = ImageService.find_all(Onmyoji.region_GP)
-        logger.debug(result)
-        logger.debug(len(result))
+        result = ImageService.find_all(Onmyoji.soul_BQ_JCK)
+        for i in range(len(result)):
+            ImageService.touch_coordinate(result[i]['result'])
         logger.debug("结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)
