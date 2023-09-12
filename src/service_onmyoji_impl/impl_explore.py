@@ -26,7 +26,7 @@ def explore_chapters(game_task: [], chapter: int = 28):
     # 章节层数
     chapter_layers = None
     # 战斗次数
-    fight_times = 21
+    fight_times = 20
     if game_projects_relation.project_num_times and game_projects_relation.project_num_times > 0:
         fight_times = game_projects_relation.project_num_times
     if chapter == 28:
@@ -34,7 +34,10 @@ def explore_chapters(game_task: [], chapter: int = 28):
         chapter_home = Onmyoji.explore_ZJSY_28
         # 章节层数
         chapter_layers = Onmyoji.explore_ZJ_28
-    for i in range(1, fight_times):
+    # 获取设备分辨率
+    resolution = ImageService.resolving_power()
+    logger.debug("章节探索-开始")
+    for i in range(1, fight_times + 1):
         logger.debug("判断是否是章节首页")
         is_home = ImageService.exists(chapter_home)
         if not is_home:
@@ -67,21 +70,27 @@ def explore_chapters(game_task: [], chapter: int = 28):
             ImageService.touch(Onmyoji.explore_SDZR)
             logger.debug("第一次-自动轮换")
             ImageService.touch(Onmyoji.explore_ZDLH)
+            logger.debug("判断是否锁定阵容")
+            is_lock = ImageService.exists(Onmyoji.explore_JSZR)
+            if is_lock:
+                logger.debug("第一次-重新点击自动轮换")
+                ImageService.touch(Onmyoji.explore_ZDLH)
         logger.debug("准备完成，开始战斗")
         for i_fight in range(1, 10):
-            logger.debug("点击小怪")
+            logger.debug("第{}次点击小怪", i_fight)
             is_little_monster = ImageService.touch(Onmyoji.explore_XGZD)
-            if is_little_monster:
+            if not is_little_monster:
                 logger.debug("没有小怪，点击首领")
                 is_boss = ImageService.touch(Onmyoji.explore_SLZD)
-                if is_boss:
+                if not is_boss:
                     logger.debug("没有小怪，没有首领，右移")
+                    ImageService.swipe((0.9 * resolution[0], 0.5 * resolution[1]),
+                                       (0.5 * resolution[0], 0.5 * resolution[1]))
                     logger.debug("进入下一轮循环")
                     continue
                 logger.debug("等待战斗结果")
                 ComplexService.fight_end(Onmyoji.explore_ZDSL, Onmyoji.explore_ZDSB, Onmyoji.explore_ZCTZ,
-                                         Onmyoji.explore_TCTZ,
-                                         Onmyoji.explore_XGZD, None, 30, 2)
+                                         Onmyoji.explore_TCTZ, Onmyoji.explore_XGZD, None, 30, 2)
                 logger.debug("退出循环")
                 break
             logger.debug("等待战斗结果")

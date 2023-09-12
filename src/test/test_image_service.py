@@ -6,18 +6,19 @@
 import datetime
 from unittest import TestCase
 
+from airtest.core.android.cap_methods.base_cap import BaseCap
+
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
-from src.service_onmyoji_impl import impl_house
 from src.utils.my_logger import logger
 
 
 class TestImageService(TestCase):
     def test_exists(self):
-        ImageService.auto_setup("1")
         now = datetime.datetime.now()
-        ImageService.touch(Onmyoji.ghost_SCGW_SLSCJG, wait=2)
+        ImageService.auto_setup("0")
+        ImageService.exists(Onmyoji.explore_JLXZR)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
@@ -25,7 +26,7 @@ class TestImageService(TestCase):
         ImageService.auto_setup("0")
         now = datetime.datetime.now()
         ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS, Onmyoji.border_GRJJ, None, 60, 1)
+                                 Onmyoji.border_ZCTZ, Onmyoji.home_TS, Onmyoji.border_GRJJ, None, 60, 1)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
@@ -40,7 +41,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_snapshot(self):
-        test=Cvstrategy.default
+        test = Cvstrategy.default
         logger.debug(test)
         ImageService.auto_setup("0")
         now = datetime.datetime.now()
@@ -92,14 +93,14 @@ class TestImageService(TestCase):
         logger.debug("测试-开获取上方跨区坐标")
         coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
         logger.debug("测试-开计算起始位置1,测试系数")
-        coordinate_difference = 0.8228571428571428*(coordinate_region[0] - coordinate_friend[0])
+        coordinate_difference = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
         coordinate_start = (coordinate_region[0], coordinate_region[1])
         logger.debug("测试-开计算起始位置2")
         coordinate_end = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
-        c1=ImageService.exists(Onmyoji.test_TEST1)
+        c1 = ImageService.exists(Onmyoji.test_TEST1)
         logger.debug(coordinate_end)
         logger.debug(c1)
-        logger.debug((c1[1]-coordinate_start[1])/coordinate_difference)
+        logger.debug((c1[1] - coordinate_start[1]) / coordinate_difference)
         logger.debug("测试-开结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)

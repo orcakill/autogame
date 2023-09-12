@@ -4,7 +4,7 @@
 # @Description: 服务接口
 
 from src.service_onmyoji_impl import impl_border, impl_friends, impl_ghost, impl_reward, impl_awakening, impl_soul, \
-    impl_initialization
+    impl_initialization, impl_explore
 from src.service_onmyoji_impl import impl_house
 
 
@@ -122,3 +122,12 @@ class OnmyojiService:
         :return:
         """
         impl_house.shack_house(game_task)
+
+    @staticmethod
+    def explore_chapters(game_task: []):
+        """
+        阴阳寮管理
+        :param game_task: 阴阳寮管理
+        :return:
+        """
+        impl_explore.explore_chapters(game_task)

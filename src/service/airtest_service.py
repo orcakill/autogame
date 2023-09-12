@@ -21,19 +21,15 @@ from src.utils.my_logger import my_logger as logger
 log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
 
-# 捕获Python标准库中的警告信息
-logging.captureWarnings(True)
+
+# 自定义异常处理函数
+def custom_excepthook(exc_type, exc_value, exc_traceback):
+    # 禁止打印Traceback信息
+    pass
 
 
-# 捕获未被捕获的异常，包括第三方包的traceback.print_exc()
-def handle_exception(exc_type, exc_value, exc_traceback):
-    if issubclass(exc_type, KeyboardInterrupt):
-        sys.__excepthook__(exc_type, exc_value, exc_traceback)
-        return
-    logging.error("未被捕获的异常", exc_info=(exc_type, exc_value, exc_traceback))
-
-
-sys.excepthook = handle_exception
+# 设置自定义的异常处理函数
+sys.excepthook = custom_excepthook
 
 # 图片点击识别等待时间(秒）·
 WAIT = 2
@@ -56,7 +52,11 @@ class AirtestService:
             WindowsService.start_exe("Nox", "夜神模拟器")
             devices_name = "127.0.0.1:62001"
         if game_device == "2":
+            logger.debug("荣耀平板5")
             devices_name = "E8X9X19719000371"
+        if game_device == "3":
+            logger.debug("小米13")
+            devices_name = "8ce78c9f"
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
         while is_state != "device":

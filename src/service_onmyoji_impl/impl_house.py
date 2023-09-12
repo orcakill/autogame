@@ -185,15 +185,15 @@ def foster_care1(game_task: []):
     logger.debug(game_account.game_name)
     logger.debug("式神寄养")
     for i_time in range(2):
-        logger.debug("点击阴阳寮图标")
-        ImageService.touch(Onmyoji.foster_YYLTB)
-        logger.debug("点击寮首页结界")
-        ImageService.touch(Onmyoji.foster_JJTB)
-        logger.debug("点击结界-式神育成")
-        is_growing = ImageService.touch(Onmyoji.foster_SSYC)
-        if not is_growing:
-            logger.debug("式神育成点击失败，重新点击")
-            ImageService.touch(Onmyoji.foster_SSYC)
+        for i_growing in range(3):
+            logger.debug("点击阴阳寮图标")
+            ImageService.touch(Onmyoji.foster_YYLTB)
+            logger.debug("点击寮首页结界")
+            ImageService.touch(Onmyoji.foster_JJTB)
+            logger.debug("点击结界-式神育成")
+            is_growing = ImageService.touch(Onmyoji.foster_SSYC)
+            if is_growing:
+                break
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
         if is_foster:

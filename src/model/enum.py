@@ -67,6 +67,7 @@ class Onmyoji:
     comm_FH_ZSJZKDZSHXJT = r"通用\返回\左上角棕框淡棕色回型箭头"
     comm_FH_ZSJHKZDHSXYH = r"通用\返回\左上角黑框棕底黄色小于号"
     comm_FH_YSJGGCH = r"通用\返回\右上角公告叉号"
+    comm_FH_ZJZDHKHSXYH = r"通用\返回\中间棕底黄框黄色小于号"
 
     demon_FMCSL = r"町中\逢魔之时\逢魔次数零"
     demon_FMLD = r"町中\逢魔之时\逢魔蓝点"
@@ -350,6 +351,7 @@ class Onmyoji:
     explore_ZDLH = r"探索\探索\自动轮换"
     explore_TCTZ = r"探索\探索\退出挑战"
     explore_SDZR = r"探索\探索\锁定阵容"
+    explore_JSZR = r"探索\探索\解锁阵容"
     explore_SLZD = r"探索\探索\首领战斗"
     explore_JLXZR = r"探索\探索\奖励小纸人"
 
