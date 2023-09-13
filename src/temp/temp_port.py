@@ -8,6 +8,7 @@ import subprocess
 
 import psutil
 
+import socket
 
 def kill_process_by_port(port):
     for proc in psutil.process_iter():
@@ -38,6 +39,28 @@ def get_device_status_by_ip(ip):
         return None
 
 
+
+def visit_port(ip, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(5)  # 设置超时时间
+    try:
+        result = sock.connect_ex((ip, port))  # 尝试连接
+        if result == 0:  # 如果连接成功，返回True
+            return True
+        else:
+            return False  # 如果连接失败，返回False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+    finally:
+        sock.close()  # 关闭socket连接
+
+
 if __name__ == '__main__':
-    kill_process_by_port(50000)
-    kill_process_by_port(50001)
+    # kill_process_by_port(50000)
+    # kill_process_by_port(50001)
+
+    # 使用示例
+    ip = '114.115.139.203'
+    port = ""
+    print(visit_port(ip, port))
