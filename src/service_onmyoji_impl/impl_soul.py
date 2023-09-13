@@ -63,7 +63,7 @@ def soul_fight(game_task: []):
         else:
             ComplexService.refuse_reward()
     logger.debug("{}-开启加成", project_name)
-    ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
+    ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG,
                                 1)
     logger.debug("{}-锁定阵容", project_name)
     ImageService.touch(Onmyoji.soul_BQ_SDZR)
@@ -104,7 +104,7 @@ def soul_fight(game_task: []):
         time_fight_list.append(time_fight_time)
     time.sleep(3)
     logger.debug("关闭御魂加成")
-    ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
+    ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG,
                                 0)
     logger.debug("{}-返回首页", project_name)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)

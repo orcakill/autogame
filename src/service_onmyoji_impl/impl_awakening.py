@@ -70,7 +70,7 @@ def awakening(game_task: [], awakening_type: int = 0):
     logger.debug("选择层号")
     ComplexService.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 4)
     logger.debug("开启加成")
-    ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 1)
+    ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 1)
     logger.debug("锁定阵容")
     ImageService.touch(Onmyoji.awaken_SDZR)
     # 是否有准备按钮
@@ -101,7 +101,7 @@ def awakening(game_task: [], awakening_type: int = 0):
         time_fight_list.append(time_fight_time)
     time.sleep(2)
     logger.debug("关闭觉醒加成")
-    ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCG, Onmyoji.awaken_JCG, 0)
+    ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
     logger.debug("觉醒-返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     logger.debug("觉醒-返回首页")

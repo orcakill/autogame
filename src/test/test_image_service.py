@@ -6,8 +6,6 @@
 import datetime
 from unittest import TestCase
 
-from airtest.core.android.cap_methods.base_cap import BaseCap
-
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
@@ -18,7 +16,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("0")
-        ImageService.touch(Onmyoji.soul_BQ_JCK)
+        ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
         now1 = datetime.datetime.now()
         print(now1 - now)
 

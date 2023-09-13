@@ -63,7 +63,7 @@ def friends_fight(game_task: []):
             ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
             logger.debug("好友协战-开启御魂加成")
             is_top_addition = ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC,
-                                                          Onmyoji.soul_BQ_JCG,
+                                                          Onmyoji.soul_BQ_JCK,
                                                           Onmyoji.soul_BQ_JCG,
                                                           1)
             # 默认有协战式神
@@ -188,9 +188,8 @@ def friends_fight(game_task: []):
             time.sleep(3)
             logger.debug("好友协战-关闭御魂加成")
             if is_top_addition:
-                ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG,
-                                            Onmyoji.soul_BQ_JCG,
-                                            0)
+                ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK,
+                                            Onmyoji.soul_BQ_JCG,0)
             logger.debug("好友协战-战斗结束，返回首页")
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
             logger.debug("好友协战-返回首页")
