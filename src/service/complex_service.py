@@ -2,11 +2,9 @@
 # @Author: orcakill
 # @File: complex_service.py
 # @Description: 复杂逻辑处理
-import os
 import time
 
 from src.model.enum import Cvstrategy, Onmyoji
-from src.model.models import GameAccount
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -176,7 +174,6 @@ class ComplexService:
     def refuse_reward():
         """
         拒接悬赏
-        :param reward:
         :return:
         """
         is_reward = ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)

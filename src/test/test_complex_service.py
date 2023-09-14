@@ -3,6 +3,7 @@
 # @File: test_ComplexService.py
 # @Description: TODO
 import datetime
+import warnings
 from unittest import TestCase
 
 from src.model.enum import Onmyoji
@@ -121,9 +122,10 @@ class TestComplexService(TestCase):
         print(now1 - now)
 
     def test_card(self):
-        ImageService.auto_setup("1")
-        logger.debug("循环识别测试")
+        logger.debug("结界卡识别")
+        warnings.simplefilter('ignore', ResourceWarning)
+        ImageService.auto_setup("0")
         now = datetime.datetime.now()
-        logger.debug(impl_house.get_card_type())
+        logger.debug(impl_house.get_card_type1(1))
         now1 = datetime.datetime.now()
         print(now1 - now)

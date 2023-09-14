@@ -16,7 +16,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("0")
-        ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
+        ImageService.touch(Onmyoji.foster_JJK_LXTG)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
