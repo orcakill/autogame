@@ -274,5 +274,7 @@ def friends_manage(game_task: []):
                 break
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
     time_end = time.time() - time_start
     logger.info("好友管理,用时{}秒", round(time_end))

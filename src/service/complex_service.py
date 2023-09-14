@@ -110,9 +110,9 @@ class ComplexService:
                 for i in range(times):
                     logger.debug("滑动{}次", i + 1)
                     AirtestService.swipe(xy1, xy2)
-                    is_target = ImageService.exists(target, is_click=True, timeouts=1, wait=1)
+                    logger.debug("判断是否有{}", target)
+                    is_target = ImageService.touch(target, wait=1)
                     if is_target:
-                        logger.debug("发现目标{}", target)
                         break
         else:
             logger.debug("发现目标{}", target)
@@ -137,9 +137,9 @@ class ComplexService:
             if add_switch == 0:
                 logger.debug("关闭加成")
                 logger.debug("获取加成开的个数")
-                coordinate_result=ImageService.find_all(add_open)
-                logger.debug("有{}个加成开",len(coordinate_result))
-                if len(coordinate_result)>0:
+                coordinate_result = ImageService.find_all(add_open)
+                logger.debug("有{}个加成开", len(coordinate_result))
+                if len(coordinate_result) > 0:
                     logger.debug("关闭所有加成", len(coordinate_result))
                     for i in range(len(coordinate_result)):
                         ImageService.touch_coordinate(coordinate_result[i]['result'])

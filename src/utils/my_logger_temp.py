@@ -5,9 +5,11 @@ from loguru import logger
 
 from src.utils.utils_path import get_project_path
 
+logger.remove()  # 移除默认的日志记录器
+
 BASE_DIR = get_project_path()
 # 设置主日志文件,所有日志都会记录在此文件中
-my_log_file_path = os.path.join(BASE_DIR, "src\\log\\my.log")
+my_log_file_path = os.path.join(BASE_DIR, "log\\my.log")
 
 
 class MyLogger:

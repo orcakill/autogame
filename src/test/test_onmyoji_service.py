@@ -92,6 +92,34 @@ class TestOnmyojiService(TestCase):
         """
         TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "觉醒十")
 
+    def test_soul_fight_one(self):
+        """
+        项目12 魂一
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "魂一")
+
+    def test_soul_fight_ten(self):
+        """
+        项目13 魂十
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "魂十")
+
+    def test_soul_fight_eleven(self):
+        """
+        项目14 魂十一
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['1'], '0', "魂十一")
+
+    def test_soul_fight_fire(self):
+        """
+        项目16 业原火
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['1'], '0', "业原火")
+
     def test_explore(self):
         """
         项目21 探索
@@ -100,6 +128,13 @@ class TestOnmyojiService(TestCase):
         TestOnmyojiService.test_project(self, ['1'], '0', "探索")
 
     def test_project(self, test_names, test_devices, project_name):
+        """
+        项目测试
+        :param test_names:
+        :param test_devices:
+        :param project_name:
+        :return:
+        """
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
         for i in range(len(test_names)):
@@ -149,7 +184,12 @@ class TestOnmyojiService(TestCase):
                 OnmyojiService.awakening(game_task)
             # 项目 12,13,14,15
             elif game_project.project_name in ["魂一", "魂十", "魂十一", "魂十二"]:
+                game_projects_relation.project_num_times = 2
                 OnmyojiService.soul_fight(game_task)
+            # 项目 16
+            elif game_project.project_name in ["业原火"]:
+                game_projects_relation.project_num_times = 2
+                OnmyojiService.soul_fight_fire(game_task)
             # 项目 21
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = 1

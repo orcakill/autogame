@@ -13,6 +13,15 @@ def get_project_path():
     return p_path[:p_path.rindex('src')]
 
 
+def get_project_path_log():
+    """
+    获取日志路径
+    :return: 日志根路径
+    """
+    path = get_project_path()
+    return os.path.join(path, "log")
+
+
 def get_database_url():
     root_path = get_project_path()
     config_path = root_path + "src\\resources\\config.ini"
