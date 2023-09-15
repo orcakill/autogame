@@ -45,7 +45,7 @@ class Onmyoji:
     border_SDZR = r"探索\结界突破\锁定阵容"
     border_SX = r"探索\结界突破\刷新"
     border_SXQD = r"探索\结界突破\刷新确定"
-    border_TCQD = r"探索\结界突破\退出确定"
+    border_TCQR = r"探索\结界突破\退出确认"
     border_TCTZ = r"探索\结界突破\退出挑战"
     border_WJJTZJ = r"探索\结界突破\无结界挑战劵"
     border_XH = r"探索\结界突破\消耗"
@@ -57,6 +57,7 @@ class Onmyoji:
     border_ZDSB = r"探索\结界突破\战斗失败"
     border_ZDSL = r"探索\结界突破\战斗胜利"
     border_GP = r"探索\结界突破\攻破"
+    border_LXZJJ = r"探索\结界突破\零勋章结界"
 
     comm_FH_ZSJLDYXBSXYH = r"通用\返回\左上角蓝底圆形白色小于号"
     comm_FH_ZSJLDBKBSXYH = r"通用\返回\左上角蓝底白框白色小于号"
