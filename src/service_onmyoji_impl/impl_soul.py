@@ -242,8 +242,6 @@ def soul_fight_sun(game_task: []):
     time_fight_list = []
     # 项目组项目关系
     game_projects_relation = GameProjectsRelation(game_task[1])
-    # 项目信息
-    game_project = GameProject(game_task[3])
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
     for i in range(3):
@@ -252,7 +250,7 @@ def soul_fight_sun(game_task: []):
         logger.debug("日轮之陨-点击御魂图标")
         ImageService.touch(Onmyoji.soul_RLZY_YHTB)
         logger.debug("日轮之陨-选择")
-        ImageService.touch(Onmyoji.soul_RLZY_YYHTB)
+        ImageService.touch(Onmyoji.soul_RLZY_XZ)
         logger.debug("日轮之陨-选择三层")
         ImageService.touch(Onmyoji.soul_RLZY_SC)
         logger.debug("判断是否在日轮之陨首页")
@@ -303,6 +301,9 @@ def soul_fight_sun(game_task: []):
         time_fight_time = time_fight_end - time_fight_start
         logger.debug("本次日轮之陨，用时{}秒", round(time_fight_time))
         time_fight_list.append(time_fight_time)
+        if is_result in [Onmyoji.soul_RLZY_ZCTZ]:
+            logger.debug("战斗失败，退出循环")
+            break
     logger.debug("日轮之陨-返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     logger.debug("日轮之陨-返回首页")
@@ -322,6 +323,106 @@ def soul_fight_sun(game_task: []):
     if len_time_fight_list > 0:
         logger.debug("日轮之陨-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
-    logger.debug("本轮{}御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
-                 game_project.project_name, round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list,
-                 num_win, num_fail)
+    logger.debug("本轮日轮之陨御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+                 round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
+
+
+def soul_fight_sea(game_task: []):
+    """
+    永生之海
+    :param game_task: 项目组信息
+    :return:
+    """
+    # 开始时间
+    time_start = time.time()
+    # 战斗胜利次数
+    num_win = 0
+    # 战斗失败次数
+    num_fail = 0
+    # 战斗用时列表
+    time_fight_list = []
+    # 项目组项目关系
+    game_projects_relation = GameProjectsRelation(game_task[1])
+    # 项目战斗次数
+    fight_time = game_projects_relation.project_num_times
+    for i in range(3):
+        logger.debug("永生之海-进入探索")
+        ImageService.touch(Onmyoji.home_TS)
+        logger.debug("永生之海-点击御魂图标")
+        ImageService.touch(Onmyoji.soul_YSZH_YHTB)
+        logger.debug("永生之海-选择")
+        ImageService.touch(Onmyoji.soul_YSZH_XZ)
+        logger.debug("永生之海-选择四层")
+        ImageService.touch(Onmyoji.soul_YSZH_SC)
+        logger.debug("判断是否在永生之海首页")
+        is_home = ImageService.touch(Onmyoji.soul_YSZH_YSZHSY)
+        if is_home:
+            break
+        else:
+            ComplexService.refuse_reward()
+    logger.debug("锁定阵容")
+    ImageService.touch(Onmyoji.soul_YSZH_SDZR)
+    # 默认锁定阵容
+    is_lock = False
+    for i in range(fight_time):
+        time_fight_start = time.time()
+        logger.debug("判断是否无加成次数")
+        is_add = ImageService.touch(Onmyoji.soul_YSZH_WJC)
+        if is_add:
+            logger.debug("无加成,退出")
+            break
+        logger.debug("永生之海-挑战{}次", i + 1)
+        if is_lock:
+            logger.debug("永生之海-本次锁定阵容")
+            ImageService.touch(Onmyoji.soul_BQ_SDZR)
+        is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ)
+        if not is_fight:
+            # 拒接悬赏
+            ComplexService.refuse_reward()
+            logger.debug("永生之海-点击可能的准备")
+            is_lock = ImageService.touch(Onmyoji.soul_BQ_ZB)
+        logger.debug("永生之海-等待战斗结果")
+        is_result = ComplexService.fight_end(Onmyoji.soul_YSZH_ZDSL, Onmyoji.soul_YSZH_ZDSB, Onmyoji.soul_YSZH_ZCTZ,
+                                             Onmyoji.soul_YSZH_TCTZ, Onmyoji.soul_YSZH_TZ, None, 100, 2)
+        # 记录战斗结果
+        if is_result in [Onmyoji.soul_YSZH_ZDSL, Onmyoji.soul_YSZH_TCTZ]:
+            logger.debug("永生之海-战斗胜利")
+            num_win = num_win + 1
+        elif is_result in [Onmyoji.soul_YSZH_ZCTZ]:
+            logger.debug("永生之海-战斗失败")
+            num_fail = num_fail + 1
+        elif is_result in [Onmyoji.soul_YSZH_TZ]:
+            logger.debug("永生之海-未挑战,可能无痴劵,再点击2次")
+            ImageService.touch(Onmyoji.soul_BQ_TZ, wait=5)
+            is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ, wait=5)
+            if is_fight:
+                logger.debug("无痴劵，退出战斗循环")
+                break
+        time_fight_end = time.time()
+        time_fight_time = time_fight_end - time_fight_start
+        logger.debug("本次永生之海，用时{}秒", round(time_fight_time))
+        time_fight_list.append(time_fight_time)
+        if is_result in [Onmyoji.soul_YSZH_ZCTZ]:
+            logger.debug("永生之海-战斗失败,退出循环")
+            break
+    logger.debug("永生之海-返回首页")
+    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+    logger.debug("永生之海-返回首页")
+    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+    logger.debug("永生之海-确认返回首页")
+    impl_initialization.return_home(game_task)
+    # 永生之海-结束时间
+    time_end = time.time()
+    # 永生之海-总用时
+    time_all = time_end - time_start
+    # 永生之海-战斗次数
+    len_time_fight_list = len(time_fight_list)
+    # 永生之海-战斗总用时
+    time_fight_all = round(sum(time_fight_list))
+    # 永生之海-平均战斗用时
+    time_fight_avg = 0
+    if len_time_fight_list > 0:
+        logger.debug("永生之海-计算平均战斗用时")
+        time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+    logger.debug("本轮永生之海御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+                 round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)

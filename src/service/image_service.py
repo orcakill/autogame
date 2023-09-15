@@ -5,16 +5,17 @@
 import os
 import random
 import time
+from typing import Union
 
+import numpy as np
+from PIL import Image
+from airtest.aircv.cal_confidence import cal_ccoeff_confidence
 from airtest.core.cv import Template
 
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.utils.my_logger import my_logger as logger
 from src.utils.utils_path import get_onmyoji_image_path
-
-# 导入 airtest服务接口
-airtest_service = AirtestService()
 
 # 图像识别算法
 CVSTRATEGY = Cvstrategy.sift
@@ -63,7 +64,7 @@ class ImageService:
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
-                    pos = airtest_service.exists(template, cvstrategy, timeout, is_throw)
+                    pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
                     if pos and not is_click:
                         if is_throw:
                             logger.debug("图像识别成功:{},{}", folder_path, template.filename)
@@ -73,7 +74,7 @@ class ImageService:
                     if pos and is_click:
                         time.sleep(interval)
                         logger.debug("图像识别点击成功:{}", folder_path)
-                        airtest_service.touch_coordinate(pos)
+                        AirtestService.touch_coordinate(pos)
                         return True
             return False
         except Exception as e:
@@ -107,7 +108,7 @@ class ImageService:
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
-                    is_click = airtest_service.touch(template, cvstrategy, timeout, is_throw, times, duration)
+                    is_click = AirtestService.touch(template, cvstrategy, timeout, is_throw, times, duration)
                     if is_click:
                         logger.debug("图像识别点击成功:{}", folder_path)
                         return True
@@ -126,15 +127,15 @@ class ImageService:
         :param game_device:
         :return:
         """
-        airtest_service.auto_setup(game_device)
+        AirtestService.auto_setup(game_device)
 
     @staticmethod
-    def snapshot(name: str, print_image: bool = False):
+    def snapshot(name: str = None, print_image: bool = False):
         """
         设备截图
         :return:
         """
-        return airtest_service.snapshot(name, print_image)
+        return AirtestService.snapshot(name, print_image)
 
     @staticmethod
     def touch_coordinate(v: [], wait: float = WAIT):
@@ -144,7 +145,7 @@ class ImageService:
         :param wait: 等待开始时间
         :return:
         """
-        airtest_service.touch_coordinate(v, wait)
+        AirtestService.touch_coordinate(v, wait)
 
     @staticmethod
     def restart_app(app: str):
@@ -153,7 +154,7 @@ class ImageService:
         :param app: 包名
         :return:
         """
-        airtest_service.restart_app(app)
+        AirtestService.restart_app(app)
 
     @staticmethod
     def swipe(v1: [], v2: []):
@@ -163,7 +164,7 @@ class ImageService:
         :param v2: 坐标2
         :return:
         """
-        airtest_service.swipe(v1, v2)
+        AirtestService.swipe(v1, v2)
 
     @staticmethod
     def crop_image(x1, y1, x2, y2):
@@ -175,7 +176,7 @@ class ImageService:
         :param y2: y2
         :return:
         """
-        return airtest_service.crop_image(x1, y1, x2, y2)
+        return AirtestService.crop_image(x1, y1, x2, y2)
 
     @staticmethod
     def resolving_power():
@@ -183,7 +184,7 @@ class ImageService:
         获取分辨率
         :return:
         """
-        return airtest_service.resolving_power()
+        return AirtestService.resolving_power()
 
     @staticmethod
     def cv2_2_pil(local):
@@ -192,7 +193,7 @@ class ImageService:
         :param local:图片
         :return:
         """
-        airtest_service.cv2_2_pil(local)
+        return AirtestService.cv2_2_pil(local)
 
     @staticmethod
     def get_template_list(folder_path: str, rgb: bool = False, threshold: float = THRESHOLD):
@@ -243,7 +244,7 @@ class ImageService:
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
-                    pos = airtest_service.find_all(template, cvstrategy, timeout, is_throw)
+                    pos = AirtestService.find_all(template, cvstrategy, timeout, is_throw)
                     if pos:
                         logger.debug("图像查找成功:{}", folder_path)
                         return pos
@@ -264,3 +265,50 @@ class ImageService:
             return len(result)
         else:
             return 0
+
+    @staticmethod
+    def cal_ccoeff_confidence(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+                              timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
+                              is_throw: bool = THROW, rgb: bool = False):
+        """
+        计算图片和设备截图的相似度
+        :param rgb: 带颜色
+        :param timeouts: 图片组超时时间
+        :param wait: 图片等待识别时间
+        :param is_throw: 是否显示异常
+        :param folder_path: 图片文件夹路径
+        :param cvstrategy: 图像识别算法
+        :param timeout: 单张图片超时时间
+        :param threshold: 图像识别阈值
+        :return:
+        """
+        try:
+            time.sleep(wait)
+            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+            time_start = time.time()
+            while time.time() - time_start < timeouts:
+                for template in template_list:
+                    pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
+                    if pos:
+                        if is_throw:
+                            logger.debug("图像识别成功:{},{}", folder_path, template.filename)
+                        else:
+                            logger.debug("图像识别成功:{}", folder_path)
+                        # 设备截图
+                        image1 = ImageService.snapshot()
+                        image1 = ImageService.cv2_2_pil(image1)
+                        image1 = np.array(image1)
+                        # 模板图
+                        # 读取图像
+                        image2: Union[Image.Image, np.ndarray] = Image.open(template.filename)
+
+                        # 将PngImageFile对象转换为NumPy数组
+                        image2 = np.asarray(image2)
+                        return cal_ccoeff_confidence(image1, image2)
+            return 0
+        except Exception as e:
+            if is_throw:
+                logger.error("异常：{}", e)
+            else:
+                pass
+        return 0

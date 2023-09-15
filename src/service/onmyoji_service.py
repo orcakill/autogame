@@ -133,6 +133,15 @@ class OnmyojiService:
         impl_soul.soul_fight_fire(game_task)
 
     @staticmethod
+    def soul_fight_sun(game_task: []):
+        """
+        日轮之陨 三层
+        :param game_task: 项目信息
+        :return:
+        """
+        impl_soul.soul_fight_sun(game_task)
+
+    @staticmethod
     def explore_chapters(game_task: []):
         """
         章节探索

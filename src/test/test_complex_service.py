@@ -112,8 +112,9 @@ class TestComplexService(TestCase):
         寄养检查
         :return:
         """
+        logger.debug("寄养列表检查")
         WindowsService.limit_cpu_percentage(30)
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("0")
         logger.debug("开始")
         now = datetime.datetime.now()
         impl_house.get_optimal_card()

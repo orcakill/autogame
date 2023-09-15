@@ -247,9 +247,10 @@ def retreat_class(fight_type: int = 0):
         ImageService.touch(Onmyoji.border_JG)
         logger.debug("再次挑战{}次", num_break)
         for i_fight in range(num_break):
+            logger.debug("{}次退出",i_fight)
             ComplexService.refuse_reward()
             logger.debug("点击左上角退出")
-            ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT, wait=5)
+            ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT, wait=5,timeouts=10)
             logger.debug("点击确定")
             ImageService.touch(Onmyoji.border_TCQD)
             logger.debug("点击再次挑战")

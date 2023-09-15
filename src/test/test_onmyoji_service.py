@@ -48,7 +48,7 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         warnings.simplefilter('ignore', ResourceWarning)
-        TestOnmyojiService.test_project(self, ['3'], '0', "式神寄养")
+        TestOnmyojiService.test_project(self, ['1'], '0', "式神寄养")
 
     def test_shack_house(self):
         """
@@ -69,7 +69,7 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "个人突破")
+        TestOnmyojiService.test_project(self, ['1'], '1', "个人突破")
 
     def test_friends_manage(self):
         """
@@ -119,6 +119,13 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         TestOnmyojiService.test_project(self, ['1'], '0', "业原火")
+
+    def test_soul_fight_sun(self):
+        """
+        项目17 日轮之陨
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['1'], '1', "日轮之陨")
 
     def test_explore(self):
         """
@@ -190,6 +197,10 @@ class TestOnmyojiService(TestCase):
             elif game_project.project_name in ["业原火"]:
                 game_projects_relation.project_num_times = 2
                 OnmyojiService.soul_fight_fire(game_task)
+            # 项目 17
+            elif game_project.project_name in ["日轮之陨"]:
+                game_projects_relation.project_num_times = 50
+                OnmyojiService.soul_fight_sun(game_task)
             # 项目 21
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = 1

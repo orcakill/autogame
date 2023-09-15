@@ -15,8 +15,10 @@ from src.utils.my_logger import logger
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("0")
-        ImageService.touch(Onmyoji.foster_JJK_LXTG)
+        ImageService.auto_setup("1")
+        logger.debug("点击可能存在的返回按钮")
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, timeouts=1)
+
         now1 = datetime.datetime.now()
         print(now1 - now)
 
@@ -102,3 +104,13 @@ class TestImageService(TestCase):
         logger.debug("测试-开结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)
+
+    def test_cal_ccoeff_confidence(self):
+        ImageService.auto_setup("0")
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        ImageService.cal_ccoeff_confidence(Onmyoji.foster_JJK_TG, threshold=0.9)
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
