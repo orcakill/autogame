@@ -15,10 +15,9 @@ from src.utils.my_logger import logger
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("0")
         logger.debug("点击可能存在的返回按钮")
-        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, timeouts=1)
-
+        ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
         now1 = datetime.datetime.now()
         print(now1 - now)
 

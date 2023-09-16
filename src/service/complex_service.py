@@ -126,41 +126,44 @@ class ComplexService:
         :param add_switch:  加成开关
         :return:
         """
-        coordinate_word = ImageService.exists(word)
-        if coordinate_word:
-            logger.debug("点击顶部加成")
-            AirtestService.touch_coordinate(coordinate_word)
-            logger.debug("根据类型确定纵坐标")
-            coordinate_type = ImageService.exists(add_type, timeouts=2)
-            if add_switch == 0:
-                logger.debug("关闭加成")
-                logger.debug("获取加成开的个数")
-                coordinate_result = ImageService.find_all(add_open)
-                logger.debug("有{}个加成开", len(coordinate_result))
-                if len(coordinate_result) > 0:
-                    logger.debug("关闭所有加成", len(coordinate_result))
-                    for i in range(len(coordinate_result)):
-                        ImageService.touch_coordinate(coordinate_result[i]['result'])
-                logger.debug("退出顶部加成")
-                AirtestService.touch_coordinate(coordinate_word, wait_time=2)
-            else:
-                logger.debug("打开加成")
-                logger.debug("根据类型确定横坐标")
-                coordinate_switch = ImageService.exists(add_close, timeouts=2, cvstrategy=Cvstrategy.default)
-                if coordinate_switch and coordinate_type:
-                    logger.debug("点击计算出的开关坐标")
-                    AirtestService.touch_coordinate((coordinate_switch[0], coordinate_type[1]), wait_time=2)
+        try:
+            coordinate_word = ImageService.exists(word)
+            if coordinate_word:
+                logger.debug("点击顶部加成")
+                AirtestService.touch_coordinate(coordinate_word)
+                logger.debug("根据类型确定纵坐标")
+                coordinate_type = ImageService.exists(add_type, timeouts=2)
+                if add_switch == 0:
+                    logger.debug("关闭加成")
+                    logger.debug("获取加成开的个数")
+                    coordinate_result = ImageService.find_all(add_open)
+                    logger.debug("有{}个加成开", len(coordinate_result))
+                    if len(coordinate_result) > 0:
+                        logger.debug("关闭所有加成", len(coordinate_result))
+                        for i in range(len(coordinate_result)):
+                            ImageService.touch_coordinate(coordinate_result[i]['result'])
                     logger.debug("退出顶部加成")
                     AirtestService.touch_coordinate(coordinate_word, wait_time=2)
-                    return True
                 else:
-                    logger.debug("未找到加成坐标")
-                    logger.debug("退出顶部加成")
-                    AirtestService.touch_coordinate(coordinate_word, wait_time=2)
+                    logger.debug("打开加成")
+                    logger.debug("根据类型确定横坐标")
+                    coordinate_switch = ImageService.exists(add_close, timeouts=2, cvstrategy=Cvstrategy.default)
+                    if coordinate_switch and coordinate_type:
+                        logger.debug("点击计算出的开关坐标")
+                        AirtestService.touch_coordinate((coordinate_switch[0], coordinate_type[1]), wait_time=2)
+                        logger.debug("退出顶部加成")
+                        AirtestService.touch_coordinate(coordinate_word, wait_time=2)
+                        return True
+                    else:
+                        logger.debug("未找到加成坐标")
+                        logger.debug("退出顶部加成")
+                        AirtestService.touch_coordinate(coordinate_word, wait_time=2)
 
-        else:
-            logger.debug("没找到顶部加成")
-        return False
+            else:
+                logger.debug("没找到顶部加成")
+            return False
+        except Exception as e:
+            logger.debug("异常；{}", e)
 
     @staticmethod
     def get_reward(reward: str):
