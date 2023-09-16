@@ -165,8 +165,13 @@ def border_fight(game_task: [], fight_times: int = 40):
                 logger.debug("无结界挑战劵，退出循环")
                 break
             else:
-                logger.debug("有结界挑战劵")
-                retreat_class(0)
+                logger.debug("有结界挑战劵，判断是否有零勋章结界")
+                is_zero=ImageService.exists(Onmyoji.border_GRJJ,cvstrategy=Cvstrategy.default)
+                if is_zero:
+                    logger.debug("零勋章，可能掉56了")
+                else:
+                    logger.debug("不是零勋章，保级")
+                    retreat_class(0)
         if is_unlock:
             logger.debug("锁定阵容")
             ImageService.touch(Onmyoji.border_SDZR)
@@ -183,7 +188,7 @@ def border_fight(game_task: [], fight_times: int = 40):
         is_result = ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB, Onmyoji.border_ZCTZ,
                                              Onmyoji.border_TCTZ, Onmyoji.border_GRJJ, Onmyoji.border_JG, 300, 1)
         logger.debug("再点击一次退出挑战")
-        ImageService.touch(Onmyoji.border_TCTZ, wait=2, timeouts=1)
+        ImageService.touch(Onmyoji.border_TCTZ, wait=3)
         if is_result in [Onmyoji.border_ZDSL, Onmyoji.border_TCTZ]:
             num_win = num_win + 1
         elif is_result in [Onmyoji.border_ZCTZ, Onmyoji.border_ZDSB]:
@@ -231,7 +236,7 @@ def retreat_class(fight_type: int = 0):
     退级 退9，刷新
     :return:
     """
-    num_break = 6
+    num_break = 4
     if fight_type == 0:
         logger.debug("保级开始")
     elif fight_type == 1:
@@ -247,22 +252,23 @@ def retreat_class(fight_type: int = 0):
         ImageService.touch(Onmyoji.border_JG)
         logger.debug("再次挑战{}次", num_break)
         for i_fight in range(num_break):
-            logger.debug("{}次退出",i_fight)
+            logger.debug("{}次退出",i_fight+1)
             ComplexService.refuse_reward()
             logger.debug("点击左上角退出")
             ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT, wait=5,timeouts=10)
             logger.debug("点击确定")
-            ImageService.touch(Onmyoji.border_TCQD)
+            ImageService.touch(Onmyoji.border_TCQR)
             logger.debug("点击再次挑战")
             ImageService.touch(Onmyoji.border_ZCTZ)
             logger.debug("点击确定")
-            ImageService.touch(Onmyoji.border_TCQD)
+            ImageService.touch(Onmyoji.border_SXQD)
             if i_fight == num_break - 1:
+                logger.debug("{}次退出",i_fight+2)
                 for i_quit in range(3):
                     logger.debug("点击左上角退出")
                     ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
-                    logger.debug("点击确定")
-                    ImageService.touch(Onmyoji.border_TCQD)
+                    logger.debug("点击确认")
+                    ImageService.touch(Onmyoji.border_TCQR)
                     logger.debug("点击战斗失败")
                     ImageService.touch(Onmyoji.border_ZDSB)
                     logger.debug("锁定阵容")
