@@ -1,3 +1,7 @@
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.controller.onmyoji_controller import OnmyojiController
 from src.service.image_service import ImageService
 from utils.my_logger import my_logger as logger
@@ -19,7 +23,7 @@ if __name__ == '__main__':
     game_round = "1"
     game_device = "0"
     # 中断后重新进行项目组
-    game_relation_num = '0'
+    game_relation_num = '1'
     # 0 每个节点都发送邮件 1 进程结束后发送邮件  2不发送邮件
     game_is_email = "9"
     logger.info("**************")

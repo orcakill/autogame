@@ -37,11 +37,13 @@ def foster_care(game_task: []):
             logger.debug("点击寮首页结界")
             ImageService.touch(Onmyoji.foster_JJTB)
             logger.debug("点击结界-式神育成")
-            is_growing = ImageService.touch(Onmyoji.foster_SSYC)
+            is_growing = ImageService.touch(Onmyoji.foster_SSYC, wait=3)
             if is_growing:
                 break
             else:
                 ComplexService.refuse_reward()
+                logger.debug("误入组队")
+                ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
         if is_foster:
@@ -60,7 +62,7 @@ def foster_care(game_task: []):
                 logger.debug("确定")
                 is_ture = ImageService.touch(Onmyoji.foster_QD)
                 if is_ture:
-                    foster_result = faster_place[1]
+                    foster_result = faster_place
             else:
                 logger.debug("不可寄养或寄养结果为空")
             logger.debug("返回首页")
@@ -159,10 +161,16 @@ def get_optimal_card():
                         logger.debug(target_card[1])
                         logger.debug(faster_place[2])
                         if target_card[1] == faster_place[2]:
-                            logger.debug("检查和寻找匹配成功")
-                            return faster_place[i_friends]
+                            logger.debug("检查和寻找第一次匹配成功")
+                            return faster_place[2]
                         else:
-                            logger.debug("检查和寻找匹配失败")
+                            logger.debug("检查和寻找匹配失败,再匹配一次")
+                            target_card = get_card_type(1)
+                            if target_card[1] == faster_place[2]:
+                                logger.debug("检查和寻找第二次匹配成功")
+                                return faster_place[2]
+                            else:
+                                logger.debug("检查和寻找第二次匹配失败")
                     logger.debug("向下滑动")
                     ImageService.swipe(coordinate_end, coordinate_start)
                     time.sleep(1)
@@ -177,7 +185,14 @@ def get_card_type(not_placed: int = 0):
 
     def check_image(image, threshold, rgb):
         if image:
-            return ImageService.cal_ccoeff_confidence(image, threshold=threshold, rgb=rgb)
+            confidence = ImageService.exists(image, threshold=threshold, rgb=rgb)
+            return confidence
+        return 0
+
+    def check_image_confidence(image, threshold, rgb):
+        if image:
+            confidence = ImageService.cal_ccoeff_confidence(image, threshold=threshold, rgb=rgb, x1=0.5)
+            return confidence
         return 0
 
     card_types = [Onmyoji.foster_JJK_TG]
@@ -196,21 +211,21 @@ def get_card_type(not_placed: int = 0):
         card_types = [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG, Onmyoji.foster_JJK_SXTG1,
                       Onmyoji.foster_JJK_SXTG]
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = [executor.submit(check_image, image_path, 0.9, True) for image_path in card_types]
+            futures = [executor.submit(check_image_confidence, image_path, 0.9, True) for image_path in card_types]
         results = [future.result() for future in futures]
         max_value = max(results)
         results = [False if x != max_value else x for x in results]
         if results[0]:
-            logger.debug("检查结果：{}", Onmyoji.foster_JJK_LXTG)
+            logger.debug("检查结果：{},相似度：{}", Onmyoji.foster_JJK_LXTG, results[0])
             return [1, Onmyoji.foster_JJK_LXTG]
         elif results[1]:
-            logger.debug("检查结果：{}", Onmyoji.foster_JJK_WXTG)
+            logger.debug("检查结果：{},相似度：{}", Onmyoji.foster_JJK_WXTG, results[1])
             return [2, Onmyoji.foster_JJK_WXTG]
         elif results[2]:
-            logger.debug("检查结果：{}", Onmyoji.foster_JJK_SXTG1)
+            logger.debug("检查结果：{},相似度：{}", Onmyoji.foster_JJK_SXTG1, results[2])
             return [3, Onmyoji.foster_JJK_SXTG1]
         elif results[3]:
-            logger.debug("检查结果：{}", Onmyoji.foster_JJK_SXTG)
+            logger.debug("检查结果：{},相似度：{}", Onmyoji.foster_JJK_SXTG, results[3])
             return [4, Onmyoji.foster_JJK_SXTG]
     elif results[1]:
         logger.debug("检查结果：{}", Onmyoji.foster_JJK_WFZ)

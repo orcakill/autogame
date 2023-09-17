@@ -171,7 +171,7 @@ class AirtestService:
         return local_screen
 
     @staticmethod
-    def resolving_power():
+    def resolution_ratio():
         if G.DEVICE.display_info['orientation'] in [1, 3]:
             height = G.DEVICE.display_info['width']
             width = G.DEVICE.display_info['height']

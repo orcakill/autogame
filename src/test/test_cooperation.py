@@ -17,11 +17,11 @@ class TestCooperation(TestCase):
 
     def test_border1(self):
         testOnmyojiService = TestOnmyojiService()
-        testOnmyojiService.test_project(['1'], '2', "个人突破")
+        testOnmyojiService.test_project(['1'], '1', "个人突破")
 
     def test_border2(self):
         testOnmyojiService = TestOnmyojiService()
-        testOnmyojiService.test_project(['3'], '0', "个人突破")
+        testOnmyojiService.test_project(['3'], '2', "个人突破")
 
     def test_soul1(self):
         # 队长
@@ -34,12 +34,11 @@ class TestCooperation(TestCase):
                 logger.debug("点击可能的准备")
                 ImageService.touch(Onmyoji.soul_BQ_ZB)
             ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
-                                     Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, None, 60, 1)
+                                     Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, None, 100, 1)
 
     def test_soul2(self):
         # 队员
         ImageService.auto_setup("2")
         for i in range(80):
             logger.debug("第{}次等待战斗结果", i + 1)
-            ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB, Onmyoji.soul_BQ_ZCTZ,
-                                     Onmyoji.soul_BQ_TCTZ, Onmyoji.soul_BQ_TZ, None, 60, 1)
+            ComplexService.fight_end_win(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ, 100, 1)

@@ -48,7 +48,7 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         warnings.simplefilter('ignore', ResourceWarning)
-        TestOnmyojiService.test_project(self, ['1'], '0', "式神寄养")
+        TestOnmyojiService.test_project(self, ['2'], '2', "式神寄养")
 
     def test_shack_house(self):
         """

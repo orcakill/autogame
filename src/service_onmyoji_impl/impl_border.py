@@ -165,9 +165,9 @@ def border_fight(game_task: [], fight_times: int = 40):
                 logger.debug("无结界挑战劵，退出循环")
                 break
             else:
-                logger.debug("有结界挑战劵，判断是否有零勋章结界")
-                is_zero=ImageService.exists(Onmyoji.border_GRJJ,cvstrategy=Cvstrategy.default)
-                if is_zero:
+                logger.debug("有结界挑战劵，判断是否有56级")
+                is_zero = ImageService.find_all_num(Onmyoji.border_TJWSL)
+                if is_zero > 0:
                     logger.debug("零勋章，可能掉56了")
                 else:
                     logger.debug("不是零勋章，保级")
@@ -252,10 +252,10 @@ def retreat_class(fight_type: int = 0):
         ImageService.touch(Onmyoji.border_JG)
         logger.debug("再次挑战{}次", num_break)
         for i_fight in range(num_break):
-            logger.debug("{}次退出",i_fight+1)
+            logger.debug("{}次退出", i_fight + 1)
             ComplexService.refuse_reward()
             logger.debug("点击左上角退出")
-            ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT, wait=5,timeouts=10)
+            ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT, wait=5, timeouts=10)
             logger.debug("点击确定")
             ImageService.touch(Onmyoji.border_TCQR)
             logger.debug("点击再次挑战")
@@ -263,7 +263,7 @@ def retreat_class(fight_type: int = 0):
             logger.debug("点击确定")
             ImageService.touch(Onmyoji.border_SXQD)
             if i_fight == num_break - 1:
-                logger.debug("{}次退出",i_fight+2)
+                logger.debug("{}次退出", i_fight + 2)
                 for i_quit in range(3):
                     logger.debug("点击左上角退出")
                     ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)

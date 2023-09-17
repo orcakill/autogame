@@ -125,8 +125,8 @@ class TestComplexService(TestCase):
     def test_card(self):
         logger.debug("结界卡识别")
         warnings.simplefilter('ignore', ResourceWarning)
-        ImageService.auto_setup("0")
+        ImageService.auto_setup("2")
         now = datetime.datetime.now()
-        logger.debug(impl_house.get_card_type1(1))
+        logger.debug(impl_house.get_card_type(1))
         now1 = datetime.datetime.now()
         print(now1 - now)

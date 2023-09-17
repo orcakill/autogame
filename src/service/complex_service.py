@@ -44,8 +44,7 @@ class ComplexService:
             is_first = ImageService.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                            threshold=threshold, wait=timeout)
             if is_first:
-                ImageService.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
-                                    is_click=True, wait=timeout)
+                ImageService.touch_coordinate(is_first)
                 ImageService.exists(fight_quit, timeouts=timeout, is_click=True, wait=timeout)
                 return fight_win
             is_second = ImageService.exists(fight_quit, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
@@ -72,7 +71,34 @@ class ComplexService:
                                                    threshold=threshold, wait=timeout)
                     if is_fifth:
                         return fight_attack
+        return None
 
+    @staticmethod
+    def fight_end_win(fight_win: str, fight_quit: str, timeouts: int = 60, timeout: int = 1):
+        """
+        结界战斗，结束战斗
+        1、战斗胜利,退出挑战
+        2、退出挑战
+        :param timeouts: 识别最大时间
+        :param timeout: 超时时间
+        :param fight_win: 战斗胜利
+        :param fight_quit:  退出挑战
+        :return:
+        """
+        # 识别算法
+        cvstrategy = Cvstrategy.sift
+        rgb = False
+        threshold = 0.7
+        time_start = time.time()
+        while time.time() - time_start < timeouts:
+            logger.debug("{}:{}", time.time() - time_start, timeouts)
+            is_first = ImageService.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
+                                           threshold=threshold, wait=timeout)
+            if is_first:
+                logger.debug("战斗胜利")
+                ImageService.touch_coordinate(is_first)
+                ImageService.exists(fight_quit, timeouts=timeout, is_click=True, wait=timeout)
+                return fight_win
         return None
 
     @staticmethod

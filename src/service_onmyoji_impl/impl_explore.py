@@ -45,7 +45,7 @@ def explore_chapters(game_task: [], chapter: int = 28):
         # 章节层数
         chapter_layers = Onmyoji.explore_ZJ_28
     # 获取设备分辨率
-    resolution = ImageService.resolving_power()
+    resolution = ImageService.resolution_ratio()
     logger.debug("章节探索-开始")
     for i in range(1, fight_times + 1):
         time_fight_start = time.time()

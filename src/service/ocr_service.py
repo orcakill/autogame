@@ -25,7 +25,7 @@ class OcrService:
         pos2 = image_service.exists(Onmyoji.border_YSJTP)
         if pos1 and pos2:
             # 获取设备分辨率
-            pos3 = airtest_service.resolving_power()
+            pos3 = airtest_service.resolution_ratio()
             # 截图
             img = airtest_service.crop_image(pos2[0], 0, pos3[0], pos1[1])
             # 图像文字识别
