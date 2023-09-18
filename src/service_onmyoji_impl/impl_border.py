@@ -13,6 +13,7 @@ from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
 from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
+from src.utils.utils_time import UtilsTime
 
 
 def region_border(game_task: []):
@@ -130,13 +131,23 @@ def border_fight(game_task: [], fight_times: int = 40):
     time_fight_list = []
     # 默认锁定阵容
     is_unlock = False
-    logger.debug(game_account.game_name)
-    logger.debug("进入探索")
-    ImageService.touch(Onmyoji.home_TS)
-    logger.debug("进入结界突破")
-    ImageService.touch(Onmyoji.border_JJTPTB)
+    # 战败结界坐标
+    coordinate_fail_list = []
+    for i in range(3):
+        logger.debug(game_account.game_name)
+        logger.debug("进入探索")
+        ImageService.touch(Onmyoji.home_TS)
+        logger.debug("进入结界突破")
+        ImageService.touch(Onmyoji.border_JJTPTB)
+        is_border_home = ImageService.exists(Onmyoji.border_JJSY)
+        if is_border_home:
+            logger.debug("进入结界首页")
+            break
+        else:
+            ComplexService.refuse_reward()
     for i in range(fight_times):
         time_fight_start = time.time()
+        coordinate_border = ()
         logger.debug("结界突破{}次", i + 1)
         if i == 0:
             logger.debug("第一次战斗，获取当前结界挑战劵数")
@@ -145,7 +156,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                 logger.debug("无结界挑战劵")
                 break
         if num_false % 3 == 0 and num_false > 0:
-            logger.debug("战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
+            logger.debug("大号战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
             is_fail = ImageService.exists(Onmyoji.border_ZBBZ, timeouts=3)
             if is_fail:
                 logger.debug("判断是否有刷新")
@@ -153,11 +164,13 @@ def border_fight(game_task: [], fight_times: int = 40):
                 if is_rush:
                     logger.debug("有战败标志，战斗失败累计{}次，3的倍数，点击刷新", num_false)
                     ImageService.touch(Onmyoji.border_SX, wait=2)
+                    logger.debug("点击刷新确定")
                     ImageService.touch(Onmyoji.border_SXQD, wait=2)
-        # 待补充逻辑，检查当前攻破数，不到8个继续，8个时退4次打掉，解锁阵容-挑战-（退出-再次挑战）4次，准备，等待战斗结果，退出挑战，锁定阵容
-        break_number = ImageService.find_all_num(Onmyoji.border_GP)
-        logger.debug("当前攻破数{}", break_number)
-        if break_number and break_number == 8 and game_account.account_class == "0":
+        # 保级，打9退4
+        logger.debug("统计攻破次数")
+        num_break = ImageService.find_all_num(Onmyoji.border_GP)
+        logger.debug("当前攻破数{}", num_break)
+        if num_break and num_break == 8 and game_account.account_class == "0":
             logger.debug("大号保级")
             logger.debug("保级前获取当前结界挑战劵数")
             num_securities = OcrService.border_bond()
@@ -168,7 +181,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                 logger.debug("有结界挑战劵，判断是否有56级")
                 is_zero = ImageService.find_all_num(Onmyoji.border_TJWSL)
                 if is_zero > 0:
-                    logger.debug("零勋章，可能掉56了")
+                    logger.debug("有56级，不保级")
                 else:
                     logger.debug("不是零勋章，保级")
                     retreat_class(0)
@@ -176,8 +189,18 @@ def border_fight(game_task: [], fight_times: int = 40):
             logger.debug("锁定阵容")
             ImageService.touch(Onmyoji.border_SDZR)
         for i_attack in range(3):
-            logger.debug("点击个人结界")
-            ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
+            if game_account.account_class == "0":
+                logger.debug("点击个人结界,无论战败")
+                ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
+            else:
+                logger.debug("识别个人结界,不打战败")
+                coordinate_border = ImageService.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
+                if coordinate_border in coordinate_fail_list:
+                    logger.debug("战败结界，跳过")
+                    continue
+                else:
+                    logger.debug("点击个人结界")
+                    ImageService.touch_coordinate(coordinate_border)
             logger.debug("点击进攻")
             is_attack = ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=1)
             if is_attack:
@@ -193,6 +216,7 @@ def border_fight(game_task: [], fight_times: int = 40):
             num_win = num_win + 1
         elif is_result in [Onmyoji.border_ZCTZ, Onmyoji.border_ZDSB]:
             num_false = num_false + 1
+            coordinate_fail_list.append(coordinate_border)
         elif is_result in [Onmyoji.border_GRJJ, Onmyoji.border_JG]:
             logger.debug("判断是否仍有进攻")
             is_attack1 = ImageService.exists(Onmyoji.border_JG, wait=5, timeouts=2, is_click=True)
@@ -226,8 +250,9 @@ def border_fight(game_task: [], fight_times: int = 40):
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     logger.debug(
-        "本轮结界突破战斗结束，总用时{}秒，结界挑战劵{}张，战斗总用时{}秒,战斗次数{}次，胜利{}次，失败{}次，平均用时{}秒",
-        time_all, num_securities, time_fight_all, len_time_fight_list, num_win, num_false, time_fight_avg)
+        "本轮结界突破战斗结束，总用时{}，结界挑战劵{}张，战斗总用时{}秒,战斗次数{}次，胜利{}次，失败{}次，平均用时{}秒",
+        UtilsTime.convert_seconds(time_all), num_securities, time_fight_all, len_time_fight_list, num_win, num_false,
+        time_fight_avg)
 
 
 def retreat_class(fight_type: int = 0):

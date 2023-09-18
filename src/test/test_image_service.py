@@ -4,12 +4,14 @@
 # @Description : 图像识别测试类
 
 import datetime
+import os
 import time
 from unittest import TestCase
 
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.ocr_service import OcrService
 from src.utils.my_logger import logger
 
 
@@ -17,7 +19,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("1")
-        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH,wait=2)
+        OcrService.border_bond()
         now1 = datetime.datetime.now()
         print(now1 - now)
 

@@ -33,6 +33,7 @@ class Onmyoji:
     awaken_ZDSL = r"探索\觉醒\战斗胜利"
 
     border_GRJJ = r"探索\结界突破\个人结界"
+    border_GRJJWZB = r"探索\结界突破\个人结界无战败"
     border_TJWSL = r"探索\结界突破\退级五十六"
     border_GRJJWSB = r"探索\结界突破\个人结界无失败"
     border_GTRQ = r"探索\结界突破\呱太入侵"

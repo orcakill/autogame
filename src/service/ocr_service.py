@@ -37,9 +37,7 @@ class OcrService:
             # 使用 Tesseract 进行文字识别
             text = pytesseract.image_to_string(image, lang='eng')
             # logger.debug(text)
-            text = text.replace(" ", "").replace(":", "").replace("<", "")
-            text = re.sub(r'\D', '', text)
-            text = text[:-2]
+            text = re.search(r'\d+(?=/30)', text).group()
             logger.debug(text)
             return text
             # 文字判断

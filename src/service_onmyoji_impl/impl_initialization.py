@@ -28,10 +28,10 @@ def initialization(game_task: [], login_type: int = 0):
     logger.debug("初始化-判断当前状态")
     # 当前状态 账号首页 1，2,3，4
     #        其它，不在账号首页
-    # 账号首页信息
-    account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
     # 服务器信息
     server = os.path.join(Onmyoji.login_FWQ, game_account.game_region)
+    # 账号首页信息
+    account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
     is_index = ImageService.exists(account_index)
     is_explore = ImageService.exists(Onmyoji.home_TS)
     if not is_index or not is_explore:

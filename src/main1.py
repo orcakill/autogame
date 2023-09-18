@@ -2,10 +2,13 @@
 # @Author: orcakill
 # @File: main1.py
 # @Description: 夜神模拟器运行
-from src.controller.onmyoji_controller import OnmyojiController
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.service.image_service import ImageService
 from utils.my_logger import my_logger as logger
-
+from src.controller.onmyoji_controller import OnmyojiController
 # 导入 airtest服务接口
 image_service = ImageService()
 
