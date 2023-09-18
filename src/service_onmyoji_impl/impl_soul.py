@@ -2,6 +2,7 @@
 # @Author: orcakill
 # @File: impl_soul.py
 # @Description: 御魂战斗  八岐大蛇-魂一、魂十、魂十一、魂十二，业原火、
+import datetime
 import time
 
 from src.model.enum import Onmyoji
@@ -327,9 +328,10 @@ def soul_fight_sun(game_task: []):
                  round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
 
 
-def soul_fight_sea(game_task: []):
+def soul_fight_sea(game_task: [], fight: int = 0):
     """
     永生之海
+    :param fight: 战斗开关，0 为根据掉落御魂时间来  1强制战斗
     :param game_task: 项目组信息
     :return:
     """
@@ -345,72 +347,69 @@ def soul_fight_sea(game_task: []):
     game_projects_relation = GameProjectsRelation(game_task[1])
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
-    for i in range(3):
-        logger.debug("永生之海-进入探索")
-        ImageService.touch(Onmyoji.home_TS)
-        logger.debug("永生之海-点击御魂图标")
-        ImageService.touch(Onmyoji.soul_YSZH_YHTB)
-        logger.debug("永生之海-选择")
-        ImageService.touch(Onmyoji.soul_YSZH_XZ)
-        logger.debug("永生之海-选择四层")
-        ImageService.touch(Onmyoji.soul_YSZH_SC)
-        logger.debug("判断是否在永生之海首页")
-        is_home = ImageService.touch(Onmyoji.soul_YSZH_YSZHSY)
-        if is_home:
-            break
-        else:
-            ComplexService.refuse_reward()
-    logger.debug("锁定阵容")
-    ImageService.touch(Onmyoji.soul_YSZH_SDZR)
-    # 默认锁定阵容
-    is_lock = False
-    for i in range(fight_time):
-        time_fight_start = time.time()
-        logger.debug("判断是否无加成次数")
-        is_add = ImageService.touch(Onmyoji.soul_YSZH_WJC)
-        if is_add:
-            logger.debug("无加成,退出")
-            break
-        logger.debug("永生之海-挑战{}次", i + 1)
-        if is_lock:
-            logger.debug("永生之海-本次锁定阵容")
-            ImageService.touch(Onmyoji.soul_BQ_SDZR)
-        is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ)
-        if not is_fight:
-            # 拒接悬赏
-            ComplexService.refuse_reward()
-            logger.debug("永生之海-点击可能的准备")
-            is_lock = ImageService.touch(Onmyoji.soul_BQ_ZB)
-        logger.debug("永生之海-等待战斗结果")
-        is_result = ComplexService.fight_end(Onmyoji.soul_YSZH_ZDSL, Onmyoji.soul_YSZH_ZDSB, Onmyoji.soul_YSZH_ZCTZ,
-                                             Onmyoji.soul_YSZH_TCTZ, Onmyoji.soul_YSZH_TZ, None, 100, 2)
-        # 记录战斗结果
-        if is_result in [Onmyoji.soul_YSZH_ZDSL, Onmyoji.soul_YSZH_TCTZ]:
-            logger.debug("永生之海-战斗胜利")
-            num_win = num_win + 1
-        elif is_result in [Onmyoji.soul_YSZH_ZCTZ]:
-            logger.debug("永生之海-战斗失败")
-            num_fail = num_fail + 1
-        elif is_result in [Onmyoji.soul_YSZH_TZ]:
-            logger.debug("永生之海-未挑战,可能无痴劵,再点击2次")
-            ImageService.touch(Onmyoji.soul_BQ_TZ, wait=5)
-            is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ, wait=5)
-            if is_fight:
-                logger.debug("无痴劵，退出战斗循环")
+    today = datetime.date.today()
+    # 获取本日是周几（周一为0，周日为6）
+    weekday = today.weekday() + 1
+    if weekday == 5 or fight == 1:
+        for i in range(3):
+            logger.debug("永生之海-进入探索")
+            ImageService.touch(Onmyoji.home_TS)
+            logger.debug("永生之海-点击御魂图标")
+            ImageService.touch(Onmyoji.soul_YSZH_YHTB)
+            logger.debug("永生之海-选择")
+            ImageService.touch(Onmyoji.soul_YSZH_XZ)
+            logger.debug("永生之海-选择四层")
+            ImageService.touch(Onmyoji.soul_YSZH_SC)
+            logger.debug("判断是否在永生之海首页")
+            is_home = ImageService.touch(Onmyoji.soul_YSZH_YSZHSY)
+            if is_home:
                 break
-        time_fight_end = time.time()
-        time_fight_time = time_fight_end - time_fight_start
-        logger.debug("本次永生之海，用时{}秒", round(time_fight_time))
-        time_fight_list.append(time_fight_time)
-        if is_result in [Onmyoji.soul_YSZH_ZCTZ]:
-            logger.debug("永生之海-战斗失败,退出循环")
-            break
-    logger.debug("永生之海-返回首页")
-    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-    logger.debug("永生之海-返回首页")
-    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-    logger.debug("永生之海-确认返回首页")
-    impl_initialization.return_home(game_task)
+            else:
+                ComplexService.refuse_reward()
+        logger.debug("锁定阵容")
+        ImageService.touch(Onmyoji.soul_YSZH_SDZR)
+        # 默认锁定阵容
+        is_lock = False
+        for i in range(fight_time):
+            time_fight_start = time.time()
+            logger.debug("判断是否无加成次数")
+            is_add = ImageService.touch(Onmyoji.soul_YSZH_WJC)
+            if is_add:
+                logger.debug("无加成,退出")
+                break
+            logger.debug("永生之海-挑战{}次", i + 1)
+            if is_lock:
+                logger.debug("永生之海-本次锁定阵容")
+                ImageService.touch(Onmyoji.soul_BQ_SDZR)
+            is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ)
+            if not is_fight:
+                # 拒接悬赏
+                ComplexService.refuse_reward()
+                logger.debug("永生之海-点击可能的准备")
+                is_lock = ImageService.touch(Onmyoji.soul_BQ_ZB)
+            logger.debug("永生之海-等待战斗结果")
+            is_result = ComplexService.fight_end(Onmyoji.soul_YSZH_ZDSL, Onmyoji.soul_YSZH_ZDSB, Onmyoji.soul_YSZH_ZCTZ,
+                                                 Onmyoji.soul_YSZH_TCTZ, Onmyoji.soul_YSZH_TZ, None, 100, 2)
+            # 记录战斗结果
+            if is_result in [Onmyoji.soul_YSZH_ZDSL, Onmyoji.soul_YSZH_TCTZ]:
+                logger.debug("永生之海-战斗胜利")
+                num_win = num_win + 1
+            elif is_result in [Onmyoji.soul_YSZH_ZCTZ]:
+                logger.debug("永生之海-战斗失败")
+                num_fail = num_fail + 1
+            time_fight_end = time.time()
+            time_fight_time = time_fight_end - time_fight_start
+            logger.debug("本次永生之海，用时{}秒", round(time_fight_time))
+            time_fight_list.append(time_fight_time)
+            if is_result in [Onmyoji.soul_YSZH_ZCTZ]:
+                logger.debug("永生之海-战斗失败,退出循环")
+                break
+        logger.debug("永生之海-返回首页")
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        logger.debug("永生之海-返回首页")
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        logger.debug("永生之海-确认返回首页")
+        impl_initialization.return_home(game_task)
     # 永生之海-结束时间
     time_end = time.time()
     # 永生之海-总用时

@@ -100,6 +100,8 @@ def awakening(game_task: [], awakening_type: int = 0):
         logger.debug("本次觉醒挑战，用时{}秒", round(time_fight_time))
         time_fight_list.append(time_fight_time)
     time.sleep(2)
+    logger.debug("再次点击退出挑战")
+    ImageService.touch(Onmyoji.awaken_TCTZ, wait=2)
     logger.debug("关闭觉醒加成")
     ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
     logger.debug("觉醒-返回首页")

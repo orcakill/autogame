@@ -19,7 +19,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("1")
-        OcrService.border_bond()
+        ImageService.exists(Onmyoji.ghost_DJY,cvstrategy=Cvstrategy.default)
         now1 = datetime.datetime.now()
         print(now1 - now)
 

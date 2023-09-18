@@ -59,16 +59,17 @@ def ghost_king(game_task: []):
                         ImageService.touch_coordinate(is_ordinary)
                 if game_account.account_class != "0":
                     logger.debug("小号，挑战等级一的地域鬼王")
-                    is_first = ImageService.exists(Onmyoji.ghost_DJY)
+                    is_first = ImageService.exists(Onmyoji.ghost_DJY,cvstrategy=Cvstrategy.default)
                     if not is_first:
                         logger.debug("不是等级一,点击减号")
                         is_minus = ImageService.exists(Onmyoji.ghost_JH)
-                        for i_minus in range(60):
-                            ImageService.touch_coordinate(is_minus)
-                            is_first = ImageService.exists(Onmyoji.ghost_DJY)
-                            if is_first:
-                                logger.debug("检查到等级一")
-                                break
+                        if is_minus:
+                            for i_minus in range(60):
+                                ImageService.touch_coordinate(is_minus)
+                                is_first = ImageService.exists(Onmyoji.ghost_DJY,cvstrategy=Cvstrategy.default)
+                                if is_first:
+                                    logger.debug("检查到等级一")
+                                    break
                 logger.debug("判读是否有无字")
                 is_no_word = ImageService.exists(Onmyoji.ghost_W)
                 if is_no_word:

@@ -142,6 +142,16 @@ class OnmyojiService:
         impl_soul.soul_fight_sun(game_task)
 
     @staticmethod
+    def soul_fight_sea(game_task: [], fight: int = 0):
+        """
+        永生之海 四层
+        :param fight:战斗开关，0 为根据掉落御魂时间来  1强制战斗
+        :param game_task: 项目信息
+        :return:
+        """
+        impl_soul.soul_fight_sea(game_task, fight=fight)
+
+    @staticmethod
     def explore_chapters(game_task: []):
         """
         章节探索

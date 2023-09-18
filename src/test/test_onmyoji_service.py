@@ -40,7 +40,7 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "地域鬼王")
+        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '1', "地域鬼王")
 
     def test_foster_care(self):
         """
@@ -127,6 +127,13 @@ class TestOnmyojiService(TestCase):
         """
         TestOnmyojiService.test_project(self, ['1'], '1', "日轮之陨")
 
+    def test_soul_fight_sea(self):
+        """
+        项目18 永生之海
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['1'], '1', "永生之海")
+
     def test_explore(self):
         """
         项目21 探索
@@ -201,6 +208,10 @@ class TestOnmyojiService(TestCase):
             elif game_project.project_name in ["日轮之陨"]:
                 game_projects_relation.project_num_times = 50
                 OnmyojiService.soul_fight_sun(game_task)
+            # 项目 18
+            elif game_project.project_name in ["永生之海"]:
+                game_projects_relation.project_num_times =1
+                OnmyojiService.soul_fight_sea(game_task,1)
             # 项目 21
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = 1
