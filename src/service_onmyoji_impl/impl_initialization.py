@@ -175,39 +175,31 @@ def return_home(game_task: []):
     # 当前状态 账号首页 1，2,3，4，5
     #        其它，不在账号首页
     account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
-    is_index = ImageService.exists(account_index)
-    is_explore = ImageService.exists(Onmyoji.home_TS)
+    is_index = ImageService.exists(account_index, timeouts=1)
+    is_explore = ImageService.exists(Onmyoji.home_TS, timeouts=1)
     if not is_index or not is_explore:
-        logger.debug("判断是否在桌面")
-        is_desktop = ImageService.exists(Onmyoji.login_YYSTB)
-        if not is_desktop:
-            logger.debug("不在账号首页且不是桌面，循环10次，10次不成功则返回失败")
-            # 获取返回列表
-            for i_return in range(10):
-                logger.debug("点击可能存在的悬赏封印")
-                ComplexService.refuse_reward()
-                logger.debug("点击可能存在的返回按钮")
-                ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, timeouts=1)
-                ImageService.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH, timeouts=1)
-                ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH, timeouts=1)
-                ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, timeouts=1)
-                ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH, timeouts=1)
-                ImageService.touch(Onmyoji.comm_FH_ZSJHKHSXYH, timeouts=1)
-                ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT, timeouts=1)
-                ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH, timeouts=1)
-                ImageService.touch(Onmyoji.comm_FH_ZJZDHKHSXYH, timeouts=1)
-                logger.debug("点击可能存在的退出挑战")
-                ImageService.touch(Onmyoji.soul_BQ_TCTZ)
-                logger.debug("重新判断是否返回首页,账号+探索")
-                is_index = ImageService.exists(account_index)
-                is_explore = ImageService.exists(Onmyoji.home_TS)
-                if is_index and is_explore:
+        logger.debug("不在账号首页，循环10次，10次不成功则返回失败")
+        # 获取返回列表
+        for i_return in range(10):
+            logger.debug("点击可能存在的悬赏封印")
+            ComplexService.refuse_reward(timeouts=1)
+            logger.debug("点击可能存在的退出挑战")
+            ImageService.touch(Onmyoji.soul_BQ_TCTZ, timeouts=1)
+            logger.debug("点击可能存在的返回按钮")
+            ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
+            ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
+            ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
+            ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
+            logger.debug("重新判断是否返回首页,账号")
+            is_index = ImageService.exists(account_index, timeouts=1)
+            if is_index:
+                logger.debug("重新判断是否返回首页,探索")
+                is_explore = ImageService.exists(Onmyoji.home_TS, timeouts=1)
+                if is_explore:
                     logger.debug("返回首页成功")
                     return True
-        else:
-            logger.debug("在桌面，重新快速登录")
-            initialization(game_task)
-
+        logger.debug("返回首页失败，重新快速登录")
+        initialization(game_task, 1)
     else:
         logger.debug("有探索，有账号，在首页")
         return True

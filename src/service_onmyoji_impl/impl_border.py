@@ -30,15 +30,19 @@ def region_border(game_task: []):
     num_fail = 0
     # 结界突破战斗用时
     time_fight_list = []
-    # 账号信息
-    game_account = GameAccount(game_task[2])
-    logger.debug(game_account.game_name)
-    logger.debug("进入探索")
-    ImageService.touch(Onmyoji.home_TS)
-    logger.debug("进入结界突破")
-    ImageService.touch(Onmyoji.region_JJTPTB)
-    logger.debug("进入寮突破")
-    ImageService.touch(Onmyoji.region_YCYYL)
+    for i in range(3):
+        logger.debug("进入探索")
+        ImageService.touch(Onmyoji.home_TS)
+        logger.debug("进入结界突破")
+        ImageService.touch(Onmyoji.region_JJTPTB)
+        logger.debug("进入寮突破")
+        ImageService.touch(Onmyoji.region_YCYYL)
+        logger.debug("判断是否有右侧阴阳寮")
+        is_region_home = ImageService.exists(Onmyoji.region_YCYYL)
+        if is_region_home:
+            logger.debug("当前寮结界首页")
+        else:
+            ComplexService.refuse_reward()
     logger.debug("锁定阵容")
     ImageService.touch(Onmyoji.region_SDZR)
     logger.debug("判断有寮结界")

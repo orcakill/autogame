@@ -395,8 +395,9 @@ def soul_fight_sea(game_task: [], fight: int = 0):
                 logger.debug("永生之海-战斗胜利")
                 num_win = num_win + 1
             elif is_result in [Onmyoji.soul_YSZH_ZCTZ]:
-                logger.debug("永生之海-战斗失败")
+                logger.debug("永生之海-战斗失败,退出循环")
                 num_fail = num_fail + 1
+                break
             time_fight_end = time.time()
             time_fight_time = time_fight_end - time_fight_start
             logger.debug("本次永生之海，用时{}秒", round(time_fight_time))

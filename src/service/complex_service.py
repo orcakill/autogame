@@ -200,12 +200,12 @@ class ComplexService:
         return False
 
     @staticmethod
-    def refuse_reward():
+    def refuse_reward(timeouts: float = 3):
         """
         拒接悬赏
         :return:
         """
-        is_reward = ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
+        is_reward = ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default, timeouts=timeouts)
         if is_reward:
             logger.debug("拒接悬赏")
             return True

@@ -40,7 +40,7 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '1', "地域鬼王")
+        TestOnmyojiService.test_project(self, ['1', '2', '3', '4', '5'], '1', "地域鬼王")
 
     def test_foster_care(self):
         """
@@ -48,7 +48,7 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         warnings.simplefilter('ignore', ResourceWarning)
-        TestOnmyojiService.test_project(self, ['2'], '2', "式神寄养")
+        TestOnmyojiService.test_project(self, ['1', '2', '3', '4', '5'], '1', "式神寄养")
 
     def test_shack_house(self):
         """
@@ -134,6 +134,13 @@ class TestOnmyojiService(TestCase):
         """
         TestOnmyojiService.test_project(self, ['1'], '1', "永生之海")
 
+    def test_pvp(self):
+        """
+        项目19 斗技
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['1'], '1', "斗技")
+
     def test_explore(self):
         """
         项目21 探索
@@ -161,6 +168,8 @@ class TestOnmyojiService(TestCase):
             game_project.project_name = project_name
             game_task = [game_projects, game_projects_relation, game_account, game_project]
             logger.debug("当前状态初始化{}", test_name)
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 项目 1、24 每日奖励领取
@@ -210,8 +219,12 @@ class TestOnmyojiService(TestCase):
                 OnmyojiService.soul_fight_sun(game_task)
             # 项目 18
             elif game_project.project_name in ["永生之海"]:
-                game_projects_relation.project_num_times =1
-                OnmyojiService.soul_fight_sea(game_task,1)
+                game_projects_relation.project_num_times = 1
+                OnmyojiService.soul_fight_sea(game_task, 1)
+            # 项目 19
+            elif game_project.project_name in ["斗技"]:
+                game_projects_relation.project_num_times = 1
+                OnmyojiService.pvp(game_task)
             # 项目 21
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = 1

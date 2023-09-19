@@ -19,7 +19,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("1")
-        ImageService.exists(Onmyoji.ghost_DJY,cvstrategy=Cvstrategy.default)
+        ImageService.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, wait=3)
         now1 = datetime.datetime.now()
         print(now1 - now)
 

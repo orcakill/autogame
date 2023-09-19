@@ -6,12 +6,14 @@ import datetime
 import warnings
 from unittest import TestCase
 
+from src.dao.mapper import select_game_account
 from src.model.enum import Onmyoji
+from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
-from src.service_onmyoji_impl import impl_house
+from src.service_onmyoji_impl import impl_house, impl_initialization
 from src.temp.temp_fight_end import TempComplexService1
 from src.utils.my_logger import logger
 
@@ -128,5 +130,20 @@ class TestComplexService(TestCase):
         ImageService.auto_setup("2")
         now = datetime.datetime.now()
         logger.debug(impl_house.get_card_type(1))
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
+    def test_return_home(self):
+        now = datetime.datetime.now()
+        logger.debug("返回首页")
+        # 初始化测试任务信息
+        game_projects = GameProjects()
+        game_projects_relation = GameProjectsRelation()
+        game_account = select_game_account("1")
+        game_project = GameProject()
+        game_project.project_name = "登录"
+        game_task = [game_projects, game_projects_relation, game_account, game_project]
+        ImageService.auto_setup("1")
+        impl_initialization.return_home(game_task)
         now1 = datetime.datetime.now()
         print(now1 - now)
