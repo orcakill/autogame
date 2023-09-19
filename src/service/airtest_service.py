@@ -18,18 +18,8 @@ from src.service.windows_service import WindowsService
 from src.utils.my_logger import my_logger as logger
 
 # 控制airtest的日志输出
-log_airtest = logging.getLogger("airtest")
-log_airtest.setLevel(logging.CRITICAL)
-
-
-# 自定义异常处理函数
-def custom_excepthook(exc_type, exc_value, exc_traceback):
-    # 禁止打印Traceback信息
-    pass
-
-
-# 设置自定义的异常处理函数
-sys.excepthook = custom_excepthook
+# log_airtest = logging.getLogger("airtest")
+# log_airtest.setLevel(logging.CRITICAL)
 
 # 图片点击识别等待时间(秒）·
 WAIT = 2

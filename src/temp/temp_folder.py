@@ -6,23 +6,23 @@ from src.utils import utils_path
 
 
 def get_subdirectories(folder_path):
-    subdirectories = []
+    subdirectories1 = []
     for item in os.listdir(folder_path):
         item_path = os.path.join(folder_path, item)
         if os.path.isdir(item_path):
-            subdirectories.append(item_path)
-    return subdirectories
+            subdirectories1.append(item_path)
+    return subdirectories1
 
 
 if __name__ == '__main__':
     # 指定文件夹路径
-    folder_path = utils_path.get_project_path()+r'\src\resources\static\onmyoji\町中\斗技'
+    folder_path1 = utils_path.get_project_path() + r'\src\resources\static\onmyoji\町中\斗技'
 
     # 获取所有文件夹
-    subdirectories = get_subdirectories(folder_path)
+    subdirectories = get_subdirectories(folder_path1)
 
     # 打印所有文件夹路径（去除指定路径部分）
-    path = utils_path.get_project_path()+r'\src\resources\static\onmyoji\町中'
+    path = utils_path.get_project_path() + r'\src\resources\static\onmyoji\町中'
     for subdir in subdirectories:
         subdir = subdir.replace(path, "町中")
         parts = subdir.split("\\")
@@ -34,4 +34,4 @@ if __name__ == '__main__':
         # 将拼音列表转换为字符串并转换为大写
         pinyin_text = ''.join([item[0].upper() for item in pinyin_text])
 
-        print("contend_"+pinyin_text+"=r"+"\""+subdir+"\"")
+        print("contend_" + pinyin_text + "=r" + "\"" + subdir + "\"")

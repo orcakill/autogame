@@ -40,15 +40,14 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1', '2', '3', '4', '5'], '1', "地域鬼王")
+        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '1', "地域鬼王")
 
     def test_foster_care(self):
         """
         项目5 式神寄养
         :return:
         """
-        warnings.simplefilter('ignore', ResourceWarning)
-        TestOnmyojiService.test_project(self, ['1', '2', '3', '4', '5'], '1', "式神寄养")
+        TestOnmyojiService.test_project(self, ['1'], '1', "式神寄养")
 
     def test_shack_house(self):
         """

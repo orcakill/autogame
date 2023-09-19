@@ -49,6 +49,7 @@ class WindowsService:
         file_path = shortcut.Targetpath
         # 使用subprocess模块运行程序，并创建新的控制台窗口
         subprocess.Popen(file_path, creationflags=subprocess.CREATE_NEW_CONSOLE)
+
     @staticmethod
     def get_device_status_by_ip(ip):
         try:

@@ -267,9 +267,9 @@ class ImageService:
             return 0
 
     @staticmethod
-    def cal_ccoeff_confidence(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
-                              timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
-                              is_throw: bool = THROW, rgb: bool = False, x1: float = 0, x2: float = 1, y1: float = 0,
+    def cal_ccoeff_confidence(folder_path: str, timeouts: int = TIMEOUTS, threshold: float = THRESHOLD,
+                              wait: float = WAIT, is_throw: bool = THROW, rgb: bool = False, x1: float = 0,
+                              x2: float = 1, y1: float = 0,
                               y2: float = 1):
         """
         计算图片和设备截图的相似度
@@ -282,8 +282,6 @@ class ImageService:
         :param wait: 图片等待识别时间
         :param is_throw: 是否显示异常
         :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 单张图片超时时间
         :param threshold: 图像识别阈值
         :return:
         """
