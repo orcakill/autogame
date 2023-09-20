@@ -187,7 +187,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                 if is_zero > 0:
                     logger.debug("有56级，不保级")
                 else:
-                    logger.debug("不是零勋章，保级")
+                    logger.debug("无56级，保级")
                     retreat_class(0)
         if is_unlock:
             logger.debug("锁定阵容")

@@ -84,6 +84,21 @@ class OnmyojiController:
                             # 项目 12,13,14,15
                             elif game_project.project_name in ["魂一", "魂十", "魂十一", "魂十二"]:
                                 OnmyojiService.soul_fight(game_task[j])
+                            # 项目 16
+                            elif game_project.project_name in ["业原火"]:
+                                OnmyojiService.soul_fight_fire(game_task[j])
+                            # 项目 17
+                            elif game_project.project_name in ["日轮之陨"]:
+                                OnmyojiService.soul_fight_sun(game_task[j])
+                            # 项目 18
+                            elif game_project.project_name in ["永生之海"]:
+                                OnmyojiService.soul_fight_sea(game_task[j], 1)
+                            # 项目 19
+                            elif game_project.project_name in ["斗技"]:
+                                OnmyojiService.pvp(game_task[j])
+                            # 项目 21
+                            elif game_project.project_name in ["探索"]:
+                                OnmyojiService.explore_chapters(game_task[j])
                         else:
                             logger.debug("当前状态初始化失败{}，不执行项目", game_account.game_name)
                         time_end = time.time()

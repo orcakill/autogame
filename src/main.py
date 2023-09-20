@@ -19,13 +19,13 @@ if __name__ == '__main__':
     # game_type = input("请输入一个脚本类型：")
     # game_round = input("请输入一个脚本轮次：")
     # game_device=input("请输入一个脚本设备：")
-    game_type = "2"
+    game_type = "5"
     game_round = "1"
     game_device = "0"
     # 中断后重新进行项目组
     game_relation_num = '1'
     # 0 每个节点都发送邮件 1 进程结束后发送邮件  2不发送邮件
-    game_is_email = "9"
+    game_is_email = "2"
     logger.info("**************")
     logger.info("脚本类型{},脚本轮次 {},连接设备{}", game_type, game_round, game_device)
     logger.info("**************")

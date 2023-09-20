@@ -19,7 +19,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], "0", "登录")
+        TestOnmyojiService.test_project(self, ['1'], "1", "登录")
 
     def test_daily_rewards(self):
         """
@@ -47,7 +47,7 @@ class TestOnmyojiService(TestCase):
         项目5 式神寄养
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "式神寄养")
+        TestOnmyojiService.test_project(self, ['4', '5'], '1', "式神寄养")
 
     def test_shack_house(self):
         """
@@ -61,14 +61,14 @@ class TestOnmyojiService(TestCase):
         项目7 阴阳寮突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "阴阳寮突破")
+        TestOnmyojiService.test_project(self, ['1'], '1', "阴阳寮突破")
 
     def test_border_fight(self):
         """
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['4'], '1', "个人突破")
+        TestOnmyojiService.test_project(self, ['1'], '1', "个人突破")
 
     def test_friends_manage(self):
         """
@@ -171,6 +171,7 @@ class TestOnmyojiService(TestCase):
             OnmyojiService.initialization(game_task)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
+            ImageService.auto_setup(test_devices)
             # 项目 1、24 每日奖励领取
             if game_project.project_name in ["登录"]:
                 OnmyojiService.initialization(game_task)

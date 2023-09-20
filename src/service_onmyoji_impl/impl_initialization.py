@@ -68,7 +68,6 @@ def initialization(game_task: [], login_type: int = 0):
             logger.debug("判断当前账号选择")
             is_account_select = ImageService.exists(Onmyoji.login_WYYX)
             if not is_account_select:
-                ImageService.auto_setup("1")
                 logger.debug("用户中心")
                 ImageService.touch(Onmyoji.login_YHZX, wait=2)
                 logger.debug("切换账号")
@@ -77,7 +76,7 @@ def initialization(game_task: [], login_type: int = 0):
             is_used = ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
             if not is_used:
                 logger.debug("用户中心")
-                ImageService.exists(Onmyoji.login_YHZX, wait=2,is_click=True)
+                ImageService.exists(Onmyoji.login_YHZX, wait=2, is_click=True)
                 logger.debug("再次切换账号")
                 ImageService.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("再次点击常用")
@@ -182,6 +181,7 @@ def return_home(game_task: []):
         logger.debug("不在账号首页，循环10次，10次不成功则返回失败")
         # 获取返回列表
         for i_return in range(10):
+            logger.debug("第{}轮返回", i_return)
             logger.debug("点击可能存在的悬赏封印")
             ComplexService.refuse_reward(timeouts=1)
             logger.debug("点击可能存在的退出挑战")

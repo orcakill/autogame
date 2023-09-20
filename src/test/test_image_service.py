@@ -4,23 +4,23 @@
 # @Description : 图像识别测试类
 
 import datetime
-import os
-import time
 from unittest import TestCase
 
+from airtest.core.cv import Template
+
 from src.model.enum import Onmyoji, Cvstrategy
+from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
-from src.service.ocr_service import OcrService
 from src.utils.my_logger import logger
 
 
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
-        logger.debug("用户中心")
-        ImageService.touch(Onmyoji.login_YHZX)
+        ImageService.auto_setup("0")
+        result = ImageService.exists(Onmyoji.explore_ZJSY_28)
+        logger.debug(result)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
@@ -49,7 +49,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        ImageService.snapshot("1")
+        ImageService.snapshot("1",True)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -69,14 +69,12 @@ class TestImageService(TestCase):
         多图查找
         :return:
         """
-
-        ImageService.auto_setup("0")
         now = datetime.datetime.now()
+        ImageService.auto_setup("0")
         # 测试代码
         logger.debug("开始")
-        result = ImageService.find_all(Onmyoji.soul_BQ_JCK)
-        for i in range(len(result)):
-            ImageService.touch_coordinate(result[i]['result'])
+        result = ImageService.find_all(Onmyoji.foster_JJK_WXTG)
+        logger.debug(result)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)
@@ -112,7 +110,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        ImageService.cal_ccoeff_confidence(Onmyoji.foster_JJK_TG, threshold=0.9)
+        logger.debug(ImageService.cal_ccoeff_confidence(Onmyoji.foster_JJK_WXTG, threshold=0.9))
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

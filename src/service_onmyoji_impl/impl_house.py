@@ -30,14 +30,14 @@ def foster_care(game_task: []):
     foster_result = None
     logger.debug(game_account.game_name)
     logger.debug("式神寄养")
-    for i_time in range(3):
+    for i_time in range(2):
         for i_growing in range(3):
             logger.debug("点击阴阳寮图标")
             ImageService.touch(Onmyoji.foster_YYLTB)
             logger.debug("点击寮首页结界")
             ImageService.touch(Onmyoji.foster_JJTB)
             logger.debug("点击结界-式神育成")
-            is_growing = ImageService.touch(Onmyoji.foster_SSYC, wait=3)
+            is_growing = ImageService.touch(Onmyoji.foster_SSYC, wait=3,timeouts=10)
             if is_growing:
                 break
             else:
@@ -46,7 +46,7 @@ def foster_care(game_task: []):
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
         if is_foster:
-            logger.debug("获取寄养列表结界卡数据，计算出最优结界卡,根据最优结界卡，重新滑动")
+            logger.debug("寄养检查，按六星到三星太鼓，再到六星到三星斗鱼")
             faster_place = get_optimal_card()
             logger.debug(faster_place)
             if is_foster and faster_place:
@@ -90,93 +90,72 @@ def get_optimal_card():
     遍历寄养列表，计算出最优结界卡位置返回，六星太鼓直接寄养
     :return:
     """
-    # 太鼓检查失败次数
-    num_fail_money = 0
-    # 寄养检查列表
-    faster_list = []
-    # 寄养检查结果
-    faster_place = []
-    logger.debug("判断是否可寄养")
-    is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
-    if is_foster:
+    # 寄养检查轮次
+    num_round = 0
+    # 结界卡，默认六星太鼓
+    target_type = Onmyoji.foster_JJK_TG
+    target_card = Onmyoji.foster_JJK_LXTG
+    for i_type in range(7):
+        num_round = num_round + 1
+        logger.debug("第{}轮,初始化目标结界卡", i_type + 1)
+        if i_type == 0:
+            target_type = Onmyoji.foster_JJK_TG
+            target_card = Onmyoji.foster_JJK_LXTG
+        elif i_type == 1:
+            target_type = Onmyoji.foster_JJK_TG
+            target_card = Onmyoji.foster_JJK_WXTG
+        elif i_type == 2:
+            target_type = Onmyoji.foster_JJK_TG
+            target_card = Onmyoji.foster_JJK_SXTG1
+        elif i_type == 3:
+            target_type = Onmyoji.foster_JJK_TG
+            target_card = Onmyoji.foster_JJK_SXTG
+        elif i_type == 4:
+            target_type = Onmyoji.foster_JJK_DY
+            target_card = Onmyoji.foster_JJK_LXDY
+        elif i_type == 5:
+            target_type = Onmyoji.foster_JJK_DY
+            target_card = Onmyoji.foster_JJK_WXDY
+        elif i_type == 6:
+            target_type = Onmyoji.foster_JJK_DY
+            target_card = Onmyoji.foster_JJK_SXDY1
+        logger.debug("目标结界卡：{}", target_card)
         logger.debug("点击可寄养标志")
-        ImageService.touch(Onmyoji.foster_KJYBZ)
+        ImageService.touch(Onmyoji.foster_KJYBZ,timeouts=10)
         logger.debug("获取上方好友坐标")
         coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
         logger.debug("获取上方跨区坐标")
         coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
-        logger.debug("计算起始位置1,测试系数0.8228571428571428")
-        coordinate_difference = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
-        coordinate_start = (coordinate_region[0], coordinate_region[1])
-        logger.debug("计算起始位置2")
-        coordinate_end = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
-        if coordinate_start and coordinate_end and coordinate_end[1] - coordinate_start[1] > 0:
+        if coordinate_friend and coordinate_region:
+            logger.debug("计算起始位置1,测试系数0.8228571428571428")
+            coordinate_difference = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
+            coordinate_start = (coordinate_region[0], coordinate_region[1])
+            logger.debug("计算起始位置2")
+            coordinate_end = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
             for i_friends in range(100):
-                logger.debug("当前第{}个好友，连续失败次数{}", i_friends + 1, num_fail_money)
-                if len(faster_place) == 0:
-                    logger.debug("点击位置2")
-                    ImageService.touch_coordinate(coordinate_end)
-                    if num_fail_money % 3 == 0 and num_fail_money != 0 and i_friends > 20:
-                        logger.debug("判断目前结界卡，判断未放置")
-                        target_card = get_card_type(1)
-                    else:
-                        logger.debug("判断目前结界卡，不判断未放置")
-                        target_card = get_card_type(0)
-                    faster_list.append([i_friends + 1, target_card[0], target_card[1]])
-                    if not target_card[1]:
-                        num_fail_money = num_fail_money + 1
-                    if target_card[1] == Onmyoji.foster_JJK_LXTG:
-                        logger.debug("六星太鼓，中断查找")
-                        break
-                    if target_card[1] == Onmyoji.foster_JJK_WFZ:
-                        logger.debug("未放置，中断查找,退出重新进入")
-                        ComplexService.get_reward(Onmyoji.foster_SFHY)
-                        ImageService.touch(Onmyoji.foster_KJYBZ)
-                        break
+                logger.debug("当前第{}个好友", i_friends + 1)
+                logger.debug("点击位置2")
+                ImageService.touch_coordinate(coordinate_end)
+                if i_friends > 20:
+                    logger.debug("目标结界卡{}，判断未放置", target_card)
+                    card_type = get_card_type(target_type, 1)
+                else:
+                    logger.debug("判断目前结界卡，不判断未放置")
+                    card_type = get_card_type(target_type, 0)
+                logger.debug(card_type)
+                if card_type == target_card:
+                    logger.debug("目标结界,中断查找")
+                    return target_card
+                if card_type == Onmyoji.foster_JJK_WFZ:
+                    logger.debug("未放置，中断查找,退出重新进入")
+                    ComplexService.get_reward(Onmyoji.foster_SFHY)
+                    break
                 logger.debug("向下滑动")
                 ComplexService.refuse_reward()
                 ImageService.swipe(coordinate_end, coordinate_start)
-        if len(faster_list) > 0:
-            min_value = min(item[1] for item in faster_list)
-            min_index = min(i for i, item in enumerate(faster_list) if item[1] == min_value)
-            faster_place = faster_list[min_index]
-        faster_len = faster_place[0]
-        logger.debug(faster_list)
-        logger.debug("寄养查找的最优结果：{}", faster_place)
-        # 根据最优结果寻找结界
-        if len(faster_place) > 0:
-            if faster_place[2] == Onmyoji.foster_JJK_LXTG:
-                logger.debug("无需重新寻找")
-                return faster_place[2]
-            else:
-                logger.debug("重新滑动")
-                for i_friends in range(faster_len + 1):
-                    logger.debug("第{}个", i_friends)
-                    if i_friends >= faster_len:
-                        logger.debug("点击位置2")
-                        ImageService.touch_coordinate(coordinate_end)
-                        logger.debug("获取目标结界卡")
-                        target_card = get_card_type(1)
-                        logger.debug(target_card[1])
-                        logger.debug(faster_place[2])
-                        if target_card[1] == faster_place[2]:
-                            logger.debug("检查和寻找第一次匹配成功")
-                            return faster_place[2]
-                        else:
-                            logger.debug("检查和寻找匹配失败,再匹配一次")
-                            target_card = get_card_type(1)
-                            if target_card[1] == faster_place[2]:
-                                logger.debug("检查和寻找第二次匹配成功")
-                                return faster_place[2]
-                            else:
-                                logger.debug("检查和寻找第二次匹配失败")
-                    logger.debug("向下滑动")
-                    ImageService.swipe(coordinate_end, coordinate_start)
-                    time.sleep(1)
-                return None
 
 
-def get_card_type(not_placed: int = 0):
+def get_card_type(target_type: str, not_placed: int = 0):
     """
     获取当前结界卡,判断当前结界卡类型和等级，只要太鼓
     :return:
@@ -194,7 +173,7 @@ def get_card_type(not_placed: int = 0):
             return confidence
         return 0
 
-    card_types = [Onmyoji.foster_JJK_TG]
+    card_types = [target_type]
     if not_placed == 1:
         card_types.append(Onmyoji.foster_JJK_WFZ)
     else:
@@ -206,31 +185,36 @@ def get_card_type(not_placed: int = 0):
     results = [future.result() for future in futures]
 
     if results[0]:
-        logger.debug("当前有太鼓，判断星级")
-        card_types = [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG, Onmyoji.foster_JJK_SXTG1,
-                      Onmyoji.foster_JJK_SXTG]
+        logger.debug("当前有{}，判断星级", target_type)
+        if target_type == Onmyoji.foster_JJK_TG:
+            card_types = [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG, Onmyoji.foster_JJK_SXTG1,
+                          Onmyoji.foster_JJK_SXTG]
+        else:
+            card_types = [Onmyoji.foster_JJK_LXDY, Onmyoji.foster_JJK_WXDY, Onmyoji.foster_JJK_SXDY1,
+                          '']
+
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [executor.submit(check_image_confidence, image_path, 0.9, True) for image_path in card_types]
         results = [future.result() for future in futures]
         max_value = max(results)
         results = [False if x != max_value else x for x in results]
         if results[0]:
-            logger.debug("检查结果：{},相似度：{}", Onmyoji.foster_JJK_LXTG, results[0])
-            return [1, Onmyoji.foster_JJK_LXTG]
+            logger.debug("检查结果：{},相似度：{}", card_types[0], results[0])
+            return card_types[0]
         elif results[1]:
-            logger.debug("检查结果：{},相似度：{}", Onmyoji.foster_JJK_WXTG, results[1])
-            return [2, Onmyoji.foster_JJK_WXTG]
+            logger.debug("检查结果：{},相似度：{}", card_types[1], results[1])
+            return card_types[1]
         elif results[2]:
-            logger.debug("检查结果：{},相似度：{}", Onmyoji.foster_JJK_SXTG1, results[2])
-            return [3, Onmyoji.foster_JJK_SXTG1]
+            logger.debug("检查结果：{},相似度：{}", card_types[2], results[2])
+            return card_types[2]
         elif results[3]:
-            logger.debug("检查结果：{},相似度：{}", Onmyoji.foster_JJK_SXTG, results[3])
-            return [4, Onmyoji.foster_JJK_SXTG]
+            logger.debug("检查结果：{},相似度：{}", card_types[3], results[3])
+            return card_types[3]
     elif results[1]:
         logger.debug("检查结果：{}", Onmyoji.foster_JJK_WFZ)
-        return [5, Onmyoji.foster_JJK_WFZ]
+        return Onmyoji.foster_JJK_WFZ
     logger.debug("检查结果：其他情况")
-    return [99, None]
+    return None
 
 
 def shack_house(game_task: []):

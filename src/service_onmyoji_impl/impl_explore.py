@@ -9,6 +9,7 @@ from src.model.models import GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
+from src.utils.utils_time import UtilsTime
 
 
 def explore_chapters(game_task: [], chapter: int = 28):
@@ -31,14 +32,17 @@ def explore_chapters(game_task: [], chapter: int = 28):
     num_false = 0
     # 战斗用时列表
     time_fight_list = []
+    # 轮次战斗用时列表
+    time_round_list = []
     # 章节首页
     chapter_home = None
     # 章节层数
     chapter_layers = None
-    # 战斗次数
+    # 默认战斗轮次
     fight_times = 20
-    if game_projects_relation.project_num_times and game_projects_relation.project_num_times > 0:
-        fight_times = game_projects_relation.project_num_times
+    if game_projects_relation.project_num_times:
+        if game_projects_relation.project_num_times > 0:
+            fight_times = game_projects_relation.project_num_times
     if chapter == 28:
         # 章节首页
         chapter_home = Onmyoji.explore_ZJSY_28
@@ -48,7 +52,8 @@ def explore_chapters(game_task: [], chapter: int = 28):
     resolution = ImageService.resolution_ratio()
     logger.debug("章节探索-开始")
     for i in range(1, fight_times + 1):
-        time_fight_start = time.time()
+        time_round_start = time.time()
+        logger.debug("第{}轮探索战斗",i+1)
         logger.debug("判断是否是章节首页")
         is_home = ImageService.exists(chapter_home)
         if not is_home:
@@ -75,7 +80,7 @@ def explore_chapters(game_task: [], chapter: int = 28):
                 logger.debug("选择困难")
                 ImageService.touch(Onmyoji.explore_ZJNDKN)
         logger.debug("进入章节探索")
-        ImageService.touch(Onmyoji.explore_ZJTS)
+        ImageService.touch(Onmyoji.explore_ZJTS, timeouts=10)
         if i == 1:
             logger.debug("第一次-锁定阵容")
             ImageService.touch(Onmyoji.explore_SDZR)
@@ -90,6 +95,7 @@ def explore_chapters(game_task: [], chapter: int = 28):
         # 默认无boss
         is_boss = False
         for i_fight in range(1, 10):
+            time_fight_start = time.time()
             logger.debug("第{}次探索战斗", i_fight)
             is_little_monster = ImageService.touch(Onmyoji.explore_XGZD)
             if not is_little_monster:
@@ -98,7 +104,7 @@ def explore_chapters(game_task: [], chapter: int = 28):
                 if not is_boss:
                     logger.debug("没有小怪，没有首领，右移")
                     ImageService.swipe((0.9 * resolution[0], 0.5 * resolution[1]),
-                                       (0.5 * resolution[0], 0.5 * resolution[1]))
+                                       (0.2 * resolution[0], 0.5 * resolution[1]))
                     logger.debug("进入下一轮循环")
                     continue
             logger.debug("等待战斗结果")
@@ -123,18 +129,30 @@ def explore_chapters(game_task: [], chapter: int = 28):
             ImageService.touch(Onmyoji.explore_QR)
         else:
             logger.debug("无小纸人")
+        time_round_end = time.time()
+        time_round_fight = time_round_end - time_round_start
+        logger.debug("本次探索-战斗结束，用时{}秒", round(time_round_fight, 3))
+        time_round_list.append(time_round_fight)
+        logger.debug("本轮探索战斗结束")
     # 探索-战斗次数
     len_time_fight_list = len(time_fight_list)
+    # 探索-战斗轮次
+    len_time_round_list = len(time_round_list)
     # 探索-战斗总用时
     time_fight_all = round(sum(time_fight_list))
     # 探索-结束时间
     time_end = time.time()
     # 探索-总用时
     time_all = time_end - time_start
-    # 探索-平均战斗用时
+    # 探索-每次战斗平均用时
     time_fight_avg = 0
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
-    logger.debug("本次{}章探索挑战，共{}轮，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
-                 chapter, fight_times, round(time_all, 3), time_fight_all, time_fight_avg,
-                 len_time_fight_list, num_win, num_false)
+    # 探索-每轮战斗平均用时
+    time_round_avg = 0
+    if len_time_round_list > 0:
+        time_round_avg = round(sum(time_round_list) / len(time_round_list), 3)
+    logger.debug(
+        "{}章探索挑战，总用时{}，共{}轮，每轮平均战斗时间{}，战斗总用时{},每次战斗平均用时{}，挑战{}次，胜利{}次，失败{}次",
+        chapter, UtilsTime.convert_seconds(time_all), fight_times, UtilsTime.convert_seconds(time_round_avg),
+        UtilsTime.convert_seconds(time_fight_all), time_fight_avg, len_time_fight_list, num_win, num_false)
