@@ -358,6 +358,7 @@ class Onmyoji:
     explore_ZCBX = r"探索\章节探索\左侧宝箱"
     explore_ZDSB = r"探索\章节探索\战斗失败"
     explore_ZDSL = r"探索\章节探索\战斗胜利"
+    explore_ZDZD = r"探索\章节探索\自动战斗"
     explore_TSJMSSL = r"探索\章节探索\探索界面式神录"
     explore_QR = r"探索\章节探索\确认"
     explore_SPTZ = r"探索\章节探索\碎片挑战"
@@ -371,6 +372,7 @@ class Onmyoji:
     explore_JSZR = r"探索\章节探索\解锁阵容"
     explore_SLZD = r"探索\章节探索\首领战斗"
     explore_JLXZR = r"探索\章节探索\奖励小纸人"
+    explore_SSL = r"探索\章节探索\式神录"
 
     deed_ZCTZ = r"探索\契灵\再次挑战"
     deed_ZDSB = r"探索\契灵\战斗失败"

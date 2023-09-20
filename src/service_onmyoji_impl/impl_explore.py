@@ -8,6 +8,7 @@ from src.model.enum import Onmyoji
 from src.model.models import GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
@@ -53,7 +54,7 @@ def explore_chapters(game_task: [], chapter: int = 28):
     logger.debug("章节探索-开始")
     for i in range(1, fight_times + 1):
         time_round_start = time.time()
-        logger.debug("第{}轮探索战斗",i+1)
+        logger.debug("第{}轮探索战斗", i)
         logger.debug("判断是否是章节首页")
         is_home = ImageService.exists(chapter_home)
         if not is_home:
@@ -94,22 +95,29 @@ def explore_chapters(game_task: [], chapter: int = 28):
         logger.debug("准备完成，开始战斗")
         # 默认无boss
         is_boss = False
-        for i_fight in range(1, 10):
+        for i_fight in range(1, 12):
             time_fight_start = time.time()
             logger.debug("第{}次探索战斗", i_fight)
-            is_little_monster = ImageService.touch(Onmyoji.explore_XGZD)
-            if not is_little_monster:
-                logger.debug("没有小怪，点击首领")
+            if i_fight > 3:
+                logger.debug("点击首领")
                 is_boss = ImageService.touch(Onmyoji.explore_SLZD)
-                if not is_boss:
-                    logger.debug("没有小怪，没有首领，右移")
-                    ImageService.swipe((0.9 * resolution[0], 0.5 * resolution[1]),
-                                       (0.2 * resolution[0], 0.5 * resolution[1]))
-                    logger.debug("进入下一轮循环")
-                    continue
+            if not is_boss:
+                logger.debug("没有首领，点击小怪")
+                for i_little_monster in range(2):
+                    is_little_monster = ImageService.touch(Onmyoji.explore_XGZD)
+                    if is_little_monster:
+                        break
+                    else:
+                        logger.debug("没有小怪,右移")
+                        ImageService.swipe((0.9 * resolution[0], 0.5 * resolution[1]),
+                                           (0.1 * resolution[0], 0.5 * resolution[1]))
+                        logger.debug("点击中心位置")
+                        ImageService.touch_coordinate((0.5 * resolution[0], 0.5 * resolution[1]))
+                        logger.debug("进入下一轮循环")
+                        continue
             logger.debug("等待战斗结果")
             is_result = ComplexService.fight_end(Onmyoji.explore_ZDSL, Onmyoji.explore_ZDSB, Onmyoji.explore_ZCTZ,
-                                                 Onmyoji.explore_TCTZ, Onmyoji.explore_XGZD, None, 30, 2)
+                                                 Onmyoji.explore_TCTZ, Onmyoji.explore_XGZD, None, 40, 2)
             if is_result in [Onmyoji.explore_ZDSL, Onmyoji.explore_TCTZ]:
                 num_win = num_win + 1
             elif is_result in [Onmyoji.explore_ZCTZ, Onmyoji.explore_ZDSB]:
@@ -120,20 +128,25 @@ def explore_chapters(game_task: [], chapter: int = 28):
             time_fight_list.append(time_fight)
             if is_boss:
                 break
-        logger.debug("判断是否有奖励小纸人")
-        is_reward = ImageService.exists(Onmyoji.explore_JLXZR)
+        logger.debug("判断是否有式神录")
+        is_reward = ImageService.exists(Onmyoji.explore_SSL,wait=4)
         if is_reward:
-            logger.debug("有小纸人，点击左上角返回")
+            logger.debug("有式神录，点击左上角返回")
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
             logger.debug("确认")
             ImageService.touch(Onmyoji.explore_QR)
         else:
-            logger.debug("无小纸人")
+            logger.debug("无式神录")
         time_round_end = time.time()
         time_round_fight = time_round_end - time_round_start
         logger.debug("本次探索-战斗结束，用时{}秒", round(time_round_fight, 3))
         time_round_list.append(time_round_fight)
         logger.debug("本轮探索战斗结束")
+    logger.debug("返回首页")
+    ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
     # 探索-战斗次数
     len_time_fight_list = len(time_fight_list)
     # 探索-战斗轮次

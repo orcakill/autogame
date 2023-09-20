@@ -227,5 +227,5 @@ class TestOnmyojiService(TestCase):
                 OnmyojiService.pvp(game_task)
             # 项目 21
             elif game_project.project_name in ["探索"]:
-                game_projects_relation.project_num_times = 1
+                game_projects_relation.project_num_times = 2
                 OnmyojiService.explore_chapters(game_task)
