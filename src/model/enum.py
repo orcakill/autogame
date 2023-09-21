@@ -80,6 +80,8 @@ class Onmyoji:
     demon_HSDMYLQ = r"町中\逢魔之时\红色达摩已领取"
     demon_JBFMZSRK = r"町中\逢魔之时\旧版逢魔之时入口"
     demon_JJTZ = r"町中\逢魔之时\集结挑战"
+    demon_BZTS = r"町中\逢魔之时\不再提示"
+    demon_TZQD = r"町中\逢魔之时\挑战确定"
     demon_QD = r"町中\逢魔之时\确定"
     demon_SL = r"町中\逢魔之时\首领"
     demon_SLJ = r"町中\逢魔之时\首领极"

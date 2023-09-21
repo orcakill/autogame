@@ -170,9 +170,13 @@ def encounter_demons(game_task: []):
                 logger.debug("判断是否有集结挑战")
                 is_fight = ImageService.exists(Onmyoji.demon_JJTZ)
                 if is_fight:
-                    logger.debug("连点5次")
-                    for i_click in range(5):
+                    logger.debug("连点8次")
+                    for i_click in range(8):
                         ImageService.touch_coordinate(is_fight, wait=1)
+                        if i_click > 3 and i_click % 2 == 0:
+                            logger.debug("点击可能存在的挑战确定")
+                            ImageService.touch(Onmyoji.demon_BZTS)
+                            ImageService.touch(Onmyoji.demon_TZQD)
                 logger.debug("判断是否有一天一层")
                 is_one = ImageService.exists(Onmyoji.demon_YTYC, wait=0)
                 if is_one:

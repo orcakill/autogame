@@ -43,7 +43,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_snapshot(self):
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("2")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")

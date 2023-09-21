@@ -138,11 +138,12 @@ def get_optimal_card():
                 logger.debug("当前第{}个好友", i_friends + 1)
                 logger.debug("点击位置2")
                 ImageService.touch_coordinate(coordinate_end)
+                logger.debug(target_card)
                 if i_friends > 20:
-                    logger.debug("目标结界卡{}，判断未放置", target_card)
+                    logger.debug("判断目前结界卡类型，判断未放置")
                     card_type = get_card_type(target_type, 1)
                 else:
-                    logger.debug("判断目前结界卡，不判断未放置")
+                    logger.debug("判断目前结界卡类型，不判断未放置")
                     card_type = get_card_type(target_type, 0)
                 logger.debug(card_type)
                 if card_type == target_card:

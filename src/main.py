@@ -16,14 +16,10 @@ if __name__ == '__main__':
     logger.info("2 小号全流程任务")
     logger.info("0  默认设备 1 夜神模拟器")
     logger.info("**************")
-    # game_type = input("请输入一个脚本类型：")
-    # game_round = input("请输入一个脚本轮次：")
-    # game_device=input("请输入一个脚本设备：")
-    game_type = "5"
-    game_round = "1"
-    game_device = "0"
-    # 中断后重新进行项目组
-    game_relation_num = '1'
+    game_type = input("请输入一个项目组编号：")
+    game_round = input("请输入一个项目组轮次：")
+    game_device = input("请输入一个设备编号：")
+    game_relation_num = input("请输入一个项目组开始执行编号：")
     # 0 每个节点都发送邮件 1 进程结束后发送邮件  2不发送邮件
     game_is_email = "2"
     logger.info("**************")
