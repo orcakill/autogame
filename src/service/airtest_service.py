@@ -14,6 +14,7 @@ from airtest.core.helper import G
 from airtest.core.settings import Settings
 
 from src.service.windows_service import WindowsService
+from src.utils import utils_path
 from src.utils.my_logger import my_logger as logger
 
 # 控制airtest的日志输出
@@ -32,17 +33,17 @@ class AirtestService:
         :return:
         """
         devices_name = None
-        connect_name=None
+        connect_name = None
         if game_device == "0":
             logger.debug("检查是否启动云手机")
             WindowsService.start_exe("YsConsole", "云帅云手机")
             devices_name = "127.0.0.1:50000"
-            connect_name=devices_name
+            connect_name = devices_name
         if game_device == "1":
             logger.debug("检查是否启动夜神模拟器")
             WindowsService.start_exe("Nox", "夜神模拟器")
             devices_name = "127.0.0.1:62001"
-            connect_name = devices_name+"?cap_method=JAVACAP"
+            connect_name = devices_name + "?cap_method=JAVACAP"
         if game_device == "2":
             logger.debug("荣耀平板5")
             devices_name = "E8X9X19719000371"
@@ -72,8 +73,10 @@ class AirtestService:
             # 获取当前时间
             now = imp_datetime.now()
             # 将时间转换为字符串
-            time_str = now.strftime("%Y-%m-%d-%H-%M-%S") + "_" + name
-            pil_image.save("D:/image/" + time_str + ".png", quality=99, optimize=True)
+            time_str = now.strftime("%Y-%m-%d_%H-%M-%S") + "_" + name
+            path = os.path.join(utils_path.get_project_path_log(), "image")
+            path = os.path.join(path, time_str)
+            pil_image.save(path + ".png", quality=99, optimize=True)
         return screen
 
     @staticmethod

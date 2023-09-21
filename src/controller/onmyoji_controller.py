@@ -99,6 +99,9 @@ class OnmyojiController:
                             # 项目 21
                             elif game_project.project_name in ["探索"]:
                                 OnmyojiService.explore_chapters(game_task[j])
+                            # 项目 22
+                            elif game_project.project_name in ["御灵"]:
+                                OnmyojiService.spirit_fight(game_task[j])
                         else:
                             logger.debug("当前状态初始化失败{}，不执行项目", game_account.game_name)
                         time_end = time.time()

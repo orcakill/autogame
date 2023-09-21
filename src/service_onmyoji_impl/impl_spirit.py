@@ -28,7 +28,10 @@ def spirit_fight(game_task: []):
     # 项目组项目关系
     game_projects_relation = GameProjectsRelation(game_task[1])
     # 项目战斗次数
-    fight_time = game_projects_relation.project_num_times
+    if game_projects_relation.project_num_times:
+        fight_time = game_projects_relation.project_num_times
+    else:
+        fight_time = 60
     # 战斗用时列表
     time_fight_list = []
     # 获取本日

@@ -10,6 +10,7 @@ from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
+from src.utils.utils_time import UtilsTime
 
 
 def daily_rewards(game_task: []):
@@ -128,3 +129,21 @@ def daily_rewards(game_task: []):
         ComplexService.refuse_reward()
     time_end = time.time() - time_start
     logger.info("每日奖励,用时{}秒", round(time_end))
+
+
+def soul_arrange(game_task: []):
+    """
+    御魂整理
+    :param game_task: 任务信息
+    :return:
+    """
+    # 开始时间
+    time_start = time.time()
+    logger.debug("点击式神录")
+    logger.debug("点击右侧详细")
+    logger.debug("点击更换")
+    logger.debug("贪吃鬼，清理待吃御魂1-4星")
+    logger.debug("奉纳，奉纳五星御魂")
+    time_end = time.time()
+    time_all=time_end-time_start
+    logger.info("御魂整理总用时{}",UtilsTime.convert_seconds(time_all))

@@ -209,6 +209,8 @@ def border_fight(game_task: [], fight_times: int = 40):
             is_attack = ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=1)
             if is_attack:
                 break
+            else:
+                ComplexService.refuse_reward()
         logger.debug("点击准备")
         is_unlock = ImageService.touch(Onmyoji.border_ZB, wait=10)
         logger.debug("等待战斗结果")

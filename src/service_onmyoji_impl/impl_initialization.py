@@ -39,10 +39,8 @@ def initialization(game_task: [], login_type: int = 0):
         # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
         logger.debug("启动阴阳师app")
         ImageService.restart_app("com.netease.onmyoji")
-        logger.debug("等待20秒")
-        time.sleep(20)
         logger.debug("判断是否存在适龄提示")
-        is_ageAppropriateReminder = ImageService.exists(Onmyoji.login_SLTS, timeouts=5)
+        is_ageAppropriateReminder = ImageService.exists(Onmyoji.login_SLTS, timeouts=30)
         # 不存在适龄提示
         if not is_ageAppropriateReminder:
             logger.debug("不存在适龄提示")
@@ -50,9 +48,9 @@ def initialization(game_task: [], login_type: int = 0):
                 logger.debug("点击可能存在的重新打开应用")
                 ImageService.touch(Onmyoji.login_CXDKYY)
                 logger.debug("点击左上角，防止有开场动画")
-                ImageService.touch_coordinate([10, 10])
+                ImageService.touch_coordinate((10, 10))
                 logger.debug("接受协议")
-                ImageService.touch(Onmyoji.login_JSXY)
+                ImageService.touch(Onmyoji.login_JSXY,timeouts=1)
                 logger.debug("点击公告返回")
                 ImageService.touch(Onmyoji.comm_FH_YSJGGCH)
                 logger.debug("重新判断适龄提示")
@@ -62,7 +60,7 @@ def initialization(game_task: [], login_type: int = 0):
                 logger.debug("等待10秒")
                 time.sleep(10)
         logger.debug("接受协议")
-        ImageService.touch(Onmyoji.login_JSXY)
+        ImageService.touch(Onmyoji.login_JSXY,timeouts=1)
         logger.debug("登录账号")
         if login_type == 0:
             logger.debug("判断当前账号选择")

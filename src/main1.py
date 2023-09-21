@@ -21,11 +21,11 @@ if __name__ == '__main__':
     logger.info("4 大号阴阳寮突破")
     logger.info("默认夜神模拟器")
     logger.info("**************")
-    # game_type = input("请输入一个脚本类型：")
+    # game_type = input("请输入一个脚本项目组编号：")
     # game_round = input("请输入一个脚本轮次：")
     # game_device=input("请输入一个脚本设备：")
-    game_type = "5"
-    game_round = "10"
+    game_type = "6"
+    game_round = "1"
     game_device = "1"
     game_relation_num = "1"
     # 0 每个节点都发送邮件 1 进程结束后发送邮件  2不发送邮件

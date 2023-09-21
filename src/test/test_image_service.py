@@ -43,9 +43,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_snapshot(self):
-        test = Cvstrategy.default
-        logger.debug(test)
-        ImageService.auto_setup("0")
+        ImageService.auto_setup("1")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")

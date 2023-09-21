@@ -37,7 +37,7 @@ def foster_care(game_task: []):
             logger.debug("点击寮首页结界")
             ImageService.touch(Onmyoji.foster_JJTB)
             logger.debug("点击结界-式神育成")
-            is_growing = ImageService.touch(Onmyoji.foster_SSYC, wait=3,timeouts=10)
+            is_growing = ImageService.touch(Onmyoji.foster_SSYC, wait=3, timeouts=10)
             if is_growing:
                 break
             else:
@@ -51,6 +51,8 @@ def foster_care(game_task: []):
             logger.debug(faster_place)
             if is_foster and faster_place:
                 logger.debug("最优结界卡,进入好友结界")
+                faster_name = game_account.game_name + faster_place.replace("阴阳寮\\式神寄养\\结界卡\\", '_')
+                ImageService.snapshot(faster_name, True)
                 ImageService.touch(Onmyoji.foster_JRJJ)
                 logger.debug("点击达摩,优先大吉达摩")
                 is_dharma = ImageService.touch(Onmyoji.foster_DMDJDM)
@@ -121,7 +123,7 @@ def get_optimal_card():
             target_card = Onmyoji.foster_JJK_SXDY1
         logger.debug("目标结界卡：{}", target_card)
         logger.debug("点击可寄养标志")
-        ImageService.touch(Onmyoji.foster_KJYBZ,timeouts=10)
+        ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10)
         logger.debug("获取上方好友坐标")
         coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
         logger.debug("获取上方跨区坐标")

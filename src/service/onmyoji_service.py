@@ -4,7 +4,7 @@
 # @Description: 服务接口
 
 from src.service_onmyoji_impl import impl_border, impl_friends, impl_ghost, impl_reward, impl_awakening, impl_soul, \
-    impl_initialization, impl_explore, impl_pvp
+    impl_initialization, impl_explore, impl_pvp, impl_spirit
 from src.service_onmyoji_impl import impl_house
 
 
@@ -168,3 +168,12 @@ class OnmyojiService:
         :return:
         """
         impl_explore.explore_chapters(game_task)
+
+    @staticmethod
+    def spirit_fight(game_task: []):
+        """
+        御灵战斗
+        :param game_task: 项目信息
+        :return:
+        """
+        impl_spirit.spirit_fight(game_task)

@@ -2,7 +2,6 @@
 # @Author: orcakill
 # @File: test_onmyoji_service.py
 # @Description: 服务测试类
-import warnings
 from unittest import TestCase
 
 from src.dao.mapper import select_game_account
@@ -47,7 +46,7 @@ class TestOnmyojiService(TestCase):
         项目5 式神寄养
         :return:
         """
-        TestOnmyojiService.test_project(self, ['4', '5'], '1', "式神寄养")
+        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '1', "式神寄养")
 
     def test_shack_house(self):
         """
@@ -147,6 +146,13 @@ class TestOnmyojiService(TestCase):
         """
         TestOnmyojiService.test_project(self, ['1'], '0', "探索")
 
+    def test_spirit(self):
+        """
+        项目22 御灵
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['1'], '1', "御灵")
+
     def test_project(self, test_names, test_devices, project_name):
         """
         项目测试
@@ -229,3 +235,7 @@ class TestOnmyojiService(TestCase):
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = 2
                 OnmyojiService.explore_chapters(game_task)
+            # 项目 22
+            elif game_project.project_name in ["御灵"]:
+                game_projects_relation.project_num_times = 2
+                OnmyojiService.spirit_fight(game_task)
