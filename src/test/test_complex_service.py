@@ -116,10 +116,10 @@ class TestComplexService(TestCase):
         """
         logger.debug("寄养列表检查")
         WindowsService.limit_cpu_percentage(30)
-        ImageService.auto_setup("0")
+        ImageService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()
-        impl_house.get_optimal_card()
+        impl_house.get_optimal_card1()
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -127,9 +127,9 @@ class TestComplexService(TestCase):
     def test_card(self):
         logger.debug("结界卡识别")
         warnings.simplefilter('ignore', ResourceWarning)
-        ImageService.auto_setup("2")
+        ImageService.auto_setup("1")
         now = datetime.datetime.now()
-        logger.debug(impl_house.get_card_type(1))
+        logger.debug(impl_house.get_card_type("1"))
         now1 = datetime.datetime.now()
         print(now1 - now)
 

@@ -50,7 +50,7 @@ def initialization(game_task: [], login_type: int = 0):
                 logger.debug("点击左上角，防止有开场动画")
                 ImageService.touch_coordinate((10, 10))
                 logger.debug("接受协议")
-                ImageService.touch(Onmyoji.login_JSXY,timeouts=1)
+                ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
                 logger.debug("点击公告返回")
                 ImageService.touch(Onmyoji.comm_FH_YSJGGCH)
                 logger.debug("重新判断适龄提示")
@@ -60,7 +60,7 @@ def initialization(game_task: [], login_type: int = 0):
                 logger.debug("等待10秒")
                 time.sleep(10)
         logger.debug("接受协议")
-        ImageService.touch(Onmyoji.login_JSXY,timeouts=1)
+        ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
         logger.debug("登录账号")
         if login_type == 0:
             logger.debug("判断当前账号选择")
@@ -179,7 +179,7 @@ def return_home(game_task: []):
         logger.debug("不在账号首页，循环10次，10次不成功则返回失败")
         # 获取返回列表
         for i_return in range(10):
-            logger.debug("第{}轮返回", i_return)
+            logger.debug("第{}轮返回", i_return + 1)
             logger.debug("点击可能存在的悬赏封印")
             ComplexService.refuse_reward(timeouts=1)
             logger.debug("点击可能存在的退出挑战")
@@ -189,6 +189,8 @@ def return_home(game_task: []):
             ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
             ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
             ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
+            logger.debug("点击可能存在的旧版庭院入口")
+            ImageService.touch(Onmyoji.demon_TY)
             logger.debug("重新判断是否返回首页,账号")
             is_index = ImageService.exists(account_index, timeouts=1)
             if is_index:

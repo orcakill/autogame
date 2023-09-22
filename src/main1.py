@@ -19,12 +19,14 @@ if __name__ == '__main__':
     logger.info("2 小号全流程任务")
     logger.info("3 大小号式神寄养")
     logger.info("4 大号阴阳寮突破")
+    logger.info("5 大号阴阳寮日常")
+    logger.info("6 大号御灵")
     logger.info("默认夜神模拟器")
     logger.info("**************")
     # game_type = input("请输入一个脚本项目组编号：")
     # game_round = input("请输入一个脚本轮次：")
     # game_device=input("请输入一个脚本设备：")
-    game_type = "6"
+    game_type = "2"
     game_round = "1"
     game_device = "1"
     game_relation_num = "1"
