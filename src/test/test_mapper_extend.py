@@ -1,26 +1,21 @@
+from unittest import TestCase
+
 from src.dao.mapper_extend import MapperExtend
 from src.utils.my_logger import my_logger as logger
 
 
-def test_select_game_threads():
-    # 查询测试
-    game_thread1 = MapperExtend.select_game_thread("")
-    logger.info(game_thread1)
+class TestModelsExtend(TestCase):
+    def test_select_task(self):
+        # 查询测试
+        task = MapperExtend.select_game_task("", "2")
+        logger.info(task)
 
+    def test_select_game_project(self):
+        # 查询测试
+        task = MapperExtend.select_game_project("", "")
+        logger.info(task)
 
-def test_select_task():
-    # 查询测试
-    task = MapperExtend.select_game_task("", "2")
-    logger.info(task)
-
-
-def test_select_game_account():
-    # 查询测试
-    task = MapperExtend.select_game_thread("2")
-    logger.info(task)
-
-
-def test_select_game_project():
-    # 查询测试
-    task = MapperExtend.select_game_project("", "2")
-    logger.info(task)
+    def test_select_game_projects(self):
+        # 查询测试
+        task = MapperExtend.select_game_projects("", "")
+        logger.info(task)

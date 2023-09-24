@@ -4,10 +4,11 @@
 # @Description: 服务测试类
 from unittest import TestCase
 
-from src.dao.mapper import select_game_account
-from src.model.models import GameProjects, GameProjectsRelation, GameProject
+from src.controller.onmyoji_controller import OnmyojiController
+from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameProjects
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
+from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
 
 
@@ -32,21 +33,22 @@ class TestOnmyojiService(TestCase):
         项目3 逢魔之时
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3', '4', '5'], '2', "逢魔之时")
+        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '2', "逢魔之时")
 
     def test_ghost_king(self):
         """
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '1', "地域鬼王")
+        TestOnmyojiService.test_project(self, ['1'], '1', "地域鬼王")
 
     def test_foster_care(self):
         """
         项目5 式神寄养
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '1', "式神寄养")
+        WindowsService.limit_cpu_percentage(30)
+        TestOnmyojiService.test_project(self, ['5'], '2', "式神寄养")
 
     def test_shack_house(self):
         """
@@ -67,7 +69,7 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "个人突破")
+        TestOnmyojiService.test_project(self, ['4'], '1', "个人突破")
 
     def test_friends_manage(self):
         """
@@ -81,7 +83,7 @@ class TestOnmyojiService(TestCase):
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "好友协战")
+        TestOnmyojiService.test_project(self, ['5'], '1', "好友协战")
 
     def test_awakening(self):
         """
@@ -137,7 +139,8 @@ class TestOnmyojiService(TestCase):
         项目19 斗技
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "斗技")
+        WindowsService.limit_cpu_percentage(30)
+        TestOnmyojiService.test_project(self, ['1'], '2', "斗技")
 
     def test_explore(self):
         """
@@ -163,25 +166,23 @@ class TestOnmyojiService(TestCase):
         """
         # 初始化设备信息
         ImageService.auto_setup(test_devices)
-        for i in range(len(test_names)):
-            test_name = test_names[i]
-            # 初始化测试任务信息
-            game_projects = GameProjects()
-            game_projects_relation = GameProjectsRelation()
-            game_account = select_game_account(test_name)
-            game_project = GameProject()
-            game_project.project_name = project_name
-            game_task = [game_projects, game_projects_relation, game_account, game_project]
-            logger.debug("当前状态初始化{}", test_name)
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
+        # 初始化项目组信息
+        game_tasks = OnmyojiController.create_tasks(test_names, "", project_name)
+        for i in range(len(game_tasks)):
+            game_task = game_tasks[i]
+            game_projects = GameProjects(game_task[0])
+            game_projects_relation = GameProjectsRelation(game_task[1])
+            game_account = GameAccount(game_task[2])
+            game_project = GameProject(game_task[3])
+            logger.debug("当前状态初始化{}", game_account.game_name)
+            # 连接设备
             ImageService.auto_setup(test_devices)
-            # 项目 1、24 每日奖励领取
+            # 当前状态初始化
+            OnmyojiService.initialization(game_task)
+            # 项目 1、
             if game_project.project_name in ["登录"]:
                 OnmyojiService.initialization(game_task)
-            # 项目 2
+            # 项目 2、24 每日奖励领取
             elif game_project.project_name in ["每日奖励"]:
                 OnmyojiService.daily_rewards(game_task)
             # 项目 3
@@ -207,6 +208,8 @@ class TestOnmyojiService(TestCase):
                 OnmyojiService.friends_manage(game_task)
             # 项目 10
             elif game_project.project_name in ["好友协战"]:
+                game_projects_relation.project_num_times = 13
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.friends_fight(game_task)
             # 项目 11
             elif game_project.project_name in ["觉醒十"]:
@@ -214,28 +217,35 @@ class TestOnmyojiService(TestCase):
             # 项目 12,13,14,15
             elif game_project.project_name in ["魂一", "魂十", "魂十一", "魂十二"]:
                 game_projects_relation.project_num_times = 2
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.soul_fight(game_task)
             # 项目 16
             elif game_project.project_name in ["业原火"]:
                 game_projects_relation.project_num_times = 2
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.soul_fight_fire(game_task)
             # 项目 17
             elif game_project.project_name in ["日轮之陨"]:
                 game_projects_relation.project_num_times = 50
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.soul_fight_sun(game_task)
             # 项目 18
             elif game_project.project_name in ["永生之海"]:
                 game_projects_relation.project_num_times = 1
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.soul_fight_sea(game_task, 1)
             # 项目 19
             elif game_project.project_name in ["斗技"]:
-                game_projects_relation.project_num_times = 1
+                game_projects_relation.project_num_times = 10
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.pvp(game_task)
             # 项目 21
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = 2
+                game_task=[game_projects,game_projects_relation,game_account,game_project]
                 OnmyojiService.explore_chapters(game_task)
             # 项目 22
             elif game_project.project_name in ["御灵"]:
                 game_projects_relation.project_num_times = 2
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.spirit_fight(game_task)

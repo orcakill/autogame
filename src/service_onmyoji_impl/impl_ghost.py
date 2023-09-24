@@ -108,7 +108,7 @@ def ghost_king(game_task: []):
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
     time_end = time.time() - time_start
-    logger.info("地域鬼王,用时{}秒", round(time_end))
+    logger.debug("地域鬼王,用时{}秒", round(time_end))
 
 
 def encounter_demons(game_task: []):
@@ -226,4 +226,4 @@ def encounter_demons(game_task: []):
         logger.debug("不在逢魔时间内")
     impl_initialization.return_home(game_task)
     time_end = time.time() - time_start
-    logger.info("逢魔之时,用时{}秒", round(time_end))
+    logger.debug("逢魔之时,用时{}秒", round(time_end))

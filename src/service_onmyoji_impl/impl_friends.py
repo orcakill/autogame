@@ -12,6 +12,7 @@ from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_awakening, impl_initialization
 from src.utils.my_logger import logger
+from src.utils.utils_time import UtilsTime
 
 
 def friends_fight(game_task: []):
@@ -53,26 +54,35 @@ def friends_fight(game_task: []):
             if i_cooperative_warfare == 0:
                 logger.debug("觉醒挑战")
                 impl_awakening.awakening(game_task)
-            logger.debug("好友协战-进入探索")
-            ImageService.touch(Onmyoji.home_TS)
-            logger.debug("好友协战-进入御魂")
-            ImageService.touch(Onmyoji.soul_BQ_YHTB)
-            logger.debug("好友协战-进入八岐大蛇")
-            ImageService.touch(Onmyoji.soul_BQ_XZ)
-            logger.debug("好友协战-八岐大蛇-选择层号")
             ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
+            for i_come in range(3):
+                logger.debug("进入探索")
+                ImageService.touch(Onmyoji.home_TS)
+                logger.debug("点击御魂图标")
+                ImageService.touch(Onmyoji.soul_BQ_YHTB)
+                logger.debug("选择")
+                ImageService.touch(Onmyoji.soul_BQ_XZ)
+                # 层号选择 魂一、魂十、魂十一
+                logger.debug("选择层号")
+                ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
+                logger.debug("判断是否在八岐大蛇首页")
+                is_home = ImageService.touch(Onmyoji.soul_BQ_BQDSSY)
+                if is_home:
+                    break
+                else:
+                    ComplexService.refuse_reward()
+                    logger.debug("确认返回首页")
+                    impl_initialization.return_home(game_task)
             logger.debug("好友协战-开启御魂加成")
-            is_top_addition = ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC,
-                                                          Onmyoji.soul_BQ_JCK,
-                                                          Onmyoji.soul_BQ_JCG,
-                                                          1)
+            ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC,
+                                        Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG, 1)
             # 默认有协战式神
             is_assist_shikigami = True
             # 默认锁定阵容
             is_unlock = False
-            for i in range(20):
+            for i in range(16):
                 time_fight_start = time.time()
-                logger.debug("好友协战-御魂-挑战{}次", i + 1)
+                logger.debug("好友协战-御魂-挑战{}次", i)
                 if i == 0:
                     logger.debug("好友协战-小号-协战-第一次")
                     logger.debug("解锁阵容")
@@ -187,13 +197,12 @@ def friends_fight(game_task: []):
                     break
             time.sleep(3)
             logger.debug("好友协战-关闭御魂加成")
-            if is_top_addition:
-                ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK,
-                                            Onmyoji.soul_BQ_JCG, 0)
+            ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK,
+                                        Onmyoji.soul_BQ_JCG, 0)
             logger.debug("好友协战-战斗结束，返回首页")
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
             logger.debug("好友协战-返回首页")
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
             logger.debug("确认返回首页")
             impl_initialization.return_home(game_task)
     logger.debug("好友协战-返回首页")
@@ -213,8 +222,8 @@ def friends_fight(game_task: []):
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     logger.debug("本轮好友协战总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
-                 round(time_all, 3),
-                 time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
+                 UtilsTime.convert_seconds(time_all), time_fight_all, time_fight_avg, len_time_fight_list, num_win,
+                 num_fail)
 
 
 def friends_manage(game_task: []):
@@ -277,4 +286,4 @@ def friends_manage(game_task: []):
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
     time_end = time.time() - time_start
-    logger.info("好友管理,用时{}秒", round(time_end))
+    logger.debug("好友管理,用时{}秒", round(time_end))

@@ -128,7 +128,7 @@ def daily_rewards(game_task: []):
     else:
         ComplexService.refuse_reward()
     time_end = time.time() - time_start
-    logger.info("每日奖励,用时{}秒", round(time_end))
+    logger.debug("每日奖励,用时{}秒", round(time_end))
 
 
 def soul_arrange(game_task: []):
@@ -139,6 +139,7 @@ def soul_arrange(game_task: []):
     """
     # 开始时间
     time_start = time.time()
+    logger.debug(game_task)
     for i in range(2):
         ComplexService.refuse_reward()
         logger.debug("点击式神录")

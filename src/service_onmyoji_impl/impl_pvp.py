@@ -73,7 +73,7 @@ def pvp(game_task):
             logger.debug("等待5s")
             time.sleep(5)
             for i_auto in range(10):
-                logger.debug("站前准备{}", i_auto + 1)
+                logger.debug("战前准备{}", i_auto + 1)
                 logger.debug("点击自动选择")
                 ImageService.touch(Onmyoji.contend_ZDXZ)
                 logger.debug("点击可能存在的准备")
@@ -88,10 +88,15 @@ def pvp(game_task):
                 is_win = ImageService.exists(Onmyoji.contend_ZDSL)
                 if is_win:
                     break
+                logger.debug("判断还在挑战页面")
+                is_fight = ImageService.exists(Onmyoji.contend_TZ)
+                if is_fight:
+                    logger.debug("再次点击挑战")
+                    ImageService.touch(Onmyoji.contend_TZ)
             logger.debug("斗技-等待战斗结果")
             is_result = ComplexService.fight_end(Onmyoji.contend_BDTC, Onmyoji.contend_ZDSB, Onmyoji.contend_ZDSB,
                                                  Onmyoji.contend_ZDSL, Onmyoji.contend_TZ, None, 600, 2)
-            if i < 5:
+            if i < 6:
                 logger.debug("战斗次数小于5,点击可能存在的退出挑战")
                 ImageService.touch(Onmyoji.contend_TCTZ)
             logger.debug("点击可能存在的段位晋升")
@@ -112,6 +117,7 @@ def pvp(game_task):
         if is_courtyard:
             logger.debug("点击庭院返回首页")
             ImageService.touch(Onmyoji.contend_TY)
+        time.sleep(5)
         logger.debug("斗技-确认返回首页")
         impl_initialization.return_home(game_task)
     else:

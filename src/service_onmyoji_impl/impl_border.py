@@ -160,7 +160,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                 logger.debug("无结界挑战劵")
                 break
         if num_false % 3 == 0 and num_false > 0:
-            logger.debug("大号战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
+            logger.debug("战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
             is_fail = ImageService.exists(Onmyoji.border_ZBBZ, timeouts=3)
             if is_fail:
                 logger.debug("判断是否有刷新")
@@ -170,6 +170,8 @@ def border_fight(game_task: [], fight_times: int = 40):
                     ImageService.touch(Onmyoji.border_SX, wait=2)
                     logger.debug("点击刷新确定")
                     ImageService.touch(Onmyoji.border_SXQD, wait=2)
+                    logger.debug("战败结界置空")
+                    coordinate_fail_list = []
         # 保级，打9退4
         logger.debug("统计攻破次数")
         num_break = ImageService.find_all_num(Onmyoji.border_GP)
@@ -200,17 +202,23 @@ def border_fight(game_task: [], fight_times: int = 40):
                 logger.debug("识别个人结界,不打战败")
                 coordinate_border = ImageService.exists(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
                 if coordinate_border in coordinate_fail_list:
-                    logger.debug("战败结界，跳过")
+                    logger.debug("战败结界，重新尝试")
                     continue
                 else:
-                    logger.debug("点击个人结界")
-                    ImageService.touch_coordinate(coordinate_border)
+                    if coordinate_border:
+                        logger.debug("点击个人结界")
+                        ImageService.touch_coordinate(coordinate_border)
+                    else:
+                        logger.debug("无效坐标")
             logger.debug("点击进攻")
             is_attack = ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=1)
             if is_attack:
                 break
             else:
                 ComplexService.refuse_reward()
+        if coordinate_border in coordinate_fail_list:
+            logger.debug("战败结界，进入下一循环")
+            continue
         logger.debug("点击准备")
         is_unlock = ImageService.touch(Onmyoji.border_ZB, wait=10)
         logger.debug("等待战斗结果")

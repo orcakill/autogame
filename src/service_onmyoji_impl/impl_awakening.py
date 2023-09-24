@@ -107,7 +107,7 @@ def awakening(game_task: [], awakening_type: int = 0):
     logger.debug("觉醒-返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     logger.debug("觉醒-返回首页")
-    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
     # 结束时间

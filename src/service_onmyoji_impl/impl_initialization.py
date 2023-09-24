@@ -159,10 +159,10 @@ def initialization(game_task: [], login_type: int = 0):
     # 总用时
     time_all = time_end - time_start
     if is_index:
-        logger.info("初始化当前状态完成:{}，用时{}", game_account.game_name, UtilsTime.convert_seconds(time_all))
+        logger.debug("初始化当前状态完成:{}，用时{}", game_account.game_name, UtilsTime.convert_seconds(time_all))
         return True
     else:
-        logger.info("初始化当前状态失败:{}，用时{}", game_account.game_name, UtilsTime.convert_seconds(time_all))
+        logger.debug("初始化当前状态失败:{}，用时{}", game_account.game_name, UtilsTime.convert_seconds(time_all))
         return False
 
 
@@ -189,8 +189,11 @@ def return_home(game_task: []):
             ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
             ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
             ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
-            logger.debug("点击可能存在的旧版庭院入口")
-            ImageService.touch(Onmyoji.demon_TY)
+            logger.debug("判断可能存在的斗技")
+            is_pvp = ImageService.exists(Onmyoji.contend_JBDJRK)
+            if is_pvp:
+                logger.debug("点击庭院")
+                ImageService.touch(Onmyoji.demon_TY)
             logger.debug("重新判断是否返回首页,账号")
             is_index = ImageService.exists(account_index, timeouts=1)
             if is_index:

@@ -47,7 +47,7 @@ class AirtestService:
         if game_device == "2":
             logger.debug("荣耀平板5")
             devices_name = "E8X9X19719000371"
-            connect_name=devices_name
+            connect_name = devices_name
         if game_device == "3":
             logger.debug("小米13")
             devices_name = "8ce78c9f"
@@ -222,3 +222,8 @@ class AirtestService:
                 logger.error("异常：{}", e)
             else:
                 pass
+
+    @staticmethod
+    def calculate_similarity(template: Template, screen, cvstrategy: []):
+        Settings.CVSTRATEGY = cvstrategy
+        return template._cv_match(screen)

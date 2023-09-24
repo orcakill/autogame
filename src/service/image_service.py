@@ -5,11 +5,7 @@
 import os
 import random
 import time
-from typing import Union
 
-import cv2
-import numpy as np
-from PIL import Image
 from airtest.core.cv import Template
 
 from src.model.enum import Cvstrategy
@@ -269,12 +265,14 @@ class ImageService:
             return 0
 
     @staticmethod
-    def cal_ccoeff_confidence(folder_path: str, timeouts: int = TIMEOUTS, threshold: float = THRESHOLD,
+    def cal_ccoeff_confidence(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: int = TIMEOUTS,
+                              threshold: float = THRESHOLD,
                               wait: float = WAIT, is_throw: bool = THROW, rgb: bool = False, x1: float = 0,
                               x2: float = 1, y1: float = 0,
                               y2: float = 1):
         """
         计算图片和设备截图的相似度
+        :param cvstrategy: 图像识别算法
         :param y2: y2坐标比例
         :param x2: x2坐标比例
         :param y1: y1坐标比例
@@ -297,14 +295,7 @@ class ImageService:
                     # 设备截图
                     image1 = ImageService.crop_image(x1 * resolution[0], y1 * resolution[1], x2 * resolution[0],
                                                      y2 * resolution[1])
-                    image1 = ImageService.cv2_2_pil(image1)
-                    image1 = np.array(image1)
-                    # 模板图
-                    # 读取图像
-                    image2: Union[Image.Image, np.ndarray] = Image.open(template.filename)
-                    # 将PngImageFile对象转换为NumPy数组
-                    image2 = np.asarray(image2)
-                    return ImageService.cv2_confidence(image1, image2)
+                    return AirtestService.calculate_similarity(template, image1, cvstrategy)['confidence']
             return 0
         except Exception as e:
             if is_throw:
@@ -312,29 +303,3 @@ class ImageService:
             else:
                 pass
         return 0
-
-    @staticmethod
-    def cv2_confidence(image1, image2):
-        # 加载并转换图片为灰度图像
-        image1 = cv2.cvtColor(np.array(image1), cv2.COLOR_RGB2GRAY)
-        image2 = cv2.cvtColor(np.array(image2), cv2.COLOR_RGB2GRAY)
-
-        # 创建SIFT对象并提取关键点和描述子
-        sift = cv2.SIFT_create()
-        kp1, des1 = sift.detectAndCompute(image1, None)
-        kp2, des2 = sift.detectAndCompute(image2, None)
-
-        # 使用FLANN匹配器进行特征匹配
-        FLANN_INDEX_KDTREE = 0
-        index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
-        search_params = dict(checks=50)
-        flann = cv2.FlannBasedMatcher(index_params, search_params)
-        matches = flann.knnMatch(des1, des2, k=2)
-
-        # 根据匹配结果计算相似度
-        good_matches = []
-        for m, n in matches:
-            if m.distance < 0.7 * n.distance:
-                good_matches.append(m)
-
-        return len(good_matches) / max(len(des1), len(des2))
