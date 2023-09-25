@@ -176,33 +176,7 @@ def return_home(game_task: []):
     is_index = ImageService.exists(account_index, timeouts=1)
     is_explore = ImageService.exists(Onmyoji.home_TS, timeouts=1)
     if not is_index or not is_explore:
-        logger.debug("不在账号首页，循环10次，10次不成功则返回失败")
-        # 获取返回列表
-        for i_return in range(10):
-            logger.debug("第{}轮返回", i_return + 1)
-            logger.debug("点击可能存在的悬赏封印")
-            ComplexService.refuse_reward(timeouts=1)
-            logger.debug("点击可能存在的退出挑战")
-            ImageService.touch(Onmyoji.soul_BQ_TCTZ, timeouts=1)
-            logger.debug("点击可能存在的返回按钮")
-            ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
-            ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
-            ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
-            ImageService.touch(Onmyoji.comm_QBFH, timeouts=1)
-            logger.debug("判断可能存在的斗技")
-            is_pvp = ImageService.exists(Onmyoji.contend_JBDJRK)
-            if is_pvp:
-                logger.debug("点击庭院")
-                ImageService.touch(Onmyoji.demon_TY)
-            logger.debug("重新判断是否返回首页,账号")
-            is_index = ImageService.exists(account_index, timeouts=1)
-            if is_index:
-                logger.debug("重新判断是否返回首页,探索")
-                is_explore = ImageService.exists(Onmyoji.home_TS, timeouts=1)
-                if is_explore:
-                    logger.debug("返回首页成功")
-                    return True
-        logger.debug("返回首页失败，重新快速登录")
+        logger.debug("不在账号首页，重新快速登录")
         initialization(game_task, 1)
     else:
         logger.debug("有探索，有账号，在首页")

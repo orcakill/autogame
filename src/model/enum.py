@@ -419,6 +419,7 @@ class Onmyoji:
     arrange_JRBZTS = r"式神录\御魂整理\今日不再提示"
     arrange_YCFN = r"式神录\御魂整理\右侧奉纳"
     arrange_YCYH = r"式神录\御魂整理\右侧御魂"
+    arrange_ZSJYQZ = r"式神录\御魂整理\左上角已弃置"
     arrange_YCXX = r"式神录\御魂整理\右侧详细"
     arrange_TSQX = r"式神录\御魂整理\吞噬取消"
     arrange_TSQD = r"式神录\御魂整理\吞噬确定"
@@ -433,6 +434,7 @@ class Onmyoji:
     arrange_HDJL = r"式神录\御魂整理\获得奖励"
     arrange_TCG = r"式神录\御魂整理\贪吃鬼"
     arrange_JSXG = r"式神录\御魂整理\进食习惯"
+    arrange_FN = r"式神录\御魂整理\奉纳"
 
     test_TEST1 = r"通用\测试\测试1"
 

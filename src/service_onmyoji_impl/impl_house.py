@@ -28,20 +28,20 @@ def foster_care(game_task: []):
     game_account = GameAccount(game_task[2])
     # 寄养结果
     foster_result = None
+    is_foster = True
     logger.debug("式神寄养")
     for i_time in range(2):
         for i_growing in range(3):
             logger.debug("点击阴阳寮图标")
             ImageService.touch(Onmyoji.foster_YYLTB)
             logger.debug("点击寮首页结界")
-            ImageService.touch(Onmyoji.foster_JJTB)
+            ImageService.touch(Onmyoji.foster_JJTB, timeouts=10)
             logger.debug("点击结界-式神育成")
             is_growing = ImageService.touch(Onmyoji.foster_SSYC, wait=3, timeouts=10)
             if is_growing:
                 break
             else:
-                logger.debug("返回首页")
-                impl_initialization.return_home(game_task)
+                ComplexService.refuse_reward()
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
         if is_foster:
@@ -65,25 +65,19 @@ def foster_care(game_task: []):
                     foster_result = faster_place
             else:
                 logger.debug("不可寄养或寄养结果为空")
-            logger.debug("返回首页")
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-            ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
-        else:
-            logger.debug("返回首页")
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-            ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
-        logger.debug("确认返回首页")
-        impl_initialization.return_home(game_task)
-        time_end = time.time()
-        time_time = round(time_end - time_start, 3)
-        if is_foster:
-            logger.debug("寄养用时{},寄养结果{}", UtilsTime.convert_seconds(time_time), foster_result)
-        else:
-            logger.debug("已寄养，无需寄养,用时{}秒", UtilsTime.convert_seconds(time_time))
+        logger.debug("返回首页")
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
+    time_end = time.time()
+    time_time = round(time_end - time_start, 3)
+    if is_foster:
+        logger.debug("寄养用时{},寄养结果{}", UtilsTime.convert_seconds(time_time), foster_result)
+    else:
+        logger.debug("已寄养，无需寄养,用时{}秒", UtilsTime.convert_seconds(time_time))
 
 
 def get_optimal_card():

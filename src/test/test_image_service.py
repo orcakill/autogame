@@ -18,8 +18,8 @@ from src.utils.my_logger import logger
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("2")
-        result = ImageService.touch(Onmyoji.foster_JJK_LXTG)
+        ImageService.auto_setup("1")
+        result = ImageService.touch(Onmyoji.arrange_QZME)
         logger.debug(result)
         now1 = datetime.datetime.now()
         print(now1 - now)

@@ -48,7 +48,7 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         WindowsService.limit_cpu_percentage(30)
-        TestOnmyojiService.test_project(self, ['5'], '2', "式神寄养")
+        TestOnmyojiService.test_project(self, ['1'], '1', "式神寄养")
 
     def test_shack_house(self):
         """
@@ -142,6 +142,14 @@ class TestOnmyojiService(TestCase):
         WindowsService.limit_cpu_percentage(30)
         TestOnmyojiService.test_project(self, ['1'], '2', "斗技")
 
+    def test_soul_arrange(self):
+        """
+        项目20 御魂整理
+        :return:
+        """
+        WindowsService.limit_cpu_percentage(30)
+        TestOnmyojiService.test_project(self, ['1'], '1', "御魂整理")
+
     def test_explore(self):
         """
         项目21 探索
@@ -174,7 +182,7 @@ class TestOnmyojiService(TestCase):
             game_projects_relation = GameProjectsRelation(game_task[1])
             game_account = GameAccount(game_task[2])
             game_project = GameProject(game_task[3])
-            logger.debug("当前状态初始化{}", game_account.game_name)
+            logger.debug("当前状态初始化:{}", game_account.game_name)
             # 连接设备
             ImageService.auto_setup(test_devices)
             # 当前状态初始化
@@ -239,10 +247,13 @@ class TestOnmyojiService(TestCase):
                 game_projects_relation.project_num_times = 10
                 game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.pvp(game_task)
+            # 项目 20
+            elif game_project.project_name in ["御魂整理"]:
+                OnmyojiService.soul_arrange(game_task)
             # 项目 21
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = 2
-                game_task=[game_projects,game_projects_relation,game_account,game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.explore_chapters(game_task)
             # 项目 22
             elif game_project.project_name in ["御灵"]:

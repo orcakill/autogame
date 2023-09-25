@@ -177,3 +177,12 @@ class OnmyojiService:
         :return:
         """
         impl_spirit.spirit_fight(game_task)
+
+    @staticmethod
+    def soul_arrange(game_task: []):
+        """
+        御魂整理
+        :param game_task: 项目信息
+        :return:
+        """
+        impl_reward.soul_arrange(game_task)

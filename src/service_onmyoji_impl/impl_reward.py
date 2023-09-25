@@ -4,8 +4,7 @@
 # @Description: 每日奖励
 import time
 
-from src.model.enum import Onmyoji
-from src.model.models import GameAccount
+from src.model.enum import Onmyoji, Cvstrategy
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -17,8 +16,6 @@ def daily_rewards(game_task: []):
     # 开始时间
     time_start = time.time()
     # 账号信息
-    game_account = GameAccount(game_task[2])
-    logger.debug(game_account.game_name)
     logger.debug("1.首页小纸人奖励")
     logger.debug("判断是否有签到小纸人")
     is_sign_in = ImageService.exists(Onmyoji.reward_QDXZR, timeouts=2)
@@ -137,20 +134,20 @@ def soul_arrange(game_task: []):
     :param game_task: 任务信息
     :return:
     """
+    resolution = ImageService.resolution_ratio()
     # 开始时间
     time_start = time.time()
-    logger.debug(game_task)
     for i in range(2):
         ComplexService.refuse_reward()
         logger.debug("点击式神录")
         ImageService.touch(Onmyoji.arrange_SSLTB)
         logger.debug("点击右侧详细")
-        ImageService.touch(Onmyoji.arrange_YCXX)
-        logger.debug("点击更换")
-        ImageService.touch(Onmyoji.arrange_GH)
+        ImageService.touch_coordinate((resolution[0], 0.5 * resolution[1]), wait=3)
         logger.debug("点击右侧御魂")
         ImageService.touch(Onmyoji.arrange_YCYH)
-        logger.debug("贪吃鬼，清理待吃御魂1-4星")
+        logger.debug("点击更换")
+        ImageService.touch(Onmyoji.arrange_GH)
+        logger.debug("1.贪吃鬼，清理待吃御魂1-4星")
         ImageService.touch(Onmyoji.arrange_TCG)
         logger.debug("点击进食习惯")
         ImageService.touch(Onmyoji.arrange_JSXG)
@@ -164,20 +161,30 @@ def soul_arrange(game_task: []):
         ImageService.touch(Onmyoji.arrange_TSQD)
         logger.debug("退出贪吃鬼小屋")
         ComplexService.get_reward(Onmyoji.arrange_TCGXW)
-        logger.debug("点击右侧奉纳")
+        logger.debug("点击右上角返回")
+        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+        logger.debug("2.点击右侧奉纳")
         ImageService.touch(Onmyoji.arrange_YCFN)
+        logger.debug("点击左上角已弃置")
+        ImageService.touch(Onmyoji.arrange_ZSJYQZ)
         logger.debug("长按弃置标志")
-        ImageService.touch(Onmyoji.arrange_QZBZ)
+        ImageService.touch(Onmyoji.arrange_QZBZ, cvstrategy=Cvstrategy.default, duration=2)
         logger.debug("判断是否弃置满额，200个")
-        ImageService.touch(Onmyoji.arrange_QZME)
-        logger.debug("奉纳")
-        ImageService.touch(Onmyoji.arrange_QZME)
-        logger.debug("点击获得奖励")
-        ComplexService.get_reward(Onmyoji.arrange_HDJL)
-        logger.debug("点击神赐")
-        ComplexService.get_reward(Onmyoji.arrange_SC)
-        logger.debug("奉纳，奉纳五星御魂")
-        logger.debug("返回首页")
+        is_full_amount = ImageService.touch(Onmyoji.arrange_QZME)
+        if is_full_amount:
+            logger.debug("奉纳")
+            ImageService.touch(Onmyoji.arrange_FN)
+            logger.debug("点击获得奖励")
+            ComplexService.get_reward(Onmyoji.arrange_HDJL)
+            logger.debug("点击神赐")
+            ComplexService.get_reward(Onmyoji.arrange_SC)
+        logger.debug("返回首页,3次")
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+    time.sleep(5)
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
     time_end = time.time()
     time_all = time_end - time_start
     logger.info("御魂整理总用时{}", UtilsTime.convert_seconds(time_all))

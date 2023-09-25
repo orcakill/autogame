@@ -12,6 +12,26 @@ from src.utils.utils_time import UtilsTime
 
 class OnmyojiController:
     @staticmethod
+    def create_execute_tasks(game_device: str, projects_num, project_name: str, game_id: int, project_num: str = None,
+                             game_round: str = 1, relation_num: str = 1, project_num_times: int = None):
+        # 大号+小号
+        if game_id == '0':
+            game_ids = ['1', '2', '3', '4', '5']
+        # 大号
+        elif game_id == '1':
+            game_ids = ['1']
+        # 小号
+        else:
+            game_ids = ['2', '3', '4', '5']
+        if projects_num:
+            # 获取任务
+            game_tasks = MapperExtend.select_game_task("", projects_num)
+        else:
+            game_tasks = OnmyojiController.create_tasks(game_ids, project_num, project_name, project_num_times)
+        # 执行任务
+        OnmyojiController.execute_tasks(game_tasks, game_round, relation_num, game_device)
+
+    @staticmethod
     def create_tasks(game_ids: [], project_num: str, project_name: str, project_num_times: int = None):
         # 初始化任务信息
         task = []

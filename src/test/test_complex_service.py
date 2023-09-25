@@ -139,11 +139,11 @@ class TestComplexService(TestCase):
         # 初始化测试任务信息
         game_projects = GameProjects()
         game_projects_relation = GameProjectsRelation()
-        game_account = select_game_account("1")
+        game_account = select_game_account("2")
         game_project = GameProject()
         game_project.project_name = "登录"
         game_task = [game_projects, game_projects_relation, game_account, game_project]
         ImageService.auto_setup("1")
-        impl_initialization.return_home(game_task)
+        impl_initialization.initialization(game_task,1)
         now1 = datetime.datetime.now()
         print(now1 - now)

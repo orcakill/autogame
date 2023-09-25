@@ -116,6 +116,7 @@ class ImageService:
                 logger.error("异常：{}", e)
             else:
                 pass
+
         return False
 
     @staticmethod

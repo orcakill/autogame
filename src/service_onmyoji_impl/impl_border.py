@@ -110,8 +110,10 @@ def region_border(game_task: []):
         logger.debug("本轮阴阳寮总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                      round(time_all, 3),
                      time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
+        return True
     else:
         logger.debug("无寮结界或无战斗次数，总用时{}秒", time_all)
+        return False
 
 
 def border_fight(game_task: [], fight_times: int = 40):
