@@ -205,6 +205,7 @@ class Onmyoji:
     soul_BQ_SDZR = r"探索\御魂\八岐大蛇\锁定阵容"
     soul_BQ_TCTZ = r"探索\御魂\八岐大蛇\退出挑战"
     soul_BQ_TZ = r"探索\御魂\八岐大蛇\挑战"
+    soul_BQ_ZDTZ = r"探索\御魂\八岐大蛇\组队挑战"
     soul_BQ_WS = r"探索\御魂\八岐大蛇\喂食"
     soul_BQ_WSXSJ = r"探索\御魂\八岐大蛇\喂食小三角"
     soul_BQ_XZ = r"探索\御魂\八岐大蛇\选择八岐大蛇"

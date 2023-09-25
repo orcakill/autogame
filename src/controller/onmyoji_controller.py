@@ -67,7 +67,6 @@ class OnmyojiController:
         try:
             time_start = time.time()
             logger.info("任务开始")
-
             # 循环项目组
             for i in range(int(game_round)):
                 logger.info("第{}轮", i + 1)
