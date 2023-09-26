@@ -69,7 +69,8 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['4'], '1', "个人突破")
+        WindowsService.limit_cpu_percentage(30)
+        TestOnmyojiService.test_project(self, ['1'], '2', "个人突破")
 
     def test_friends_manage(self):
         """
@@ -140,7 +141,7 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         WindowsService.limit_cpu_percentage(30)
-        TestOnmyojiService.test_project(self, ['1'], '2', "斗技")
+        TestOnmyojiService.test_project(self, ['2'], '1', "斗技")
 
     def test_soul_arrange(self):
         """
@@ -155,7 +156,7 @@ class TestOnmyojiService(TestCase):
         项目21 探索
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '0', "探索")
+        TestOnmyojiService.test_project(self, ['6'], '2', "探索")
 
     def test_spirit(self):
         """
@@ -166,7 +167,7 @@ class TestOnmyojiService(TestCase):
 
     def test_deed(self):
         """
-        项目23 御灵
+        项目23 契灵
         :return:
         """
         TestOnmyojiService.test_project(self, ['1'], '1', "契灵")
@@ -261,7 +262,7 @@ class TestOnmyojiService(TestCase):
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = 2
                 game_task = [game_projects, game_projects_relation, game_account, game_project]
-                OnmyojiService.explore_chapters(game_task)
+                OnmyojiService.explore_chapters(game_task,chapter=7)
             # 项目 22
             elif game_project.project_name in ["御灵"]:
                 game_projects_relation.project_num_times = 2

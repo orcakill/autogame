@@ -4,6 +4,7 @@
 # @File: test_cooperation.py
 # @Description: 合作
 """
+import time
 from unittest import TestCase
 
 from src.model.enum import Onmyoji
@@ -42,3 +43,4 @@ class TestCooperation(TestCase):
         for i in range(80):
             logger.debug("组队挑战-测试-第{}次等待战斗结果", i + 1)
             ComplexService.fight_end_win(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ, 100, 1)
+

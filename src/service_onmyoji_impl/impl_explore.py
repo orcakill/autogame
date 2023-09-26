@@ -49,6 +49,11 @@ def explore_chapters(game_task: [], chapter: int = 28):
         chapter_home = Onmyoji.explore_ZJSY_28
         # 章节层数
         chapter_layers = Onmyoji.explore_ZJ_28
+    elif chapter == 7:
+        # 章节首页
+        chapter_home = Onmyoji.explore_ZJSY_7
+        # 章节层数
+        chapter_layers = Onmyoji.explore_ZJ_7
     # 获取设备分辨率
     resolution = ImageService.resolution_ratio()
     logger.debug("章节探索-开始")
@@ -129,7 +134,7 @@ def explore_chapters(game_task: [], chapter: int = 28):
             if is_boss:
                 break
         logger.debug("判断是否有式神录")
-        is_reward = ImageService.exists(Onmyoji.explore_SSL,wait=4)
+        is_reward = ImageService.exists(Onmyoji.explore_SSL, wait=4)
         if is_reward:
             logger.debug("有式神录，点击左上角返回")
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)

@@ -161,13 +161,14 @@ class OnmyojiService:
         impl_pvp.pvp(game_task)
 
     @staticmethod
-    def explore_chapters(game_task: []):
+    def explore_chapters(game_task: [], chapter: int = 28):
         """
         章节探索
+        :param chapter: 章节
         :param game_task: 项目信息
         :return:
         """
-        impl_explore.explore_chapters(game_task)
+        impl_explore.explore_chapters(game_task, chapter)
 
     @staticmethod
     def spirit_fight(game_task: []):

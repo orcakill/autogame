@@ -367,6 +367,8 @@ class Onmyoji:
     explore_TSJMSSL = r"探索\章节探索\探索界面式神录"
     explore_QR = r"探索\章节探索\确认"
     explore_SPTZ = r"探索\章节探索\碎片挑战"
+    explore_ZJ_7 = r"探索\章节探索\章节\第七章"
+    explore_ZJSY_7 = r"探索\章节探索\章节首页\第七章"
     explore_ZJ_28 = r"探索\章节探索\章节\第二十八章"
     explore_ZJSY_28 = r"探索\章节探索\章节首页\第二十八章"
     explore_ZJTS = r"探索\章节探索\章节探索"
