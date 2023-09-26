@@ -12,7 +12,7 @@ from src.utils.utils_time import UtilsTime
 
 class OnmyojiController:
     @staticmethod
-    def create_execute_tasks(game_device: str, projects_num, project_name: str, game_id: int, project_num: str = None,
+    def create_execute_tasks(game_device: str, projects_num, project_name: str, game_id: str, project_num: str = None,
                              game_round: str = 1, relation_num: str = 1, project_num_times: int = None):
         # 大号+小号
         if game_id == '0':
@@ -140,12 +140,18 @@ class OnmyojiController:
                             # 项目 19
                             elif game_project.project_name in ["斗技"]:
                                 OnmyojiService.pvp(game_task)
+                            # 项目 20
+                            elif game_project.project_name in ["御魂整理"]:
+                                OnmyojiService.soul_arrange(game_task)
                             # 项目 21
                             elif game_project.project_name in ["探索"]:
                                 OnmyojiService.explore_chapters(game_task)
                             # 项目 22
                             elif game_project.project_name in ["御灵"]:
                                 OnmyojiService.spirit_fight(game_task)
+                            # 项目 23
+                            elif game_project.project_name in ["契灵"]:
+                                OnmyojiService.deed_spirit(game_task)
                         else:
                             logger.debug("当前状态初始化失败{}，不执行项目", game_account.game_name)
                         time_end = time.time()

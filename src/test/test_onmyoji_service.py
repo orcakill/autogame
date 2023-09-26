@@ -148,7 +148,7 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         WindowsService.limit_cpu_percentage(30)
-        TestOnmyojiService.test_project(self, ['1'], '1', "御魂整理")
+        TestOnmyojiService.test_project(self, ['2'], '1', "御魂整理")
 
     def test_explore(self):
         """
@@ -163,6 +163,13 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         TestOnmyojiService.test_project(self, ['1'], '1', "御灵")
+
+    def test_deed(self):
+        """
+        项目23 御灵
+        :return:
+        """
+        TestOnmyojiService.test_project(self, ['1'], '1', "契灵")
 
     def test_project(self, test_names, test_devices, project_name):
         """
@@ -260,3 +267,6 @@ class TestOnmyojiService(TestCase):
                 game_projects_relation.project_num_times = 2
                 game_task = [game_projects, game_projects_relation, game_account, game_project]
                 OnmyojiService.spirit_fight(game_task)
+            # 项目 23
+            elif game_project.project_name in ["契灵"]:
+                OnmyojiService.deed_spirit(game_task)

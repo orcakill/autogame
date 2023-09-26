@@ -380,10 +380,18 @@ class Onmyoji:
     explore_SSL = r"探索\章节探索\式神录"
 
     deed_ZCTZ = r"探索\契灵\再次挑战"
+    deed_ZHQR = r"探索\契灵\召唤确认"
+    deed_ZHZMS = r"探索\契灵\召唤镇墓兽"
+    deed_QL = r"探索\契灵\契灵"
+    deed_QLTB = r"探索\契灵\契灵图标"
+    deed_QLTZ = r"探索\契灵\契灵挑战"
+    deed_QLSY = r"探索\契灵\契灵首页"
     deed_ZDSB = r"探索\契灵\战斗失败"
     deed_ZDSL = r"探索\契灵\战斗胜利"
     deed_TC = r"探索\契灵\探查"
     deed_TCTZ = r"探索\契灵\退出挑战"
+    deed_SDZR = r"探索\契灵\锁定阵容"
+    deed_MQZH = r"探索\契灵\鸣契召唤"
 
     spirit_SC = r"探索\御灵\三层"
     spirit_ZCTZ = r"探索\御灵\再次挑战"
