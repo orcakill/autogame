@@ -75,7 +75,7 @@ class ImageService:
             return False
         except Exception as e:
             if is_throw:
-                logger.error("异常：{}", e)
+                logger.exception("异常：{}", e)
             else:
                 pass
         return False
