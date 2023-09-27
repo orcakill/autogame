@@ -456,6 +456,12 @@ class Onmyoji:
     arrange_JSXG = r"式神录\御魂整理\进食习惯"
     arrange_FN = r"式神录\御魂整理\奉纳"
 
+    plot_SGD = r"探索\剧情\三个点"
+    plot_XFTG = r"探索\剧情\下方跳过"
+    plot_YSKJ = r"探索\剧情\右上快进"
+    plot_XGZD = r"探索\剧情\小怪战斗"
+    plot_ZB = r"探索\剧情\准备"
+
     test_TEST1 = r"通用\测试\测试1"
 
 

@@ -283,7 +283,7 @@ def retreat_class(fight_type: int = 0):
     退级 退9，刷新
     :return:
     """
-    num_break = 4
+    num_break = 3
     if fight_type == 0:
         logger.debug("保级开始")
     elif fight_type == 1:

@@ -19,7 +19,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project(self, ['6'], "1", "登录")
+        TestOnmyojiService.test_project(self, ['2'], "0", "登录")
 
     def test_daily_rewards(self):
         """
@@ -156,7 +156,7 @@ class TestOnmyojiService(TestCase):
         项目21 探索
         :return:
         """
-        TestOnmyojiService.test_project(self, ['6'], '1', "探索", fight_times=10, chapter=13, difficulty=0, rotation=0)
+        TestOnmyojiService.test_project(self, ['6'], '2', "探索", fight_times=10, chapter=13, difficulty=0, rotation=0)
 
     def test_spirit(self):
         """
