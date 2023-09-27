@@ -13,12 +13,14 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def explore_chapters(game_task: [], chapter: int = 28):
+def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rotation: int = 1):
     """
     章节探索
     默认选择28章困难
     自动添加候补式神
     全打 打3次，有小怪打小怪，有boss打boss，都没有左右移动，检查不到小怪和boss，退出探索
+    :param rotation: 自动轮换 0 不轮换 1轮换
+    :param difficulty: 难度 0 普通 1 困难
     :param chapter: 默认28章
     :param game_task:
     :return:
@@ -45,15 +47,11 @@ def explore_chapters(game_task: [], chapter: int = 28):
         if game_projects_relation.project_num_times > 0:
             fight_times = game_projects_relation.project_num_times
     if chapter == 28:
-        # 章节首页
-        chapter_home = Onmyoji.explore_ZJSY_28
-        # 章节层数
-        chapter_layers = Onmyoji.explore_ZJ_28
+        chapter_home, chapter_layers = Onmyoji.explore_ZJSY_28, Onmyoji.explore_ZJ_28
     elif chapter == 7:
-        # 章节首页
-        chapter_home = Onmyoji.explore_ZJSY_7
-        # 章节层数
-        chapter_layers = Onmyoji.explore_ZJ_7
+        chapter_home, chapter_layers = Onmyoji.explore_ZJSY_7, Onmyoji.explore_ZJ_7
+    elif chapter == 13:
+        chapter_home, chapter_layers = Onmyoji.explore_ZJSY_13, Onmyoji.explore_ZJ_13
     # 获取设备分辨率
     resolution = ImageService.resolution_ratio()
     logger.debug("章节探索-开始")
@@ -64,15 +62,6 @@ def explore_chapters(game_task: [], chapter: int = 28):
         is_home = ImageService.exists(chapter_home)
         if not is_home:
             ComplexService.refuse_reward()
-            logger.debug("首页-判断是否有探索")
-            is_explore = ImageService.exists(Onmyoji.home_TS)
-            if is_explore:
-                logger.debug("点击探索")
-                ImageService.touch(Onmyoji.home_TS)
-                logger.debug("选择章节")
-                ImageService.touch(chapter_layers)
-                logger.debug("选择困难")
-                ImageService.touch(Onmyoji.explore_ZJNDKN)
             logger.debug("探索界面-判断是否是探索界面")
             is_explore = ImageService.exists(Onmyoji.soul_BQ_YHTB)
             if is_explore:
@@ -83,11 +72,24 @@ def explore_chapters(game_task: [], chapter: int = 28):
                     ImageService.touch(Onmyoji.explore_TCTZ)
                 logger.debug("选择章节")
                 ImageService.touch(chapter_layers)
+                if difficulty == 1:
+                    logger.debug("选择困难")
+                    ImageService.touch(Onmyoji.explore_ZJNDKN)
+                else:
+                    logger.debug("选择普通")
+                    ImageService.touch(Onmyoji.explore_ZJNDPT)
+            logger.debug("首页-判断是否有探索")
+            is_explore = ImageService.exists(Onmyoji.home_TS)
+            if is_explore:
+                logger.debug("点击探索")
+                ImageService.touch(Onmyoji.home_TS)
+                logger.debug("选择章节")
+                ImageService.touch(chapter_layers)
                 logger.debug("选择困难")
                 ImageService.touch(Onmyoji.explore_ZJNDKN)
         logger.debug("进入章节探索")
         ImageService.touch(Onmyoji.explore_ZJTS, timeouts=10)
-        if i == 1:
+        if i == 1 and rotation == 1:
             logger.debug("第一次-锁定阵容")
             ImageService.touch(Onmyoji.explore_SDZR)
             logger.debug("第一次-自动轮换")
@@ -174,3 +176,17 @@ def explore_chapters(game_task: [], chapter: int = 28):
         "{}章探索挑战，总用时{}，共{}轮，每轮平均战斗时间{}，战斗总用时{},每次战斗平均用时{}，挑战{}次，胜利{}次，失败{}次",
         chapter, UtilsTime.convert_seconds(time_all), fight_times, UtilsTime.convert_seconds(time_round_avg),
         UtilsTime.convert_seconds(time_fight_all), time_fight_avg, len_time_fight_list, num_win, num_false)
+
+
+def select_chapter():
+    """
+    选择最大章节
+    :return:
+    """
+    results = ImageService.find_all(Onmyoji.explore_ZZ)
+    if results:
+        result = max(results, key=lambda x: x['result'][1])['result']
+        if result:
+            ImageService.touch_coordinate(result)
+    else:
+        logger.debug("找不到章节")

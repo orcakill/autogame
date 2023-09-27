@@ -41,12 +41,14 @@ class ComplexService:
         time_start = time.time()
         while time.time() - time_start < timeouts:
             logger.debug("{}:{}", time.time() - time_start, timeouts)
+            # 战斗胜利+退出挑战
             is_first = ImageService.exists(fight_win, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                            threshold=threshold, wait=timeout)
             if is_first:
                 ImageService.touch_coordinate(is_first)
                 ImageService.exists(fight_quit, timeouts=timeout, is_click=True, wait=timeout)
                 return fight_win
+            # 退出挑战
             is_second = ImageService.exists(fight_quit, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                             threshold=threshold, wait=timeout)
             if is_second:
@@ -54,7 +56,9 @@ class ComplexService:
                                     is_click=True, wait=timeout)
                 return fight_quit
             if time.time() - time_start > 1 / 2 * timeouts or time.time() - time_start > 30:
+                # 拒接悬赏
                 ComplexService.refuse_reward()
+                # 战斗失败
                 is_third = ImageService.exists(fight_again, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                                threshold=threshold, wait=timeout)
                 if is_third:
@@ -62,15 +66,21 @@ class ComplexService:
                                         threshold=threshold,
                                         is_click=True, wait=timeout)
                     return fight_fail
+                # 未挑战
                 is_fourth = ImageService.exists(fight_fight, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                                 threshold=threshold, wait=timeout)
                 if is_fourth:
                     return fight_fight
+                # 未进攻
                 if fight_attack:
                     is_fifth = ImageService.exists(fight_attack, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                                    threshold=threshold, wait=timeout)
                     if is_fifth:
                         return fight_attack
+                #  失联
+                is_conn = ComplexService.loss_connection()
+                if is_conn:
+                    return is_conn
         return None
 
     @staticmethod
@@ -210,3 +220,17 @@ class ComplexService:
             logger.debug("拒接悬赏")
             return True
         return False
+
+    @staticmethod
+    def loss_connection(timeouts: float = 3):
+        """
+        失联掉线
+        :param timeouts:
+        :return:
+        """
+        is_connection = ImageService.touch(Onmyoji.comm_SL, cvstrategy=Cvstrategy.default, timeouts=timeouts)
+        if is_connection:
+            logger.debug("失联掉线")
+            return Onmyoji.comm_SL
+        else:
+            return False

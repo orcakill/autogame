@@ -51,7 +51,7 @@ if __name__ == '__main__':
             # 获取本日是周几（周一为0，周日为6）
             weekday = today.weekday() + 1
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
-                if not task_list[4] and current_hour < 9:
+                if not task_list[4]:
                     logger.info("6-12,大号小号地域鬼王+式神寄养")
                     OnmyojiController.create_execute_tasks(game_device, "5", "", '2')
                     task_list[4] = True
@@ -67,8 +67,9 @@ if __name__ == '__main__':
                 logger.info("12-17,大号小号式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '0')
                 task_list[5] = True
-            logger.info("12-17,大号阴阳寮挑战，循环")
-            OnmyojiController.create_execute_tasks(game_device, "3", "", '1')
+            if 12 <= current_hour < 16:
+                logger.info("12-16,大号阴阳寮挑战，循环")
+                OnmyojiController.create_execute_tasks(game_device, "3", "", '1')
         # 如果当前时间大于等于17点,小于23点
         elif 17 <= current_hour <= 23:
             if not task_list[6]:

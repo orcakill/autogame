@@ -83,6 +83,9 @@ def region_border(game_task: []):
                     num_win = num_win + 1
                 elif is_result in [Onmyoji.border_ZCTZ, Onmyoji.border_ZDSB]:
                     num_fail = num_fail + 1
+                elif is_result in [Onmyoji.comm_SL]:
+                    logger.debug("失联")
+                    break
                 time_fight_end = time.time()
                 time_fight_time = time_fight_end - time_fight_start
                 logger.debug("本次阴阳寮突破，用时{}秒", round(time_fight_time))
@@ -244,6 +247,9 @@ def border_fight(game_task: [], fight_times: int = 40):
                 if is_securities == "0":
                     logger.debug("无结界挑战劵，跳出循环")
                     break
+        elif is_result in [Onmyoji.comm_SL]:
+            logger.debug("失联掉线")
+            break
         time_fight_end = time.time()
         time_fight = time_fight_end - time_fight_start
         logger.debug("本次结界突破战斗结束，用时{}秒", round(time_fight, 3))

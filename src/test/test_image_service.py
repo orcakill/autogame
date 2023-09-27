@@ -19,7 +19,7 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("1")
-        result = ImageService.touch(Onmyoji.arrange_QZME)
+        result = ImageService.exists(Onmyoji.border_JJSY)
         logger.debug(result)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -68,11 +68,13 @@ class TestImageService(TestCase):
         :return:
         """
         now = datetime.datetime.now()
-        ImageService.auto_setup("0")
+        ImageService.auto_setup("1")
         # 测试代码
         logger.debug("开始")
-        result = ImageService.find_all(Onmyoji.foster_JJK_WXTG)
+        result = ImageService.find_all(Onmyoji.explore_ZZ)
         logger.debug(result)
+        logger.debug(len(result))
+        logger.debug(max(result, key=lambda x: x['result'][1])['result'])
         logger.debug("结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)

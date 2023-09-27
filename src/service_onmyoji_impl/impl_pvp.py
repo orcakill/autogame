@@ -11,6 +11,7 @@ from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
+from src.utils.utils_time import UtilsTime
 
 
 def pvp(game_task):
@@ -35,6 +36,8 @@ def pvp(game_task):
     current_hour = now.hour
     # 判断是否有庭院
     is_courtyard = False
+    # 默认不在斗技首页
+    is_home = False
     if 12 <= current_hour <= 22:
         for i in range(3):
             logger.debug("斗技-进入町中")
@@ -42,7 +45,7 @@ def pvp(game_task):
             logger.debug("斗技-判断是否有庭院")
             is_courtyard = ImageService.exists(Onmyoji.contend_TY)
             if is_courtyard:
-                logger.debug("旧版町中")
+                logger.debug("旧版町中，点击旧版斗技入口")
                 ImageService.touch(Onmyoji.contend_JBDJRK)
             logger.debug("判断是否在斗技首页")
             is_home = ImageService.touch(Onmyoji.contend_DJSY)
@@ -50,69 +53,73 @@ def pvp(game_task):
                 break
             else:
                 ComplexService.refuse_reward()
-        for i in range(fight_time):
-            time_fight_start = time.time()
-            logger.debug("判断是否有练习")
-            is_practice = ImageService.exists(Onmyoji.contend_LX)
-            if is_practice:
-                logger.debug("练习，无法战斗")
-                break
-            logger.debug("斗技-挑战{}次", i + 1)
-            is_fight = ImageService.touch(Onmyoji.contend_TZ)
-            if not is_fight:
-                # 拒接悬赏
-                ComplexService.refuse_reward()
-                logger.debug("斗技-点击可能的准备")
-                ImageService.touch(Onmyoji.contend_ZB)
-                logger.debug("斗技-点击可能的退出挑战")
-                ImageService.touch(Onmyoji.contend_TCTZ)
-                logger.debug("斗技-点击可能存在的段位晋升")
-                ComplexService.get_reward(Onmyoji.contend_DWJS)
-                logger.debug("斗技-再次点击挑战")
-                ImageService.touch(Onmyoji.contend_TZ)
-            logger.debug("等待5s")
-            time.sleep(5)
-            for i_auto in range(10):
-                logger.debug("战前准备{}", i_auto + 1)
-                logger.debug("点击自动选择")
-                ImageService.touch(Onmyoji.contend_ZDXZ)
-                logger.debug("点击可能存在的准备")
-                ImageService.touch(Onmyoji.contend_ZB)
-                logger.debug("点击可能存在的手动战斗，进入自动战斗")
-                ImageService.touch(Onmyoji.contend_SDZD)
-                logger.debug("判断是否进入自动战斗")
-                is_auto = ImageService.exists(Onmyoji.contend_ZDZD)
-                if is_auto:
+        if is_home:
+            for i in range(fight_time):
+                time_fight_start = time.time()
+                logger.debug("判断是否有练习")
+                is_practice = ImageService.exists(Onmyoji.contend_LX)
+                if is_practice:
+                    logger.debug("练习，无法战斗")
                     break
-                logger.debug("判断是否直接战斗胜利")
-                is_win = ImageService.exists(Onmyoji.contend_ZDSL)
-                if is_win:
-                    break
-                logger.debug("判断还在挑战页面")
-                is_fight = ImageService.exists(Onmyoji.contend_TZ)
-                if is_fight:
-                    logger.debug("再次点击挑战")
+                logger.debug("斗技-挑战{}次", i + 1)
+                is_fight = ImageService.touch(Onmyoji.contend_TZ)
+                if not is_fight:
+                    # 拒接悬赏
+                    ComplexService.refuse_reward()
+                    logger.debug("斗技-点击可能的准备")
+                    ImageService.touch(Onmyoji.contend_ZB)
+                    logger.debug("斗技-点击可能的退出挑战")
+                    ImageService.touch(Onmyoji.contend_TCTZ)
+                    logger.debug("斗技-点击可能存在的段位晋升")
+                    ComplexService.get_reward(Onmyoji.contend_DWJS)
+                    logger.debug("斗技-再次点击挑战")
                     ImageService.touch(Onmyoji.contend_TZ)
-            logger.debug("斗技-等待战斗结果")
-            is_result = ComplexService.fight_end(Onmyoji.contend_BDTC, Onmyoji.contend_ZDSB, Onmyoji.contend_ZDSB,
-                                                 Onmyoji.contend_ZDSL, Onmyoji.contend_TZ, None, 600, 2)
-            if i < 6:
-                logger.debug("战斗次数小于5,点击可能存在的退出挑战")
-                ImageService.touch(Onmyoji.contend_TCTZ)
-            logger.debug("点击可能存在的段位晋升")
-            ComplexService.get_reward(Onmyoji.contend_DWJS)
-            # 记录战斗结果
-            if is_result in [Onmyoji.contend_ZDSL, Onmyoji.contend_BDTC]:
-                logger.debug("斗技-战斗胜利")
-                num_win = num_win + 1
-            elif is_result in [Onmyoji.contend_ZDSB]:
-                logger.debug("斗技-战斗失败")
-                num_fail = num_fail + 1
-            time_fight_end = time.time()
-            time_fight_time = time_fight_end - time_fight_start
-            logger.debug("本次斗技，用时{}秒", round(time_fight_time))
-            time_fight_list.append(time_fight_time)
+                logger.debug("等待5s")
+                time.sleep(5)
+                for i_auto in range(10):
+                    logger.debug("战前准备{}", i_auto + 1)
+                    logger.debug("点击自动选择")
+                    ImageService.touch(Onmyoji.contend_ZDXZ)
+                    logger.debug("点击可能存在的准备")
+                    ImageService.touch(Onmyoji.contend_ZB)
+                    logger.debug("点击可能存在的手动战斗，进入自动战斗")
+                    ImageService.touch(Onmyoji.contend_SDZD)
+                    logger.debug("判断是否进入自动战斗")
+                    is_auto = ImageService.exists(Onmyoji.contend_ZDZD)
+                    if is_auto:
+                        break
+                    logger.debug("判断是否直接战斗胜利")
+                    is_win = ImageService.exists(Onmyoji.contend_ZDSL)
+                    if is_win:
+                        break
+                    logger.debug("判断还在挑战页面")
+                    is_fight = ImageService.exists(Onmyoji.contend_TZ)
+                    if is_fight:
+                        logger.debug("再次点击挑战")
+                        ImageService.touch(Onmyoji.contend_TZ)
+                logger.debug("斗技-等待战斗结果")
+                is_result = ComplexService.fight_end(Onmyoji.contend_BDTC, Onmyoji.contend_ZDSB, Onmyoji.contend_ZDSB,
+                                                     Onmyoji.contend_ZDSL, Onmyoji.contend_TZ, None, 600, 2)
+                if i < 6:
+                    logger.debug("战斗次数小于5,点击可能存在的退出挑战")
+                    ImageService.touch(Onmyoji.contend_TCTZ)
+                logger.debug("点击可能存在的段位晋升")
+                ComplexService.get_reward(Onmyoji.contend_DWJS)
+                # 记录战斗结果
+                if is_result in [Onmyoji.contend_ZDSL, Onmyoji.contend_BDTC]:
+                    logger.debug("斗技-战斗胜利")
+                    num_win = num_win + 1
+                elif is_result in [Onmyoji.contend_ZDSB]:
+                    logger.debug("斗技-战斗失败")
+                    num_fail = num_fail + 1
+                time_fight_end = time.time()
+                time_fight_time = time_fight_end - time_fight_start
+                logger.debug("本次斗技，用时{}秒", round(time_fight_time))
+                time_fight_list.append(time_fight_time)
+        else:
+            logger.debug("不在斗技首页")
         logger.debug("斗技-返回首页")
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
         ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
         if is_courtyard:
             logger.debug("点击庭院返回首页")
@@ -136,4 +143,5 @@ def pvp(game_task):
         logger.debug("斗技-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     logger.debug("本轮斗技挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
-                 round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
+                 UtilsTime.convert_seconds(time_all), time_fight_all, time_fight_avg, len_time_fight_list, num_win,
+                 num_fail)
