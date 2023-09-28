@@ -127,9 +127,9 @@ class TestComplexService(TestCase):
     def test_card(self):
         logger.debug("结界卡识别")
         warnings.simplefilter('ignore', ResourceWarning)
-        ImageService.auto_setup("2")
+        ImageService.auto_setup("1")
         now = datetime.datetime.now()
-        logger.debug(impl_house.get_card_type(Onmyoji.foster_JJK_TG,1))
+        logger.debug(impl_house.get_card_type(Onmyoji.foster_JJK_TG))
         now1 = datetime.datetime.now()
         print(now1 - now)
 
@@ -144,6 +144,6 @@ class TestComplexService(TestCase):
         game_project.project_name = "登录"
         game_task = [game_projects, game_projects_relation, game_account, game_project]
         ImageService.auto_setup("1")
-        impl_initialization.initialization(game_task,1)
+        impl_initialization.initialization(game_task, 1)
         now1 = datetime.datetime.now()
         print(now1 - now)

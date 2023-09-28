@@ -302,6 +302,13 @@ class Onmyoji:
     foster_JJK_LXTG = r"阴阳寮\式神寄养\结界卡\六星太鼓"
     foster_JJK_LXDY = r"阴阳寮\式神寄养\结界卡\六星斗鱼"
     foster_JJK_WFZ = r"阴阳寮\式神寄养\结界卡\未放置"
+    foster_ZCJJK_SXTG = r"阴阳寮\式神寄养\左侧结界卡\三星太鼓"
+    foster_ZCJJK_SXTG1 = r"阴阳寮\式神寄养\左侧结界卡\四星太鼓"
+    foster_ZCJJK_SXDY1 = r"阴阳寮\式神寄养\左侧结界卡\四星斗鱼"
+    foster_ZCJJK_WXTG = r"阴阳寮\式神寄养\左侧结界卡\五星太鼓"
+    foster_ZCJJK_WXDY = r"阴阳寮\式神寄养\左侧结界卡\五星斗鱼"
+    foster_ZCJJK_LXTG = r"阴阳寮\式神寄养\左侧结界卡\六星太鼓"
+    foster_ZCJJK_LXDY = r"阴阳寮\式神寄养\左侧结界卡\六星斗鱼"
 
     region_ZCTZ = r"探索\阴阳寮突破\再次挑战"
     region_ZB = r"探索\阴阳寮突破\准备"
@@ -463,6 +470,7 @@ class Onmyoji:
     plot_ZB = r"探索\剧情\准备"
 
     test_TEST1 = r"通用\测试\测试1"
+    test_TEST2 = r"通用\测试\测试2"
 
 
 class Cvstrategy:

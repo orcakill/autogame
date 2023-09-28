@@ -48,14 +48,14 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         WindowsService.limit_cpu_percentage(30)
-        TestOnmyojiService.test_project(self, ['1'], '1', "式神寄养")
+        TestOnmyojiService.test_project(self, ['4'], '1', "式神寄养")
 
     def test_shack_house(self):
         """
         项目6 阴阳寮管理
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "阴阳寮管理")
+        TestOnmyojiService.test_project(self, ['2'], '1', "阴阳寮管理")
 
     def test_region_border(self):
         """
