@@ -15,5 +15,5 @@ airtest_service = AirtestService()
 class TestOcrService(TestCase):
     def test_border_bond(self):
         airtest_service.auto_setup("0")
-        ocr_service.border_bond()
+        ocr_service.border_bond1()
         logger.debug("结束")

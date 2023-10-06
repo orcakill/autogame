@@ -143,7 +143,7 @@ class ComplexService:
                 logger.debug("开始滑动")
                 for i in range(times):
                     logger.debug("滑动{}次", i + 1)
-                    AirtestService.swipe(xy1, xy2)
+                    ImageService.swipe(xy1, xy2)
                     logger.debug("判断是否有{}", target)
                     is_target = ImageService.touch(target, wait=1)
                     if is_target:
@@ -168,7 +168,7 @@ class ComplexService:
                 logger.debug("点击顶部加成")
                 AirtestService.touch_coordinate(coordinate_word)
                 logger.debug("根据类型确定纵坐标")
-                coordinate_type = ImageService.exists(add_type, timeouts=2)
+                coordinate_type = ImageService.exists(add_type)
                 if add_switch == 0:
                     logger.debug("关闭加成")
                     logger.debug("获取加成开的个数")
@@ -179,21 +179,21 @@ class ComplexService:
                         for i in range(len(coordinate_result)):
                             ImageService.touch_coordinate(coordinate_result[i]['result'])
                     logger.debug("退出顶部加成")
-                    AirtestService.touch_coordinate(coordinate_word, wait_time=2)
+                    ImageService.touch_coordinate(coordinate_word, wait=2)
                 else:
                     logger.debug("打开加成")
                     logger.debug("根据类型确定横坐标")
-                    coordinate_switch = ImageService.exists(add_close, timeouts=2, cvstrategy=Cvstrategy.default)
+                    coordinate_switch = ImageService.exists(add_close, cvstrategy=Cvstrategy.default)
                     if coordinate_switch and coordinate_type:
                         logger.debug("点击计算出的开关坐标")
-                        AirtestService.touch_coordinate((coordinate_switch[0], coordinate_type[1]), wait_time=2)
+                        ImageService.touch_coordinate((coordinate_switch[0], coordinate_type[1]), wait=2)
                         logger.debug("退出顶部加成")
-                        AirtestService.touch_coordinate(coordinate_word, wait_time=2)
+                        ImageService.touch_coordinate(coordinate_word, wait=2)
                         return True
                     else:
                         logger.debug("未找到加成坐标")
                         logger.debug("退出顶部加成")
-                        AirtestService.touch_coordinate(coordinate_word, wait_time=2)
+                        ImageService.touch_coordinate(coordinate_word, wait=2)
 
             else:
                 logger.debug("没找到顶部加成")
@@ -224,13 +224,17 @@ class ComplexService:
     @staticmethod
     def loss_connection(timeouts: float = 3):
         """
-        失联掉线
+        失联掉线  或 其它设备登录
         :param timeouts:
         :return:
         """
         is_connection = ImageService.touch(Onmyoji.comm_SL, cvstrategy=Cvstrategy.default, timeouts=timeouts)
-        if is_connection:
-            logger.debug("失联掉线")
+        is_login = ImageService.touch(Onmyoji.comm_QTSBDL, cvstrategy=Cvstrategy.default, timeouts=timeouts)
+        if is_connection or is_login:
+            if is_connection:
+                logger.debug("失联掉线")
+            if is_login:
+                logger.debug("其他设备登录")
             return Onmyoji.comm_SL
         else:
             return False

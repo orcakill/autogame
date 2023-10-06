@@ -39,7 +39,7 @@ class ActivityService:
         :return:
         """
         game_account = GameAccount(game_task[2])
-        logger.debug("爬塔-真火切磋-{}", game_account.game_name)
+        logger.debug("爬塔-真火切磋-{}", game_account.role_name)
         # 初始化图片路径
         p_buy = r"活动\20230823\爬塔\购买"
         p_fight = r"活动\20230823\爬塔\挑战"
@@ -86,7 +86,7 @@ class ActivityService:
         logger.debug("锁定阵容")
         image_service.touch(p_unlock)
         for i in range(240):
-            logger.debug("{}:第{}次挑战", game_account.game_name, i + 1)
+            logger.debug("{}:第{}次挑战", game_account.role_name, i + 1)
             is_fight = image_service.touch(p_fight)
             if not is_fight:
                 logger.debug("挑战未点击成功，判断是否有退出挑战")

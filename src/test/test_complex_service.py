@@ -14,7 +14,6 @@ from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
 from src.service_onmyoji_impl import impl_house, impl_initialization
-from src.temp.temp_fight_end import TempComplexService1
 from src.utils.my_logger import logger
 
 
@@ -89,26 +88,6 @@ class TestComplexService(TestCase):
         now1 = datetime.datetime.now()
         print(now1 - now)
 
-    def test_deed_fight(self):
-        """
-        契灵-探查，临时
-        :return:
-        """
-        WindowsService.limit_cpu_percentage(30)
-        AirtestService.auto_setup("1")
-        logger.debug("开始")
-        now = datetime.datetime.now()
-        for i in range(50):
-            logger.debug("点击探查{}", i + 1)
-            ImageService.touch(Onmyoji.deed_TC)
-            ImageService.touch(Onmyoji.comm_FH_XSFYHSCH)
-            logger.debug("等待战斗结果")
-            TempComplexService1.fight_end(Onmyoji.deed_ZDSL, Onmyoji.deed_ZDSB, Onmyoji.deed_ZCTZ,
-                                          Onmyoji.deed_TCTZ, Onmyoji.deed_TC, 60, 4)
-        logger.debug("结束")
-        now1 = datetime.datetime.now()
-        print(now1 - now)
-
     def test_faster(self):
         """
         寄养检查
@@ -119,7 +98,7 @@ class TestComplexService(TestCase):
         ImageService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()
-        impl_house.get_optimal_card1()
+        impl_house.get_optimal_card()
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -129,7 +108,17 @@ class TestComplexService(TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         ImageService.auto_setup("1")
         now = datetime.datetime.now()
-        logger.debug(impl_house.get_card_type(Onmyoji.foster_JJK_TG))
+        logger.debug(impl_house.get_card_type(Onmyoji.foster_JJK_TG,0))
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
+    def test_left_card(self):
+        logger.debug("左侧结界卡识别")
+        warnings.simplefilter('ignore', ResourceWarning)
+        ImageService.auto_setup("1")
+        now = datetime.datetime.now()
+        result = impl_house.get_card_left_type(Onmyoji.foster_JJK_WXTG)
+        logger.debug(result)
         now1 = datetime.datetime.now()
         print(now1 - now)
 
@@ -147,3 +136,4 @@ class TestComplexService(TestCase):
         impl_initialization.initialization(game_task, 1)
         now1 = datetime.datetime.now()
         print(now1 - now)
+

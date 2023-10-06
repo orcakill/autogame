@@ -34,12 +34,13 @@ def awakening(game_task: [], awakening_type: int = 0):
     game_account = GameAccount(game_task[2])
     fight_time = game_projects_relation.project_num_times
     if fight_time is None:
+        logger.debug("无任务战斗次数")
         fight_time = 1
     # 获取当前日期
     today = datetime.date.today()
     # 获取本日是周几（周一为0，周日为6）
     weekday = today.weekday() + 1
-    logger.debug(game_account.game_name)
+    logger.debug(game_account.role_name)
     logger.debug("进入探索")
     ImageService.touch(Onmyoji.home_TS)
     logger.debug("进入觉醒")
@@ -106,7 +107,7 @@ def awakening(game_task: [], awakening_type: int = 0):
     ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 0)
     logger.debug("觉醒-返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-    logger.debug("觉醒-返回首页")
+    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)

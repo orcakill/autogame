@@ -31,7 +31,10 @@ def pvp(game_task):
     # 项目组项目关系
     game_projects_relation = GameProjectsRelation(game_task[1])
     # 项目战斗次数
-    fight_time = game_projects_relation.project_num_times
+    fight_time = 10
+    if game_projects_relation.project_num_times:
+        logger.debug("任务执行次数{}", game_projects_relation.project_num_times)
+        fight_time = game_projects_relation.project_num_times
     now = datetime.datetime.now()
     current_hour = now.hour
     # 判断是否有庭院
@@ -47,6 +50,8 @@ def pvp(game_task):
             if is_courtyard:
                 logger.debug("旧版町中，点击旧版斗技入口")
                 ImageService.touch(Onmyoji.contend_JBDJRK)
+            logger.debug("点击可能存在的确定")
+            ImageService.touch(Onmyoji.contend_QD,wait=5)
             logger.debug("判断是否在斗技首页")
             is_home = ImageService.touch(Onmyoji.contend_DJSY)
             if is_home:

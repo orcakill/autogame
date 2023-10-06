@@ -30,13 +30,16 @@ def foster_care(game_task: []):
     foster_result = None
     logger.debug("式神寄养")
     for i_time in range(2):
+        if time.time() - time_start > 20 * 60:
+            logger.debug("寄养执行时间超20分钟")
+            break
         for i_growing in range(3):
             logger.debug("点击阴阳寮图标")
             ImageService.touch(Onmyoji.foster_YYLTB)
             logger.debug("点击寮首页结界")
             ImageService.touch(Onmyoji.foster_JJTB, timeouts=10)
             logger.debug("点击结界-式神育成")
-            is_growing = ImageService.touch(Onmyoji.foster_SSYC, wait=3, timeouts=10)
+            is_growing = ImageService.touch(Onmyoji.foster_SSYC, wait=6, timeouts=10)
             if is_growing:
                 break
             else:
@@ -44,12 +47,12 @@ def foster_care(game_task: []):
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
         if is_foster:
-            logger.debug("寄养检查，按六星到三星太鼓，再到六星到三星斗鱼")
-            faster_place = get_optimal_card1()
+            logger.debug("寄养检查，按六星到三星太鼓，再到六星到三星太鼓")
+            faster_place = get_optimal_card()
             logger.debug(faster_place)
             if is_foster and faster_place:
                 logger.debug("最优结界卡,进入好友结界")
-                faster_name = game_account.game_name + faster_place.replace("阴阳寮\\式神寄养\\结界卡\\", '_')
+                faster_name = game_account.role_name + faster_place.replace("阴阳寮\\式神寄养\\结界卡\\", '_')
                 ImageService.snapshot(faster_name, True)
                 ImageService.touch(Onmyoji.foster_JRJJ)
                 logger.debug("点击达摩,优先大吉达摩")
@@ -85,81 +88,9 @@ def get_optimal_card():
     :return:
     """
     # 寄养检查轮次
-    num_round = 0
-    # 结界卡，默认太鼓，六星太鼓
-    target_type = Onmyoji.foster_JJK_TG
-    target_card = Onmyoji.foster_JJK_LXTG
-    # 寄养检查好友数
-    num_friends = 0
-    for i_type in range(7):
-        num_round = num_round + 1
-        logger.debug("第{}轮,初始化目标结界卡", i_type + 1)
-        if i_type == 0:
-            target_type = Onmyoji.foster_JJK_TG
-            target_card = Onmyoji.foster_JJK_LXTG
-        elif i_type == 1:
-            target_type = Onmyoji.foster_JJK_TG
-            target_card = Onmyoji.foster_JJK_WXTG
-        elif i_type == 2:
-            target_type = Onmyoji.foster_JJK_TG
-            target_card = Onmyoji.foster_JJK_SXTG1
-        elif i_type == 3:
-            target_type = Onmyoji.foster_JJK_TG
-            target_card = Onmyoji.foster_JJK_SXTG
-        elif i_type == 4:
-            target_type = Onmyoji.foster_JJK_DY
-            target_card = Onmyoji.foster_JJK_LXDY
-        elif i_type == 5:
-            target_type = Onmyoji.foster_JJK_DY
-            target_card = Onmyoji.foster_JJK_WXDY
-        elif i_type == 6:
-            target_type = Onmyoji.foster_JJK_DY
-            target_card = Onmyoji.foster_JJK_SXDY1
-        logger.debug("目标结界卡：{}", target_card)
-        logger.debug("点击可寄养标志")
-        ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10)
-        logger.debug("获取上方好友坐标")
-        coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
-        logger.debug("获取上方跨区坐标")
-        coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
-        if coordinate_friend and coordinate_region:
-            logger.debug("计算起始位置1,测试系数0.8228571428571428")
-            coordinate_difference = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
-            coordinate_start = (coordinate_region[0], coordinate_region[1])
-            logger.debug("计算起始位置2")
-            coordinate_end = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
-            for i_friends in range(100):
-                logger.debug("当前第{}轮第{}个好友", i_type + 1, i_friends + 1)
-                num_friends = num_friends + 1
-                logger.debug("点击位置2")
-                ImageService.touch_coordinate(coordinate_end)
-                logger.debug(target_card)
-                if i_friends > 20:
-                    logger.debug("判断目前结界卡类型，判断未放置")
-                    card_type = get_card_type(target_type, 1)
-                else:
-                    logger.debug("判断目前结界卡类型，不判断未放置")
-                    card_type = get_card_type(target_type, 0)
-                logger.debug(card_type)
-                if card_type == target_card:
-                    logger.debug("目标结界,中断查找")
-                    return target_card
-                if card_type == Onmyoji.foster_JJK_WFZ:
-                    logger.debug("未放置，中断查找,退出重新进入")
-                    ComplexService.get_reward(Onmyoji.foster_SFHY)
-                    break
-                logger.debug("向下滑动")
-                ComplexService.refuse_reward()
-                ImageService.swipe(coordinate_end, coordinate_start)
-
-
-def get_optimal_card1():
-    """
-    遍历寄养列表，计算出最优结界卡位置返回，六星太鼓直接寄养
-    :return:
-    """
-    # 寄养检查轮次
-    num_round = 0
+    num_round = 1
+    # 寄养开始时间
+    time_start = time.time()
     # 结界卡，默认太鼓，六星太鼓
     target_type = Onmyoji.foster_JJK_TG
     target_left_card = Onmyoji.foster_ZCJJK_LXTG
@@ -167,8 +98,11 @@ def get_optimal_card1():
     # 寄养检查好友数
     num_friends = 0
     for i_type in range(7):
+        logger.debug("寄养-第{}轮,初始化目标结界卡", i_type + 1)
         num_round = num_round + 1
-        logger.debug("寄养测试-第{}轮,初始化目标结界卡", i_type + 1)
+        if time.time() - time_start > 20 * 60:
+            logger.debug("轮次执行时间超20分钟")
+            break
         if i_type == 0:
             target_type = Onmyoji.foster_JJK_TG
             target_left_card = Onmyoji.foster_ZCJJK_LXTG
@@ -197,17 +131,17 @@ def get_optimal_card1():
             target_type = Onmyoji.foster_JJK_DY
             target_left_card = Onmyoji.foster_ZCJJK_SXDY1
             target_card = Onmyoji.foster_JJK_SXDY1
-        logger.debug("寄养测试-目标结界卡：{}", target_card)
-        logger.debug("寄养测试--点击可寄养标志")
-        ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10)
-        logger.debug("寄养测试-获取上方好友坐标")
+        logger.debug("寄养-目标结界卡：{}", target_card)
+        logger.debug("寄养--点击可寄养标志")
+        ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10, wait=5)
+        logger.debug("寄养-获取上方好友坐标")
         coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
-        logger.debug("寄养测试-获取上方跨区坐标")
+        logger.debug("寄养-获取上方跨区坐标")
         coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
         if coordinate_friend and coordinate_region:
             logger.debug("计算跨区到好友1的间距,好友1和2的间距")
             coordinate_difference = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
-            coordinate_difference1 = 0.9102564102564102 * (coordinate_region[0] - coordinate_friend[0])
+            coordinate_difference1 = 0.9002849002849003 * (coordinate_region[0] - coordinate_friend[0])
             logger.debug("计算好友位置1、2、3、4")
             coordinate_friend1 = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
             coordinate_friend2 = (
@@ -216,49 +150,51 @@ def get_optimal_card1():
                 coordinate_region[0], coordinate_region[1] + coordinate_difference + 2 * coordinate_difference1)
             coordinate_friend4 = (
                 coordinate_region[0], coordinate_region[1] + coordinate_difference + 3 * coordinate_difference1)
-            for i_friends in range(100):
-                ComplexService.refuse_reward()
+            for i_friends in range(10):
                 logger.debug("当前第{}轮第{}-{}个好友,目标{}", i_type + 1, i_friends * 4 + 1, i_friends * 4 + 4,
                              target_card)
+                if time.time() - time_start > 20 * 60:
+                    logger.debug("单轮次好友检查执行时间超20分钟")
+                    break
+                # 拒接协战
+                ComplexService.refuse_reward()
                 logger.debug("点击好友位置1、2、3、4")
-                ImageService.touch_coordinate(coordinate_friend1)
-                ImageService.touch_coordinate(coordinate_friend2)
-                ImageService.touch_coordinate(coordinate_friend3)
-                ImageService.touch_coordinate(coordinate_friend4)
-                logger.debug("判断左侧是否有目标结界卡")
-                is_left = get_card_type1(target_left_card)
-                logger.debug("左侧对比结果,{}:{}", target_left_card, is_left)
-                if is_left == target_left_card:
-                    logger.debug("左侧有目标结界卡,识别当前4个结界")
-                    for i_current in range(1, 5):
-                        coordinate_current = coordinate_friend1
-                        if i_current == 2:
-                            coordinate_current = coordinate_friend2
-                        elif i_current == 3:
-                            coordinate_current = coordinate_friend3
-                        elif i_current == 4:
-                            coordinate_current = coordinate_friend4
-                        logger.debug("点击左侧位置{}", i_current)
-                        ImageService.touch_coordinate(coordinate_current)
+                ImageService.touch_coordinate(coordinate_friend1, wait=0.5)
+                ImageService.touch_coordinate(coordinate_friend2, wait=0.5)
+                ImageService.touch_coordinate(coordinate_friend3, wait=0.5)
+                ImageService.touch_coordinate(coordinate_friend4, wait=0.5)
+                logger.debug("判断左侧是否有目标结界卡，获取坐标")
+                is_left = get_card_left_type(target_left_card)
+                if is_left:
+                    logger.debug("左侧对比结果,{}:{}", target_left_card, is_left[0])
+                    if is_left[0] == target_left_card:
+                        logger.debug("左侧有目标结界卡,点击左侧坐标{}", is_left[1])
+                        ImageService.touch_coordinate(is_left[1])
                         logger.debug("判断当前结界卡星级和类型")
                         card_type = get_card_type(target_type, 0)
                         logger.debug(card_type)
                         if card_type == target_card:
                             logger.debug("目标结界,中断查找")
                             return target_card
-                if is_left == Onmyoji.foster_JJK_WFZ:
-                    logger.debug("未放置，中断查找,退出重新进入")
+                    if is_left[0] == Onmyoji.foster_JJK_WFZ:
+                        logger.debug("未放置，中断查找,退出重新进入")
+                        ComplexService.get_reward(Onmyoji.foster_SFHY)
+                        break
+                else:
+                    logger.debug("左侧结果为其它情况")
+                if i_friends == 9:
+                    logger.debug("超出40个好友，不再滑动，中断查找,退出重新进入")
                     ComplexService.get_reward(Onmyoji.foster_SFHY)
                     break
                 logger.debug("向下滑动4位好友")
                 ComplexService.refuse_reward()
-                ImageService.swipe(coordinate_friend4, coordinate_friend1)
+                ImageService.swipe(coordinate_friend4, coordinate_friend1, 2)
                 num_friends = num_friends + 4
 
 
 def get_card_type(target_type: str, not_placed: int = 0):
     """
-    获取当前结界卡,判断当前结界卡类型和等级，只要太鼓
+    获取当前结界卡,判断当前结界卡类型和等级
     :return:
     """
 
@@ -270,9 +206,9 @@ def get_card_type(target_type: str, not_placed: int = 0):
 
     def check_image_confidence(image, threshold, rgb):
         if image:
-            confidence = ImageService.cal_ccoeff_confidence(image, threshold=threshold, rgb=rgb, x1=0.5)
-            logger.debug("{},{}", image, confidence)
-            return confidence
+            confidence = ImageService.cv_match(image, threshold=threshold, rgb=rgb, x1=0.5)
+            if confidence:
+                return confidence['confidence']
         return 0
 
     card_types = [target_type]
@@ -281,6 +217,7 @@ def get_card_type(target_type: str, not_placed: int = 0):
     else:
         card_types.append("")
 
+    # 太鼓和未放置
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(check_image, image_path, 0.7, False) for image_path in card_types]
 
@@ -296,7 +233,7 @@ def get_card_type(target_type: str, not_placed: int = 0):
                           '']
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = [executor.submit(check_image_confidence, image_path, 0.9, True) for image_path in card_types]
+            futures = [executor.submit(check_image_confidence, image_path, 0.8, True) for image_path in card_types]
         results = [future.result() for future in futures]
         max_value = max(results)
         results = [False if x != max_value else x for x in results]
@@ -319,7 +256,7 @@ def get_card_type(target_type: str, not_placed: int = 0):
     return None
 
 
-def get_card_type1(target_card: str):
+def get_card_left_type(target_card: str):
     """
     获取当前结界卡,直接判断左侧是否有目标结界卡
     :return:
@@ -328,22 +265,22 @@ def get_card_type1(target_card: str):
     def check_image_confidence(image, threshold, rgb):
         if image:
             if image == Onmyoji.foster_JJK_WFZ:
-                confidence = ImageService.cal_ccoeff_confidence(image, threshold=threshold, rgb=rgb, x1=0.5)
+                result = ImageService.cv_match(image, threshold=threshold, rgb=rgb, x1=0.5)
             else:
-                confidence = ImageService.cal_ccoeff_confidence(image, threshold=threshold, rgb=rgb, x2=0.5)
-            return confidence
+                result = ImageService.cv_match(image, threshold=threshold, rgb=rgb, x2=0.5)
+            return result
         return 0
 
     card_types = [target_card, Onmyoji.foster_JJK_WFZ]
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = [executor.submit(check_image_confidence, image_path, 0.6, True) for image_path in card_types]
+        futures = [executor.submit(check_image_confidence, image_path, 0.6, False) for image_path in card_types]
     results = [future.result() for future in futures]
     if results[0]:
-        logger.debug("检查结果：{},相似度：{}", target_card, results[0])
-        return target_card
+        logger.debug("检查结果：{},相似度：{}", target_card, results[0]['confidence'])
+        return [target_card, results[0]['result'], results[0]['confidence']]
     elif results[1]:
         logger.debug("检查结果：{}", Onmyoji.foster_JJK_WFZ)
-        return Onmyoji.foster_JJK_WFZ
+        return [Onmyoji.foster_JJK_WFZ, None, 0]
     logger.debug("检查结果：其他情况")
     return None
 
@@ -366,7 +303,7 @@ def shack_house(game_task: []):
     time_start = time.time()
     # 账号信息
     game_account = GameAccount(game_task[2])
-    logger.debug(game_account.game_name)
+    logger.debug(game_account.role_name)
     logger.debug("进入阴阳寮")
     ImageService.touch(Onmyoji.shack_YYLTB)
     logger.debug("1.寮资金纸人")

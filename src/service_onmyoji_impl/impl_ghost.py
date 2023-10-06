@@ -18,7 +18,7 @@ def ghost_king(game_task: []):
     time_start = time.time()
     # 账号信息
     game_account = GameAccount(game_task[2])
-    logger.debug(game_account.game_name)
+    logger.debug(game_account.role_name)
     now = datetime.datetime.now()
     current_hour = now.hour
     if 6 <= current_hour <= 24:
@@ -50,14 +50,14 @@ def ghost_king(game_task: []):
                     logger.debug("黄鹤楼")
                     ImageService.touch(Onmyoji.ghost_SXGW_HHL, wait=5)
                 logger.debug("进入鬼王挑战页面")
-                if game_account.account_class == "0":
+                if game_account.role_class == "0":
                     logger.debug("大号，挑战极地域鬼王")
                     logger.debug("判断是否有极标志")
                     is_ordinary = ImageService.exists(Onmyoji.ghost_JBZ)
                     if is_ordinary:
                         logger.debug("点击极标志，切换成极地域鬼王")
                         ImageService.touch_coordinate(is_ordinary)
-                if game_account.account_class != "0":
+                if game_account.role_class != "0":
                     logger.debug("小号，挑战等级一的地域鬼王")
                     is_first = ImageService.exists(Onmyoji.ghost_DJY, cvstrategy=Cvstrategy.default)
                     if not is_first:
@@ -121,7 +121,7 @@ def encounter_demons(game_task: []):
     time_start = time.time()
     # 账号信息
     game_account = GameAccount(game_task[2])
-    logger.debug(game_account.game_name)
+    logger.debug(game_account.role_name)
     now = datetime.datetime.now()
     current_hour = now.hour
     is_gathering = False
@@ -158,7 +158,7 @@ def encounter_demons(game_task: []):
         logger.debug("判断是否有首领极")
         is_extremely = ImageService.exists(Onmyoji.demon_SLJ)
         for i_boss in range(20):
-            if is_extremely and game_account.account_class == 0 and i_boss < 10:
+            if is_extremely and game_account.role_class == 0 and i_boss < 10:
                 logger.debug("有首领极，且是大号,打首领极")
                 ImageService.touch(Onmyoji.demon_SLJ)
             else:

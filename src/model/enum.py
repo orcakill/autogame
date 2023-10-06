@@ -33,6 +33,7 @@ class Onmyoji:
     awaken_ZDSL = r"探索\觉醒\战斗胜利"
 
     border_GRJJ = r"探索\结界突破\个人结界"
+    border_WZGRJJ = r"探索\结界突破\完整个人结界"
     border_GRJJWZB = r"探索\结界突破\个人结界无战败"
     border_TJWSL = r"探索\结界突破\退级五十六"
     border_GRJJWSB = r"探索\结界突破\个人结界无失败"
@@ -53,6 +54,7 @@ class Onmyoji:
     border_XH = r"探索\结界突破\消耗"
     border_YSJTP = r"探索\结界突破\右上角突破"
     border_YSJTPDB = r"探索\结界突破\右上角突破底部"
+    border_JJTZJQY = r"探索\结界突破\结界挑战劵区域"
     border_ZB = r"探索\结界突破\准备"
     border_ZBBZ = r"探索\结界突破\战败标志"
     border_ZCTZ = r"探索\结界突破\再次挑战"
@@ -72,7 +74,10 @@ class Onmyoji:
     comm_FH_ZSJHKZDHSXYH = r"通用\返回\左上角黑框棕底黄色小于号"
     comm_FH_YSJGGCH = r"通用\返回\右上角公告叉号"
     comm_FH_ZJZDHKHSXYH = r"通用\返回\中间棕底黄框黄色小于号"
+    comm_FH_YSJBDHSCH = r"通用\返回\右上角白底黑色叉号"
     comm_SL = r"通用\失联"
+    comm_QD = r"通用\确定"
+    comm_QTSBDL = r"通用\其它设备登录"
 
     demon_FMCSL = r"町中\逢魔之时\逢魔次数零"
     demon_FMLD = r"町中\逢魔之时\逢魔蓝点"
@@ -151,8 +156,11 @@ class Onmyoji:
     home_XZ = r"首页\下载"
     home_BZTS = r"首页\不再提示"
 
+    call_ZCZH = r"召唤\再次召唤"
+
     login_CY = r"登录\常用"
     login_DLAN = r"登录\登录按钮"
+    login_XZQY = r"登录\选择区域"
     login_FWQ = r"登录\服务器"
     login_KSYX = r"登录\开始游戏"
     login_QHFWQ = r"登录\切换服务器"
@@ -181,6 +189,7 @@ class Onmyoji:
     reward_YX = r"奖励\邮箱"
     reward_HHZTB = r"奖励\花合战图标"
     reward_YCRW = r"奖励\右侧任务"
+    reward_DJKB = r"奖励\点击空白"
     reward_HHZQBLQ = r"奖励\花合战全部领取"
 
     souL_BQ_JSTXXH = r"探索\御魂\八岐大蛇\角色头像小号"
@@ -315,6 +324,7 @@ class Onmyoji:
     region_YCYYL = r"探索\阴阳寮突破\右侧阴阳寮"
     region_GTRQ = r"探索\阴阳寮突破\呱太入侵"
     region_LJJ = r"探索\阴阳寮突破\寮结界"
+    region_WZLJJ = r"探索\阴阳寮突破\完整寮结界"
     region_GP = r"探索\阴阳寮突破\攻破"
     region_ZDSB = r"探索\阴阳寮突破\战斗失败"
     region_ZDSL = r"探索\阴阳寮突破\战斗胜利"
@@ -442,6 +452,7 @@ class Onmyoji:
     contend_ZDZD = r"町中\斗技\自动战斗"
     contend_ZB = r"町中\斗技\准备"
     contend_TCTZ = r"町中\斗技\退出挑战"
+    contend_QD = r"町中\斗技\确定"
 
     arrange_JRBZTS = r"式神录\御魂整理\今日不再提示"
     arrange_YCFN = r"式神录\御魂整理\右侧奉纳"
@@ -465,9 +476,13 @@ class Onmyoji:
 
     plot_SGD = r"探索\剧情\三个点"
     plot_XFTG = r"探索\剧情\下方跳过"
+    plot_LS = r"探索\剧情\灵视"
     plot_YSKJ = r"探索\剧情\右上快进"
     plot_XGZD = r"探索\剧情\小怪战斗"
     plot_ZB = r"探索\剧情\准备"
+    plot_ZCLT = r"探索\剧情\左侧聊天"
+    plot_WH = r"探索\剧情\问号"
+    plot_TCTZ = r"探索\剧情\退出挑战"
 
     test_TEST1 = r"通用\测试\测试1"
     test_TEST2 = r"通用\测试\测试2"

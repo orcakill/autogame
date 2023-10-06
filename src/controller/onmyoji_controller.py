@@ -79,10 +79,13 @@ class OnmyojiController:
                     game_project = GameProject(game_task[3])
                     if game_projects_relation.relation_num >= int(relation_num):
                         logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
-                                    game_account.game_name)
+                                    game_account.role_name)
                         logger.debug("当前状态初始化")
                         ImageService.auto_setup(game_device)
                         is_initialization = OnmyojiService.initialization(game_task)
+                        if not is_initialization:
+                            logger.debug("当前状态初始化失败，重新初始化")
+                            is_initialization = OnmyojiService.initialization(game_task)
                         # 判断项目名称，根据项目名称执行不同的函数
                         if is_initialization:
                             # 项目 1、24 每日奖励领取
@@ -153,9 +156,9 @@ class OnmyojiController:
                             elif game_project.project_name in ["契灵"]:
                                 OnmyojiService.deed_spirit(game_task)
                         else:
-                            logger.debug("当前状态初始化失败{}，不执行项目", game_account.game_name)
+                            logger.info("当前状态初始化失败2次{}，不执行项目", game_account.role_name)
                         time_end = time.time()
-                        logger.info("{}:{},项目执行时间{}.项目组累计执行时间{}", game_account.game_name,
+                        logger.info("{}:{},项目执行时间{}.项目组累计执行时间{}", game_account.role_name,
                                     game_project.project_name,
                                     UtilsTime.convert_seconds(time_end - time_task_start),
                                     UtilsTime.convert_seconds(time_end - time_start))

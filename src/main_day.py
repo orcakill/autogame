@@ -9,10 +9,12 @@ import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from src.service.windows_service import WindowsService
 from src.controller.onmyoji_controller import OnmyojiController
 from utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
+    WindowsService.limit_cpu_percentage(30)
     # 只有一台云手机，已登录账号不进行登录，无最近一小时日志记录的置为未登录，本地测试时强制更新为未登录后进行登录
     # 0点-6点  1.大号、小号 全流程任务 2大号肝绘卷
     # 6点-12点 1.大号、小号 式神寄养、地域鬼王  2。大号阴阳寮突破（肝绘卷时暂停）
@@ -22,7 +24,7 @@ if __name__ == '__main__':
     game_device = "0"
     volume = False
     task_list = []
-    for i in range(1, 9):
+    for i in range(1, 10):
         task_list.append(False)
     logger.info("开始")
     while True:
@@ -72,15 +74,15 @@ if __name__ == '__main__':
                 OnmyojiController.create_execute_tasks(game_device, "3", "", '1')
         # 如果当前时间大于等于17点,小于23点
         elif 17 <= current_hour <= 23:
-            if not task_list[6]:
+            if current_hour < 22 and not task_list[6]:
                 logger.info("17-23,小号逢魔之时")
                 OnmyojiController.create_execute_tasks(game_device, "", "逢魔之时", '2')
                 task_list[6] = True
-            if current_hour >= 18 and not task_list[7]:
-                logger.info("17-23,大号小号式神寄养，18点")
-                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '0')
+            if current_hour <= 22 and not task_list[7]:
+                logger.info("17-23,小号式神寄养，18点")
+                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '2')
                 task_list[7] = True
-            if current_hour >= 18 and not task_list[8]:
+            if not task_list[8]:
                 logger.info("17-23,小号斗技5次+个人突破+每日奖励，18点")
                 OnmyojiController.create_execute_tasks(game_device, "6", "", '2')
                 task_list[8] = True
@@ -93,5 +95,5 @@ if __name__ == '__main__':
             logger.info("已过一天，重置变量")
             volume = False
             task_list = []
-            for i in range(1, 9):
+            for i in range(1, 10):
                 task_list.append(False)

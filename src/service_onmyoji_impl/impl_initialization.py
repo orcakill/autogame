@@ -22,20 +22,30 @@ def initialization(game_task: [], login_type: int = 0):
     """
     # 开始时间
     time_start = time.time()
+    # 首页
+    is_index = False
+    # 探索
+    is_explore = False
     # 账号信息
     game_account = GameAccount(game_task[2])
+    # 服务器信息
+    server = os.path.join(Onmyoji.login_FWQ, game_account.role_region)
+    # 账号首页信息
+    account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
     # 判断是否是待登录账号首页
     logger.debug("初始化-判断当前状态")
     # 当前状态 账号首页 1，2,3，4
     #        其它，不在账号首页
-    # 服务器信息
-    server = os.path.join(Onmyoji.login_FWQ, game_account.game_region)
-    # 账号首页信息
-    account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
-    is_index = ImageService.exists(account_index)
-    is_explore = ImageService.exists(Onmyoji.home_TS)
-    if not is_index or not is_explore:
-        logger.debug("不在账号首页")
+    logger.debug("判断可能存在的失联或其他设备登录")
+    is_loss = ComplexService.loss_connection()
+    if not is_loss:
+        logger.debug("首页账号")
+        is_index = ImageService.exists(account_index)
+        logger.debug("首页探索")
+        is_explore = ImageService.exists(Onmyoji.home_TS)
+    if not is_index or not is_explore and is_loss:
+        # sys.exit()
+        logger.debug("不在账号首页,或掉线,或其他设备登录")
         # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
         logger.debug("启动阴阳师app")
         ImageService.restart_app("com.netease.onmyoji")
@@ -53,73 +63,53 @@ def initialization(game_task: [], login_type: int = 0):
                 ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
                 logger.debug("点击公告返回")
                 ImageService.touch(Onmyoji.comm_FH_YSJGGCH)
+                logger.debug("接受协议")
+                ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
                 logger.debug("重新判断适龄提示")
                 is_ageAppropriateReminder = ImageService.exists(Onmyoji.login_SLTS)
                 if is_ageAppropriateReminder:
                     break
                 logger.debug("等待10秒")
                 time.sleep(10)
-        logger.debug("接受协议")
-        ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
         logger.debug("登录账号")
         if login_type == 0:
-            logger.debug("判断当前账号选择")
-            is_account_select = ImageService.exists(Onmyoji.login_WYYX)
-            if not is_account_select:
+            for i_account in range(5):
+                logger.debug("点击可能存在的登录")
+                ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=3)
+                logger.debug("点击可能存在选择区域")
+                ComplexService.get_reward(Onmyoji.login_XZQY)
                 logger.debug("用户中心")
                 ImageService.touch(Onmyoji.login_YHZX, wait=2)
                 logger.debug("切换账号")
                 ImageService.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2)
-            logger.debug("常用")
-            is_used = ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
-            if not is_used:
-                logger.debug("用户中心")
-                ImageService.touch(Onmyoji.login_YHZX, wait=2)
-                logger.debug("再次切换账号")
-                ImageService.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2)
-                logger.debug("再次点击常用")
+                logger.debug("常用")
                 ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
-            logger.debug("选择账号")
-            account = os.path.join(Onmyoji.user_XZZH, game_account.account_name)
-            ImageService.touch(account, cvstrategy=Cvstrategy.default, wait=4)
-            logger.debug("登录")
-            ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4)
-            logger.debug("接受协议")
-            ImageService.touch(Onmyoji.login_JSXY, wait=3)
-            logger.debug("切换服务器")
-            ImageService.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, wait=3)
-            logger.debug("点击小三角")
-            pos_TCS = ImageService.exists(Onmyoji.login_TYCS, wait=2)
-            pos_JSX = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
-            if not pos_TCS or not pos_JSX:
-                logger.debug("没找到小三角，重新判断是否已点击切换服务器")
-                for i_triangle in range(5):
-                    logger.debug("点击切换服务器")
-                    ImageService.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, wait=3)
-                    logger.debug("判断是否有小三角")
-                    pos_TCS = ImageService.exists(Onmyoji.login_TYCS, wait=2)
-                    pos_JSX = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
-                    if pos_TCS and pos_JSX:
-                        break
-            if pos_TCS and pos_JSX:
-                logger.debug("有小三角")
-                ImageService.touch_coordinate((pos_TCS[0], pos_JSX[1]))
-            logger.debug("选择服务器:{}", game_account.game_region)
-            is_select = ImageService.touch(server, wait=2)
-            if not is_select:
-                logger.debug("未选择服务器")
-            logger.debug("开始游戏")
-            is_start = ImageService.touch(Onmyoji.login_KSYX, wait=2)
-            if not is_start:
-                logger.debug("未开始游戏，点击服务器")
+                logger.debug("选择账号")
+                account = os.path.join(Onmyoji.user_XZZH, game_account.account_name)
+                ImageService.touch(account, wait=4)
+                logger.debug("登录")
+                ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4)
+                logger.debug("接受协议")
+                ImageService.touch(Onmyoji.login_JSXY, wait=3)
+                logger.debug("切换服务器")
+                ImageService.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, wait=3)
+                logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
+                pos_TCS = ImageService.exists(Onmyoji.login_TYCS, wait=2)
+                pos_JSX = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
+                if pos_TCS and pos_JSX:
+                    logger.debug("有小三角")
+                    ImageService.touch_coordinate((pos_TCS[0], pos_JSX[1]))
+                logger.debug("选择服务器:{}", game_account.role_region)
                 ImageService.touch(server, wait=2)
-                logger.debug("再次点击开始游戏")
-                ImageService.touch(Onmyoji.login_KSYX, wait=3)
+                logger.debug("开始游戏")
+                is_login = ImageService.touch(Onmyoji.login_KSYX, wait=2)
+                if is_login:
+                    break
         else:
             logger.debug("开始游戏")
             ImageService.touch(Onmyoji.login_KSYX, wait=3)
         time.sleep(15)
-    logger.debug("{}首页,判断底部菜单", game_account.game_name)
+    logger.debug("{}首页,判断底部菜单", game_account.role_name)
     is_openBottom = ImageService.exists(Onmyoji.home_DBCDDK)
     if not is_openBottom:
         for i_openBottom in range(4):
@@ -152,6 +142,7 @@ def initialization(game_task: [], login_type: int = 0):
             if is_openBottom:
                 logger.debug("底部菜单已打开")
                 break
+    time.sleep(5)
     logger.debug("重新判断是否在账号首页")
     is_index = ImageService.exists(account_index)
     # 结束时间
@@ -159,10 +150,10 @@ def initialization(game_task: [], login_type: int = 0):
     # 总用时
     time_all = time_end - time_start
     if is_index:
-        logger.debug("初始化当前状态完成:{}，用时{}", game_account.game_name, UtilsTime.convert_seconds(time_all))
+        logger.debug("初始化当前状态完成:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
         return True
     else:
-        logger.debug("初始化当前状态失败:{}，用时{}", game_account.game_name, UtilsTime.convert_seconds(time_all))
+        logger.debug("初始化当前状态失败:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
         return False
 
 

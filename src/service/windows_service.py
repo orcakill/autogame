@@ -3,6 +3,7 @@
 # @File: windows_service.py
 # @Description: window 相关服务接口
 import os
+import shutil
 import subprocess
 import time
 
@@ -11,6 +12,7 @@ import pythoncom
 import win32com
 from win32com.client import Dispatch
 
+from src.utils import utils_path
 from src.utils.my_logger import logger
 
 
@@ -77,3 +79,31 @@ class WindowsService:
         cpu_count = psutil.cpu_count()
         cpu_limit = int(cpu_count * (percentage / 100))
         process.cpu_affinity(list(range(cpu_limit)))
+
+    @staticmethod
+    def delete_folder_file(folder_path, day: int = 1):
+        """
+        删除创建时间2天以上的
+        :return:
+        """
+        # 获取当前时间
+        now = time.time()
+
+        # 遍历文件夹中的所有文件
+        for filename in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, filename)
+            # 获取文件的创建时间
+            create_time = os.path.getctime(file_path)
+            # 计算创建时间距今的天数
+            days_diff = (now - create_time) / (24 * 60 * 60)
+            # 如果创建时间距今 x  天以上，则删除文件
+            if days_diff > day:
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+
+
+if __name__ == '__main__':
+    path = os.path.join(utils_path.get_project_path_log(), "debug")
+    WindowsService.delete_folder_file(path, 2)

@@ -7,7 +7,7 @@
 import time
 
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount
+from src.model.models import GameAccount, GameProjectsRelation, GameProjects, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_awakening, impl_initialization
@@ -29,9 +29,11 @@ def friends_fight(game_task: []):
     num_fail = 0
     # 协战用时
     time_fight_list = []
-    # 账号信息
+    game_projects = GameProjects(game_task[0])
+    game_projects_relation = GameProjectsRelation(game_task[1])
     game_account = GameAccount(game_task[2])
-    logger.debug(game_account.game_name)
+    game_project = GameProject(game_task[3])
+    logger.debug(game_account.role_name)
     logger.debug("好友协战")
     for i_cooperative_warfare in range(3):
         logger.debug("进入好友界面")
@@ -53,6 +55,8 @@ def friends_fight(game_task: []):
             impl_initialization.return_home(game_task)
             if i_cooperative_warfare == 0:
                 logger.debug("觉醒挑战")
+                game_projects_relation.project_num_times = 13
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 impl_awakening.awakening(game_task)
             ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
             for i_come in range(3):
@@ -231,7 +235,7 @@ def friends_manage(game_task: []):
     time_start = time.time()
     # 账号信息
     game_account = GameAccount(game_task[2])
-    logger.debug(game_account.game_name)
+    logger.debug(game_account.role_name)
     logger.debug("进入好友界面")
     is_friends = ImageService.touch(Onmyoji.friends_HYTB)
     for i_fetter in range(5):

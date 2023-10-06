@@ -13,11 +13,9 @@ class GameAccount(Base):
     account_type = Column(String(40), info='账号类型')
     account_name = Column(String(40), info='账号名称')
     account_password = Column(String(40), info='账号密码')
-    game_region = Column(String(40), info='游戏服务器')
-    game_name = Column(String(40), info='角色名称')
-    account_class = Column(String(40), info='账号等级')
-    account_number = Column(Integer, info='账号序号')
-    game_ghost = Column(Integer, info='地域鬼王等级（0，1级地鬼；1，极地鬼）')
+    role_region = Column(String(40), info='角色服务器')
+    role_name = Column(String(40), info='角色名称')
+    role_class = Column(String(40), info='角色等级')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
@@ -25,11 +23,9 @@ class GameAccount(Base):
                f"account_type= {self.account_type}," \
                f"account_name= {self.account_name}," \
                f"account_password= {self.account_password}," \
-               f"game_region= {self.game_region}," \
-               f"game_name= {self.game_name}," \
-               f"account_class= {self.account_class}," \
-               f"account_number= {self.account_number}," \
-               f"game_ghost= {self.game_ghost}"
+               f"role_region= {self.role_region}," \
+               f"role_name= {self.role_name}," \
+               f"role_class= {self.role_class}"
 
     def __init__(self, game_account: () = None, **kwargs):
         if game_account is None:
@@ -37,22 +33,18 @@ class GameAccount(Base):
             self.account_type = self.account_type
             self.account_name = self.account_name
             self.account_password = self.account_password
-            self.game_region = self.game_region
-            self.game_name = self.game_name
-            self.account_class = self.account_class
-            self.account_number = self.account_number
-            self.game_ghost = self.game_ghost
+            self.role_region = self.role_region
+            self.role_name = self.role_name
+            self.role_class = self.role_class
         else:
             super().__init__(**kwargs)
             self.id = game_account.id
             self.account_type = game_account.account_type
             self.account_name = game_account.account_name
             self.account_password = game_account.account_password
-            self.game_region = game_account.game_region
-            self.game_name = game_account.game_name
-            self.account_class = game_account.account_class
-            self.account_number = game_account.account_number
-            self.game_ghost = game_account.game_ghost
+            self.role_region = game_account.role_region
+            self.role_name = game_account.role_name
+            self.role_class = game_account.role_class
 
 
 class GameProject(Base):

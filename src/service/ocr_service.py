@@ -18,16 +18,14 @@ airtest_service = AirtestService()
 class OcrService:
     @staticmethod
     def border_bond():
-        # 获取左上角图片
-        # 右上角突破底部，用于获取纵坐标
-        pos1 = image_service.exists(Onmyoji.border_YSJTPDB)
-        # 右上角突破，用于获取横坐标
-        pos2 = image_service.exists(Onmyoji.border_YSJTP)
-        if pos1 and pos2:
-            # 获取设备分辨率
-            pos3 = airtest_service.resolution_ratio()
+        # 结界突破区域
+        logger.debug("获取结界突破劵信息")
+        result = image_service.cv_match(Onmyoji.border_JJTZJQY)
+        if result:
+            pos1 = result['rectangle'][0]
+            pos2 = result['rectangle'][2]
             # 截图
-            img = airtest_service.crop_image(pos2[0], 0, pos3[0], pos1[1])
+            img = airtest_service.crop_image(pos1[0], pos1[1], pos2[0], pos2[1])
             # 图像文字识别
             pil_image = airtest_service.cv2_2_pil(img)
             # pil_image.save("D:/a.png", quality=99, optimize=True)

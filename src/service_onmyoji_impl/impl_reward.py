@@ -114,6 +114,9 @@ def daily_rewards(game_task: []):
     logger.debug("4.花合战奖励")
     is_flower_battle = ImageService.exists(Onmyoji.reward_HHZTB, is_click=True)
     if is_flower_battle:
+        logger.debug("点击空白")
+        ImageService.touch(Onmyoji.reward_DJKB)
+        ComplexService.get_reward(Onmyoji.reward_DJKB)
         logger.debug("点击右侧任务")
         ImageService.touch(Onmyoji.reward_YCRW)
         logger.debug("点击全部领取")

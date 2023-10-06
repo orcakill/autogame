@@ -6,10 +6,7 @@
 import datetime
 from unittest import TestCase
 
-from airtest.core.cv import Template
-
 from src.model.enum import Onmyoji, Cvstrategy
-from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -18,8 +15,8 @@ from src.utils.my_logger import logger
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
-        result = ImageService.exists(Onmyoji.shack_MZ)
+        ImageService.auto_setup("2")
+        result = ImageService.cv_match(Onmyoji.border_WZGRJJ)
         logger.debug(result)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -47,7 +44,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        ImageService.snapshot("1",True)
+        ImageService.snapshot("1", True)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -102,18 +99,18 @@ class TestImageService(TestCase):
         c2 = ImageService.exists(Onmyoji.test_TEST2)
         logger.debug(c1)
         logger.debug(c2)
-        logger.debug((c2[1] -c1[1])/(2*coordinate_difference))
+        logger.debug((c2[1] - c1[1]) / (3 * coordinate_difference))
         logger.debug("测试-开结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)
 
-    def test_cal_ccoeff_confidence(self):
+    def test_cv_match(self):
         ImageService.auto_setup("2")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        result=ImageService.cal_ccoeff_confidence(Onmyoji.foster_JJK_SXTG)
-        logger.debug(result['confidence'])
+        result = ImageService.cv_match(Onmyoji.border_YSJTPDB)
+        logger.debug(result)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

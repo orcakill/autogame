@@ -255,7 +255,7 @@ def soul_fight_sun(game_task: []):
         logger.debug("日轮之陨-选择三层")
         ImageService.touch(Onmyoji.soul_RLZY_SC)
         logger.debug("判断是否在日轮之陨首页")
-        is_home = ImageService.touch(Onmyoji.soul_RLZY_RLZYSY)
+        is_home = ImageService.exists(Onmyoji.soul_RLZY_RLZYSY)
         if is_home:
             break
         else:
@@ -267,7 +267,7 @@ def soul_fight_sun(game_task: []):
     for i in range(fight_time):
         time_fight_start = time.time()
         logger.debug("判断是否无加成次数")
-        is_add = ImageService.touch(Onmyoji.soul_RLZY_WJC)
+        is_add = ImageService.exists(Onmyoji.soul_RLZY_WJC,threshold=0.9)
         if is_add:
             logger.debug("无加成,退出")
             break

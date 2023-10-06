@@ -32,6 +32,7 @@ class AirtestService:
         设备连接
         :return:
         """
+        WindowsService.limit_cpu_percentage(30)
         devices_name = None
         connect_name = None
         if game_device == "0":
@@ -76,6 +77,7 @@ class AirtestService:
             # 将时间转换为字符串
             time_str = now.strftime("%Y-%m-%d_%H-%M-%S") + "_" + name
             path = os.path.join(utils_path.get_project_path_log(), "image")
+            WindowsService.delete_folder_file(path, 2)
             path = os.path.join(path, time_str)
             pil_image.save(path + ".png", quality=99, optimize=True)
         return screen
@@ -148,14 +150,15 @@ class AirtestService:
         time.sleep(1)
 
     @staticmethod
-    def swipe(v1: [], v2: []):
+    def swipe(v1: [], v2: [], duration):
         """
         重启APP
+        :param duration: 滑动间隔
         :param v1: 图片1
         :param v2: 图片2
         :return: 无
         """
-        if swipe(v1, v2):
+        if swipe(v1, v2, duration=duration):
             return True
         else:
             return False
@@ -224,6 +227,27 @@ class AirtestService:
                 pass
 
     @staticmethod
-    def calculate_similarity(template: Template, screen, cvstrategy: []):
+    def cv_match(template: Template, screen, cvstrategy: []):
         Settings.CVSTRATEGY = cvstrategy
         return template._cv_match(screen)
+
+    @staticmethod
+    def match_in(template: Template, screen, cvstrategy: [], timeout: float, is_throw: bool):
+        """
+        判断图片是否存在并返回坐标
+        :param screen:   局部截图
+        :param template: 图片类
+        :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
+        :param is_throw: 是否显示异常
+        :return: bool
+        """
+        Settings.CVSTRATEGY = cvstrategy
+        Settings.FIND_TIMEOUT_TMP = timeout
+        try:
+            return template.match_in(screen)
+        except Exception as e:
+            if is_throw:
+                logger.error("异常：{}", e)
+            else:
+                pass
