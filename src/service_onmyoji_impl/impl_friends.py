@@ -66,6 +66,8 @@ def friends_fight(game_task: []):
                 ImageService.touch(Onmyoji.soul_BQ_YHTB)
                 logger.debug("选择")
                 ImageService.touch(Onmyoji.soul_BQ_XZ)
+                logger.debug("点击可能存在的八岐大蛇眼睛")
+                ImageService.touch(Onmyoji.soul_BQ_BQDSYJ)
                 # 层号选择 魂一、魂十、魂十一
                 logger.debug("选择层号")
                 ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)

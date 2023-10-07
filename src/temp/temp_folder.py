@@ -15,16 +15,17 @@ def get_subdirectories(folder_path):
 
 
 if __name__ == '__main__':
+    path_name = r'阴阳寮\阴界之门'
+    prefix = 'realm_'
     # 指定文件夹路径
-    folder_path1 = utils_path.get_project_path() + r'\src\resources\static\onmyoji\探索\契灵'
+    folder_path1 = utils_path.get_project_path() + r'src\resources\static\onmyoji\\'
+    folder_path2 =folder_path1+path_name
 
-    # 获取所有文件夹
-    subdirectories = get_subdirectories(folder_path1)
+    # 获取所有文件
+    subdirectories = get_subdirectories(folder_path2)
 
-    # 打印所有文件夹路径（去除指定路径部分）
-    path = utils_path.get_project_path() + r'\src\resources\static\onmyoji\探索'
     for subdir in subdirectories:
-        subdir = subdir.replace(path, "探索")
+        subdir = subdir.replace(folder_path1, "")
         parts = subdir.split("\\")
         result = parts[-1]
 
@@ -34,4 +35,4 @@ if __name__ == '__main__':
         # 将拼音列表转换为字符串并转换为大写
         pinyin_text = ''.join([item[0].upper() for item in pinyin_text])
 
-        print("deed_" + pinyin_text + "=r" + "\"" + subdir + "\"")
+        print(prefix + pinyin_text + "=r" + "\"" + subdir + "\"")

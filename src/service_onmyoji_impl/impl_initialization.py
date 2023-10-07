@@ -6,7 +6,7 @@ import os
 import time
 
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount
+from src.model.models import GameAccount, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -159,6 +159,7 @@ def initialization(game_task: [], login_type: int = 0):
 
 def return_home(game_task: []):
     game_account = GameAccount(game_task[2])
+    game_project = GameProject(game_task[3])
     # 判断是否是待登录账号首页
     logger.debug("返回首页-判断当前状态")
     # 当前状态 账号首页 1，2,3，4，5
@@ -167,7 +168,7 @@ def return_home(game_task: []):
     is_index = ImageService.exists(account_index, timeouts=1)
     is_explore = ImageService.exists(Onmyoji.home_TS, timeouts=1)
     if not is_index or not is_explore:
-        logger.debug("不在账号首页，重新快速登录")
+        logger.info("不在账号首页，重新快速登录{}:{}", game_account.role_name, game_project)
         initialization(game_task, 1)
     else:
         logger.debug("有探索，有账号，在首页")

@@ -108,7 +108,7 @@ class TestComplexService(TestCase):
         warnings.simplefilter('ignore', ResourceWarning)
         ImageService.auto_setup("1")
         now = datetime.datetime.now()
-        logger.debug(impl_house.get_card_type(Onmyoji.foster_JJK_TG,0))
+        logger.debug(impl_house.get_card_type(Onmyoji.foster_JJK_TG, 0))
         now1 = datetime.datetime.now()
         print(now1 - now)
 
@@ -137,3 +137,33 @@ class TestComplexService(TestCase):
         now1 = datetime.datetime.now()
         print(now1 - now)
 
+    def test_calculate_proportion(self):
+        """
+        计算比例
+        :return:
+        """
+        ImageService.auto_setup("1")
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("测试-开始")
+        logger.debug("测试-开获取上方好友坐标")
+        coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
+        logger.debug("测试-开获取上方跨区坐标")
+        coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
+        logger.debug("测试-开计算起始位置1,测试系数")
+        coordinate_difference = (coordinate_region[0] - coordinate_friend[0])
+        coordinate_difference1 = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
+        coordinate_start = (coordinate_region[0], coordinate_region[1])
+        logger.debug(coordinate_difference1)
+        logger.debug(coordinate_start)
+        logger.debug("测试-开计算起始位置2")
+        coordinate_end = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
+        logger.debug(coordinate_end)
+        c1 = ImageService.exists(Onmyoji.test_TEST1)
+        c2 = ImageService.exists(Onmyoji.test_TEST2)
+        logger.debug(c1)
+        logger.debug(c2)
+        logger.debug((c2[1] - c1[1]) / (3 * coordinate_difference))
+        logger.debug("测试-开结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)

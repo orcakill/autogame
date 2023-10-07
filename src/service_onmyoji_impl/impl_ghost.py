@@ -227,3 +227,42 @@ def encounter_demons(game_task: []):
     impl_initialization.return_home(game_task)
     time_end = time.time() - time_start
     logger.debug("逢魔之时,用时{}秒", round(time_end))
+
+
+def realm_fight(game_task: []):
+    """
+    阴界之门
+    :param game_task: 项目信息
+    :return:
+    """
+    # 开始时间
+    time_start = time.time()
+    # 获取当前日期
+    today = datetime.date.today()
+    # 获取本日是周几（周一为0，周日为6）
+    weekday = today.weekday() + 1
+    logger.debug("每周五、六、日，19到20点挑战")
+    # 获取当前时间
+    current_time1 = datetime.datetime.now()
+    # 获取当前时间的小时数
+    current_hour = current_time1.hour
+    if weekday in [5, 6, 7]:
+        if 19 <= current_hour <= 20:
+            logger.debug("阴界之门挑战时间内")
+            logger.debug("点击阴阳寮")
+            logger.debug("点击阴界之门")
+            logger.debug("点击未挑战")
+            logger.debug("点击挑战")
+            logger.debug("点击可能存在的确定")
+            logger.debug("点击准备")
+            logger.debug("等待战斗结果")
+            logger.debug("返回首页")
+        else:
+            logger.debug("不在战斗时间")
+    else:
+        logger.debug("不在战斗日期")
+    logger.debug("返回首页")
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
+    time_end = time.time() - time_start
+    logger.debug("逢魔之时,用时{}秒", round(time_end))

@@ -28,6 +28,8 @@ def foster_care(game_task: []):
     game_account = GameAccount(game_task[2])
     # 寄养结果
     foster_result = None
+    # 是否点击式神育成
+    is_growing = False
     logger.debug("式神寄养")
     for i_time in range(2):
         if time.time() - time_start > 20 * 60:
@@ -76,10 +78,12 @@ def foster_care(game_task: []):
     impl_initialization.return_home(game_task)
     time_end = time.time()
     time_time = round(time_end - time_start, 3)
-    if foster_result:
+    if foster_result and is_growing:
         logger.debug("寄养用时{},寄养结果{}", UtilsTime.convert_seconds(time_time), foster_result)
-    else:
+    elif not foster_result and is_growing:
         logger.debug("已寄养，无需寄养,用时{}秒", UtilsTime.convert_seconds(time_time))
+    elif not is_growing:
+        logger.debug("寄养异常，未进入式神育成")
 
 
 def get_optimal_card():
