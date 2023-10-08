@@ -148,6 +148,8 @@ class ComplexService:
                     is_target = ImageService.touch(target, wait=1)
                     if is_target:
                         break
+            else:
+                logger.debug("无{}", basis)
         else:
             logger.debug("发现目标{}", target)
 

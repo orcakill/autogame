@@ -6,7 +6,7 @@
 import datetime
 from unittest import TestCase
 
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -66,10 +66,10 @@ class TestImageService(TestCase):
         :return:
         """
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("2")
         # 测试代码
         logger.debug("开始")
-        result = ImageService.find_all(Onmyoji.foster_XGY)
+        result = ImageService.find_all(Onmyoji.soul_BQ_JCK)
         if result:
             logger.debug(result)
             logger.debug(len(result))

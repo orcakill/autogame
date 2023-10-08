@@ -88,7 +88,7 @@ def friends_fight(game_task: []):
             is_unlock = False
             for i in range(16):
                 time_fight_start = time.time()
-                logger.debug("好友协战-御魂-挑战{}次", i)
+                logger.debug("好友协战-御魂-挑战{}次", i+1)
                 if i == 0:
                     logger.debug("好友协战-小号-协战-第一次")
                     logger.debug("解锁阵容")
@@ -103,7 +103,7 @@ def friends_fight(game_task: []):
                         if not is_unlock and not is_lock:
                             logger.debug("无解锁阵容，无锁定阵容,退出")
                             break
-                    logger.debug("判断左侧是否有御魂自选")
+                    logger.debug("判断右侧是否有御魂自选")
                     is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
                     if is_self_selection:
                         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)

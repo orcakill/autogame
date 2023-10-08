@@ -88,7 +88,7 @@ class TestOnmyojiService(TestCase):
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3'], '1', "好友协战")
+        TestOnmyojiService.test_project(self, ['3'], '2', "好友协战")
 
     def test_awakening(self):
         """
@@ -144,7 +144,7 @@ class TestOnmyojiService(TestCase):
         项目19 斗技
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "斗技", fight_times=10)
+        TestOnmyojiService.test_project(self, ['1'], '2', "斗技", fight_times=10)
 
     def test_soul_arrange(self):
         """

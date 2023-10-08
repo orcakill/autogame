@@ -63,11 +63,11 @@ class TestComplexService(TestCase):
         print(now1 - now)
 
     def test_top_addition(self):
-        AirtestService.auto_setup("0")
+        AirtestService.auto_setup("2")
         logger.debug("开始")
         now = datetime.datetime.now()
-        ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCG, Onmyoji.soul_BQ_JCG,
-                                    1)
+        ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG,
+                                    0)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
