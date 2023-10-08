@@ -472,14 +472,14 @@ def shack_house(game_task: []):
             logger.debug("点击左下的全部")
             ImageService.touch(Onmyoji.shack_ZXQB)
             logger.debug("点击左下的素材")
-            ImageService.touch(Onmyoji.shack_SCSC)
-            logger.debug("判断有无白蛋，无白蛋则放弃")
-            is_white_egg = ImageService.exists(Onmyoji.shack_BD)
-            if is_white_egg:
-                logger.debug("点击白蛋，6次")
+            ImageService.touch(Onmyoji.shack_NK)
+            logger.debug("判断有无1级N卡，无N卡则放弃")
+            is_growing = ImageService.exists(Onmyoji.shack_YJNK)
+            if is_growing:
+                logger.debug("点击1级N卡，6次")
                 for i_growing in range(8):
                     logger.debug("点击1级白蛋")
-                    ImageService.touch_coordinate(is_white_egg)
+                    ImageService.touch(Onmyoji.shack_YJNK)
                     if i_growing > 5:
                         logger.debug("判断是否还有放入式神")
                         is_insert = ImageService.exists(Onmyoji.shack_FRSS)
@@ -487,7 +487,7 @@ def shack_house(game_task: []):
                             logger.debug("已全部寄养")
                             break
             else:
-                logger.debug("没找1级白蛋")
+                logger.debug("没找1级N卡")
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)

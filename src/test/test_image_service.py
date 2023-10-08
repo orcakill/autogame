@@ -15,8 +15,8 @@ from src.utils.my_logger import logger
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("2")
-        result = ImageService.cv_match(Onmyoji.border_WZGRJJ)
+        ImageService.auto_setup("1")
+        result = ImageService.exists(Onmyoji.shack_MZ)
         logger.debug(result)
         now1 = datetime.datetime.now()
         print(now1 - now)

@@ -377,6 +377,8 @@ class Onmyoji:
     shack_ZXQB = r"阴阳寮\寮管理\左下全部"
     shack_ZXSC = r"阴阳寮\寮管理\左下素材"
     shack_SCSC = r"阴阳寮\寮管理\素材素材"
+    shack_NK = r"阴阳寮\寮管理\N卡"
+    shack_YJNK = r"阴阳寮\寮管理\一级N卡"
     shack_TQJY = r"阴阳寮\寮管理\提取经验"
 
     explore_ZCTZ = r"探索\章节探索\再次挑战"

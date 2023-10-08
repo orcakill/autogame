@@ -86,7 +86,7 @@ def initialization(game_task: [], login_type: int = 0):
                 ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("选择账号")
                 account = os.path.join(Onmyoji.user_XZZH, game_account.account_name)
-                ImageService.touch(account, wait=4)
+                is_account = ImageService.touch(account, wait=4)
                 logger.debug("登录")
                 ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4)
                 logger.debug("接受协议")
@@ -100,11 +100,13 @@ def initialization(game_task: [], login_type: int = 0):
                     logger.debug("有小三角")
                     ImageService.touch_coordinate((pos_TCS[0], pos_JSX[1]))
                 logger.debug("选择服务器:{}", game_account.role_region)
-                ImageService.touch(server, wait=2)
-                logger.debug("开始游戏")
-                is_login = ImageService.touch(Onmyoji.login_KSYX, wait=2)
-                if is_login:
-                    break
+                is_server = ImageService.touch(server, wait=2)
+                logger.debug("账号选择：{},服务器选择：{}", is_account, is_server)
+                if is_account and is_server:
+                    logger.debug("开始游戏")
+                    is_login = ImageService.touch(Onmyoji.login_KSYX, wait=2)
+                    if is_login:
+                        break
         else:
             logger.debug("开始游戏")
             ImageService.touch(Onmyoji.login_KSYX, wait=3)
@@ -168,7 +170,7 @@ def return_home(game_task: []):
     is_index = ImageService.exists(account_index, timeouts=1)
     is_explore = ImageService.exists(Onmyoji.home_TS, timeouts=1)
     if not is_index or not is_explore:
-        logger.info("不在账号首页，重新快速登录{}:{}", game_account.role_name, game_project)
+        logger.info("不在账号首页，重新快速登录 {}:{}", game_account.role_name, game_project.project_name)
         initialization(game_task, 1)
     else:
         logger.debug("有探索，有账号，在首页")

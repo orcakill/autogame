@@ -106,7 +106,7 @@ class ImageService:
                 for template in template_list:
                     is_click = AirtestService.touch(template, cvstrategy, timeout, is_throw, times, duration)
                     if is_click:
-                        # word=folder_path.replace("\\","_")   打印图片
+                        # word=folder_path.replace("\\","_")
                         # ImageService.snapshot(word, True)
                         logger.debug("图像识别点击成功:{}", folder_path)
                         return True

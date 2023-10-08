@@ -61,7 +61,7 @@ def daily_rewards(game_task: []):
         is_reward = ImageService.exists(Onmyoji.reward_HDJL, wait=3)
         if is_reward:
             ImageService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
-    logger.debug("返回首页")
+    logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
     logger.debug("2.邮箱奖励")
     is_mail = ImageService.exists(Onmyoji.reward_YX)
@@ -83,6 +83,8 @@ def daily_rewards(game_task: []):
         ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH, wait=3)
     else:
         ComplexService.refuse_reward()
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
     logger.debug("3.礼包屋奖励")
     is_store = ImageService.exists(Onmyoji.store_SDTB)
     if is_store:
@@ -108,9 +110,12 @@ def daily_rewards(game_task: []):
             logger.debug("无每日免费奖励")
         logger.debug("返回首页")
         ImageService.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKHSXYH)
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     else:
         ComplexService.refuse_reward()
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
     logger.debug("4.花合战奖励")
     is_flower_battle = ImageService.exists(Onmyoji.reward_HHZTB, is_click=True)
     if is_flower_battle:

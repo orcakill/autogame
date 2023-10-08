@@ -25,7 +25,7 @@ class TestOnmyojiService(TestCase):
         项目2 每日奖励
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "每日奖励")
+        TestOnmyojiService.test_project(self, ['2'], '1', "每日奖励")
 
     def test_encounter_demons(self):
         """
@@ -39,7 +39,7 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "地域鬼王")
+        TestOnmyojiService.test_project(self, ['2'], '1', "地域鬼王")
 
     def test_foster_care(self):
         """
@@ -183,8 +183,6 @@ class TestOnmyojiService(TestCase):
         :param project_name:
         :return:
         """
-        # 初始化设备信息
-        ImageService.auto_setup(test_devices)
         # 初始化项目组信息
         game_tasks = OnmyojiController.create_tasks(test_names, "", project_name)
         for i in range(len(game_tasks)):
