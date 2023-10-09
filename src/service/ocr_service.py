@@ -17,10 +17,15 @@ airtest_service = AirtestService()
 
 class OcrService:
     @staticmethod
-    def border_bond():
+    def get_word(folder_path: str):
+        """
+        获取局部截图的文本或数字信息
+        :param folder_path: 局部路径
+        :return:
+        """
         # 结界突破区域
-        logger.debug("获取结界突破劵信息")
-        result = image_service.cv_match(Onmyoji.border_JJTZJQY)
+        logger.debug("获取{}", folder_path)
+        result = image_service.cv_match(folder_path)
         if result:
             pos1 = result['rectangle'][0]
             pos2 = result['rectangle'][2]
@@ -35,8 +40,10 @@ class OcrService:
             # 使用 Tesseract 进行文字识别
             text = pytesseract.image_to_string(image, lang='eng')
             # logger.debug(text)
-            if text:
+            if text and folder_path == Onmyoji.border_JJTZJQY:
                 text = re.search(r'\d+(?=/30)', text).group()
+            if text and folder_path == Onmyoji.friends_HYSQY:
+                text = re.search(r'\d+(?=/200)', text).group()
             logger.debug(text)
             return text
             # 文字判断

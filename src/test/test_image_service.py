@@ -4,9 +4,10 @@
 # @Description : 图像识别测试类
 
 import datetime
+import time
 from unittest import TestCase
 
-from src.model.enum import Onmyoji, Cvstrategy
+from src.model.enum import Onmyoji
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -49,6 +50,20 @@ class TestImageService(TestCase):
         now1 = datetime.datetime.now()
         print(now1 - now)
 
+    def test_snapshot_for(self):
+        # 测试代码
+        logger.debug("开始")
+        ImageService.auto_setup("1")
+        now = datetime.datetime.now()
+        logger.debug("循环开始")
+        for i in range(100):
+            logger.debug("第{}次",i+1)
+            ImageService.snapshot("百鬼夜行", True)
+            time.sleep(1)
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
     def test_crop_image(self):
         ImageService.auto_setup("0")
         now = datetime.datetime.now()
@@ -85,6 +100,16 @@ class TestImageService(TestCase):
         logger.debug("开始")
         result = ImageService.cv_match(Onmyoji.border_YSJTPDB)
         logger.debug(result)
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
+    def test_text(self):
+        ImageService.auto_setup("1")
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        result = ImageService.text("666")
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

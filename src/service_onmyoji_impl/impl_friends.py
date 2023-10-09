@@ -10,6 +10,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount, GameProjectsRelation, GameProjects, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.ocr_service import OcrService
 from src.service_onmyoji_impl import impl_awakening, impl_initialization
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
@@ -88,7 +89,7 @@ def friends_fight(game_task: []):
             is_unlock = False
             for i in range(16):
                 time_fight_start = time.time()
-                logger.debug("好友协战-御魂-挑战{}次", i+1)
+                logger.debug("好友协战-御魂-挑战{}次", i + 1)
                 if i == 0:
                     logger.debug("好友协战-小号-协战-第一次")
                     logger.debug("解锁阵容")
@@ -265,7 +266,12 @@ def friends_manage(game_task: []):
     logger.debug("一键祝福")
     is_blessing = ImageService.exists(Onmyoji.friends_YJZF, is_click=True)
     if is_blessing:
+        logger.debug("点击输入祝福语")
+        is_text = ImageService.touch(Onmyoji.friends_SRZFZY)
+        if is_text:
+            ImageService.text("666")
         logger.debug("祝福按钮")
+        ImageService.touch(Onmyoji.friends_ZFAN)
         ImageService.touch(Onmyoji.friends_ZFAN)
         logger.debug("获得奖励")
         ComplexService.get_reward(Onmyoji.friends_HDJL)
@@ -274,19 +280,21 @@ def friends_manage(game_task: []):
     logger.debug("返回到好友界面")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("好友添加")
-    is_friend_is_full = ImageService.exists(Onmyoji.friends_HYYM, cvstrategy=Cvstrategy.default)
-    if not is_friend_is_full:
-        logger.debug("好友不满200，进入添加")
-        ImageService.touch(Onmyoji.friends_YCTJ)
-        for i_add in range(20):
-            logger.debug("点击添加好友")
-            is_add = ImageService.touch(Onmyoji.friends_TJHY, cvstrategy=Cvstrategy.default)
-            if is_add:
-                logger.debug("申请")
-                ImageService.touch(Onmyoji.friends_SQ)
-            else:
-                logger.debug("无添加按钮")
-                break
+    logger.debug("获取好友数")
+    result_friend = OcrService.get_word(Onmyoji.friends_HYSQY)
+    if result_friend:
+        if result_friend != '200':
+            logger.debug("好友不满200，进入添加")
+            ImageService.touch(Onmyoji.friends_YCTJ)
+            for i_add in range(20):
+                logger.debug("点击添加好友")
+                is_add = ImageService.touch(Onmyoji.friends_TJHY, cvstrategy=Cvstrategy.default)
+                if is_add:
+                    logger.debug("申请")
+                    ImageService.touch(Onmyoji.friends_SQ)
+                else:
+                    logger.debug("无添加按钮")
+                    break
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("确认返回首页")

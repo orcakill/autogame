@@ -346,3 +346,12 @@ class ImageService:
             else:
                 pass
         return False
+
+    @staticmethod
+    def text(word: str):
+        """
+        文字
+        :param word: 文字内容
+        :return:
+        """
+        AirtestService.text(word)

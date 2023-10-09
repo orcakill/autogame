@@ -169,7 +169,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                 break
             if i == 0:
                 logger.debug("第一次战斗，获取当前结界挑战劵数")
-                num_securities = OcrService.border_bond()
+                num_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
                 if num_securities == "0":
                     logger.debug("无结界挑战劵")
                     break
@@ -191,7 +191,7 @@ def border_fight(game_task: [], fight_times: int = 40):
             if num_break and num_break == 8:
                 logger.debug("保级")
                 logger.debug("保级前获取当前结界挑战劵数")
-                num_securities = OcrService.border_bond()
+                num_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
                 if num_securities == "0":
                     logger.debug("无结界挑战劵，退出循环")
                     break
@@ -233,7 +233,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                     logger.debug("可能已无结界挑战劵,点击消耗退出")
                     ImageService.touch(Onmyoji.border_XH)
                     logger.debug("判断是否存在结界挑战劵0/30")
-                    is_securities = OcrService.border_bond()
+                    is_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
                     if is_securities == "0":
                         logger.debug("无结界挑战劵，跳出循环")
                         break

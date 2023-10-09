@@ -251,3 +251,13 @@ class AirtestService:
                 logger.error("异常：{}", e)
             else:
                 pass
+
+    @staticmethod
+    def text(word: str):
+        """
+        文字
+        :param word: 文字内容
+        :return:
+        """
+        text = "input text '" + word + "'"
+        shell(text)

@@ -166,6 +166,7 @@ def return_home(game_task: []):
     logger.debug("返回首页-判断当前状态")
     # 当前状态 账号首页 1，2,3，4，5
     #        其它，不在账号首页
+    ComplexService.refuse_reward()
     account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
     is_index = ImageService.exists(account_index, timeouts=1)
     is_explore = ImageService.exists(Onmyoji.home_TS, timeouts=1)
