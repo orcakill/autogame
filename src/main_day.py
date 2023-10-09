@@ -87,6 +87,8 @@ if __name__ == '__main__':
                     OnmyojiController.create_execute_tasks(game_device, "", "永生之海", '1')
                 logger.info("12-17,大号个人突破")
                 OnmyojiController.create_execute_tasks(game_device, "", "个人突破", '1')
+                logger.info("12-17,大号式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, "5", "", '1')
                 task_list[5] = True
         # 如果当前时间大于等于17点,小于23点
         elif 17 <= current_hour <= 23:
