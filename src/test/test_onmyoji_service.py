@@ -18,7 +18,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3'], "1", "登录")
+        TestOnmyojiService.test_project(self, ['4'], "0", "登录")
 
     def test_daily_rewards(self):
         """
@@ -53,7 +53,7 @@ class TestOnmyojiService(TestCase):
         项目6 阴阳寮管理
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2'], '1', "阴阳寮管理")
+        TestOnmyojiService.test_project(self, ['2'], '0', "阴阳寮管理")
 
     def test_region_border(self):
         """
@@ -81,14 +81,14 @@ class TestOnmyojiService(TestCase):
         项目9 好友管理
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3'], '1', "好友管理")
+        TestOnmyojiService.test_project(self, ['2'], '0', "好友管理")
 
     def test_friends_fight(self):
         """
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3'], '2', "好友协战")
+        TestOnmyojiService.test_project(self, ['4'], '0', "好友协战")
 
     def test_awakening(self):
         """

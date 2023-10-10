@@ -11,6 +11,7 @@ from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
+from src.utils.utils_time import UtilsTime
 
 
 def awakening(game_task: [], awakening_type: int = 0):
@@ -124,4 +125,5 @@ def awakening(game_task: [], awakening_type: int = 0):
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     logger.debug("本轮觉醒十总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
-                 round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
+                 UtilsTime.convert_seconds(time_all), UtilsTime.convert_seconds(time_fight_all), time_fight_avg,
+                 len_time_fight_list, num_win, num_fail)

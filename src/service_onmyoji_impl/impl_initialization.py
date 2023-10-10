@@ -74,6 +74,7 @@ def initialization(game_task: [], login_type: int = 0):
         logger.debug("登录账号")
         if login_type == 0:
             for i_account in range(5):
+                logger.debug("第{}次切换账号",i_account+1)
                 logger.debug("点击可能存在的登录")
                 ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=3)
                 logger.debug("点击可能存在选择区域")

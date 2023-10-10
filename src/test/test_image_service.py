@@ -7,17 +7,19 @@ import datetime
 import time
 from unittest import TestCase
 
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
+
+cvstrategy = Cvstrategy.default
 
 
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
-        result = ImageService.exists(Onmyoji.shack_MZ)
+        ImageService.auto_setup("0")
+        result = ImageService.exists(Onmyoji.soul_BQ_BQDSSY)
         logger.debug(result)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -57,7 +59,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         logger.debug("循环开始")
         for i in range(100):
-            logger.debug("第{}次",i+1)
+            logger.debug("第{}次", i + 1)
             ImageService.snapshot("百鬼夜行", True)
             time.sleep(1)
         logger.debug("结束")

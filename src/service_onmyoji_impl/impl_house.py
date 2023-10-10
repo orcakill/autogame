@@ -478,7 +478,7 @@ def shack_house(game_task: []):
             if is_growing:
                 logger.debug("点击1级N卡，6次")
                 for i_growing in range(8):
-                    logger.debug("点击1级白蛋")
+                    logger.debug("点击1级素材")
                     ImageService.touch(Onmyoji.shack_YJNK)
                     if i_growing > 5:
                         logger.debug("判断是否还有放入式神")

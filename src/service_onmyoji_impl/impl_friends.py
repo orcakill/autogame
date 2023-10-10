@@ -59,7 +59,6 @@ def friends_fight(game_task: []):
                 game_projects_relation.project_num_times = 13
                 game_task = [game_projects, game_projects_relation, game_account, game_project]
                 impl_awakening.awakening(game_task)
-            ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
             for i_come in range(3):
                 logger.debug("进入探索")
                 ImageService.touch(Onmyoji.home_TS)
@@ -73,7 +72,7 @@ def friends_fight(game_task: []):
                 logger.debug("选择层号")
                 ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
                 logger.debug("判断是否在八岐大蛇首页")
-                is_home = ImageService.touch(Onmyoji.soul_BQ_BQDSSY)
+                is_home = ImageService.exists(Onmyoji.soul_BQ_BQDSSY)
                 if is_home:
                     break
                 else:
