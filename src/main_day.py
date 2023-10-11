@@ -9,19 +9,17 @@ import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.service.windows_service import WindowsService
 from src.controller.onmyoji_controller import OnmyojiController
 from utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
-    WindowsService.limit_cpu_percentage(30)
     # 只有一台云手机，已登录账号不进行登录，无最近一小时日志记录的置为未登录，本地测试时强制更新为未登录后进行登录
     # 0点-6点  1.大号、小号 全流程任务 2大号肝绘卷
     # 6点-12点 1.大号、小号 式神寄养、地域鬼王  2。大号阴阳寮突破（肝绘卷时暂停）
     # 12点-17点 1.大号斗技式神寄养、+寮突破（肝绘卷时暂停） 2、小号斗技
     # 17点-19点 1.小号逢魔之时、大小号式神寄养
     # 默认云手机
-    game_device = "0"
+    game_device = "1"
     volume = False
     task_list = []
     for i in range(1, 10):
