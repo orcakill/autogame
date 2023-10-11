@@ -44,6 +44,8 @@ class OcrService:
                 text = re.search(r'\d+(?=/30)', text).group()
             if text and folder_path == Onmyoji.friends_HYSQY:
                 text = re.search(r'\d+(?=/200)', text).group()
+            if text and folder_path == Onmyoji.deed_MQSS:
+                    text = re.search(r'\d+(?=/30)', text).group()
             logger.debug(text)
             return text
             # 文字判断

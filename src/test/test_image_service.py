@@ -18,8 +18,8 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("0")
-        result = ImageService.exists(Onmyoji.soul_BQ_BQDSSY)
+        ImageService.auto_setup("2")
+        result = ImageService.exists(Onmyoji.deed_QL)
         logger.debug(result)
         now1 = datetime.datetime.now()
         print(now1 - now)

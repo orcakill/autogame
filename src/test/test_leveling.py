@@ -109,7 +109,7 @@ class TestLeveling(TestCase):
 
     def test_call(self):
         WindowsService.limit_cpu_percentage(30)
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("0")
         logger.debug("开始")
         for i in range(100):
             logger.debug("{}次点击", i + 1)

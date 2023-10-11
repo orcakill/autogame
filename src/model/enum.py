@@ -415,6 +415,7 @@ class Onmyoji:
     deed_ZHQR = r"探索\契灵\召唤确认"
     deed_ZHZMS = r"探索\契灵\召唤镇墓兽"
     deed_QL = r"探索\契灵\契灵"
+    deed_QLJQYM = r"探索\契灵\契灵结契页面"
     deed_QLTB = r"探索\契灵\契灵图标"
     deed_QLTZ = r"探索\契灵\契灵挑战"
     deed_QLSY = r"探索\契灵\契灵首页"
@@ -424,6 +425,7 @@ class Onmyoji:
     deed_TCTZ = r"探索\契灵\退出挑战"
     deed_SDZR = r"探索\契灵\锁定阵容"
     deed_MQZH = r"探索\契灵\鸣契召唤"
+    deed_MQSS = r"探索\契灵\鸣契石数"
     deed_ZDZD = r"探索\契灵\自动战斗"
     deed_ZB = r"探索\契灵\准备"
 
