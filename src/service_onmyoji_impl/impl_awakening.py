@@ -6,7 +6,7 @@ import datetime
 import time
 
 from src.model.enum import Onmyoji
-from src.model.models import GameAccount, GameProjectsRelation
+from src.model.models import GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -31,52 +31,46 @@ def awakening(game_task: [], awakening_type: int = 0):
     time_fight_list = []
     # 项目组项目关系
     game_projects_relation = GameProjectsRelation(game_task[1])
-    # 账号信息
-    game_account = GameAccount(game_task[2])
-    fight_time = game_projects_relation.project_num_times
-    if fight_time is None:
-        logger.debug("无任务战斗次数")
-        fight_time = 1
+    # 战斗次数
+    fight_time = game_projects_relation.project_num_times or 2
     # 获取当前日期
     today = datetime.date.today()
     # 获取本日是周几（周一为0，周日为6）
     weekday = today.weekday() + 1
-    logger.debug(game_account.role_name)
-    logger.debug("进入探索")
-    ImageService.touch(Onmyoji.home_TS)
-    logger.debug("进入觉醒")
-    is_awakening = ImageService.touch(Onmyoji.awaken_JXBT)
-    if not is_awakening:
-        logger.debug("未进入觉醒")
-        time.sleep(30)
-        logger.debug("进入探索")
-        ImageService.touch(Onmyoji.home_TS)
-        logger.debug("进入觉醒")
-        ImageService.touch(Onmyoji.awaken_JXBT)
     logger.debug("本日周{}", weekday)
     if awakening_type != 0:
         logger.debug("修改麒麟类型")
         weekday = awakening_type
     if weekday == 1:
         logger.debug("火麒麟")
-        ImageService.touch(Onmyoji.awaken_QL_H)
+        weekday_type = Onmyoji.awaken_QL_H
     elif weekday == 2:
         logger.debug("风麒麟")
-        ImageService.touch(Onmyoji.awaken_QL_F)
+        weekday_type = Onmyoji.awaken_QL_F
     elif weekday == 3:
         logger.debug("水麒麟")
-        ImageService.touch(Onmyoji.awaken_QL_S)
+        weekday_type = Onmyoji.awaken_QL_S
     else:
         logger.debug("雷麒麟")
-        ImageService.touch(Onmyoji.awaken_QL_L)
+        weekday_type = Onmyoji.awaken_QL_L
+    logger.debug("1.战斗前准备")
+    for i_come in range(3):
+        logger.debug("进入探索")
+        ImageService.touch(Onmyoji.home_TS)
+        logger.debug("进入觉醒")
+        ImageService.touch(Onmyoji.awaken_JXBT)
+        logger.debug("选择麒麟")
+        is_awakening = ImageService.touch(weekday_type)
+        if is_awakening:
+            logger.debug("确定进入觉醒")
+            break
     logger.debug("选择层号")
     ComplexService.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 4)
     logger.debug("开启加成")
     ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 1)
-    logger.debug("锁定阵容")
-    ImageService.touch(Onmyoji.awaken_SDZR)
+    logger.debug("2.战斗")
     # 是否有准备按钮
-    is_prepare = False
+    is_prepare = True
     for i in range(fight_time):
         time_fight_start = time.time()
         logger.debug("觉醒挑战{}次", i + 1)
@@ -84,12 +78,14 @@ def awakening(game_task: [], awakening_type: int = 0):
             logger.debug("锁定阵容")
             ImageService.touch(Onmyoji.awaken_SDZR)
         logger.debug("挑战")
-        is_fight = ImageService.touch(Onmyoji.awaken_TZ)
-        logger.debug("点击准备")
-        is_prepare = ImageService.touch(Onmyoji.awaken_ZB, wait=5)
-        if not is_fight:
+        ImageService.touch(Onmyoji.awaken_TZ)
+        logger.debug("自动战斗")
+        is_auto = ImageService.exists(Onmyoji.awaken_ZD)
+        if not is_auto:
             logger.debug("点击可能存在的悬赏封印")
             ComplexService.refuse_reward()
+            logger.debug("点击可能存在的退出挑战")
+            ImageService.touch(Onmyoji.awaken_TCTZ)
             logger.debug("再次点击挑战")
             ImageService.touch(Onmyoji.awaken_TZ, wait=2)
             logger.debug("点击准备")
@@ -101,6 +97,7 @@ def awakening(game_task: [], awakening_type: int = 0):
         time_fight_time = time_fight_end - time_fight_start
         logger.debug("本次觉醒挑战，用时{}秒", round(time_fight_time))
         time_fight_list.append(time_fight_time)
+    logger.debug("3.重置到首页")
     time.sleep(2)
     logger.debug("再次点击退出挑战")
     ImageService.touch(Onmyoji.awaken_TCTZ, wait=2)
@@ -112,6 +109,7 @@ def awakening(game_task: [], awakening_type: int = 0):
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
+    logger.debug("4.战斗结算")
     # 结束时间
     time_end = time.time()
     # 总用时

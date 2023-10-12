@@ -31,6 +31,7 @@ class Onmyoji:
     awaken_ZCTZ = r"探索\觉醒\再次挑战"
     awaken_ZDSB = r"探索\觉醒\战斗失败"
     awaken_ZDSL = r"探索\觉醒\战斗胜利"
+    awaken_ZD = r"探索\觉醒\自动"
 
     border_GRJJ = r"探索\结界突破\个人结界"
     border_WZGRJJ = r"探索\结界突破\完整个人结界"

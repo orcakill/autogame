@@ -46,7 +46,7 @@ class TestOnmyojiService(TestCase):
         项目5 式神寄养
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "式神寄养")
+        TestOnmyojiService.test_project(self, ['1'], '0', "式神寄养")
 
     def test_shack_house(self):
         """
@@ -172,7 +172,7 @@ class TestOnmyojiService(TestCase):
         项目23 契灵
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '2', "契灵")
+        TestOnmyojiService.test_project(self, ['1'], '1', "契灵")
 
     def test_project(self, test_names, test_devices, project_name, fight_times: int = 1, chapter: int = 28,
                      difficulty: int = 1, rotation: int = 1):
