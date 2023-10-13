@@ -88,14 +88,14 @@ class TestOnmyojiService(TestCase):
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project(self, ['4'], '0', "好友协战")
+        TestOnmyojiService.test_project(self, ['3'], '0', "好友协战")
 
     def test_awakening(self):
         """
         项目11 觉醒10
         :return:
         """
-        TestOnmyojiService.test_project(self, ['6'], '2', "觉醒十", fight_times=20)
+        TestOnmyojiService.test_project(self, ['1'], '1', "觉醒十", fight_times=2)
 
     def test_soul_fight_one(self):
         """

@@ -57,7 +57,7 @@ class ComplexService:
                 return fight_quit
             if time.time() - time_start > 1 / 2 * timeouts or time.time() - time_start > 30:
                 # 拒接悬赏
-                ComplexService.refuse_reward()
+                ComplexService.refuse_reward(timeouts)
                 # 战斗失败
                 is_third = ImageService.exists(fight_again, timeouts=timeout, cvstrategy=cvstrategy, rgb=rgb,
                                                threshold=threshold, wait=timeout)
@@ -77,6 +77,7 @@ class ComplexService:
                                                    threshold=threshold, wait=timeout)
                     if is_fifth:
                         return fight_attack
+            if time.time() - time_start > 1 / 2 * timeouts:
                 #  失联
                 is_conn = ComplexService.loss_connection()
                 if is_conn:

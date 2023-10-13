@@ -14,7 +14,7 @@ from utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
     # 只有一台云手机，已登录账号不进行登录，无最近一小时日志记录的置为未登录，本地测试时强制更新为未登录后进行登录
-    # 0点-6点  1.大号、小号 全流程任务 2大号肝绘卷
+    # 0点-5点  1.大号、小号 全流程任务 2大号肝绘卷
     # 6点-12点 1.大号、小号 式神寄养、地域鬼王  2。大号阴阳寮突破（肝绘卷时暂停）
     # 12点-17点 1.大号斗技式神寄养、+寮突破（肝绘卷时暂停） 2、小号斗技
     # 17点-19点 1.小号逢魔之时、大小号式神寄养
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     game_device = "1"
     volume = False
     task_list = []
-    for i in range(1, 10):
+    for i in range(1, 20):
         task_list.append(False)
     logger.info("开始")
     while True:
@@ -35,21 +35,17 @@ if __name__ == '__main__':
         # 获取本日是周几（周一为0，周日为6）
         weekday = today.weekday() + 1
         # 如果当前时间大于等于0点并且小于8点
-        if 0 <= current_hour < 6:
-            if not task_list[1]:
-                logger.info("0-6,大号小号式神寄养")
-                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '0')
-                task_list[1] = True
-            if not task_list[2] and not volume:
+        if 0 <= current_hour < 5:
+            if not task_list[1] and not volume:
                 logger.info("0-6,小号全流程")
                 OnmyojiController.create_execute_tasks(game_device, "2", "", '0')
-                task_list[2] = True
-            if not task_list[3] and volume:
+                task_list[1] = True
+            if not task_list[2] and volume:
                 logger.info("0-6,大号绘卷，执行20次")
                 OnmyojiController.create_execute_tasks(game_device, "4", "", '1', game_round="20")
-                task_list[3] = True
+                task_list[2] = True
         # 如果当前时间大于等于6点并且小于12点
-        elif 6 <= current_hour < 12:
+        elif 5 <= current_hour < 12:
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
                 if not task_list[4]:
                     logger.info("6-12,大号阴阳寮突破")
@@ -88,20 +84,24 @@ if __name__ == '__main__':
                 logger.info("12-17,大号式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, "5", "", '1')
                 task_list[5] = True
-        # 如果当前时间大于等于17点,小于23点
+        # 如果当前时间大于等于17点,小于24点
         elif 17 <= current_hour <= 23:
-            if current_hour < 22 and not task_list[6]:
-                logger.info("17-23,小号逢魔之时")
-                OnmyojiController.create_execute_tasks(game_device, "", "逢魔之时", '2')
+            if current_hour < 19 and not task_list[6]:
+                logger.info("17-24,17点,大小号式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '0')
                 task_list[6] = True
             if current_hour < 22 and not task_list[7]:
-                logger.info("17-23,小号式神寄养")
-                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '2')
+                logger.info("17-24,小号逢魔之时")
+                OnmyojiController.create_execute_tasks(game_device, "", "逢魔之时", '2')
                 task_list[7] = True
-            if not task_list[8]:
-                logger.info("17-23,小号斗技5次+个人突破+每日奖励")
+            if current_hour <= 22 and not task_list[8]:
+                logger.info("17-24,小号斗技5次+个人突破+每日奖励")
                 OnmyojiController.create_execute_tasks(game_device, "6", "", '2', project_num_times=5)
                 task_list[8] = True
+            if current_hour >= 23 and not task_list[9]:
+                logger.info("17-24,23点,大小号式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '0')
+                task_list[9] = True
         # 等待1分钟
         time.sleep(60)
         # 获取当前时间
@@ -111,5 +111,5 @@ if __name__ == '__main__':
             logger.info("已过一天，重置变量")
             volume = False
             task_list = []
-            for i in range(1, 10):
+            for i in range(1, 20):
                 task_list.append(False)

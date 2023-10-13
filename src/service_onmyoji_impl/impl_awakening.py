@@ -69,14 +69,15 @@ def awakening(game_task: [], awakening_type: int = 0):
     logger.debug("开启加成")
     ComplexService.top_addition(Onmyoji.awaken_JC, Onmyoji.awaken_JXJC, Onmyoji.awaken_JCK, Onmyoji.awaken_JCG, 1)
     logger.debug("2.战斗")
-    # 是否有准备按钮
-    is_prepare = True
+    # 锁定阵容,默认锁定
+    is_unlock = False
     for i in range(fight_time):
         time_fight_start = time.time()
         logger.debug("觉醒挑战{}次", i + 1)
-        if is_prepare:
+        if is_unlock:
             logger.debug("锁定阵容")
             ImageService.touch(Onmyoji.awaken_SDZR)
+            is_unlock = False
         logger.debug("挑战")
         ImageService.touch(Onmyoji.awaken_TZ)
         logger.debug("自动战斗")
@@ -89,10 +90,14 @@ def awakening(game_task: [], awakening_type: int = 0):
             logger.debug("再次点击挑战")
             ImageService.touch(Onmyoji.awaken_TZ, wait=2)
             logger.debug("点击准备")
-            ImageService.touch(Onmyoji.awaken_ZB, wait=5)
+            is_unlock = ImageService.touch(Onmyoji.awaken_ZB, wait=5)
         logger.debug("等待战斗结果")
-        ComplexService.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
-                                 Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, None, 60, 2)
+        is_result = ComplexService.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
+                                             Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, None, 60, 2)
+        if is_result in [Onmyoji.awaken_ZDSL, Onmyoji.awaken_TCTZ]:
+            num_win = num_win + 1
+        elif is_result in [Onmyoji.awaken_ZCTZ, Onmyoji.awaken_ZDSB]:
+            num_fail = num_fail + 1
         time_fight_end = time.time()
         time_fight_time = time_fight_end - time_fight_start
         logger.debug("本次觉醒挑战，用时{}秒", round(time_fight_time))

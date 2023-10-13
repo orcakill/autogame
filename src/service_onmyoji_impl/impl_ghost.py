@@ -107,6 +107,8 @@ def ghost_king(game_task: []):
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
     time_end = time.time() - time_start
     logger.debug("地域鬼王,用时{}秒", round(time_end))
 
