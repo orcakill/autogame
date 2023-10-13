@@ -12,7 +12,7 @@ from src.utils.my_logger import my_logger as logger
 
 class TestOcrService(TestCase):
     def test_border_bond(self):
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("0")
         result = OcrService.get_word(Onmyoji.friends_HYSQY)
         logger.debug(result)
         logger.debug("结束")

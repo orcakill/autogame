@@ -39,15 +39,17 @@ class OcrService:
             image = pil_image.convert('RGBA')
             # 使用 Tesseract 进行文字识别
             text = pytesseract.image_to_string(image, lang='eng')
-            # logger.debug(text)
             if text:
                 if folder_path == Onmyoji.border_JJTZJQY:
-                    text = re.search(r'\d+(?=/30)', text).group()
+                    text = re.search(r'\d+(?=/30)', text)
                 if folder_path == Onmyoji.friends_HYSQY:
-                    text = re.search(r'\d+(?=/200)', text).group()
+                    text = re.search(r'\d+(?=/200)', text)
                 if folder_path == Onmyoji.deed_MQSS:
-                    text = re.search(r'\d+(?=/30)', text).group()
-            logger.debug(text)
+                    text = re.search(r'\d+(?=/30)', text)
+            if text:
+                logger.debug(text.group())
+            else:
+                logger.debug("无{}", folder_path)
             return text
             # 文字判断
         return None

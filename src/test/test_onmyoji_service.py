@@ -74,7 +74,7 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3'], '2', "个人突破")
+        TestOnmyojiService.test_project(self, ['2'], '0', "个人突破")
 
     def test_friends_manage(self):
         """
