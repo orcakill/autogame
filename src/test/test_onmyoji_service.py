@@ -46,7 +46,7 @@ class TestOnmyojiService(TestCase):
         项目5 式神寄养
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '0', "式神寄养")
+        TestOnmyojiService.test_project(self, ['2','3','4','5'], '0', "式神寄养")
 
     def test_shack_house(self):
         """

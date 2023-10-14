@@ -47,7 +47,9 @@ class OcrService:
                 if folder_path == Onmyoji.deed_MQSS:
                     text = re.search(r'\d+(?=/30)', text)
             if text:
-                logger.debug(text.group())
+                text = text.group()
+                text.replace(" ", "")
+                logger.debug(text)
             else:
                 logger.debug("无{}", folder_path)
             return text
