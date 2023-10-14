@@ -163,3 +163,4 @@ cython_debug/
 *.properties
 *.ini
 *.txt
+*.rar

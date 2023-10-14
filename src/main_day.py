@@ -88,7 +88,7 @@ if __name__ == '__main__':
         elif 17 <= current_hour <= 23:
             if current_hour < 19 and not task_list[6]:
                 logger.info("17-24,17点,大小号式神寄养")
-                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '0')
+                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", '1')
                 task_list[6] = True
             if current_hour < 22 and not task_list[7]:
                 logger.info("17-24,小号逢魔之时")
