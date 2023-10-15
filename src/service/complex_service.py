@@ -44,10 +44,9 @@ class ComplexService:
             logger.debug("{}:{}", round(time.time() - time_start), timeouts)
             # 1、战斗胜利+退出挑战
             logger.debug("战斗胜利")
-            is_first = ImageService.exists(fight_win, timeouts=1, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
-                                           wait=0)
+            is_first = ImageService.touch(fight_win, timeouts=1, cvstrategy=cvstrategy, rgb=rgb, threshold=threshold,
+                                          wait=0)
             if is_first:
-                ImageService.touch_coordinate(is_first)
                 ImageService.touch(fight_quit, timeouts=1, wait=2)
                 return fight_win
             # 2、退出挑战

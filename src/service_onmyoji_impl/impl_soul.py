@@ -69,18 +69,25 @@ def soul_fight(game_task: []):
     logger.debug("{}-锁定阵容", project_name)
     ImageService.touch(Onmyoji.soul_BQ_SDZR)
     # 默认锁定阵容
-    is_lock = False
+    is_unlock = False
     for i in range(fight_time):
         time_fight_start = time.time()
         logger.debug("{}御魂-挑战{}次", project_name, i + 1)
-        if is_lock:
-            logger.debug("上一次战斗点击了准备，本次锁定阵容")
+        if is_unlock:
+            logger.debug("本次锁定阵容")
             ImageService.touch(Onmyoji.soul_BQ_SDZR)
-        is_fight = ImageService.touch(Onmyoji.soul_BQ_TZ)
-        if not is_fight:
+        logger.debug("判断右侧是否有御魂自选")
+        is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
+        if is_self_selection:
+            ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+            logger.debug("返回")
+        ImageService.touch(Onmyoji.soul_BQ_TZ)
+        is_auto = ImageService.exists(Onmyoji.soul_BQ_ZD)
+        if not is_auto:
+            logger.debug("拒接悬赏")
             ComplexService.refuse_reward()
             logger.debug("点击可能的准备")
-            is_lock = ImageService.touch(Onmyoji.soul_BQ_ZB)
+            is_unlock = ImageService.touch(Onmyoji.soul_BQ_ZB)
         if i == 0:
             logger.debug("喂食")
             is_pets = ImageService.touch(Onmyoji.soul_BQ_CW, wait=5)
@@ -267,7 +274,7 @@ def soul_fight_sun(game_task: []):
     for i in range(fight_time):
         time_fight_start = time.time()
         logger.debug("判断是否无加成次数")
-        is_add = ImageService.exists(Onmyoji.soul_RLZY_WJC,threshold=0.9)
+        is_add = ImageService.exists(Onmyoji.soul_RLZY_WJC, threshold=0.9)
         if is_add:
             logger.debug("无加成,退出")
             break
