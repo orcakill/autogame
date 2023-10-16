@@ -13,7 +13,7 @@ from src.service.windows_service import WindowsService
 from utils.my_logger import my_logger as logger
 
 
-def soul1(game_devices: str):
+def soul_captain(game_devices: str):
     # 队长
     ImageService.auto_setup(game_devices)
     for i in range(80):
@@ -32,4 +32,4 @@ def soul1(game_devices: str):
 if __name__ == '__main__':
     WindowsService.limit_cpu_percentage(30)
     game_device = input("队长 请输入一个设备 0 云手机 1 夜神模拟器 2 荣耀平板 3 小米手机：")
-    soul1(game_device)
+    soul_captain(game_device)

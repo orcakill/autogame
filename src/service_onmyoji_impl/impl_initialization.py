@@ -74,7 +74,7 @@ def initialization(game_task: [], login_type: int = 0):
         logger.debug("登录账号")
         if login_type == 0:
             for i_account in range(5):
-                logger.debug("第{}次切换账号",i_account+1)
+                logger.debug("第{}次切换账号", i_account + 1)
                 logger.debug("点击可能存在的登录")
                 ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=3)
                 logger.debug("点击可能存在选择区域")
@@ -110,7 +110,7 @@ def initialization(game_task: [], login_type: int = 0):
                         break
         else:
             logger.debug("开始游戏")
-            ImageService.touch(Onmyoji.login_KSYX, wait=3)
+            ImageService.touch(Onmyoji.login_KSYX, wait=5)
         time.sleep(15)
     logger.debug("{}首页,判断底部菜单", game_account.role_name)
     is_openBottom = ImageService.exists(Onmyoji.home_DBCDDK)
@@ -123,6 +123,8 @@ def initialization(game_task: [], login_type: int = 0):
             if is_openBottom:
                 logger.debug("底部菜单已打开")
                 break
+            logger.debug("开始游戏")
+            ImageService.touch(Onmyoji.login_KSYX, wait=3)
             logger.debug("点击可能存在的悬赏封印")
             ComplexService.refuse_reward()
             logger.debug("点击可能存在的右上角返回")

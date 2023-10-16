@@ -1,5 +1,5 @@
-import os
 import configparser
+import os
 
 
 def get_project_path():
@@ -33,3 +33,13 @@ def get_database_url():
 def get_onmyoji_image_path():
     project_path = get_project_path()
     return project_path + "src\\resources\\static\\onmyoji\\"
+
+
+def get_server():
+    root_path = get_project_path()
+    config_path = root_path + "src\\resources\\config.ini"
+    config = configparser.ConfigParser()
+    config.read(config_path, encoding="utf-8")
+    dict1 = {'ip': config.get("server", "ip"), 'port': config.get("server", "port"),
+             'username': config.get("server", "username"), 'password': config.get("server", "password")}
+    return dict1
