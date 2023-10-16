@@ -48,5 +48,3 @@ if __name__ == '__main__':
     # 关闭SSH连接
     ssh.close()
     logger.debug("自动化部署完成")
-
-
