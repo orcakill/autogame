@@ -36,7 +36,12 @@ def friends_fight(game_task: []):
     game_project = GameProject(game_task[3])
     logger.debug(game_account.role_name)
     logger.debug("好友协战")
-    for i_cooperative_warfare in range(3):
+    logger.debug("1.觉醒挑战")
+    game_projects_relation.project_num_times = 13
+    game_task = [game_projects, game_projects_relation, game_account, game_project]
+    impl_awakening.awakening(game_task)
+    logger.debug("2.魂十协战")
+    for i_cooperative_warfare in range(1):
         logger.debug("进入好友界面")
         ImageService.touch(Onmyoji.friends_HYTB)
         logger.debug("进入右侧协战")
@@ -52,162 +57,155 @@ def friends_fight(game_task: []):
         else:
             logger.debug("未完成协战，返回首页")
             ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+        logger.debug("好友魂十协战-进入探索")
+        ImageService.touch(Onmyoji.home_TS)
+        logger.debug("点击御魂图标")
+        ImageService.touch(Onmyoji.soul_BQ_YHTB)
+        logger.debug("选择")
+        ImageService.touch(Onmyoji.soul_BQ_XZ)
+        logger.debug("点击可能存在的八岐大蛇眼睛")
+        ImageService.touch(Onmyoji.soul_BQ_BQDSYJ)
+        # 层号选择 魂一、魂十、魂十一
+        logger.debug("选择层号")
+        ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
+        logger.debug("判断是否在八岐大蛇首页")
+        is_home = ImageService.exists(Onmyoji.soul_BQ_BQDSSY)
+        if is_home:
+            break
+        else:
             logger.debug("确认返回首页")
             impl_initialization.return_home(game_task)
-            if i_cooperative_warfare == 0:
-                logger.debug("觉醒挑战")
-                game_projects_relation.project_num_times = 13
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
-                impl_awakening.awakening(game_task)
-            for i_come in range(3):
-                logger.debug("好友魂十协战-进入探索")
-                ImageService.touch(Onmyoji.home_TS)
-                logger.debug("点击御魂图标")
-                ImageService.touch(Onmyoji.soul_BQ_YHTB)
-                logger.debug("选择")
-                ImageService.touch(Onmyoji.soul_BQ_XZ)
-                logger.debug("点击可能存在的八岐大蛇眼睛")
-                ImageService.touch(Onmyoji.soul_BQ_BQDSYJ)
-                # 层号选择 魂一、魂十、魂十一
-                logger.debug("选择层号")
-                ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
-                logger.debug("判断是否在八岐大蛇首页")
-                is_home = ImageService.exists(Onmyoji.soul_BQ_BQDSSY)
-                if is_home:
-                    break
-                else:
-                    logger.debug("确认返回首页")
-                    impl_initialization.return_home(game_task)
-            logger.debug("好友协战-开启御魂加成")
-            ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC,
-                                        Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG, 1)
-            # 默认有协战式神
-            is_assist_shikigami = True
-            # 默认锁定阵容
-            is_unlock = False
-            for i in range(16):
-                time_fight_start = time.time()
-                logger.debug("好友协战-御魂-挑战{}次", i + 1)
-                if i == 0:
-                    logger.debug("好友协战-小号-协战-第一次")
-                    logger.debug("解锁阵容")
+        logger.debug("好友协战-开启御魂加成")
+        ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC,
+                                    Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG, 1)
+        # 默认有协战式神
+        is_assist_shikigami = True
+        # 默认锁定阵容
+        is_unlock = False
+        for i in range(16):
+            time_fight_start = time.time()
+            logger.debug("好友协战-御魂-挑战{}次", i + 1)
+            if i == 0:
+                logger.debug("好友协战-小号-协战-第一次")
+                logger.debug("解锁阵容")
+                is_unlock = ImageService.touch(Onmyoji.soul_BQ_JSZR, wait=3)
+                if not is_unlock:
                     is_unlock = ImageService.touch(Onmyoji.soul_BQ_JSZR, wait=3)
-                    if not is_unlock:
-                        is_unlock = ImageService.touch(Onmyoji.soul_BQ_JSZR, wait=3)
-                        if is_unlock:
-                            logger.debug("解锁阵容成功")
-                        is_lock = ImageService.exists(Onmyoji.soul_BQ_SDZR, wait=3)
-                        if is_lock:
-                            logger.debug("已解锁，无需再解锁")
-                        if not is_unlock and not is_lock:
-                            logger.debug("无解锁阵容，无锁定阵容,退出")
-                            break
-                    logger.debug("判断右侧是否有御魂自选")
-                    is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
-                    if is_self_selection:
-                        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-                        logger.debug("返回")
-                    logger.debug("挑战")
-                    ImageService.touch(Onmyoji.soul_BQ_TZ, wait=3)
-                    logger.debug("点击宠物")
-                    for i_pets in range(3):
-                        is_pets = ImageService.touch(Onmyoji.soul_BQ_CW, wait=5)
-                        if is_pets:
-                            logger.debug("点击喂食")
-                            ImageService.touch(Onmyoji.soul_BQ_WS)
-                            logger.debug("获得奖励")
-                            ComplexService.get_reward(Onmyoji.soul_BQ_HDJL)
-                        else:
-                            logger.debug("喂食成功")
-                            break
-                    logger.debug("点击预设-御魂-白蛋队伍，清洗位置")
-                    ImageService.touch(Onmyoji.soul_BQ_YS)
-                    ImageService.touch(Onmyoji.soul_BQ_YSFZYH)
-                    ImageService.touch(Onmyoji.soul_BQ_YSZRBD)
-                    ImageService.touch(Onmyoji.soul_BQ_YSZRCZ)
-                    logger.debug("点击预设-御魂-协战队伍")
-                    ImageService.touch(Onmyoji.soul_BQ_YS)
-                    ImageService.touch(Onmyoji.soul_BQ_YSFZYH)
-                    ImageService.touch(Onmyoji.soul_BQ_YSZRXZ)
-                    ImageService.touch(Onmyoji.soul_BQ_YSZRCZ)
-                    logger.debug("点击地板")
-                    ImageService.touch(Onmyoji.soul_BQ_DJDB)
-                    logger.debug("判断是否有协战式神")
-                    is_assist_shikigami = ImageService.exists(Onmyoji.soul_BQ_XZSS)
-                    if is_assist_shikigami:
-                        logger.debug("拖拽协战式神，更换白蛋")
-                        for i_white in range(10):
-                            is_white_egg = ImageService.exists(Onmyoji.soul_BQ_BD)
-                            if is_white_egg:
-                                ImageService.swipe(is_assist_shikigami, is_white_egg)
-                            else:
-                                logger.debug("更换白蛋完成")
-                                break
-                        logger.debug("点击准备")
-                        ImageService.touch(Onmyoji.soul_BQ_ZB)
-                else:
-                    logger.debug("其它次数挑战")
                     if is_unlock:
-                        logger.debug("锁定阵容")
-                        ImageService.touch(Onmyoji.soul_BQ_SDZR)
-                        is_unlock = False
-                    logger.debug("点击挑战")
-                    ImageService.touch(Onmyoji.soul_BQ_TZ)
-                if not is_assist_shikigami:
-                    logger.debug("无协战式神，结束循环")
-                    logger.debug("返回一次")
-                    ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
-                    logger.debug("返回两次")
-                    ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
-                    logger.debug("确定")
-                    ImageService.touch(Onmyoji.soul_BQ_QD)
+                        logger.debug("解锁阵容成功")
+                    is_lock = ImageService.exists(Onmyoji.soul_BQ_SDZR, wait=3)
+                    if is_lock:
+                        logger.debug("已解锁，无需再解锁")
+                    if not is_unlock and not is_lock:
+                        logger.debug("无解锁阵容，无锁定阵容,退出")
+                        break
+                logger.debug("判断右侧是否有御魂自选")
+                is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
+                if is_self_selection:
+                    ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+                    logger.debug("返回")
+                logger.debug("挑战")
+                ImageService.touch(Onmyoji.soul_BQ_TZ, wait=3)
+                logger.debug("点击宠物")
+                for i_pets in range(3):
+                    is_pets = ImageService.touch(Onmyoji.soul_BQ_CW, wait=5)
+                    if is_pets:
+                        logger.debug("点击喂食")
+                        ImageService.touch(Onmyoji.soul_BQ_WS)
+                        logger.debug("获得奖励")
+                        ComplexService.get_reward(Onmyoji.soul_BQ_HDJL)
+                    else:
+                        logger.debug("喂食成功")
+                        break
+                logger.debug("点击预设-御魂-白蛋队伍，清洗位置")
+                ImageService.touch(Onmyoji.soul_BQ_YS)
+                ImageService.touch(Onmyoji.soul_BQ_YSFZYH)
+                ImageService.touch(Onmyoji.soul_BQ_YSZRBD)
+                ImageService.touch(Onmyoji.soul_BQ_YSZRCZ)
+                logger.debug("点击预设-御魂-协战队伍")
+                ImageService.touch(Onmyoji.soul_BQ_YS)
+                ImageService.touch(Onmyoji.soul_BQ_YSFZYH)
+                ImageService.touch(Onmyoji.soul_BQ_YSZRXZ)
+                ImageService.touch(Onmyoji.soul_BQ_YSZRCZ)
+                logger.debug("点击地板")
+                ImageService.touch(Onmyoji.soul_BQ_DJDB)
+                logger.debug("判断是否有协战式神")
+                is_assist_shikigami = ImageService.exists(Onmyoji.soul_BQ_XZSS)
+                if is_assist_shikigami:
+                    logger.debug("拖拽协战式神，更换白蛋")
+                    for i_white in range(10):
+                        is_white_egg = ImageService.exists(Onmyoji.soul_BQ_BD)
+                        if is_white_egg:
+                            ImageService.swipe(is_assist_shikigami, is_white_egg)
+                        else:
+                            logger.debug("更换白蛋完成")
+                            break
+                    logger.debug("点击准备")
+                    ImageService.touch(Onmyoji.soul_BQ_ZB)
+            else:
+                logger.debug("其它次数挑战")
+                if is_unlock:
                     logger.debug("锁定阵容")
                     ImageService.touch(Onmyoji.soul_BQ_SDZR)
-                    break
-                is_auto = ImageService.exists(Onmyoji.soul_BQ_ZD)
-                if not is_auto:
-                    logger.debug("拒接协战")
-                    ComplexService.refuse_reward()
-                    logger.debug("退出挑战")
-                    ComplexService.get_reward(Onmyoji.soul_BQ_TCTZ)
-                    logger.debug("发现宝藏")
-                    ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
-                    logger.debug("重新点击八岐大蛇挑战")
-                    ImageService.touch(Onmyoji.soul_BQ_TZ, wait=2)
-                    logger.debug("重新点击准备")
-                    is_unlock = ImageService.touch(Onmyoji.soul_BQ_ZB, wait=4)
-                logger.debug("好友协战-等待战斗结果")
-                is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
-                                                     Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_TCTZ,
-                                                     Onmyoji.soul_BQ_TZ, None, 120, 1)
-                if i == 1:
-                    logger.debug("第一次战斗结束，发现宝藏")
-                    ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
-                    logger.debug("锁定阵容")
-                    ImageService.touch(Onmyoji.soul_BQ_SDZR)
-                if is_result in [Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ]:
-                    logger.debug("好友协战-战斗胜利")
-                    num_win = num_win + 1
-                elif is_result in [Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_ZDSB]:
-                    logger.debug("好友协战-战斗失败")
-                    num_fail = num_fail + 1
-                time_fight_end = time.time()
-                time_fight_time = time_fight_end - time_fight_start
-                logger.debug("本次好友协战，用时{}秒", round(time_fight_time))
-                time_fight_list.append(time_fight_time)
-                if is_result in [Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_ZDSB]:
-                    logger.debug("战斗失败，阵容有问题，结束循环")
-                    break
-            time.sleep(3)
-            logger.debug("好友协战-关闭御魂加成")
-            ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK,
-                                        Onmyoji.soul_BQ_JCG, 0)
-            logger.debug("好友协战-战斗结束，返回首页")
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-            logger.debug("好友协战-返回首页")
-            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
-            logger.debug("确认返回首页")
-            impl_initialization.return_home(game_task)
+                    is_unlock = False
+                logger.debug("点击挑战")
+                ImageService.touch(Onmyoji.soul_BQ_TZ)
+            if not is_assist_shikigami:
+                logger.debug("无协战式神，结束循环")
+                logger.debug("返回一次")
+                ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
+                logger.debug("返回两次")
+                ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
+                logger.debug("确定")
+                ImageService.touch(Onmyoji.soul_BQ_QD)
+                logger.debug("锁定阵容")
+                ImageService.touch(Onmyoji.soul_BQ_SDZR)
+                break
+            is_auto = ImageService.exists(Onmyoji.soul_BQ_ZD)
+            if not is_auto:
+                logger.debug("拒接协战")
+                ComplexService.refuse_reward()
+                logger.debug("退出挑战")
+                ComplexService.get_reward(Onmyoji.soul_BQ_TCTZ)
+                logger.debug("发现宝藏")
+                ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
+                logger.debug("重新点击八岐大蛇挑战")
+                ImageService.touch(Onmyoji.soul_BQ_TZ, wait=2)
+                logger.debug("重新点击准备")
+                is_unlock = ImageService.touch(Onmyoji.soul_BQ_ZB, wait=4)
+            logger.debug("好友协战-等待战斗结果")
+            is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
+                                                 Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_TCTZ,
+                                                 Onmyoji.soul_BQ_TZ, None, 120, 1)
+            if i == 1:
+                logger.debug("第一次战斗结束，发现宝藏")
+                ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
+                logger.debug("锁定阵容")
+                ImageService.touch(Onmyoji.soul_BQ_SDZR)
+            if is_result in [Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ]:
+                logger.debug("好友协战-战斗胜利")
+                num_win = num_win + 1
+            elif is_result in [Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_ZDSB]:
+                logger.debug("好友协战-战斗失败")
+                num_fail = num_fail + 1
+            time_fight_end = time.time()
+            time_fight_time = time_fight_end - time_fight_start
+            logger.debug("本次好友协战，用时{}秒", round(time_fight_time))
+            time_fight_list.append(time_fight_time)
+            if is_result in [Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_ZDSB]:
+                logger.debug("战斗失败，阵容有问题，结束循环")
+                break
+        time.sleep(3)
+        logger.debug("好友协战-关闭御魂加成")
+        ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK,
+                                    Onmyoji.soul_BQ_JCG, 0)
+        logger.debug("好友协战-战斗结束，返回首页")
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+        logger.debug("好友协战-返回首页")
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
+        ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
+        logger.debug("确认返回首页")
+        impl_initialization.return_home(game_task)
     logger.debug("好友协战-返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("确认返回首页")

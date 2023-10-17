@@ -72,14 +72,17 @@ if __name__ == '__main__':
         # 如果当前时间大于等于12点,小于17点
         elif 12 <= current_hour < 17:
             if not task_list3[1]:
-                logger.info("12-17,大号小号,地域鬼王+式神寄养+斗技5次+个人突破+每日奖励")
+                logger.info("12-17,大小号，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, "5", "", '0')
+            if not task_list3[2]:
+                logger.info("12-17,大号小号,地域鬼王+斗技5次+个人突破+每日奖励")
                 OnmyojiController.create_execute_tasks(game_device, "5", "", '0')
                 task_list3[1] = True
-            if current_hour < 17 and not task_list3[2]:
+            if current_hour < 17 and not task_list3[3]:
                 logger.info("12-17,大号，魂十一")
                 OnmyojiController.create_execute_tasks(game_device, "", "魂十一", '1', project_num_times=20)
-                task_list3[2] = True
-            if current_hour < 17 and not task_list3[3]:
+                task_list3[3] = True
+            if current_hour < 17 and not task_list3[4]:
                 if weekday in [1, 6, 7]:
                     logger.info("12-17,周一、六、日，大号，日轮之陨")
                     OnmyojiController.create_execute_tasks(game_device, "", "日轮之陨", '1')
@@ -89,13 +92,13 @@ if __name__ == '__main__':
                 elif weekday in [5]:
                     logger.info("12-17,周五，大号，永生之海")
                     OnmyojiController.create_execute_tasks(game_device, "", "永生之海", '1')
-                task_list3[3] = True
-            if current_hour < 17 and not task_list3[4]:
+                task_list3[4] = True
+            if current_hour < 17 and not task_list3[5]:
                 logger.info("12-17,大号，个人突破")
                 OnmyojiController.create_execute_tasks(game_device, "", "个人突破", '1')
                 logger.info("12-17,大号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, "5", "", '1')
-                task_list3[4] = True
+                task_list3[5] = True
         # 如果当前时间大于等于17点,小于24点
         elif 17 <= current_hour <= 23:
             if current_hour < 19 and not task_list4[1]:

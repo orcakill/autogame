@@ -88,7 +88,7 @@ class TestOnmyojiService(TestCase):
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3'], '0', "好友协战")
+        TestOnmyojiService.test_project(self, ['5'], '1', "好友协战")
 
     def test_awakening(self):
         """
