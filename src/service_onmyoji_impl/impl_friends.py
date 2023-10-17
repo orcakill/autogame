@@ -41,7 +41,11 @@ def friends_fight(game_task: []):
     game_task = [game_projects, game_projects_relation, game_account, game_project]
     impl_awakening.awakening(game_task)
     logger.debug("2.魂十协战")
-    for i_cooperative_warfare in range(1):
+    for i_cooperative_warfare in range(2):
+        logger.debug("协战开始{}", i_cooperative_warfare + 1)
+        logger.debug("确认首页")
+        impl_initialization.return_home(game_task)
+        ComplexService.refuse_reward()
         logger.debug("进入好友界面")
         ImageService.touch(Onmyoji.friends_HYTB)
         logger.debug("进入右侧协战")
@@ -53,7 +57,8 @@ def friends_fight(game_task: []):
             is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
         if is_cooperative_warfare:
             logger.debug("已完成协战")
-            break
+            ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+            continue
         else:
             logger.debug("未完成协战，返回首页")
             ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
@@ -70,11 +75,8 @@ def friends_fight(game_task: []):
         ComplexService.swipe_floor(Onmyoji.soul_BQ_CZ, Onmyoji.soul_BQ_HTEN, 1, 4)
         logger.debug("判断是否在八岐大蛇首页")
         is_home = ImageService.exists(Onmyoji.soul_BQ_BQDSSY)
-        if is_home:
+        if not is_home:
             break
-        else:
-            logger.debug("确认返回首页")
-            impl_initialization.return_home(game_task)
         logger.debug("好友协战-开启御魂加成")
         ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC,
                                     Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG, 1)
@@ -177,7 +179,7 @@ def friends_fight(game_task: []):
             is_result = ComplexService.fight_end(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_ZDSB,
                                                  Onmyoji.soul_BQ_ZCTZ, Onmyoji.soul_BQ_TCTZ,
                                                  Onmyoji.soul_BQ_TZ, None, 120, 1)
-            if i == 1:
+            if i == 0:
                 logger.debug("第一次战斗结束，发现宝藏")
                 ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
                 logger.debug("锁定阵容")
@@ -204,9 +206,9 @@ def friends_fight(game_task: []):
         logger.debug("好友协战-返回首页")
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=5)
-        logger.debug("确认返回首页")
+        logger.debug("好友协战-确认返回首页")
         impl_initialization.return_home(game_task)
-    logger.debug("好友协战-返回首页")
+    logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
