@@ -94,17 +94,12 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
             ImageService.touch(Onmyoji.explore_SDZR)
             logger.debug("第一次-自动轮换")
             ImageService.touch(Onmyoji.explore_ZDLH)
-            logger.debug("判断是否锁定阵容")
-            is_lock = ImageService.exists(Onmyoji.explore_JSZR)
-            if is_lock:
-                logger.debug("第一次-重新点击自动轮换")
-                ImageService.touch(Onmyoji.explore_ZDLH)
         logger.debug("准备完成，开始战斗")
         # 默认无boss
         is_boss = False
         for i_fight in range(1, 12):
             time_fight_start = time.time()
-            logger.debug("第{}次探索战斗", i_fight)
+            logger.debug("第{}:{}次探索战斗", i, i_fight)
             if i_fight > 3:
                 logger.debug("点击首领")
                 is_boss = ImageService.touch(Onmyoji.explore_SLZD)
@@ -119,9 +114,19 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
                         ImageService.swipe((0.9 * resolution[0], 0.5 * resolution[1]),
                                            (0.1 * resolution[0], 0.5 * resolution[1]))
                         logger.debug("点击中心位置")
-                        ImageService.touch_coordinate((0.5 * resolution[0], 0.5 * resolution[1]))
+                        ImageService.touch_coordinate((0.5 * resolution[0], 0.6 * resolution[1]))
                         logger.debug("进入下一轮循环")
                         continue
+            is_auto = ImageService.exists(Onmyoji.explore_ZD)
+            if not is_auto:
+                logger.debug("拒接悬赏")
+                ComplexService.refuse_reward()
+                logger.debug("点击可能的准备")
+                ImageService.touch(Onmyoji.explore_ZB)
+                logger.debug("点击可能的退出挑战")
+                ImageService.touch(Onmyoji.explore_TCTZ)
+                logger.debug("跳过本轮战斗")
+                continue
             logger.debug("等待战斗结果")
             is_result = ComplexService.fight_end(Onmyoji.explore_ZDSL, Onmyoji.explore_ZDSB, Onmyoji.explore_ZCTZ,
                                                  Onmyoji.explore_TCTZ, Onmyoji.explore_XGZD, None, 40, 2)
@@ -136,7 +141,7 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
             if is_boss:
                 break
         logger.debug("判断是否有式神录")
-        is_reward = ImageService.exists(Onmyoji.explore_SSL, wait=4)
+        is_reward = ImageService.exists(Onmyoji.explore_SSL, wait=5)
         if is_reward:
             logger.debug("有式神录，点击左上角返回")
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)

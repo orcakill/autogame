@@ -44,7 +44,7 @@ class TestOnmyojiService(TestCase):
     def test_foster_care(self):
         """
         项目5 式神寄养
-        :return:
+        :return:；
         """
         TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '1', "式神寄养")
 
@@ -158,7 +158,7 @@ class TestOnmyojiService(TestCase):
         项目21 探索
         :return:
         """
-        TestOnmyojiService.test_project(self, ['6'], '2', "探索", fight_times=10, chapter=13, difficulty=1, rotation=0)
+        TestOnmyojiService.test_project(self, ['1'], '1', "探索")
 
     def test_spirit(self):
         """
