@@ -5,6 +5,7 @@
 # @Description: 式神寄养
 """
 import concurrent.futures
+import datetime
 import time
 
 from src.model.enum import Onmyoji
@@ -305,9 +306,10 @@ def shack_house(game_task: []):
     """
     # 寮管理开始时间
     time_start = time.time()
-    # 账号信息
-    game_account = GameAccount(game_task[2])
-    logger.debug(game_account.role_name)
+    # 获取当前日期
+    today = datetime.date.today()
+    # 获取本日是周几（周一为0，周日为6）
+    weekday = today.weekday() + 1
     logger.debug("进入阴阳寮")
     ImageService.touch(Onmyoji.shack_YYLTB)
     logger.debug("1.寮资金纸人")
@@ -344,27 +346,22 @@ def shack_house(game_task: []):
                 logger.debug("任务加号坐标")
                 is_plus = ImageService.exists(Onmyoji.shack_RWJH)
                 logger.debug("滑动四个滚轮，加满材料")
-                if is_mine and is_roller and is_plus:
+                if is_mine and is_roller and is_plus and weekday in [4, 5, 6, 7]:
                     logger.debug("天雷鼓")
                     v1 = (is_roller[0], is_mine[1])
                     v2 = (is_plus[0], is_mine[1])
                     ImageService.swipe(v1, v2)
-                if is_mine and is_roller and is_plus:
-                    logger.debug("天雷鼓")
-                    v1 = (is_roller[0], is_mine[1])
-                    v2 = (is_plus[0], is_mine[1])
-                    ImageService.swipe(v1, v2)
-                if is_fire and is_roller and is_plus:
+                if is_fire and is_roller and is_plus and weekday == 1:
                     logger.debug("业火轮")
                     v1 = (is_roller[0], is_fire[1])
                     v2 = (is_plus[0], is_fire[1])
                     ImageService.swipe(v1, v2)
-                if is_water and is_roller and is_plus:
+                if is_water and is_roller and is_plus and weekday == 2:
                     logger.debug("水灵鲤")
                     v1 = (is_roller[0], is_water[1])
                     v2 = (is_plus[0], is_water[1])
                     ImageService.swipe(v1, v2)
-                if is_wind and is_roller and is_plus:
+                if is_wind and is_roller and is_plus and weekday == 3:
                     logger.debug("风转符")
                     v1 = (is_roller[0], is_wind[1])
                     v2 = (is_plus[0], is_wind[1])
