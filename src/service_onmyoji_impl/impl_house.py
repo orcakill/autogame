@@ -312,6 +312,7 @@ def shack_house(game_task: []):
     weekday = today.weekday() + 1
     logger.debug("进入阴阳寮")
     ImageService.touch(Onmyoji.shack_YYLTB)
+    ImageService.touch(Onmyoji.shack_YCFH)
     logger.debug("1.寮资金纸人")
     is_capital = ImageService.touch(Onmyoji.shack_ZJLQ)
     if is_capital:
@@ -374,14 +375,21 @@ def shack_house(game_task: []):
                     ComplexService.get_reward(Onmyoji.shack_HDJL)
                     ComplexService.get_reward(Onmyoji.shack_HDJL)
                 else:
-                    logger.debug("全部坐标获取失败，尝试返回寮首页")
+                    logger.debug("全部坐标获取失败，尝试返回首页")
                     ComplexService.get_reward(is_fire)
+                    ImageService.touch_coordinate((10, 10))
         logger.debug("返回到寮首页")
         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+        logger.debug("返回到首页")
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+        logger.debug("确认返回首页")
+        impl_initialization.return_home(game_task)
     logger.debug("4.体力食盒和经验酒壶")
-    is_border = ImageService.touch(Onmyoji.shack_JJTB)
+    is_border = ImageService.touch(Onmyoji.shack_YYLTB)
     if is_border:
         logger.debug("进入结界")
+        ImageService.touch(Onmyoji.shack_JJTB)
+        ImageService.touch(Onmyoji.shack_YCFH)
         logger.debug("判断是否有体力待领取")
         is_food_box = ImageService.touch(Onmyoji.shack_TLSH)
         if is_food_box:

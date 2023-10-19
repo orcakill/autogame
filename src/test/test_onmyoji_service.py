@@ -158,7 +158,7 @@ class TestOnmyojiService(TestCase):
         项目21 探索
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "探索")
+        TestOnmyojiService.test_project(self, ['1'], '0', "探索")
 
     def test_spirit(self):
         """

@@ -4,13 +4,10 @@
 # @File: test_activity_service.py
 # @Description: 活动测试类
 """
-import threading
-import time
 from unittest import TestCase
 
-from src.dao.mapper import select_game_account
-from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameProjects, GameProjectsRelation, GameProject
+from src.controller.onmyoji_controller import OnmyojiController
+from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount
 from src.service.activity_service import ActivityService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
@@ -34,135 +31,33 @@ class TestActivityService(TestCase):
         当前活动,设备云手机
         :return:
         """
-        test_names = ['1', '2']
-        test_devices = '0'
-        TestActivityService.test_current_activity(test_names, test_devices)
+        TestActivityService.test_project([5], '1', '买票')
 
     @staticmethod
-    def test_current_activity1():
+    def test_project(test_names, test_devices, project_name):
         """
-        当前活动,设备夜神模拟器
+        项目测试
+        :param test_names:
+        :param test_devices:
+        :param project_name:
         :return:
         """
-        test_names = ['1', '2']
-        test_devices = '1'
-        TestActivityService.test_current_activity(test_names, test_devices)
-
-    @staticmethod
-    def test_current_activity2():
-        """
-        当前活动,设备荣耀平板
-        :return:
-        """
-        test_names = ['1', '2']
-        test_devices = '2'
-        TestActivityService.test_current_activity(test_names, test_devices)
-
-    @staticmethod
-    def test_current_lbs():
-        """
-        LBS鬼王测试
-        :return:
-        """
-        global project_interrupt_flag
-        logger.debug("LBS鬼王测试")
-        test_names = ['4']
-        test_devices = '0'
-        # 初始化设备信息
-        image_service.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=TestActivityService.assist_activity, args=())
-        thread2.start()
-        for i in range(len(test_names)):
-            test_name = test_names[i]
-            # 初始化测试任务信息
-            game_projects = GameProjects()
-            game_projects_relation = GameProjectsRelation()
-            game_account = select_game_account(test_name)
-            game_project = GameProject()
-            game_task = [game_projects, game_projects_relation, game_account, game_project]
-            logger.debug("开始测试-LBS鬼王")
-            OnmyojiService.return_home(game_task)
+        # 初始化项目组信息
+        logger.debug("活动")
+        game_tasks = OnmyojiController.create_tasks(test_names, "", project_name)
+        for i in range(len(game_tasks)):
+            logger.debug("活动")
+            game_task = game_tasks[i]
+            game_projects = GameProjects(game_task[0])
+            game_projects_relation = GameProjectsRelation(game_task[1])
+            game_account = GameAccount(game_task[2])
+            game_project = GameProject(game_task[3])
+            logger.debug("活动-当前状态初始化:{}", game_account.role_name)
+            # 连接设备
+            ImageService.auto_setup(test_devices)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 执行测试任务
-            activity_service.current_lbs(game_task)
-            logger.debug("{}测试完成", test_name)
-            project_interrupt_flag = True
-        thread2.join()
-
-    @staticmethod
-    def test_current_lbs2():
-        """
-        LBS鬼王测试
-        :return:
-        """
-        global project_interrupt_flag
-        logger.debug("LBS鬼王测试-荣耀")
-        test_names = ['5']
-        test_devices = '2'
-        # 初始化设备信息
-        image_service.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=TestActivityService.assist_activity, args=())
-        thread2.start()
-        for i in range(len(test_names)):
-            test_name = test_names[i]
-            # 初始化测试任务信息
-            game_projects = GameProjects()
-            game_projects_relation = GameProjectsRelation()
-            game_account = select_game_account(test_name)
-            game_project = GameProject()
-            game_task = [game_projects, game_projects_relation, game_account, game_project]
-            logger.debug("开始测试-荣耀-LBS鬼王")
-            OnmyojiService.return_home(game_task)
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 执行测试任务
-            activity_service.current_lbs(game_task)
-            logger.debug("{}测试完成", test_name)
-            project_interrupt_flag = True
-        thread2.join()
-
-    @staticmethod
-    def assist_activity():
-        global project_interrupt_flag
-        logger.debug("开启拒接协战")
-        while not project_interrupt_flag:
-            time.sleep(30)
-            image_service.touch(r"活动\20230823\LBS鬼王\确定")
-            image_service.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default)
-
-    @staticmethod
-    def test_current_activity(test_names, test_devices):
-        global project_interrupt_flag
-        logger.debug("当前活动测试-云手机")
-        test_names = test_names
-        test_devices = test_devices
-        # 初始化设备信息
-        image_service.auto_setup(test_devices)
-        # 拒接协战
-        thread2 = threading.Thread(target=TestActivityService.assist_activity, args=())
-        thread2.start()
-        for i in range(len(test_names)):
-            test_name = test_names[i]
-            # 初始化测试任务信息
-            game_projects = GameProjects()
-            game_projects_relation = GameProjectsRelation()
-            game_account = select_game_account(test_name)
-            game_project = GameProject()
-            game_task = [game_projects, game_projects_relation, game_account, game_project]
-            logger.debug("开始测试-当前活动-云手机")
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 当前状态初始化
-            OnmyojiService.initialization(game_task)
-            # 执行测试任务
-            activity_service.current_activity(game_task)
-            logger.debug("{}测试完成", test_name)
-            project_interrupt_flag = True
-        thread2.join()
+            # 项目 1、
+            if game_project.project_name in ["买票"]:
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                ActivityService.current_buy(game_task)

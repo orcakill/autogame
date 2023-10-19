@@ -90,10 +90,14 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
         logger.debug("进入章节探索")
         ImageService.touch(Onmyoji.explore_ZJTS, timeouts=10)
         if i == 1 and rotation == 1:
-            logger.debug("第一次-锁定阵容")
-            ImageService.touch(Onmyoji.explore_SDZR)
-            logger.debug("第一次-自动轮换")
-            ImageService.touch(Onmyoji.explore_ZDLH)
+            for i_lock in range(3):
+                logger.debug("第一次-锁定阵容")
+                ImageService.touch(Onmyoji.explore_SDZR)
+                logger.debug("第一次-自动轮换")
+                ImageService.touch(Onmyoji.explore_ZDLH)
+                is_lock = ImageService.exists(Onmyoji.explore_SDZR)
+                if is_lock:
+                    break
         logger.debug("准备完成，开始战斗")
         # 默认无boss
         is_boss = False
@@ -142,8 +146,10 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
                 break
         logger.debug("判断是否有式神录")
         is_reward = ImageService.exists(Onmyoji.explore_SSL, wait=5)
-        if is_reward:
-            logger.debug("有式神录，点击左上角返回")
+        logger.debug("判断章节")
+        is_layers = ImageService.exists(chapter_layers)
+        if is_reward and not is_layers:
+            logger.debug("有式神录，无最后一章,点击左上角返回")
             ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
             logger.debug("确认")
             ImageService.touch(Onmyoji.explore_QR)

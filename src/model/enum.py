@@ -368,6 +368,7 @@ class Onmyoji:
     shack_YYLTB = r"阴阳寮\寮管理\阴阳寮图标"
     shack_SSYC = r"阴阳寮\寮管理\式神育成"
     shack_JJTB = r"阴阳寮\寮管理\结界图标"
+    shack_YCFH = r"阴阳寮\寮管理\异常返回"
     shack_JYJH = r"阴阳寮\寮管理\经验酒壶"
     shack_QD = r"阴阳寮\寮管理\确定"
     shack_JJKDQ = r"阴阳寮\寮管理\结界卡到期"

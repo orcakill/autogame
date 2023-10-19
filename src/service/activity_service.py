@@ -11,7 +11,7 @@ from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
-from src.service.onmyoji_service import OnmyojiService
+from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 
 # 服务接口
@@ -23,13 +23,18 @@ ocr_service = OcrService()
 class ActivityService:
     @staticmethod
     def current_activity(game_task: []):
-        # 当前活动 2023-08-23 至 2023-08-30   爬塔-真火切磋
+        # 当前活动 2023-08-23 至 2023-08-30
         ActivityService.climbing_tower_20230823(game_task)
 
     @staticmethod
     def current_lbs(game_task: []):
         # 当前活动 2023-08-23 至 2023-08-30   lbs鬼王
         ActivityService.lbs_20230823(game_task)
+
+    @staticmethod
+    def current_buy(game_task: []):
+        # 当前活动 2023-10-18 至 2023-08-30   买票
+        ActivityService.buy_20231018(game_task)
 
     @staticmethod
     def climbing_tower_20230823(game_task: []):
@@ -95,7 +100,8 @@ class ActivityService:
                 image_service.touch(p_chat)
             time.sleep(3)
             logger.debug("等待战斗结果")
-            is_result = complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_fight, None,60,
+            is_result = complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_fight, None,
+                                                  60,
                                                   3)
             if is_result is None:
                 is_gift = complex_service.get_reward(p_gift)
@@ -148,9 +154,47 @@ class ActivityService:
             logger.debug("点击准备")
             image_service.touch(p_ZB, wait=5)
             logger.debug("等待战斗结果")
-            complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_TEAM, None,300, 1)
+            complex_service.fight_end(p_fight_win, p_fight_fail, p_fight_again, p_fight_quit, p_TEAM, None, 300, 1)
         logger.debug("返回首页")
         image_service.touch(Onmyoji.comm_FH_YSJHDBSCH)
         image_service.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
         logger.debug("确认返回首页")
-        OnmyojiService.return_home(game_task)
+        impl_initialization.return_home(game_task)
+
+    @staticmethod
+    def buy_20231018(game_task: []):
+        test_MP = r"活动\20231018\买票\买票"
+        test_RK = r"活动\20231018\买票\入口"
+        test_SDRK = r"活动\20231018\买票\商店入口"
+        test_LM = r"活动\20231018\买票\拉满"
+        test_HDRK = r"活动\20231018\买票\活动入口"
+        test_HDJL = r"活动\20231018\买票\获得奖励"
+        test_GM = r"活动\20231018\买票\购买"
+        test_TG = r"活动\20231018\买票\跳过"
+        test_FH = r"活动\20231018\买票\返回"
+        logger.debug("买票")
+        for i in range(20):
+            logger.debug("活动入口")
+            ImageService.touch(test_HDRK)
+            logger.debug("跳过")
+            ImageService.touch(test_TG)
+            logger.debug("入口")
+            ImageService.touch(test_RK)
+            logger.debug("商店入口")
+            is_store = ImageService.touch(test_SDRK)
+            if is_store:
+                break
+        logger.debug("买票")
+        ImageService.touch(test_MP)
+        logger.debug("拉满")
+        ImageService.touch(test_LM)
+        logger.debug("购买")
+        ImageService.touch(test_GM)
+        logger.debug("获得奖励")
+        ComplexService.get_reward(test_HDJL)
+        logger.debug("返回首页")
+        ImageService.touch(test_FH)
+        ImageService.touch(test_FH)
+        ImageService.touch(test_FH)
+        logger.debug("确认返回首页")
+        impl_initialization.return_home(game_task)
