@@ -84,7 +84,10 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
                 logger.debug("点击探索")
                 ImageService.touch(Onmyoji.home_TS)
                 logger.debug("选择章节")
-                ImageService.touch(chapter_layers)
+                if chapter == 28:
+                    select_chapter()
+                else:
+                    ImageService.touch(chapter_layers)
                 logger.debug("选择困难")
                 ImageService.touch(Onmyoji.explore_ZJNDKN)
         logger.debug("进入章节探索")

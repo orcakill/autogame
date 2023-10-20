@@ -95,7 +95,7 @@ class TestOnmyojiService(TestCase):
         项目11 觉醒10
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "觉醒十", fight_times=2)
+        TestOnmyojiService.test_project(self, ['5'], '1', "觉醒十", fight_times=20)
 
     def test_soul_fight_one(self):
         """
