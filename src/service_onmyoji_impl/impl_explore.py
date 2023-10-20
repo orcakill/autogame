@@ -54,6 +54,8 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
         chapter_home, chapter_layers = Onmyoji.explore_ZJSY_13, Onmyoji.explore_ZJ_13
     # 获取设备分辨率
     resolution = ImageService.resolution_ratio()
+    # 默认未自动轮换
+    is_rotation = False
     logger.debug("章节探索-开始")
     for i in range(1, fight_times + 1):
         time_round_start = time.time()
@@ -92,15 +94,6 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
                 ImageService.touch(Onmyoji.explore_ZJNDKN)
         logger.debug("进入章节探索")
         ImageService.touch(Onmyoji.explore_ZJTS, timeouts=10)
-        if i == 1 and rotation == 1:
-            for i_lock in range(3):
-                logger.debug("第一次-锁定阵容")
-                ImageService.touch(Onmyoji.explore_SDZR)
-                logger.debug("第一次-自动轮换")
-                ImageService.touch(Onmyoji.explore_ZDLH)
-                is_lock = ImageService.exists(Onmyoji.explore_SDZR)
-                if is_lock:
-                    break
         logger.debug("准备完成，开始战斗")
         # 默认无boss
         is_boss = False
@@ -110,6 +103,11 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
             if i_fight > 3:
                 logger.debug("点击首领")
                 is_boss = ImageService.touch(Onmyoji.explore_SLZD)
+            if not is_rotation:
+                logger.debug("未自动轮换-锁定阵容")
+                ImageService.touch(Onmyoji.explore_SDZR)
+                logger.debug("未自动轮换-自动轮换")
+                is_rotation = ImageService.touch(Onmyoji.explore_ZDLH)
             if not is_boss:
                 logger.debug("没有首领，点击小怪")
                 for i_little_monster in range(2):
@@ -129,7 +127,10 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
                 logger.debug("拒接悬赏")
                 ComplexService.refuse_reward()
                 logger.debug("点击可能的准备")
-                ImageService.touch(Onmyoji.explore_ZB)
+                is_lock = ImageService.touch(Onmyoji.explore_ZB)
+                if is_lock:
+                    logger.debug("点击准备完成，未自动轮换")
+                    is_rotation = False
                 logger.debug("点击可能的退出挑战")
                 ImageService.touch(Onmyoji.explore_TCTZ)
                 logger.debug("跳过本轮战斗")

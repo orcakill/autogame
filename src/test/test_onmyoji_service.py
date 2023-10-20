@@ -39,7 +39,7 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2'], '1', "地域鬼王")
+        TestOnmyojiService.test_project(self, ['4','5'], '1', "地域鬼王")
 
     def test_foster_care(self):
         """
@@ -151,7 +151,7 @@ class TestOnmyojiService(TestCase):
         项目20 御魂整理
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2'], '1', "御魂整理")
+        TestOnmyojiService.test_project(self, ['2'], '2', "御魂整理")
 
     def test_explore(self):
         """
@@ -165,7 +165,7 @@ class TestOnmyojiService(TestCase):
         项目22 御灵
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "御灵")
+        TestOnmyojiService.test_project(self, ['1'], '2', "御灵")
 
     def test_deed(self):
         """
