@@ -43,3 +43,14 @@ def get_server():
     dict1 = {'ip': config.get("server", "ip"), 'port': config.get("server", "port"),
              'username': config.get("server", "username"), 'password': config.get("server", "password")}
     return dict1
+
+
+def get_mail():
+    root_path = get_project_path()
+    config_path = root_path + "src\\resources\\config.ini"
+    config = configparser.ConfigParser()
+    config.read(config_path, encoding="utf-8")
+    dict1 = {'sender_email': config.get("mail", "sender_email"),
+             'sender_password': config.get("mail", "sender_password"),
+             'recipient_email': config.get("mail", "recipient_email")}
+    return dict1

@@ -13,13 +13,12 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rotation: int = 1):
+def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
     """
     章节探索
     默认选择28章困难
     自动添加候补式神
     全打 打3次，有小怪打小怪，有boss打boss，都没有左右移动，检查不到小怪和boss，退出探索
-    :param rotation: 自动轮换 0 不轮换 1轮换
     :param difficulty: 难度 0 普通 1 困难
     :param chapter: 默认28章
     :param game_task:
@@ -109,6 +108,9 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
                 if i_fight > 3:
                     logger.debug("点击首领")
                     is_boss = ImageService.touch(Onmyoji.explore_SLZD)
+                if i == 0:
+                    logger.debug("添加N卡式神自动轮换")
+                    logger.debug("开启经验加成")
                 if not is_rotation:
                     logger.debug("未自动轮换-锁定阵容")
                     ImageService.touch(Onmyoji.explore_SDZR)
@@ -170,7 +172,7 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rota
             logger.debug("本次探索-战斗结束，用时{}秒", round(time_round_fight, 3))
             time_round_list.append(time_round_fight)
             logger.debug("本轮探索战斗结束")
-
+    logger.debug("关闭加成")
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
@@ -212,3 +214,15 @@ def select_chapter():
             ImageService.touch_coordinate(result)
     else:
         logger.debug("找不到章节")
+
+
+def automatic_rotation_type_god():
+    logger.debug("检查设置")
+    logger.debug("点击左下全部")
+    logger.debug("点击左下N卡")
+    logger.debug("检查轮换数量,5次")
+    logger.debug("轮换数量不满")
+    logger.debug("检查是否有1级N卡")
+    logger.debug("按住1级N卡，补充轮换式神")
+    logger.debug("退出设置，返回到探索界面")
+    logger.debug("确定返回到探索界面，未返回成功则返回首页")

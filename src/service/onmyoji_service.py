@@ -161,7 +161,7 @@ class OnmyojiService:
         impl_pvp.pvp(game_task)
 
     @staticmethod
-    def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1, rotation: int = 1):
+    def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
         """
         章节探索
         :param rotation: 轮换开关
@@ -170,7 +170,7 @@ class OnmyojiService:
         :param game_task: 项目信息
         :return:
         """
-        impl_explore.explore_chapters(game_task, chapter, difficulty, rotation)
+        impl_explore.explore_chapters(game_task, chapter, difficulty)
 
     @staticmethod
     def spirit_fight(game_task: []):

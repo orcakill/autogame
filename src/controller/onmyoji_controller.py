@@ -6,6 +6,7 @@ from src.dao.mapper_extend import MapperExtend
 from src.model.models import *
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
+from src.utils import utils_mail
 from src.utils.my_logger import my_logger as logger
 from src.utils.utils_time import UtilsTime
 
@@ -164,3 +165,4 @@ class OnmyojiController:
                                     UtilsTime.convert_seconds(time_end - time_start))
         except Exception as e:
             logger.exception(e)
+            utils_mail.send_email("阴阳师脚本", "异常", e)

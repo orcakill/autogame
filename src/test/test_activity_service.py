@@ -31,7 +31,8 @@ class TestActivityService(TestCase):
         当前活动,设备云手机
         :return:
         """
-        TestActivityService.test_project(['2', '3', '4', '5'], '2', '买票')
+        TestActivityService.test_project(['2', '3', '4', '5'], '1', '买票')
+        logger.debug("活动-结束")
 
     @staticmethod
     def test_project(test_names, test_devices, project_name):
@@ -62,3 +63,4 @@ class TestActivityService(TestCase):
                 game_task = [game_projects, game_projects_relation, game_account, game_project]
                 ActivityService.current_buy(game_task)
             logger.debug("活动-结束")
+        logger.debug("活动-结束")

@@ -46,6 +46,8 @@ def foster_care(game_task: []):
             if is_growing:
                 break
             else:
+                logger.debug("点击可能存在的返回，如枫树等级提升")
+                ImageService.touch(Onmyoji.comm_FH_YSJZKHSLJSCH)
                 ComplexService.refuse_reward()
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)

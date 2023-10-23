@@ -1,6 +1,8 @@
 import os
 import sys
 
+from src.utils import utils_mail
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.dao.mapper_extend import MapperExtend
@@ -43,5 +45,6 @@ if __name__ == '__main__':
     logger.info("**************")
     logger.info("执行任务")
     OnmyojiController.execute_tasks(game_tasks, game_round, game_relation_num, game_device)
-    if game_is_email == 1:
+    if game_is_email == '1':
         logger.info("发送邮件")
+        utils_mail.send_email("阴阳师脚本", "结束", "项目组执行结束")
