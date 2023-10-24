@@ -39,14 +39,14 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project(self, ['4','5'], '1', "地域鬼王")
+        TestOnmyojiService.test_project(self, ['4', '5'], '1', "地域鬼王")
 
     def test_foster_care(self):
         """
         项目5 式神寄养
         :return:；
         """
-        TestOnmyojiService.test_project(self, ['3', '4', '5','2'], '1', "式神寄养")
+        TestOnmyojiService.test_project(self, ['3', '4', '5', '2'], '1', "式神寄养")
 
     def test_shack_house(self):
         """
@@ -88,7 +88,7 @@ class TestOnmyojiService(TestCase):
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project(self, ['5'], '0', "好友协战")
+        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "好友协战")
 
     def test_awakening(self):
         """
@@ -116,7 +116,7 @@ class TestOnmyojiService(TestCase):
         项目14 魂十一
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '2', "魂十一",fight_times=60)
+        TestOnmyojiService.test_project(self, ['1'], '2', "魂十一", fight_times=60)
 
     def test_soul_fight_fire(self):
         """

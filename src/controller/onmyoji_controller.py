@@ -164,5 +164,5 @@ class OnmyojiController:
                                     UtilsTime.convert_seconds(time_end - time_task_start),
                                     UtilsTime.convert_seconds(time_end - time_start))
         except Exception as e:
-            logger.exception(e)
             utils_mail.send_email("阴阳师脚本", "异常", e)
+            logger.exception(e)

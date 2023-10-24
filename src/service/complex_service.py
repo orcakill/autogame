@@ -155,11 +155,13 @@ class ComplexService:
                     logger.debug("判断是否有{}", target)
                     is_target = ImageService.touch(target, wait=1)
                     if is_target:
-                        break
+                        return True
             else:
                 logger.debug("无{}", basis)
+                return False
         else:
             logger.debug("发现目标{}", target)
+        return True
 
     @staticmethod
     def top_addition(word: str, add_type: str, add_open: str, add_close: str, add_switch: int):
@@ -176,7 +178,7 @@ class ComplexService:
             coordinate_word = ImageService.exists(word)
             if coordinate_word:
                 logger.debug("点击顶部加成")
-                AirtestService.touch_coordinate(coordinate_word)
+                ImageService.touch_coordinate(coordinate_word)
                 logger.debug("根据类型确定纵坐标")
                 coordinate_type = ImageService.exists(add_type)
                 if add_switch == 0:
@@ -204,12 +206,13 @@ class ComplexService:
                         logger.debug("未找到加成坐标")
                         logger.debug("退出顶部加成")
                         ImageService.touch_coordinate(coordinate_word, wait=2)
-
             else:
                 logger.debug("没找到顶部加成")
             return False
         except Exception as e:
             logger.debug("异常；{}", e)
+            logger.debug("退出顶部加成")
+            ImageService.touch(word)
 
     @staticmethod
     def get_reward(reward: str):
