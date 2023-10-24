@@ -8,6 +8,7 @@ from src.model.enum import Onmyoji
 from src.model.models import GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.ocr_service import OcrService
 from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
@@ -56,9 +57,10 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
     # 默认未自动轮换
     is_rotation = False
     logger.debug("章节探索-开始")
+    # 章节探索
     for i in range(1, fight_times + 1):
         time_round_start = time.time()
-        logger.debug("第{}轮探索战斗", i)
+        logger.debug("第{}轮章节探索", i)
         logger.debug("判断是否是章节首页")
         is_home = ImageService.exists(chapter_home)
         if not is_home:
@@ -95,16 +97,16 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
             logger.debug("重新检查章节首页")
             is_home = ImageService.exists(chapter_home)
         if not is_home:
-            logger.debug("不再章节首页，进入下一轮")
+            logger.debug("不在章节首页，进入下一次章节探索")
         else:
-            logger.debug("进入章节探索")
+            logger.debug("进入章节探索战斗")
             ImageService.touch(Onmyoji.explore_ZJTS, timeouts=10)
             logger.debug("准备完成，开始战斗")
             # 默认无boss
             is_boss = False
             for i_fight in range(1, 12):
                 time_fight_start = time.time()
-                logger.debug("第{}:{}次探索战斗", i, i_fight)
+                logger.debug("第{}:{}次章节探索战斗", i, i_fight)
                 if i_fight > 3:
                     logger.debug("点击首领")
                     is_boss = ImageService.touch(Onmyoji.explore_SLZD)
@@ -141,18 +143,21 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                         is_rotation = False
                     logger.debug("点击可能的退出挑战")
                     ImageService.touch(Onmyoji.explore_TCTZ)
-                    logger.debug("跳过本轮战斗")
+                    logger.debug("判断是否存在")
+                    logger.debug("跳过本次战斗")
                     continue
-                logger.debug("等待战斗结果")
-                is_result = ComplexService.fight_end(Onmyoji.explore_ZDSL, Onmyoji.explore_ZDSB, Onmyoji.explore_ZCTZ,
-                                                     Onmyoji.explore_TCTZ, Onmyoji.explore_XGZD, None, 40, 2)
-                if is_result in [Onmyoji.explore_ZDSL, Onmyoji.explore_TCTZ]:
-                    num_win = num_win + 1
-                elif is_result in [Onmyoji.explore_ZCTZ, Onmyoji.explore_ZDSB]:
-                    num_false = num_false + 1
+                if is_auto:
+                    logger.debug("等待战斗结果")
+                    is_result = ComplexService.fight_end(Onmyoji.explore_ZDSL, Onmyoji.explore_ZDSB,
+                                                         Onmyoji.explore_ZCTZ,
+                                                         Onmyoji.explore_TCTZ, Onmyoji.explore_XGZD, None, 40, 2)
+                    if is_result in [Onmyoji.explore_ZDSL, Onmyoji.explore_TCTZ]:
+                        num_win = num_win + 1
+                    elif is_result in [Onmyoji.explore_ZCTZ, Onmyoji.explore_ZDSB]:
+                        num_false = num_false + 1
                 time_fight_end = time.time()
                 time_fight = time_fight_end - time_fight_start
-                logger.debug("本次探索-战斗结束，用时{}秒", round(time_fight, 3))
+                logger.debug("本次章节探索战斗结束，用时{}秒", round(time_fight, 3))
                 time_fight_list.append(time_fight)
                 if is_boss:
                     break
@@ -169,7 +174,7 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                 logger.debug("无式神录")
             time_round_end = time.time()
             time_round_fight = time_round_end - time_round_start
-            logger.debug("本次探索-战斗结束，用时{}秒", round(time_round_fight, 3))
+            logger.debug("本次章节探索结束，用时{}秒", round(time_round_fight, 3))
             time_round_list.append(time_round_fight)
             logger.debug("本轮探索战斗结束")
     logger.debug("关闭加成")
@@ -218,11 +223,34 @@ def select_chapter():
 
 def automatic_rotation_type_god():
     logger.debug("检查设置")
-    logger.debug("点击左下全部")
-    logger.debug("点击左下N卡")
+    is_set_up = ImageService.touch(Onmyoji.explore_SZ)
+    if is_set_up:
+        logger.debug("点击左下全部")
+        ImageService.touch(Onmyoji.explore_ZXQB)
+        logger.debug("点击左下N卡")
+        ImageService.touch(Onmyoji.explore_ZXNK)
     logger.debug("检查轮换数量,5次")
-    logger.debug("轮换数量不满")
-    logger.debug("检查是否有1级N卡")
-    logger.debug("按住1级N卡，补充轮换式神")
+    for i_full in range(6):
+        num_full = OcrService.get_word(Onmyoji.explore_DQLHSL)
+        if num_full == '50':
+            logger.debug("轮换数量已满")
+            break
+        else:
+            logger.debug("轮换数量不满")
+            for i_rotation in range(3):
+                logger.debug("检查是否有1级N卡")
+                is_rotation = ImageService.exists(Onmyoji.explore_YJNK)
+                if is_rotation:
+                    logger.debug("按住1级N卡，补充轮换式神")
+                    ImageService.touch(is_rotation, duration=1)
+                    break
+                else:
+                    logger.debug("没有1级N卡，轮换滚轮滑动")
+                    is_roller = ImageService.exists(Onmyoji.explore_LHGL)
+                    if is_roller:
+                        logger.debug("滑动滚轮")
+                        ImageService.swipe(is_roller, (is_roller[0] + 10, is_roller[1]))
+                    else:
+                        logger.debug("没找到滚轮")
     logger.debug("退出设置，返回到探索界面")
-    logger.debug("确定返回到探索界面，未返回成功则返回首页")
+    ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)

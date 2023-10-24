@@ -46,6 +46,8 @@ class OcrService:
                     text = re.search(r'\d+(?=/200)', text)
                 if folder_path == Onmyoji.deed_MQSS:
                     text = re.search(r'\d+(?=/30)', text)
+                if folder_path ==Onmyoji.explore_DQLHSL:
+                    text = re.search(r'\d+(?=/50)', text)
             if text:
                 text = text.group()
                 text.replace(" ", "")
