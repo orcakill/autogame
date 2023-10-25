@@ -402,6 +402,7 @@ class Onmyoji:
     explore_ZCBX = r"探索\章节探索\左侧宝箱"
     explore_SSL = r"探索\章节探索\式神录"
     explore_DQLHSL = r"探索\章节探索\当前轮换数量"
+    explore_LHQD = r"探索\章节探索\轮换确定"
     explore_ZDSB = r"探索\章节探索\战斗失败"
     explore_ZDSL = r"探索\章节探索\战斗胜利"
     explore_TSJMSSL = r"探索\章节探索\探索界面式神录"

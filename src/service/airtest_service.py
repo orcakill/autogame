@@ -129,9 +129,9 @@ class AirtestService:
                 pass
 
     @staticmethod
-    def touch_coordinate(v: [], wait_time: float = WAIT):
+    def touch_coordinate(v: [], duration: float, wait_time: float):
         time.sleep(wait_time)
-        if touch(v):
+        if touch(v, duration=duration):
             logger.debug("坐标点击成功")
             return True
         else:
@@ -259,5 +259,5 @@ class AirtestService:
         :param word: 文字内容
         :return:
         """
-        text = "input text '" + word + "'"
-        shell(text)
+        text1 = "input text '" + word + "'"
+        shell(text1)

@@ -42,16 +42,17 @@ class ImageService:
                is_click: bool = False, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
+
+        :param folder_path: 图片文件夹路径
+        :param cvstrategy: 图像识别算法
+        :param timeout: 单张图片超时时间
+        :param threshold: 图像识别阈值
         :param interval: 图片识别点击间隔时间
         :param rgb: 带颜色
         :param timeouts: 图片组超时时间
         :param wait: 图片等待识别时间
         :param is_click: 是否点击坐标
         :param is_throw: 是否显示异常
-        :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 单张图片超时时间
-        :param threshold: 图像识别阈值
         :return:
         """
         try:
@@ -70,7 +71,7 @@ class ImageService:
                     if pos and is_click:
                         time.sleep(interval)
                         logger.debug("图像识别点击成功:{}", folder_path)
-                        AirtestService.touch_coordinate(pos)
+                        ImageService.touch_coordinate(pos)
                         return True
             return False
         except Exception as e:
@@ -137,14 +138,15 @@ class ImageService:
         return AirtestService.snapshot(name, print_image)
 
     @staticmethod
-    def touch_coordinate(v: [], wait: float = WAIT):
+    def touch_coordinate(v: [], wait: float = WAIT, duration: float = DURATION):
         """
         点击坐标
+        :param duration: 按住时间
         :param v: 坐标
         :param wait: 等待开始时间
         :return:
         """
-        AirtestService.touch_coordinate(v, wait)
+        AirtestService.touch_coordinate(v, wait, duration)
 
     @staticmethod
     def restart_app(app: str):

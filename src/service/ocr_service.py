@@ -17,10 +17,12 @@ airtest_service = AirtestService()
 
 class OcrService:
     @staticmethod
-    def get_word(folder_path: str):
+    def get_word(folder_path: str, lang: str = 'eng'):
         """
         获取局部截图的文本或数字信息
+
         :param folder_path: 局部路径
+        :param lang: 语言类型 eng  英语 chi_sim 简体中文
         :return:
         """
         # 结界突破区域
@@ -38,7 +40,7 @@ class OcrService:
             # 打开图像
             image = pil_image.convert('RGBA')
             # 使用 Tesseract 进行文字识别
-            text = pytesseract.image_to_string(image, lang='eng')
+            text = pytesseract.image_to_string(image, lang=lang)
             if text:
                 if folder_path == Onmyoji.border_JJTZJQY:
                     text = re.search(r'\d+(?=/30)', text)
