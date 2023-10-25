@@ -13,7 +13,7 @@ from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
-from src.service_onmyoji_impl import impl_house, impl_initialization
+from src.service_onmyoji_impl import impl_house, impl_initialization, impl_explore
 from src.utils.my_logger import logger
 
 
@@ -165,5 +165,14 @@ class TestComplexService(TestCase):
         logger.debug(c2)
         logger.debug((c2[1] - c1[1]) / (3 * coordinate_difference))
         logger.debug("测试-开结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)
+
+    def test_automatic_rotation_type_god(self):
+        logger.debug("测试-开始")
+        now = datetime.datetime.now()
+        ImageService.auto_setup("1")
+        impl_explore.automatic_rotation_type_god()
+        logger.debug("测试-结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)

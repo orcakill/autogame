@@ -60,7 +60,7 @@ class TestOnmyojiService(TestCase):
         项目7 阴阳寮突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "阴阳寮突破")
+        TestOnmyojiService.test_project(self, ['1'], '0', "阴阳寮突破")
 
     def test_border_fight(self):
         """

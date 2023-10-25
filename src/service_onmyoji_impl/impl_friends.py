@@ -168,6 +168,8 @@ def friends_fight(game_task: []):
             if not is_auto:
                 logger.debug("拒接协战")
                 ComplexService.refuse_reward()
+                logger.debug("加成取消")
+                ImageService.touch(Onmyoji.soul_BQ_JCQX)
                 logger.debug("退出挑战")
                 ComplexService.get_reward(Onmyoji.soul_BQ_TCTZ)
                 logger.debug("发现宝藏")

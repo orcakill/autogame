@@ -225,32 +225,34 @@ def automatic_rotation_type_god():
     logger.debug("检查设置")
     is_set_up = ImageService.touch(Onmyoji.explore_SZ)
     if is_set_up:
-        logger.debug("点击左下全部")
-        ImageService.touch(Onmyoji.explore_ZXQB)
-        logger.debug("点击左下N卡")
-        ImageService.touch(Onmyoji.explore_ZXNK)
-    logger.debug("检查轮换数量,5次")
-    for i_full in range(6):
+        logger.debug("检查轮换数量")
         num_full = OcrService.get_word(Onmyoji.explore_DQLHSL)
-        if num_full == '50':
+        if num_full is not None and num_full == '50':
             logger.debug("轮换数量已满")
-            break
-        else:
-            logger.debug("轮换数量不满")
-            for i_rotation in range(3):
-                logger.debug("检查是否有1级N卡")
-                is_rotation = ImageService.exists(Onmyoji.explore_YJNK)
-                if is_rotation:
-                    logger.debug("按住1级N卡，补充轮换式神")
-                    ImageService.touch(is_rotation, duration=1)
+        elif num_full is not None and num_full != '50':
+            logger.debug("点击左下全部")
+            ImageService.touch(Onmyoji.explore_ZXQB)
+            logger.debug("点击左下N卡")
+            ImageService.touch(Onmyoji.explore_ZXNK)
+            logger.debug("点击候补式神")
+            ImageService.touch(Onmyoji.explore_HBSS)
+            logger.debug("检查轮换数量,5次")
+            for i_full in range(6):
+                logger.debug("轮换数量不满50,滑动滚轮")
+                is_roller = ImageService.exists(Onmyoji.explore_LHGL)
+                if is_roller:
+                    logger.debug("滑动滚轮")
+                    ImageService.swipe(is_roller, (is_roller[0] + 10, is_roller[1]))
+                logger.debug("按住一级N卡")
+                is_ration = ImageService.touch(Onmyoji.explore_YJNK, duration=2)
+                if not is_ration:
+                    logger.debug("没找到一级N卡")
+                logger.debug("检查轮换数量")
+                num_full = OcrService.get_word(Onmyoji.explore_DQLHSL)
+                if num_full == '50':
+                    logger.debug("轮换数量已满")
                     break
-                else:
-                    logger.debug("没有1级N卡，轮换滚轮滑动")
-                    is_roller = ImageService.exists(Onmyoji.explore_LHGL)
-                    if is_roller:
-                        logger.debug("滑动滚轮")
-                        ImageService.swipe(is_roller, (is_roller[0] + 10, is_roller[1]))
-                    else:
-                        logger.debug("没找到滚轮")
+        else:
+            logger.debug("没找到轮换数量")
     logger.debug("退出设置，返回到探索界面")
     ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)

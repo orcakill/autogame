@@ -43,16 +43,17 @@ def region_border(game_task: []):
         is_region_home = ImageService.exists(Onmyoji.region_YCYYL)
         if is_region_home:
             logger.debug("当前寮结界首页")
+            break
         else:
             ComplexService.refuse_reward()
     logger.debug("锁定阵容")
     ImageService.touch(Onmyoji.region_SDZR)
-    logger.debug("判断有寮结界")
+    logger.debug("检查寮结界")
     is_fight = ImageService.exists(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
-    logger.debug("判断是否无寮结界挑战")
-    is_fight_times = ImageService.exists(Onmyoji.region_WTZCS)
-    # 有寮结界  没有零的挑战次数
-    if is_fight and not is_fight_times:
+    logger.debug("检查寮结界挑战次数")
+    is_fight_times = OcrService.get_word(Onmyoji.region_TZCS)
+    # 有寮结界  有挑战次数
+    if is_fight and is_fight_times is not None and is_fight_times != '0':
         logger.debug("阴阳寮突破开始")
         for i_fight in range(9):
             time_fight_start = time.time()
@@ -64,8 +65,14 @@ def region_border(game_task: []):
                 logger.debug("小号-点击寮结界，不打战败")
                 ImageService.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
             logger.debug("点击进攻")
-            is_attack = ImageService.touch(Onmyoji.region_JG)
-            if not is_attack:
+            ImageService.touch(Onmyoji.region_JG)
+            logger.debug("检查自动战斗")
+            is_auto = ImageService.exists(Onmyoji.region_ZD, timeouts=10)
+            if not is_auto:
+                logger.debug("拒接悬赏")
+                ComplexService.refuse_reward()
+                logger.debug("点击可能存在的退出挑战")
+                ImageService.touch(Onmyoji.region_TCTZ)
                 logger.debug("再次点击寮结界")
                 is_fight = ImageService.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
                 if not is_fight:
@@ -76,11 +83,16 @@ def region_border(game_task: []):
                         break
                 logger.debug("再次点击进攻")
                 ImageService.touch(Onmyoji.region_JG)
-            logger.debug("判断是否还有进攻")
-            is_attack = ImageService.exists(Onmyoji.region_JG, wait=3)
-            if is_attack:
+                logger.debug("再次检查自动战斗")
+                is_auto = ImageService.exists(Onmyoji.region_ZD)
+            if not is_auto:
                 logger.debug("可能已被挑战,点击左侧突破进度")
                 ImageService.touch(Onmyoji.region_ZCTPJD)
+                logger.debug("寮结界挑战次数")
+                is_fight_times = OcrService.get_word(Onmyoji.region_TZCS)
+                if is_fight_times is not None and is_fight_times == '0':
+                    logger.debug("寮结界次数为0")
+                    break
             else:
                 logger.debug("等待战斗结果")
                 is_result = ComplexService.fight_end(Onmyoji.region_ZDSL, Onmyoji.region_ZDSB, Onmyoji.region_ZCTZ,
@@ -115,14 +127,12 @@ def region_border(game_task: []):
     time_fight_avg = 0
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
-    if is_fight and not is_fight_times:
+    if len_time_fight_list > 0:
         logger.debug("本轮阴阳寮总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
-                     round(time_all, 3),
-                     time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
-        return True
+                     UtilsTime.convert_seconds(time_all), UtilsTime.convert_seconds(time_fight_all), time_fight_avg,
+                     len_time_fight_list, num_win, num_fail)
     else:
-        logger.debug("无寮结界或无战斗次数，总用时{}秒", time_all)
-        return False
+        logger.debug("无寮结界或无战斗次数，总用时{}秒", UtilsTime.convert_seconds(time_all))
 
 
 def border_fight(game_task: [], fight_times: int = 40):
