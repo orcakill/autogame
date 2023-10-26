@@ -158,7 +158,7 @@ class TestOnmyojiService(TestCase):
         项目21 探索
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '0', "探索")
+        TestOnmyojiService.test_project(self, ['1'], '1', "探索")
 
     def test_spirit(self):
         """
@@ -265,7 +265,7 @@ class TestOnmyojiService(TestCase):
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = fight_times
                 game_task = [game_projects, game_projects_relation, game_account, game_project]
-                OnmyojiService.explore_chapters(game_task, chapter=chapter, difficulty=difficulty, rotation=rotation)
+                OnmyojiService.explore_chapters(game_task, chapter=chapter, difficulty=difficulty)
             # 项目 22
             elif game_project.project_name in ["御灵"]:
                 game_projects_relation.project_num_times = fight_times
