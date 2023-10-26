@@ -9,7 +9,6 @@ from unittest import TestCase
 from src.dao.mapper import select_game_account
 from src.model.enum import Onmyoji
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
-from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
@@ -20,7 +19,7 @@ from src.utils.my_logger import logger
 class TestComplexService(TestCase):
 
     def test_fight(self):
-        AirtestService.auto_setup("0")
+        ImageService.auto_setup("0")
         fight_fight = Onmyoji.awaken_TZ
         fight_win = Onmyoji.awaken_ZDSL
         fight_fail = Onmyoji.awaken_ZDSB
@@ -43,7 +42,7 @@ class TestComplexService(TestCase):
         print(now1 - now)
 
     def test_fight_end(self):
-        AirtestService.auto_setup("0")
+        ImageService.auto_setup("0")
         logger.debug("开始")
         now = datetime.datetime.now()
         ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
@@ -54,7 +53,7 @@ class TestComplexService(TestCase):
         print(now1 - now)
 
     def test_swipe_floor(self):
-        AirtestService.auto_setup("0")
+        ImageService.auto_setup("0")
         logger.debug("开始")
         now = datetime.datetime.now()
         ComplexService.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 5)
@@ -63,11 +62,22 @@ class TestComplexService(TestCase):
         print(now1 - now)
 
     def test_top_addition(self):
-        AirtestService.auto_setup("2")
+        ImageService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()
-        ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG,
-                                    1)
+        type1 = 2
+        if type1 == 0:
+            logger.debug("觉醒加成")
+            ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK,
+                                        Onmyoji.soul_BQ_JCG, 1)
+        elif type1 == 1:
+            logger.debug("御魂加成")
+            ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK,
+                                        Onmyoji.soul_BQ_JCG, 1)
+        elif type1 == 2:
+            logger.debug("经验加成")
+            ComplexService.top_addition(Onmyoji.explore_JC, Onmyoji.explore_JYJC, Onmyoji.explore_JCK,
+                                        Onmyoji.explore_JCG, 1)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -77,7 +87,7 @@ class TestComplexService(TestCase):
         式神碎片
         :return: 
         """
-        AirtestService.auto_setup("1")
+        ImageService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()
         for i in range(20):

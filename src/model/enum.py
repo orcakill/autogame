@@ -159,6 +159,8 @@ class Onmyoji:
     home_TS = r"首页\探索"
     home_XZ = r"首页\下载"
     home_BZTS = r"首页\不再提示"
+    home_HCGD = r"首页\缓存过多"
+    home_QD = r"首页\确定"
 
     call_ZCZH = r"召唤\再次召唤"
 

@@ -42,6 +42,15 @@ class TestImageService(TestCase):
         now1 = datetime.datetime.now()
         print(now1 - now)
 
+    def test_touch_coordinate(self):
+        ImageService.auto_setup("1")
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        ImageService.touch_coordinate((873,357))
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
     def test_snapshot(self):
         ImageService.auto_setup("0")
         now = datetime.datetime.now()
@@ -83,13 +92,14 @@ class TestImageService(TestCase):
         :return:
         """
         now = datetime.datetime.now()
-        ImageService.auto_setup("2")
+        ImageService.auto_setup("1")
         # 测试代码
         logger.debug("开始")
-        result = ImageService.find_all(Onmyoji.soul_BQ_JCK)
+        result = ImageService.find_all(Onmyoji.explore_JYJC)
         if result:
             logger.debug(result)
             logger.debug(len(result))
+            logger.debug([d['result'] for d in result])
             logger.debug(max(result, key=lambda x: x['result'][1])['result'])
         logger.debug("结束")
         now1 = datetime.datetime.now()

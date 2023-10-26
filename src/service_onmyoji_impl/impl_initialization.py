@@ -36,16 +36,22 @@ def initialization(game_task: [], login_type: int = 0):
     logger.debug("初始化-判断当前状态")
     # 当前状态 账号首页 1，2,3，4
     #        其它，不在账号首页
-    logger.debug("判断可能存在的失联或其他设备登录")
+    logger.debug("排除悬赏")
+    ComplexService.refuse_reward()
+    logger.debug("排除缓存过多")
+    ComplexService.refuse_cache()
+    logger.debug("检查失联掉线")
     is_loss = ComplexService.loss_connection()
-    if not is_loss:
+    if is_loss:
+        logger.debug("重新登录")
+    else:
         logger.debug("首页账号")
         is_index = ImageService.exists(account_index)
         logger.debug("首页探索")
         is_explore = ImageService.exists(Onmyoji.home_TS)
     if not is_index or not is_explore and is_loss:
         # sys.exit()
-        logger.debug("不在账号首页,或掉线,或其他设备登录")
+        logger.debug("不在账号首页")
         # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
         logger.debug("启动阴阳师app")
         ImageService.restart_app("com.netease.onmyoji")
@@ -131,7 +137,7 @@ def initialization(game_task: [], login_type: int = 0):
             ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH, timeouts=3)
             logger.debug("点击可能存在的左上角返回")
             ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH, timeouts=3)
-            logger.debug("点击可能存在的下载")
+            logger.debug("检查下载")
             is_download = ImageService.exists(Onmyoji.home_XZ, timeouts=3)
             if is_download:
                 logger.debug("点击不再提示")

@@ -5,7 +5,6 @@
 import time
 
 from src.model.enum import Cvstrategy, Onmyoji
-from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
 
@@ -179,9 +178,36 @@ class ComplexService:
             if coordinate_word:
                 logger.debug("点击顶部加成")
                 ImageService.touch_coordinate(coordinate_word)
-                logger.debug("根据类型确定纵坐标")
-                coordinate_type = ImageService.exists(add_type)
-                if add_switch == 0:
+                logger.debug("根据加成类型确定至少一个纵坐标")
+                coordinate_type = ImageService.find_all_coordinate(add_type)
+                if coordinate_type is not None:
+                    logger.debug("找到至少一个加成类型:{}", coordinate_type)
+                else:
+                    logger.debug("找到一个加成类型")
+                    coordinate_type1 = ImageService.exists(add_type)
+                    coordinate_type = [coordinate_type1]
+                if add_switch == 1:
+                    logger.debug("打开加成")
+                    logger.debug("获取加成关坐标")
+                    coordinate_switch = ImageService.exists(add_close, cvstrategy=Cvstrategy.default)
+                    logger.debug("根据加成类型和加成关坐标计算点击加成开")
+                    if coordinate_switch and coordinate_type:
+                        logger.debug("点击计算出的开关坐标")
+                        logger.debug(len(coordinate_type))
+                        for i_click in range(len(coordinate_type)):
+                            logger.debug("第{}次点击", i_click + 1)
+                            coordinate_click = (coordinate_switch[0], coordinate_type[i_click][1])
+                            logger.debug(coordinate_click)
+                            ImageService.touch_coordinate(coordinate_click, wait=2)
+                            time.sleep(1)
+                        logger.debug("退出顶部加成")
+                        ImageService.touch_coordinate(coordinate_word, wait=2)
+                        return True
+                    else:
+                        logger.debug("未找到加成坐标")
+                        logger.debug("退出顶部加成")
+                        ImageService.touch_coordinate(coordinate_word, wait=2)
+                else:
                     logger.debug("关闭加成")
                     logger.debug("获取加成开的个数")
                     coordinate_result = ImageService.find_all(add_open)
@@ -192,20 +218,6 @@ class ComplexService:
                             ImageService.touch_coordinate(coordinate_result[i]['result'])
                     logger.debug("退出顶部加成")
                     ImageService.touch_coordinate(coordinate_word, wait=2)
-                else:
-                    logger.debug("打开加成")
-                    logger.debug("根据类型确定横坐标")
-                    coordinate_switch = ImageService.exists(add_close, cvstrategy=Cvstrategy.default)
-                    if coordinate_switch and coordinate_type:
-                        logger.debug("点击计算出的开关坐标")
-                        ImageService.touch_coordinate((coordinate_switch[0], coordinate_type[1]), wait=2)
-                        logger.debug("退出顶部加成")
-                        ImageService.touch_coordinate(coordinate_word, wait=2)
-                        return True
-                    else:
-                        logger.debug("未找到加成坐标")
-                        logger.debug("退出顶部加成")
-                        ImageService.touch_coordinate(coordinate_word, wait=2)
             else:
                 logger.debug("没找到顶部加成")
             return False
@@ -218,7 +230,7 @@ class ComplexService:
     def get_reward(reward: str):
         is_reward = ImageService.exists(reward, wait=3)
         if is_reward:
-            AirtestService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
+            ImageService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
             return True
         return False
 
@@ -231,6 +243,20 @@ class ComplexService:
         is_reward = ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default, timeouts=timeouts)
         if is_reward:
             logger.debug("拒接悬赏")
+            return True
+        return False
+
+    @staticmethod
+    def refuse_cache(timeouts: float = 3):
+        """
+        清理缓存
+        :return:
+        """
+        is_reward = ImageService.exists(Onmyoji.home_HCGD, cvstrategy=Cvstrategy.default, timeouts=timeouts)
+        if is_reward:
+            logger.debug("清理缓存,不再提示，确定")
+            ImageService.touch(Onmyoji.home_BZTS)
+            ImageService.touch(Onmyoji.home_QD)
             return True
         return False
 

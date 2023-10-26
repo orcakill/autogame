@@ -112,7 +112,10 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                     is_boss = ImageService.touch(Onmyoji.explore_SLZD)
                 if i == 0:
                     logger.debug("添加N卡式神自动轮换")
+                    automatic_rotation_type_god()
                     logger.debug("开启经验加成")
+                    ComplexService.top_addition(Onmyoji.explore_JC, Onmyoji.explore_JYJC, Onmyoji.explore_JCK,
+                                                Onmyoji.explore_JCG, 1)
                 if not is_rotation:
                     logger.debug("未自动轮换-锁定阵容")
                     ImageService.touch(Onmyoji.explore_SDZR)
@@ -178,6 +181,8 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
             time_round_list.append(time_round_fight)
             logger.debug("本轮探索战斗结束")
     logger.debug("关闭加成")
+    ComplexService.top_addition(Onmyoji.explore_JC, Onmyoji.explore_JYJC, Onmyoji.explore_JCK,
+                                Onmyoji.explore_JCG, 0)
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
@@ -226,7 +231,7 @@ def automatic_rotation_type_god():
     is_set_up = ImageService.touch(Onmyoji.explore_SZ)
     if is_set_up:
         logger.debug("检查轮换数量")
-        num_full = OcrService.get_word(Onmyoji.explore_DQLHSL,lang='chi_sim')
+        num_full = OcrService.get_word(Onmyoji.explore_DQLHSL, lang='chi_sim')
         if num_full is not None and num_full == '50':
             logger.debug("轮换数量已满")
         elif num_full is not None and num_full != '50':
@@ -254,7 +259,7 @@ def automatic_rotation_type_god():
                     break
                 else:
                     logger.debug("检查滚轮")
-                    is_roller = ImageService.exists(Onmyoji.explore_LHGL,cvstrategy=Cvstrategy.default)
+                    is_roller = ImageService.exists(Onmyoji.explore_LHGL, cvstrategy=Cvstrategy.default)
                     if is_roller:
                         logger.debug("滑动滚轮")
                         ImageService.swipe(is_roller, (is_roller[0] + 10, is_roller[1]))
