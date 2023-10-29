@@ -178,46 +178,59 @@ class ComplexService:
             if coordinate_word:
                 logger.debug("点击顶部加成")
                 ImageService.touch_coordinate(coordinate_word)
-                logger.debug("根据加成类型确定至少一个纵坐标")
-                coordinate_type = ImageService.find_all_coordinate(add_type)
+                logger.debug("根据加成类型确定纵坐标")
+                coordinate_type = None
+                if add_type == Onmyoji.explore_JYJC:
+                    logger.debug("御魂加成向觉醒加成滑动一次")
+                    coordinate_soul = ImageService.exists(Onmyoji.soul_BQ_YHJC)
+                    coordinate_awaken = ImageService.exists(Onmyoji.awaken_JXJC)
+                    if coordinate_soul is not None and coordinate_awaken is not None:
+                        ImageService.swipe(coordinate_soul, coordinate_awaken)
+                        logger.debug("{},2个坐标", add_type)
+                        coordinate_type = ImageService.find_all_coordinate(add_type)
+                else:
+                    logger.debug("{},1个坐标", add_type)
+                    coordinate_type = [ImageService.exists(add_type)]
                 if coordinate_type is not None:
-                    logger.debug("找到至少一个加成类型:{}", coordinate_type)
-                else:
-                    logger.debug("找到一个加成类型")
-                    coordinate_type1 = ImageService.exists(add_type)
-                    coordinate_type = [coordinate_type1]
-                if add_switch == 1:
-                    logger.debug("打开加成")
-                    logger.debug("获取加成关坐标")
-                    coordinate_switch = ImageService.exists(add_close, cvstrategy=Cvstrategy.default)
-                    logger.debug("根据加成类型和加成关坐标计算点击加成开")
-                    if coordinate_switch and coordinate_type:
-                        logger.debug("点击计算出的开关坐标")
-                        logger.debug(len(coordinate_type))
-                        for i_click in range(len(coordinate_type)):
-                            logger.debug("第{}次点击", i_click + 1)
-                            coordinate_click = (coordinate_switch[0], coordinate_type[i_click][1])
-                            logger.debug(coordinate_click)
-                            ImageService.touch_coordinate(coordinate_click, wait=2)
-                            time.sleep(1)
-                        logger.debug("退出顶部加成")
-                        ImageService.touch_coordinate(coordinate_word, wait=2)
-                        return True
+                    if add_switch == 1:
+                        logger.debug("打开加成")
+                        logger.debug("获取加成关坐标")
+                        coordinate_switch = ImageService.exists(add_close, cvstrategy=Cvstrategy.default)
+                        logger.debug("根据加成类型和加成关坐标计算点击加成开")
+                        if coordinate_switch and coordinate_type:
+                            logger.debug("点击计算出的开关坐标")
+                            logger.debug(len(coordinate_type))
+                            for i_click in range(len(coordinate_type)):
+                                logger.debug("第{}次点击", i_click + 1)
+                                coordinate_click = (coordinate_switch[0], coordinate_type[i_click][1])
+                                logger.debug(coordinate_click)
+                                ImageService.touch_coordinate(coordinate_click, wait=2)
+                                time.sleep(1)
+                            logger.debug("退出顶部加成")
+                            ImageService.touch(word, wait=2)
+                            return True
+                        else:
+                            logger.debug("未找到加成坐标")
+                            logger.debug("退出顶部加成")
+                            ImageService.touch(word, wait=2)
+                            return False
                     else:
-                        logger.debug("未找到加成坐标")
+                        logger.debug("关闭加成")
+                        logger.debug("获取加成开的个数")
+                        coordinate_result = ImageService.find_all(add_open)
+                        logger.debug("有{}个加成开", len(coordinate_result))
+                        if len(coordinate_result) > 0:
+                            logger.debug("关闭所有加成", len(coordinate_result))
+                            for i in range(len(coordinate_result)):
+                                ImageService.touch_coordinate(coordinate_result[i]['result'])
                         logger.debug("退出顶部加成")
-                        ImageService.touch_coordinate(coordinate_word, wait=2)
+                        ImageService.touch(word, wait=2)
+                        return True
                 else:
-                    logger.debug("关闭加成")
-                    logger.debug("获取加成开的个数")
-                    coordinate_result = ImageService.find_all(add_open)
-                    logger.debug("有{}个加成开", len(coordinate_result))
-                    if len(coordinate_result) > 0:
-                        logger.debug("关闭所有加成", len(coordinate_result))
-                        for i in range(len(coordinate_result)):
-                            ImageService.touch_coordinate(coordinate_result[i]['result'])
+                    logger.debug("未找到加成类型坐标")
                     logger.debug("退出顶部加成")
-                    ImageService.touch_coordinate(coordinate_word, wait=2)
+                    ImageService.touch(word, wait=2)
+                    return False
             else:
                 logger.debug("没找到顶部加成")
             return False

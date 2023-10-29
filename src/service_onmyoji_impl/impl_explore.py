@@ -109,7 +109,7 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                 logger.debug("第{}:{}次章节探索战斗", i, i_fight)
                 if i_fight > 3:
                     logger.debug("点击首领")
-                    is_boss = ImageService.touch(Onmyoji.explore_SLZD)
+                    is_boss = ImageService.touch(Onmyoji.explore_SLZD) 
                 if i == 1 and i_fight == 1:
                     logger.debug("添加N卡式神自动轮换")
                     automatic_rotation_type_god()
