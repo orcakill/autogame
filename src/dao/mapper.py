@@ -3,7 +3,7 @@ from uuid import uuid4
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.model.models import GameAccount, GameProjectLog
+from src.model.models import GameAccount, GameProjectLog, GameDevices
 from src.utils.utils_path import get_database_url
 
 url = get_database_url()
@@ -25,8 +25,16 @@ class Mapper:
         game_project_log1 = GameProjectLog(game_project_log)
         Session = sessionmaker(bind=engine)
         session = Session()
-        if game_project_log is None:
+        if game_project_log1.id is None:
             game_project_log1.id = uuid4()
-        session.add(game_project_log)
+        session.add(game_project_log1)
         session.commit()
         session.close()
+
+    @staticmethod
+    def select_game_devices(game_devices_id: str):
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        game_devices = session.get(GameDevices, game_devices_id)
+        session.close()
+        return game_devices

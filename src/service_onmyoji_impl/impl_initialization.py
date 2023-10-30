@@ -2,13 +2,16 @@
 # @Author: orcakill
 # @File: impl_initialization.py
 # @Description: 当前状态初始化
+import datetime
 import os
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProject
+from src.model.models import GameAccount, GameProject, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
@@ -26,8 +29,9 @@ def initialization(game_task: [], login_type: int = 0):
     is_index = False
     # 探索
     is_explore = False
-    # 账号信息
     game_account = GameAccount(game_task[2])
+    game_project = GameProject(game_task[3])
+    game_devices = GameProject(game_task[4])
     # 服务器信息
     server = os.path.join(Onmyoji.login_FWQ, game_account.role_region)
     # 账号首页信息
@@ -160,10 +164,19 @@ def initialization(game_task: [], login_type: int = 0):
     time_end = time.time()
     # 总用时
     time_all = time_end - time_start
+    # 记录项目执行结果
+
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='', cost_time=int(time_all), create_user=WindowsService.computer_name(),
+                                      create_time=datetime.datetime.now())
     if is_index:
+        game_project_log.result = 'TRUE'
         logger.debug("初始化当前状态完成:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
+        Mapper.save_game_project_log(game_project_log)
         return True
     else:
+        game_project_log.result = 'FALSE'
+        Mapper.save_game_project_log(game_project_log)
         logger.debug("初始化当前状态失败:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
         return False
 
@@ -172,13 +185,15 @@ def return_home(game_task: []):
     game_account = GameAccount(game_task[2])
     game_project = GameProject(game_task[3])
     # 判断是否是待登录账号首页
-    logger.debug("返回首页-判断当前状态")
+    logger.debug("返回首页-拒接协战")
     # 当前状态 账号首页 1，2,3，4，5
     #        其它，不在账号首页
     ComplexService.refuse_reward()
+    logger.debug("返回首页-检查首页账号")
     account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
-    is_index = ImageService.exists(account_index, timeouts=1)
-    is_explore = ImageService.exists(Onmyoji.home_TS, timeouts=1)
+    is_index = ImageService.exists(account_index)
+    logger.debug("返回首页-检查探索")
+    is_explore = ImageService.exists(Onmyoji.home_TS)
     if not is_index or not is_explore:
         ImageService.snapshot("不在首页", True)
         logger.info("不在账号首页，重新快速登录 {}:{}", game_account.role_name, game_project.project_name)

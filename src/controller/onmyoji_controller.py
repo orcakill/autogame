@@ -47,10 +47,10 @@ class OnmyojiController:
         return task
 
     @staticmethod
-    def execute_tasks(game_tasks: [], game_round: str, relation_num: str, game_device: str) -> None:
+    def execute_tasks(game_tasks: [], game_round: str, relation_num: str, game_device_id: str) -> None:
         """
         项目组任务
-        :param game_device: 设备序号
+        :param game_device_id: 设备序号
         :param game_tasks: 项目组信息
         :param game_round: 项目组执行次数
         :param relation_num:  项目组中断后重新执行的序号
@@ -66,14 +66,18 @@ class OnmyojiController:
                 for j in range(len(game_tasks)):
                     time_task_start = time.time()
                     game_task = game_tasks[j]
+                    game_projects = GameProjects(game_task[0])
                     game_projects_relation = GameProjectsRelation(game_task[1])
                     game_account = GameAccount(game_task[2])
                     game_project = GameProject(game_task[3])
+                    game_devices = Mapper.select_game_devices(game_device_id)
+                    game_device = GameDevices(game_devices)
+                    ImageService.auto_setup(game_device_id)
+                    game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
                     if game_projects_relation.relation_num >= int(relation_num):
                         logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
                                     game_account.role_name)
                         logger.debug("当前状态初始化")
-                        ImageService.auto_setup(game_device)
                         is_initialization = OnmyojiService.initialization(game_task)
                         if not is_initialization:
                             logger.debug("当前状态初始化失败，重新初始化")

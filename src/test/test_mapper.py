@@ -13,7 +13,7 @@ class TestMapper(TestCase):
         logger.info(game_account)
 
     def test_save_game_project_log(self):
-        # 查询测试
+        # 保存测试
         game_project_log = GameProjectLog()
-        GameProjectLog.id = '1'
+        GameProjectLog.project_id = '1'
         Mapper.save_game_project_log(game_project_log)

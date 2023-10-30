@@ -4,6 +4,7 @@
 # @Description: window 相关服务接口
 import os
 import shutil
+import socket
 import subprocess
 import time
 
@@ -102,6 +103,10 @@ class WindowsService:
                     os.remove(file_path)
                 elif os.path.isdir(file_path):
                     shutil.rmtree(file_path)
+
+    @staticmethod
+    def computer_name():
+        return socket.gethostname()
 
 
 if __name__ == '__main__':

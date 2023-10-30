@@ -19,3 +19,8 @@ class TestModelsExtend(TestCase):
         # 查询测试
         task = MapperExtend.select_game_projects("", "")
         logger.info(task)
+
+    def test_select_game_project_log(self):
+        # 查询测试
+        task = MapperExtend.select_game_project_log("")
+        logger.info(task)
