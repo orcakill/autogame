@@ -47,6 +47,64 @@ class GameAccount(Base):
             self.role_class = game_account.role_class
 
 
+class GameDevices(Base):
+    __tablename__ = "game_devices"
+
+    id = Column(Integer, primary_key=True, info='设备ID')
+    devices_name = Column(String(40), info='设备名称')
+    devices_connect = Column(String(40), info='设备连接信息')
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}:" \
+               f"id= {self.id}," \
+               f"devices_name= {self.devices_name}," \
+               f"devices_connect= {self.devices_connect}"
+
+    def __init__(self, game_devices: () = None, **kwargs):
+        if game_devices is None:
+            self.id = self.id
+            self.devices_name = self.devices_name
+            self.devices_connect = self.devices_connect
+        else:
+            super().__init__(**kwargs)
+            self.id = game_devices.id
+            self.devices_name = game_devices.devices_name
+            self.devices_connect = game_devices.devices_connect
+
+
+class GameGod(Base):
+    __tablename__ = "game_god"
+
+    id = Column(String(40), primary_key=True, info='ID')
+    god_number = Column(Integer, info='式神类型内序号')
+    god_name = Column(String(40), info='式神名称')
+    god_type = Column(String(40), info='式神类型')
+    god_sort = Column(Integer, info='式神优先级排序')
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}:" \
+               f"id= {self.id}," \
+               f"god_number= {self.god_number}," \
+               f"god_name= {self.god_name}," \
+               f"god_type= {self.god_type}," \
+               f"god_sort= {self.god_sort}"
+
+    def __init__(self, game_god: () = None, **kwargs):
+        if game_god is None:
+            self.id = self.id
+            self.god_number = self.god_number
+            self.god_name = self.god_name
+            self.god_type = self.god_type
+            self.god_sort = self.god_sort
+        else:
+            super().__init__(**kwargs)
+            self.id = game_god.id
+            self.god_number = game_god.god_number
+            self.god_name = game_god.god_name
+            self.god_type = game_god.god_type
+            self.god_sort = game_god.god_sort
+
+
 class GameProject(Base):
     __tablename__ = "game_project"
 
@@ -86,6 +144,79 @@ class GameProject(Base):
             self.start_time = game_project.start_time
             self.end_time = game_project.end_time
             self.remark = game_project.remark
+
+
+class GameProjectLog(Base):
+    __tablename__ = "game_project_log"
+
+    id = Column(String(40), primary_key=True, info='ID')
+    project_id = Column(String(40), info='项目ID')
+    role_id = Column(String(40), info='角色ID')
+    devices_id = Column(String(40), info='设备ID')
+    result = Column(String(255), info='项目执行结果')
+    cost_time = Column(BigInteger, info='项目执行耗时（秒）')
+    fight_time = Column(Integer, info='项目战斗耗时（秒）')
+    fight_times = Column(Integer, info='项目战斗次数')
+    fight_win = Column(Integer, info='项目战斗胜利次数')
+    fight_fail = Column(Integer, info='项目战斗失败次数')
+    fight_avg = Column(Integer, info='项目战斗平均用时')
+    create_user = Column(String(40), info='创建人')
+    create_time = Column(DateTime, info='创建时间')
+    update_user = Column(String(40), info='修改人')
+    update_time = Column(DateTime, info='修改时间')
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}:" \
+               f"id= {self.id}," \
+               f"project_id= {self.project_id}," \
+               f"role_id= {self.role_id}," \
+               f"devices_id= {self.devices_id}," \
+               f"result= {self.result}," \
+               f"cost_time= {self.cost_time}," \
+               f"fight_time= {self.fight_time}," \
+               f"fight_times= {self.fight_times}," \
+               f"fight_win= {self.fight_win}," \
+               f"fight_fail= {self.fight_fail}," \
+               f"fight_avg= {self.fight_avg}," \
+               f"create_user= {self.create_user}," \
+               f"create_time= {self.create_time}," \
+               f"update_user= {self.update_user}," \
+               f"update_time= {self.update_time}"
+
+    def __init__(self, game_project_log: () = None, **kwargs):
+        if game_project_log is None:
+            self.id = self.id
+            self.project_id = self.project_id
+            self.role_id = self.role_id
+            self.devices_id = self.devices_id
+            self.result = self.result
+            self.cost_time = self.cost_time
+            self.fight_time = self.fight_time
+            self.fight_times = self.fight_times
+            self.fight_win = self.fight_win
+            self.fight_fail = self.fight_fail
+            self.fight_avg = self.fight_avg
+            self.create_user = self.create_user
+            self.create_time = self.create_time
+            self.update_user = self.update_user
+            self.update_time = self.update_time
+        else:
+            super().__init__(**kwargs)
+            self.id = game_project_log.id
+            self.project_id = game_project_log.project_id
+            self.role_id = game_project_log.role_id
+            self.devices_id = game_project_log.devices_id
+            self.result = game_project_log.result
+            self.cost_time = game_project_log.cost_time
+            self.fight_time = game_project_log.fight_time
+            self.fight_times = game_project_log.fight_times
+            self.fight_win = game_project_log.fight_win
+            self.fight_fail = game_project_log.fight_fail
+            self.fight_avg = game_project_log.fight_avg
+            self.create_user = game_project_log.create_user
+            self.create_time = game_project_log.create_time
+            self.update_user = game_project_log.update_user
+            self.update_time = game_project_log.update_time
 
 
 class GameProjects(Base):

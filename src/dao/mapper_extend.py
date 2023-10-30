@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import sessionmaker
 
-from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount
+from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount, GameProjectLog
 from src.utils.utils_path import get_database_url
 
 url = get_database_url()
@@ -47,3 +47,14 @@ class MapperExtend:
                          .all())
         session.close()
         return game_projects
+
+    @staticmethod
+    def select_game_project_log(game_project_log_id: str):
+        Session1 = sessionmaker(bind=engine)
+        session = Session1()
+        game_project_log = (session.query(GameProjectLog)
+                            .filter(or_(GameProjectLog.id == game_project_log_id, game_project_log_id == ""))
+                            .order_by(GameProjectLog.create_time)
+                            .all())
+        session.close()
+        return game_project_log

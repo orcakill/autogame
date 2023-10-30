@@ -65,7 +65,7 @@ def awakening(game_task: [], awakening_type: int = 0):
             logger.debug("确定进入觉醒")
             break
     logger.debug("选择层号")
-    is_layer_number=ComplexService.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 4)
+    is_layer_number = ComplexService.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 4)
     if not is_layer_number:
         logger.debug("未找到层号，不战斗")
     else:
@@ -84,7 +84,7 @@ def awakening(game_task: [], awakening_type: int = 0):
             logger.debug("挑战")
             ImageService.touch(Onmyoji.awaken_TZ)
             logger.debug("自动战斗")
-            is_auto = ImageService.exists(Onmyoji.awaken_ZD)
+            is_auto = ImageService.exists(Onmyoji.awaken_ZD, timeouts=10)
             if not is_auto:
                 logger.debug("点击可能存在的悬赏封印")
                 ComplexService.refuse_reward()
@@ -92,19 +92,24 @@ def awakening(game_task: [], awakening_type: int = 0):
                 ImageService.touch(Onmyoji.awaken_TCTZ)
                 logger.debug("再次点击挑战")
                 ImageService.touch(Onmyoji.awaken_TZ, wait=2)
-                logger.debug("点击准备")
+                logger.debug("再次点击准备")
                 is_unlock = ImageService.touch(Onmyoji.awaken_ZB, wait=5)
-            logger.debug("等待战斗结果")
-            is_result = ComplexService.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
-                                                 Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, None, 60, 2)
-            if is_result in [Onmyoji.awaken_ZDSL, Onmyoji.awaken_TCTZ]:
-                num_win = num_win + 1
-            elif is_result in [Onmyoji.awaken_ZCTZ, Onmyoji.awaken_ZDSB]:
-                num_fail = num_fail + 1
-            time_fight_end = time.time()
-            time_fight_time = time_fight_end - time_fight_start
-            logger.debug("本次觉醒挑战，用时{}秒", round(time_fight_time))
-            time_fight_list.append(time_fight_time)
+                logger.debug("再次检查自动战斗")
+                is_auto = ImageService.exists(Onmyoji.awaken_ZD)
+            if is_auto:
+                logger.debug("等待战斗结果")
+                is_result = ComplexService.fight_end(Onmyoji.awaken_ZDSL, Onmyoji.awaken_ZDSB, Onmyoji.awaken_ZCTZ,
+                                                     Onmyoji.awaken_TCTZ, Onmyoji.awaken_TZ, None, 60, 2)
+                if is_result in [Onmyoji.awaken_ZDSL, Onmyoji.awaken_TCTZ]:
+                    num_win = num_win + 1
+                elif is_result in [Onmyoji.awaken_ZCTZ, Onmyoji.awaken_ZDSB]:
+                    num_fail = num_fail + 1
+                time_fight_end = time.time()
+                time_fight_time = time_fight_end - time_fight_start
+                logger.debug("本次觉醒挑战，用时{}秒", round(time_fight_time))
+                time_fight_list.append(time_fight_time)
+            else:
+                logger.debug("不在自动战斗中，跳过等待战斗结果")
     logger.debug("3.重置到首页")
     time.sleep(2)
     logger.debug("点击可能存在的退出挑战")

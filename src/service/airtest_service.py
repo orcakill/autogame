@@ -32,7 +32,6 @@ class AirtestService:
         设备连接
         :return:
         """
-        WindowsService.limit_cpu_percentage(30)
         devices_name = None
         connect_name = None
         if game_device == "0":

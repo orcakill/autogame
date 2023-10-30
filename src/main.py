@@ -1,16 +1,17 @@
 import os
 import sys
 
-from src.utils import utils_mail
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from src.controller.onmyoji_controller import OnmyojiController
 from src.dao.mapper_extend import MapperExtend
 from src.model.models import GameProjects, GameProject
-from src.controller.onmyoji_controller import OnmyojiController
-from utils.my_logger import my_logger as logger
+from src.service.windows_service import WindowsService
+from src.utils import utils_mail
+from src.utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
+    WindowsService.limit_cpu_percentage(30)
     logger.info("脚本启动")
     logger.info("设备: 0 默认设备 1 夜神模拟器 2荣耀平板 3小米手机")
     projects = MapperExtend.select_game_projects("",

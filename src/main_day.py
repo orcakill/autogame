@@ -76,21 +76,21 @@ if __name__ == '__main__':
         elif 5 <= current_hour < 12:
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
                 if not task_list2[1]:
-                    logger.info("6-12,大号，阴阳寮挑战循环")
+                    logger.info("6-12,大号，阴阳寮挑战")
                     OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
                     logger.info("6-12,大小号，式神寄养")
                     OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", game_id_all)
                     task_list2[1] = True
                     continue
                 if current_hour >= 6 and not task_list2[2]:
-                    logger.info("6-12,大号，阴阳寮挑战循环")
+                    logger.info("6-12,大号，阴阳寮挑战")
                     OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
                     logger.info("6-12,大号,地域鬼王")
                     OnmyojiController.create_execute_tasks(game_device, "", "地域鬼王", game_id_large)
                     task_list2[2] = True
                     continue
                 if current_hour >= 6 and not task_list2[3]:
-                    logger.info("6-12,大号，阴阳寮挑战循环")
+                    logger.info("6-12,大号，阴阳寮挑战")
                     OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
                     logger.info("6-12,小号,地域鬼王")
                     OnmyojiController.create_execute_tasks(game_device, "", "地域鬼王", game_id_small)

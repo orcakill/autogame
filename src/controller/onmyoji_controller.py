@@ -1,7 +1,7 @@
 import random
 import time
 
-from src.dao.mapper import select_game_account
+from src.dao.mapper import Mapper
 from src.dao.mapper_extend import MapperExtend
 from src.model.models import *
 from src.service.image_service import ImageService
@@ -31,7 +31,7 @@ class OnmyojiController:
             game_id = game_ids[i]
             game_projects = GameProjects()
             game_projects_relation = GameProjectsRelation()
-            game_account = select_game_account(game_id)
+            game_account = Mapper.select_game_account(game_id)
             game_project = GameProject()
             if project_num:
                 game_project = MapperExtend.select_game_project("", project_num)

@@ -206,4 +206,4 @@ def soul_arrange(game_task: []):
     impl_initialization.return_home(game_task)
     time_end = time.time()
     time_all = time_end - time_start
-    logger.info("御魂整理总用时{}", UtilsTime.convert_seconds(time_all))
+    logger.debug("御魂整理总用时{}", UtilsTime.convert_seconds(time_all))

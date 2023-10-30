@@ -18,7 +18,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3'], "1", "登录")
+        TestOnmyojiService.test_project(self, ['2'], "1", "登录")
 
     def test_daily_rewards(self):
         """
@@ -175,7 +175,7 @@ class TestOnmyojiService(TestCase):
         TestOnmyojiService.test_project(self, ['1'], '1', "契灵")
 
     def test_project(self, test_names, test_devices, project_name, fight_times: int = 1, chapter: int = 28,
-                     difficulty: int = 1, rotation: int = 1):
+                     difficulty: int = 1):
         """
         项目测试
         :param test_names:
