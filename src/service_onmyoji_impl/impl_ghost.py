@@ -7,7 +7,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProject, GameDevices, GameProjectLog
+from src.model.models import GameAccount, GameProject, GameDevices, GameProjectLog, GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -250,6 +250,10 @@ def realm_fight(game_task: []):
     """
     # 开始时间
     time_start = time.time()
+    # 项目信息
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 获取当前日期
     today = datetime.date.today()
     # 获取本日是周几（周一为0，周日为6）
@@ -292,5 +296,9 @@ def realm_fight(game_task: []):
     ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
-    time_end = time.time() - time_start
-    logger.debug("逢魔之时,用时{}秒", round(time_end))
+    time_all = time.time() - time_start
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='阴界之门完成', cost_time=int(time_all))
+    Mapper.save_game_project_log(game_project_log)
+    logger.debug("逢魔之时,用时{}秒", round(time_all))

@@ -6,8 +6,9 @@
 """
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProjectsRelation, GameProjects, GameProject
+from src.model.models import GameAccount, GameProjectsRelation, GameProjects, GameProject, GameDevices, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
@@ -34,16 +35,17 @@ def friends_fight(game_task: []):
     game_projects_relation = GameProjectsRelation(game_task[1])
     game_account = GameAccount(game_task[2])
     game_project = GameProject(game_task[3])
+    game_devices = GameDevices(game_task[4])
     logger.debug(game_account.role_name)
     logger.debug("好友协战")
     logger.debug("1.觉醒挑战")
     game_projects_relation.project_num_times = 13
-    game_task = [game_projects, game_projects_relation, game_account, game_project]
+    game_task = [game_projects, game_projects_relation, game_account, game_project, game_devices]
     # 觉醒挑战
     impl_awakening.awakening(game_task)
     logger.debug("2.魂十协战")
     for i_cooperative_warfare in range(2):
-        logger.debug("协战开始{}", i_cooperative_warfare + 1)
+        logger.debug("协战开始,第{}次", i_cooperative_warfare + 1)
         logger.debug("确认首页")
         impl_initialization.return_home(game_task)
         ComplexService.refuse_reward()
@@ -57,7 +59,7 @@ def friends_fight(game_task: []):
             logger.debug("判断是否已完成协战，2次")
             is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
         if is_cooperative_warfare:
-            logger.debug("已完成协战")
+            logger.debug("已完成协战，返回首页")
             ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
             continue
         else:
@@ -233,6 +235,12 @@ def friends_fight(game_task: []):
     time_all = time_end - time_start
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='好友协战', cost_time=int(time_all),
+                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
+                                      fight_avg=time_fight_avg)
+    Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮好友协战总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  UtilsTime.convert_seconds(time_all), UtilsTime.convert_seconds(time_fight_all), time_fight_avg,
                  len_time_fight_list, num_win, num_fail)
@@ -241,8 +249,10 @@ def friends_fight(game_task: []):
 def friends_manage(game_task: []):
     # 开始时间
     time_start = time.time()
-    # 账号信息
-    game_account = GameAccount(game_task[2])
+    # 项目信息
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     logger.debug(game_account.role_name)
     logger.debug("进入好友界面")
     is_friends = ImageService.touch(Onmyoji.friends_HYTB)
@@ -304,5 +314,9 @@ def friends_manage(game_task: []):
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
-    time_end = time.time() - time_start
-    logger.debug("好友管理,用时{}秒", round(time_end))
+    time_all = time.time() - time_start
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='好友管理', cost_time=int(time_all))
+    Mapper.save_game_project_log(game_project_log)
+    logger.debug("好友管理,用时{}秒", round(time_all))

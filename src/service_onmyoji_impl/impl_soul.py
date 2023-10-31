@@ -5,8 +5,9 @@
 import datetime
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
-from src.model.models import GameProjectsRelation, GameProject
+from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameDevices, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -24,16 +25,12 @@ def soul_fight(game_task: []):
     """
     # 开始时间
     time_start = time.time()
-    # 战斗胜利次数
-    num_win = 0
-    # 战斗失败次数
-    num_fail = 0
     # 战斗用时列表
     time_fight_list = []
-    # 项目组项目关系
-    game_projects_relation = GameProjectsRelation(game_task[1])
     # 项目信息
-    game_project = GameProject(game_task[3])
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 项目名称
     project_name = game_project.project_name
     # 项目战斗次数
@@ -42,6 +39,10 @@ def soul_fight(game_task: []):
     fight_layer = Onmyoji.soul_BQ_HELEVEN
     # 滑动方向,默认向下滑动
     fight_swipe = 1
+    # 战斗胜利次数
+    num_win = 0
+    # 战斗失败次数
+    num_fail = 0
     if project_name == "魂一":
         fight_layer = Onmyoji.soul_BQ_HONE
     elif project_name == "魂十":
@@ -133,6 +134,12 @@ def soul_fight(game_task: []):
     time_fight_avg = 0
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='八岐大蛇战斗完成', cost_time=int(time_all),
+                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
+                                      fight_avg=time_fight_avg)
+    Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮{}御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  game_project.project_name, round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list,
                  num_win, num_fail)
@@ -146,18 +153,18 @@ def soul_fight_fire(game_task: []):
     """
     # 开始时间
     time_start = time.time()
-    # 战斗胜利次数
-    num_win = 0
     # 战斗失败次数
     num_fail = 0
     # 战斗用时列表
     time_fight_list = []
-    # 项目组项目关系
-    game_projects_relation = GameProjectsRelation(game_task[1])
     # 项目信息
-    game_project = GameProject(game_task[3])
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
+    # 战斗胜利次数
+    num_win = 0
     for i in range(3):
         logger.debug("业原火-进入探索")
         ImageService.touch(Onmyoji.home_TS)
@@ -229,6 +236,12 @@ def soul_fight_fire(game_task: []):
     if len_time_fight_list > 0:
         logger.debug("业原火-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='业原火完成', cost_time=int(time_all),
+                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
+                                      fight_avg=time_fight_avg)
+    Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮{}御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  game_project.project_name, round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list,
                  num_win, num_fail)
@@ -246,12 +259,14 @@ def soul_fight_sun(game_task: []):
     num_win = 0
     # 战斗失败次数
     num_fail = 0
-    # 战斗用时列表
-    time_fight_list = []
-    # 项目组项目关系
-    game_projects_relation = GameProjectsRelation(game_task[1])
+    # 项目信息
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
+    # 战斗用时列表
+    time_fight_list = []
     for i in range(3):
         logger.debug("日轮之陨-进入探索")
         ImageService.touch(Onmyoji.home_TS)
@@ -331,6 +346,12 @@ def soul_fight_sun(game_task: []):
     if len_time_fight_list > 0:
         logger.debug("日轮之陨-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='八岐大蛇战斗完成', cost_time=int(time_all),
+                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
+                                      fight_avg=time_fight_avg)
+    Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮日轮之陨御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
 
@@ -350,8 +371,10 @@ def soul_fight_sea(game_task: [], fight: int = 0):
     num_fail = 0
     # 战斗用时列表
     time_fight_list = []
-    # 项目组项目关系
-    game_projects_relation = GameProjectsRelation(game_task[1])
+    # 项目信息
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
     today = datetime.date.today()
@@ -431,5 +454,11 @@ def soul_fight_sea(game_task: [], fight: int = 0):
     if len_time_fight_list > 0:
         logger.debug("永生之海-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='八岐大蛇战斗完成', cost_time=int(time_all),
+                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
+                                      fight_avg=time_fight_avg)
+    Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮永生之海御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)

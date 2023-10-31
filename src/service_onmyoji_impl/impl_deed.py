@@ -6,7 +6,9 @@
 """
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
+from src.model.models import GameAccount, GameDevices, GameProject, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
@@ -21,6 +23,9 @@ def deed_spirit(game_task: []):
     :return:
     """
     time_start = time.time()
+    # 项目信息
+    game_account, game_project, game_devices = (GameAccount(game_task[2]), GameProject(game_task[3]),
+                                                GameDevices(game_task[4]))
     # 契灵图标可点击，默认不可点击
     is_deed = False
     for i_come in range(2):
@@ -73,6 +78,10 @@ def deed_spirit(game_task: []):
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
     time_all = time.time() - time_start
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='当前状态初始化', cost_time=int(time_all))
+    Mapper.save_game_project_log(game_project_log)
     logger.debug("契灵战斗，{}", UtilsTime.convert_seconds(time_all))
 
 

@@ -7,7 +7,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProject, GameProjectLog, GameDevices
+from src.model.models import GameAccount, GameProject, GameProjectLog, GameDevices, GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -27,9 +27,10 @@ def initialization(game_task: [], login_type: int = 0):
     is_index = False
     # 探索
     is_explore = False
-    game_account = GameAccount(game_task[2])
-    game_project = GameProject(game_task[3])
-    game_devices = GameDevices(game_task[4])
+    # 项目信息
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 服务器信息
     server = os.path.join(Onmyoji.login_FWQ, game_account.role_region)
     # 账号首页信息
@@ -181,6 +182,7 @@ def initialization(game_task: [], login_type: int = 0):
 
 def return_home(game_task: []):
     game_account = GameAccount(game_task[2])
+
     game_project = GameProject(game_task[3])
     # 判断是否是待登录账号首页
     logger.debug("返回首页-拒接协战")

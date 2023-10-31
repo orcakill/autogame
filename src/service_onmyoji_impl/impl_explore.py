@@ -4,8 +4,9 @@
 # @Description: 探索
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameProjectsRelation
+from src.model.models import GameProjectsRelation, GameAccount, GameDevices, GameProject, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
@@ -25,8 +26,10 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
     :param game_task:
     :return:
     """
-    # 项目组项目关系
-    game_projects_relation = GameProjectsRelation(game_task[1])
+    # 项目信息
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 开始时间
     time_start = time.time()
     # 战斗胜利次数
@@ -109,7 +112,7 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                 logger.debug("第{}:{}次章节探索战斗", i, i_fight)
                 if i_fight > 3:
                     logger.debug("点击首领")
-                    is_boss = ImageService.touch(Onmyoji.explore_SLZD) 
+                    is_boss = ImageService.touch(Onmyoji.explore_SLZD)
                 if i == 1 and i_fight == 1:
                     logger.debug("添加N卡式神自动轮换")
                     automatic_rotation_type_god()
@@ -206,6 +209,12 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
     time_round_avg = 0
     if len_time_round_list > 0:
         time_round_avg = round(sum(time_round_list) / len(time_round_list), 3)
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='探索', cost_time=int(time_all),
+                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_false,
+                                      fight_avg=time_fight_avg)
+    Mapper.save_game_project_log(game_project_log)
     logger.debug(
         "{}章探索挑战，总用时{}，共{}轮，每轮平均战斗时间{}，战斗总用时{},每次战斗平均用时{}，挑战{}次，胜利{}次，失败{}次",
         chapter, UtilsTime.convert_seconds(time_all), fight_times, UtilsTime.convert_seconds(time_round_avg),

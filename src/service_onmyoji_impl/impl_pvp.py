@@ -5,8 +5,9 @@
 import datetime
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
-from src.model.models import GameProjectsRelation
+from src.model.models import GameProjectsRelation, GameAccount, GameProject, GameDevices, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -22,6 +23,10 @@ def pvp(game_task):
     """
     # 开始时间
     time_start = time.time()
+    # 项目信息
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 战斗失败次数
     num_fail = 0
     # 战斗胜利次数
@@ -51,7 +56,7 @@ def pvp(game_task):
                 logger.debug("旧版町中，点击旧版斗技入口")
                 ImageService.touch(Onmyoji.contend_JBDJRK)
             logger.debug("点击可能存在的确定")
-            ImageService.touch(Onmyoji.contend_QD,wait=5)
+            ImageService.touch(Onmyoji.contend_QD, wait=5)
             logger.debug("判断是否在斗技首页")
             is_home = ImageService.touch(Onmyoji.contend_DJSY)
             if is_home:
@@ -147,6 +152,12 @@ def pvp(game_task):
     if len_time_fight_list > 0:
         logger.debug("斗技-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='斗技完成', cost_time=int(time_all),
+                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
+                                      fight_avg=time_fight_avg)
+    Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮斗技挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  UtilsTime.convert_seconds(time_all), time_fight_all, time_fight_avg, len_time_fight_list, num_win,
                  num_fail)

@@ -75,7 +75,7 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['3'], '1', "个人突破")
+        TestOnmyojiService.test_project(self, ['1'], '2', "个人突破")
 
     def test_friends_manage(self):
         """
@@ -233,37 +233,37 @@ class TestOnmyojiService(TestCase):
             # 项目 10
             elif game_project.project_name in ["好友协战"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.friends_fight(game_task)
             # 项目 11
             elif game_project.project_name in ["觉醒十"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.awakening(game_task)
             # 项目 12,13,14,15
             elif game_project.project_name in ["魂一", "魂十", "魂十一", "魂十二"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.soul_fight(game_task)
             # 项目 16
             elif game_project.project_name in ["业原火"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.soul_fight_fire(game_task)
             # 项目 17
             elif game_project.project_name in ["日轮之陨"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.soul_fight_sun(game_task)
             # 项目 18
             elif game_project.project_name in ["永生之海"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.soul_fight_sea(game_task, 1)
             # 项目 19
             elif game_project.project_name in ["斗技"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.pvp(game_task)
             # 项目 20
             elif game_project.project_name in ["御魂整理"]:
@@ -271,12 +271,12 @@ class TestOnmyojiService(TestCase):
             # 项目 21
             elif game_project.project_name in ["探索"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.explore_chapters(game_task, chapter=chapter, difficulty=difficulty)
             # 项目 22
             elif game_project.project_name in ["御灵"]:
                 game_projects_relation.project_num_times = fight_times
-                game_task = [game_projects, game_projects_relation, game_account, game_project]
+                game_task = [game_projects, game_projects_relation, game_account, game_project,game_device]
                 OnmyojiService.spirit_fight(game_task)
             # 项目 23
             elif game_project.project_name in ["契灵"]:

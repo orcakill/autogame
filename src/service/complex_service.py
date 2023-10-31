@@ -35,7 +35,7 @@ class ComplexService:
         cvstrategy = Cvstrategy.sift
         rgb = False
         threshold = 0.7
-        if fight_win in [Onmyoji.border_GRJJ, Onmyoji.region_LJJ]:
+        if fight_fight in [Onmyoji.border_GRJJ, Onmyoji.region_LJJ]:
             cvstrategy = Cvstrategy.default
         time_start = time.time()
         time.sleep(timeout)
@@ -78,11 +78,11 @@ class ComplexService:
                                                    threshold=threshold, wait=0)
                     if is_fifth:
                         return fight_attack
-            # 4、拒绝悬赏，失联掉线
-            if time.time() - time_start > 3 / 4 * timeouts:
                 # 拒接悬赏
                 logger.debug("拒接悬赏")
                 ComplexService.refuse_reward(1)
+            # 4、失联掉线
+            if time.time() - time_start > 3 / 4 * timeouts:
                 #  失联
                 logger.debug("失联掉线")
                 is_conn = ComplexService.loss_connection(1)

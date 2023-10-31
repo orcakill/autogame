@@ -5,8 +5,9 @@
 import datetime
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
-from src.model.models import GameProjectsRelation
+from src.model.models import GameProjectsRelation, GameProjectLog, GameAccount, GameProject, GameDevices
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -23,14 +24,16 @@ def awakening(game_task: [], awakening_type: int = 0):
         """
     # 开始时间
     time_start = time.time()
+    # 项目信息
+    game_projects_relation, game_account, game_project, game_devices = (
+        GameProjectsRelation(game_task[1]), GameAccount(game_task[2]), GameProject(game_task[3]),
+        GameDevices(game_task[4]))
     # 战斗胜利次数
     num_win = 0
     # 战斗失败次数
     num_fail = 0
     # 结界突破战斗用时
     time_fight_list = []
-    # 项目组项目关系
-    game_projects_relation = GameProjectsRelation(game_task[1])
     # 战斗次数
     fight_time = game_projects_relation.project_num_times or 2
     # 获取当前日期
@@ -135,6 +138,12 @@ def awakening(game_task: [], awakening_type: int = 0):
     time_fight_avg = 0
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='觉醒战斗完成', cost_time=int(time_all),
+                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
+                                      fight_avg=time_fight_avg)
+    Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮觉醒十总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  UtilsTime.convert_seconds(time_all), UtilsTime.convert_seconds(time_fight_all), time_fight_avg,
                  len_time_fight_list, num_win, num_fail)
