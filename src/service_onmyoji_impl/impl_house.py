@@ -8,8 +8,9 @@ import concurrent.futures
 import datetime
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
-from src.model.models import GameAccount
+from src.model.models import GameAccount, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -26,7 +27,8 @@ def foster_care(game_task: []):
     # 寄养开始时间
     time_start = time.time()
     # 账号信息
-    game_account = GameAccount(game_task[2])
+    game_account, game_project, game_devices = (GameAccount(game_task[2]), GameAccount(game_task[3]),
+                                                GameAccount(game_task[4]))
     # 寄养结果
     foster_result = None
     # 是否点击式神育成
@@ -80,13 +82,20 @@ def foster_care(game_task: []):
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
     time_end = time.time()
-    time_time = round(time_end - time_start, 3)
-    if foster_result and is_growing:
-        logger.debug("寄养用时{},寄养结果{}", UtilsTime.convert_seconds(time_time), foster_result)
+    time_all = time_end - time_start
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='', cost_time=int(time_all))
+    if foster_result:
+        game_project_log.result = foster_result
+        logger.debug("寄养用时{},寄养结果{}", UtilsTime.convert_seconds(time_all), foster_result)
     elif not foster_result and is_growing:
-        logger.debug("已寄养，无需寄养,用时{}秒", UtilsTime.convert_seconds(time_time))
+        game_project_log.result = '已寄养'
+        logger.debug("已寄养，无需寄养,用时{}秒", UtilsTime.convert_seconds(time_all))
     elif not is_growing:
+        game_project_log.result = '寄养异常，未进入式神育成'
         logger.debug("寄养异常，未进入式神育成")
+    Mapper.save_game_project_log(game_project_log)
 
 
 def get_optimal_card():

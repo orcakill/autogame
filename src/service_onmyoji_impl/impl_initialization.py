@@ -2,16 +2,14 @@
 # @Author: orcakill
 # @File: impl_initialization.py
 # @Description: 当前状态初始化
-import datetime
 import os
 import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProject, GameProjectLog
+from src.model.models import GameAccount, GameProject, GameProjectLog, GameDevices
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
-from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
@@ -31,7 +29,7 @@ def initialization(game_task: [], login_type: int = 0):
     is_explore = False
     game_account = GameAccount(game_task[2])
     game_project = GameProject(game_task[3])
-    game_devices = GameProject(game_task[4])
+    game_devices = GameDevices(game_task[4])
     # 服务器信息
     server = os.path.join(Onmyoji.login_FWQ, game_account.role_region)
     # 账号首页信息
@@ -165,17 +163,17 @@ def initialization(game_task: [], login_type: int = 0):
     # 总用时
     time_all = time_end - time_start
     # 记录项目执行结果
-
     game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
-                                      result='', cost_time=int(time_all), create_user=WindowsService.computer_name(),
-                                      create_time=datetime.datetime.now())
+                                      result='当前状态初始化', cost_time=int(time_all))
+    if login_type == 1:
+        game_project_log.result = game_project_log.result + ",快速登录"
     if is_index:
-        game_project_log.result = 'TRUE'
-        logger.debug("初始化当前状态完成:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
+        game_project_log.result = game_project_log.result + ",成功"
+        logger.debug("初始化当前状态成功:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
         Mapper.save_game_project_log(game_project_log)
         return True
     else:
-        game_project_log.result = 'FALSE'
+        game_project_log.result = game_project_log.result + ",失败"
         Mapper.save_game_project_log(game_project_log)
         logger.debug("初始化当前状态失败:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
         return False

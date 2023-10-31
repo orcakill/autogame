@@ -5,8 +5,9 @@
 import datetime
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount
+from src.model.models import GameAccount, GameProject, GameDevices, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -16,10 +17,11 @@ from src.utils.my_logger import logger
 def ghost_king(game_task: []):
     # 开始时间
     time_start = time.time()
-    # 账号信息
-    game_account = GameAccount(game_task[2])
-    logger.debug(game_account.role_name)
     now = datetime.datetime.now()
+    game_account = GameAccount(game_task[2])
+    game_project = GameProject(game_task[3])
+    game_devices = GameDevices(game_task[4])
+    logger.debug(game_account.role_name)
     current_hour = now.hour
     if 6 <= current_hour <= 24:
         logger.debug("进入探索")
@@ -109,8 +111,12 @@ def ghost_king(game_task: []):
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=3)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
-    time_end = time.time() - time_start
-    logger.debug("地域鬼王,用时{}秒", round(time_end))
+    time_all = time.time() - time_start
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='地域鬼王完成', cost_time=int(time_all))
+    Mapper.save_game_project_log(game_project_log)
+    logger.debug("地域鬼王,用时{}秒", round(time_all))
 
 
 def encounter_demons(game_task: []):
@@ -121,8 +127,9 @@ def encounter_demons(game_task: []):
     """
     # 开始时间
     time_start = time.time()
-    # 账号信息
     game_account = GameAccount(game_task[2])
+    game_project = GameProject(game_task[3])
+    game_devices = GameDevices(game_task[4])
     logger.debug(game_account.role_name)
     now = datetime.datetime.now()
     current_hour = now.hour
@@ -227,8 +234,12 @@ def encounter_demons(game_task: []):
     else:
         logger.debug("不在逢魔时间内")
     impl_initialization.return_home(game_task)
-    time_end = time.time() - time_start
-    logger.debug("逢魔之时,用时{}秒", round(time_end))
+    time_all = time.time() - time_start
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='逢魔之时完成', cost_time=int(time_all))
+    Mapper.save_game_project_log(game_project_log)
+    logger.debug("逢魔之时,用时{}秒", round(time_all))
 
 
 def realm_fight(game_task: []):

@@ -29,13 +29,13 @@ class GameAccount(Base):
 
     def __init__(self, game_account: () = None, **kwargs):
         if game_account is None:
-            self.id = self.id
-            self.account_type = self.account_type
-            self.account_name = self.account_name
-            self.account_password = self.account_password
-            self.role_region = self.role_region
-            self.role_name = self.role_name
-            self.role_class = self.role_class
+            self.id = kwargs.get('id')
+            self.account_type = kwargs.get('account_type')
+            self.account_name = kwargs.get('account_name')
+            self.account_password = kwargs.get('account_password')
+            self.role_region = kwargs.get('role_region')
+            self.role_name = kwargs.get('role_name')
+            self.role_class = kwargs.get('role_class')
         else:
             super().__init__(**kwargs)
             self.id = game_account.id
@@ -62,9 +62,9 @@ class GameDevices(Base):
 
     def __init__(self, game_devices: () = None, **kwargs):
         if game_devices is None:
-            self.id = self.id
-            self.devices_name = self.devices_name
-            self.devices_connect = self.devices_connect
+            self.id = kwargs.get('id')
+            self.devices_name = kwargs.get('devices_name')
+            self.devices_connect = kwargs.get('devices_connect')
         else:
             super().__init__(**kwargs)
             self.id = game_devices.id
@@ -91,11 +91,11 @@ class GameGod(Base):
 
     def __init__(self, game_god: () = None, **kwargs):
         if game_god is None:
-            self.id = self.id
-            self.god_number = self.god_number
-            self.god_name = self.god_name
-            self.god_type = self.god_type
-            self.god_sort = self.god_sort
+            self.id = kwargs.get('id')
+            self.god_number = kwargs.get('god_number')
+            self.god_name = kwargs.get('god_name')
+            self.god_type = kwargs.get('god_type')
+            self.god_sort = kwargs.get('god_sort')
         else:
             super().__init__(**kwargs)
             self.id = game_god.id
@@ -128,13 +128,13 @@ class GameProject(Base):
 
     def __init__(self, game_project: () = None, **kwargs):
         if game_project is None:
-            self.id = self.id
-            self.project_num = self.project_num
-            self.project_name = self.project_name
-            self.time_stamp = self.time_stamp
-            self.start_time = self.start_time
-            self.end_time = self.end_time
-            self.remark = self.remark
+            self.id = kwargs.get('id')
+            self.project_num = kwargs.get('project_num')
+            self.project_name = kwargs.get('project_name')
+            self.time_stamp = kwargs.get('time_stamp')
+            self.start_time = kwargs.get('start_time')
+            self.end_time = kwargs.get('end_time')
+            self.remark = kwargs.get('remark')
         else:
             super().__init__(**kwargs)
             self.id = game_project.id
@@ -185,21 +185,21 @@ class GameProjectLog(Base):
 
     def __init__(self, game_project_log: () = None, **kwargs):
         if game_project_log is None:
-            self.id = self.id
-            self.project_id = self.project_id
-            self.role_id = self.role_id
-            self.devices_id = self.devices_id
-            self.result = self.result
-            self.cost_time = self.cost_time
-            self.fight_time = self.fight_time
-            self.fight_times = self.fight_times
-            self.fight_win = self.fight_win
-            self.fight_fail = self.fight_fail
-            self.fight_avg = self.fight_avg
-            self.create_user = self.create_user
-            self.create_time = self.create_time
-            self.update_user = self.update_user
-            self.update_time = self.update_time
+            self.id = kwargs.get('id')
+            self.project_id = kwargs.get('project_id')
+            self.role_id = kwargs.get('role_id')
+            self.devices_id = kwargs.get('devices_id')
+            self.result = kwargs.get('result')
+            self.cost_time = kwargs.get('cost_time')
+            self.fight_time = kwargs.get('fight_time')
+            self.fight_times = kwargs.get('fight_times')
+            self.fight_win = kwargs.get('fight_win')
+            self.fight_fail = kwargs.get('fight_fail')
+            self.fight_avg = kwargs.get('fight_avg')
+            self.create_user = kwargs.get('create_user')
+            self.create_time = kwargs.get('create_time')
+            self.update_user = kwargs.get('update_user')
+            self.update_time = kwargs.get('update_time')
         else:
             super().__init__(**kwargs)
             self.id = game_project_log.id
@@ -244,14 +244,14 @@ class GameProjects(Base):
 
     def __init__(self, game_projects: () = None, **kwargs):
         if game_projects is None:
-            self.id = self.id
-            self.projects_num = self.projects_num
-            self.projects_name = self.projects_name
-            self.remark = self.remark
-            self.create_user = self.create_user
-            self.create_time = self.create_time
-            self.update_user = self.update_user
-            self.update_time = self.update_time
+            self.id = kwargs.get('id')
+            self.projects_num = kwargs.get('projects_num')
+            self.projects_name = kwargs.get('projects_name')
+            self.remark = kwargs.get('remark')
+            self.create_user = kwargs.get('create_user')
+            self.create_time = kwargs.get('create_time')
+            self.update_user = kwargs.get('update_user')
+            self.update_time = kwargs.get('update_time')
         else:
             super().__init__(**kwargs)
             self.id = game_projects.id
@@ -291,15 +291,15 @@ class GameProjectsRelation(Base):
 
     def __init__(self, game_projects_relation: () = None, **kwargs):
         if game_projects_relation is None:
-            self.id = self.id
-            self.projects_id = self.projects_id
-            self.relation_num = self.relation_num
-            self.project_id = self.project_id
-            self.user_id = self.user_id
-            self.project_num_times = self.project_num_times
-            self.wait_before_time = self.wait_before_time
-            self.wait_after_time = self.wait_after_time
-            self.project_state = self.project_state
+            self.id = kwargs.get('id')
+            self.projects_id = kwargs.get('projects_id')
+            self.relation_num = kwargs.get('relation_num')
+            self.project_id = kwargs.get('project_id')
+            self.user_id = kwargs.get('user_id')
+            self.project_num_times = kwargs.get('project_num_times')
+            self.wait_before_time = kwargs.get('wait_before_time')
+            self.wait_after_time = kwargs.get('wait_after_time')
+            self.project_state = kwargs.get('project_state')
         else:
             super().__init__(**kwargs)
             self.id = game_projects_relation.id

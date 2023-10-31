@@ -78,7 +78,7 @@ def create_models():
             column1 = table.columns[i]
             # 字段名称
             column_name1 = column1.name
-            column_file2 = "\t\t\tself." + column_name1 + "= self." + column_name1
+            column_file2 = "\t\t\tself." + column_name1 + "= kwargs.get('" + column_name1+"')"
             model_file2 = model_file2 + column_file2 + "\n\r"
         model_file2 = model_file2 + "\t\telse:\n\r"
         model_file2 = model_file2 + "\t\t\tsuper().__init__(**kwargs)\n\r"

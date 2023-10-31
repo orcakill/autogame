@@ -30,6 +30,9 @@ class AirtestService:
     def auto_setup(game_device: str):
         """
         设备连接
+        1、已启动的设备，不再重新启动，检查是否已就绪
+        2、就绪检查1分钟，云手机无法就绪则重启软件，重新授权
+        3、判断当前是否半黑屏
         :return:
         """
         devices_name = None

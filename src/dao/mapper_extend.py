@@ -25,12 +25,14 @@ class MapperExtend:
         return task
 
     @staticmethod
-    def select_game_project(game_project_id: str, game_project_num: str):
+    def select_game_project(game_project_id: str, game_project_num: str, game_project_name: str = None):
         Session = sessionmaker(bind=engine)
         session = Session()
         game_project = (session.query(GameProject)
                         .filter(or_(GameProject.id == game_project_id, game_project_id == ""),
-                                or_(GameProject.project_num == game_project_num, game_project_num == ""))
+                                or_(GameProject.project_num == game_project_num, game_project_num == ""),
+                                or_(GameProject.project_name == game_project_name, game_project_name == "")
+                                )
                         .order_by(GameProject.project_num)
                         .all())
         session.close()

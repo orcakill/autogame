@@ -164,7 +164,6 @@ class OnmyojiService:
     def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
         """
         章节探索
-        :param rotation: 轮换开关
         :param difficulty: 难度
         :param chapter: 章节
         :param game_task: 项目信息

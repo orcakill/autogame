@@ -221,6 +221,7 @@ class Onmyoji:
     soul_BQ_YHZX = r"探索\御魂\八岐大蛇\御魂自选"
     soul_BQ_KQJC = r"探索\御魂\八岐大蛇\开启加成"
     soul_BQ_QD = r"探索\御魂\八岐大蛇\确定"
+    soul_BQ_QR = r"探索\御魂\八岐大蛇\确认"
     soul_BQ_SDZR = r"探索\御魂\八岐大蛇\锁定阵容"
     soul_BQ_TCTZ = r"探索\御魂\八岐大蛇\退出挑战"
     soul_BQ_TZ = r"探索\御魂\八岐大蛇\挑战"

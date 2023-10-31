@@ -5,7 +5,8 @@
 from unittest import TestCase
 
 from src.controller.onmyoji_controller import OnmyojiController
-from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameProjects
+from src.dao.mapper import Mapper
+from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameProjects, GameDevices
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.utils.my_logger import logger
@@ -187,10 +188,16 @@ class TestOnmyojiService(TestCase):
         game_tasks = OnmyojiController.create_tasks(test_names, "", project_name)
         for i in range(len(game_tasks)):
             game_task = game_tasks[i]
+            logger.debug("初始化项目信息")
             game_projects = GameProjects(game_task[0])
             game_projects_relation = GameProjectsRelation(game_task[1])
             game_account = GameAccount(game_task[2])
             game_project = GameProject(game_task[3])
+            logger.debug("添加设备信息")
+            game_devices = Mapper.select_game_devices(test_devices)
+            game_device = GameDevices(game_devices)
+            ImageService.auto_setup(test_devices)
+            game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
             logger.debug("当前状态初始化:{}", game_account.role_name)
             # 连接设备
             ImageService.auto_setup(test_devices)

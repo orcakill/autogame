@@ -36,6 +36,9 @@ class OnmyojiController:
             if project_num:
                 game_project = MapperExtend.select_game_project("", project_num)
                 game_project = GameProject(game_project[0])
+            elif project_name and game_project.id is None:
+                game_project = MapperExtend.select_game_project("", "", project_name)
+                game_project = GameProject(game_project[0])
             if not project_num and project_name:
                 game_project.project_name = project_name
             if project_num_times:

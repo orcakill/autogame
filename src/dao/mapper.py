@@ -1,9 +1,11 @@
+import datetime
 from uuid import uuid4
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from src.model.models import GameAccount, GameProjectLog, GameDevices
+from src.service.windows_service import WindowsService
 from src.utils.utils_path import get_database_url
 
 url = get_database_url()
@@ -27,6 +29,8 @@ class Mapper:
         session = Session()
         if game_project_log1.id is None:
             game_project_log1.id = uuid4()
+            game_project_log1.create_user = WindowsService.computer_name(),
+            game_project_log1.create_time = datetime.datetime.now()
         session.add(game_project_log1)
         session.commit()
         session.close()

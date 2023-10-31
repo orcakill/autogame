@@ -4,7 +4,9 @@
 # @Description: 每日奖励
 import time
 
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
+from src.model.models import GameProjectLog, GameAccount, GameProject, GameDevices
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service_onmyoji_impl import impl_initialization
@@ -13,6 +15,9 @@ from src.utils.utils_time import UtilsTime
 
 
 def daily_rewards(game_task: []):
+    game_account = GameAccount(game_task[2])
+    game_project = GameProject(game_task[3])
+    game_devices = GameDevices(game_task[4])
     # 开始时间
     time_start = time.time()
     # 账号信息
@@ -121,6 +126,7 @@ def daily_rewards(game_task: []):
         logger.debug("获取勾玉奖励")
         is_reward = ImageService.exists(Onmyoji.reward_HDJL, wait=3)
         if is_reward:
+            logger.debug("有勾玉奖励")
             ImageService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
         logger.debug("检查返回")
         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
@@ -139,8 +145,12 @@ def daily_rewards(game_task: []):
         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
-    time_end = time.time() - time_start
-    logger.debug("每日奖励,用时{}秒", round(time_end))
+    time_all = time.time() - time_start
+    # 记录项目执行结果
+    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+                                      result='每日奖励完成', cost_time=int(time_all))
+    Mapper.save_game_project_log(game_project_log)
+    logger.debug("每日奖励,用时{}秒", round(time_all))
 
 
 def soul_arrange(game_task: []):

@@ -131,7 +131,7 @@ def friends_fight(game_task: []):
                 ImageService.touch(Onmyoji.soul_BQ_YSZRXZ)
                 ImageService.touch(Onmyoji.soul_BQ_YSZRCZ)
                 logger.debug("点击地板")
-                ImageService.touch(Onmyoji.soul_BQ_DJDB)
+                ImageService.touch(Onmyoji.soul_BQ_DJDB, timeouts=10)
                 logger.debug("判断是否有协战式神")
                 is_assist_shikigami = ImageService.exists(Onmyoji.soul_BQ_XZSS)
                 if is_assist_shikigami:
@@ -159,10 +159,10 @@ def friends_fight(game_task: []):
                 ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
                 logger.debug("返回两次")
                 ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
-                logger.debug("确定")
+                logger.debug("确认")
                 ImageService.touch(Onmyoji.soul_BQ_QD)
                 logger.debug("锁定阵容")
-                ImageService.touch(Onmyoji.soul_BQ_SDZR)
+                ImageService.touch(Onmyoji.soul_BQ_SDZR, wait=5)
                 break
             logger.debug("进入自动战斗")
             is_auto = ImageService.exists(Onmyoji.soul_BQ_ZD, timeouts=10)
