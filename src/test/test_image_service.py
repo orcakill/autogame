@@ -19,8 +19,8 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("1")
-        result =  ImageService.exists(Onmyoji.explore_LHGL,cvstrategy=Cvstrategy.default)
-        logger.debug(result)
+        ImageService.touch(Onmyoji.reward_DJKB,cvstrategy=Cvstrategy.default)
+        ComplexService.get_reward(Onmyoji.reward_DJKB)
         now1 = datetime.datetime.now()
         print(now1 - now)
 

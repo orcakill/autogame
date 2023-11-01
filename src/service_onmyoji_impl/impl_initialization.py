@@ -35,6 +35,8 @@ def initialization(game_task: [], login_type: int = 0):
     server = os.path.join(Onmyoji.login_FWQ, game_account.role_region)
     # 账号首页信息
     account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
+    # 重新登录
+    str_login = ''
     # 判断是否是待登录账号首页
     logger.debug("初始化-判断当前状态")
     # 当前状态 账号首页 1，2,3，4
@@ -55,6 +57,7 @@ def initialization(game_task: [], login_type: int = 0):
     if not is_index or not is_explore and is_loss:
         # sys.exit()
         logger.debug("不在账号首页")
+        str_login = '重新登录'
         # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
         logger.debug("启动阴阳师app")
         ImageService.restart_app("com.netease.onmyoji")
@@ -163,9 +166,13 @@ def initialization(game_task: [], login_type: int = 0):
     time_end = time.time()
     # 总用时
     time_all = time_end - time_start
+    if time_all >= 60 * 5:
+        logger.info("当前状态初始化，用时超5分钟，实际用时{}", UtilsTime.convert_seconds(time_all))
     # 记录项目执行结果
     game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
                                       result='当前状态初始化', cost_time=int(time_all))
+    if str_login != '':
+        game_project_log.result = game_project_log.result + "," + str_login
     if login_type == 1:
         game_project_log.result = game_project_log.result + ",快速登录"
     if is_index:

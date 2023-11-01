@@ -318,14 +318,14 @@ def shack_house(game_task: []):
     """
     # 寮管理开始时间
     time_start = time.time()
-    # 项目信息
-    (game_projects_relation, game_account,
-     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     # 获取当前日期
     today = datetime.date.today()
     # 获取本日是周几（周一为0，周日为6）
     weekday = today.weekday() + 1
+    # 项目信息
+    (game_projects_relation, game_account,
+     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
+                                    GameProject(game_task[3]), GameDevices(game_task[4]))
     logger.debug("进入阴阳寮")
     ImageService.touch(Onmyoji.shack_YYLTB)
     ImageService.touch(Onmyoji.shack_YCFH)

@@ -6,6 +6,7 @@ import os
 import shutil
 import socket
 import subprocess
+import sys
 import time
 
 import psutil
@@ -107,6 +108,11 @@ class WindowsService:
     @staticmethod
     def computer_name():
         return socket.gethostname()
+
+    @staticmethod
+    def restart_program():
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
 
 
 if __name__ == '__main__':

@@ -83,6 +83,7 @@ class OnmyojiController:
                         logger.debug("当前状态初始化")
                         is_initialization = OnmyojiService.initialization(game_task)
                         if not is_initialization:
+                            # 如果是云手机，重启云手机，重新授权，重新初始化（待定）
                             logger.debug("当前状态初始化失败，重新初始化")
                             is_initialization = OnmyojiService.initialization(game_task)
                         # 判断项目名称，根据项目名称执行不同的函数

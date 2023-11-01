@@ -43,7 +43,6 @@ def daily_rewards(game_task: []):
         ComplexService.refuse_reward()
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
-
     logger.debug("2.礼包屋奖励")
     is_store = ImageService.exists(Onmyoji.store_SDTB)
     if is_store:
