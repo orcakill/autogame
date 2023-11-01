@@ -238,7 +238,8 @@ def friends_fight(game_task: []):
     # 记录项目执行结果
     game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
                                       result='好友协战', cost_time=int(time_all),
-                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
+                                      fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
+                                      fight_fail=num_fail,
                                       fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮好友协战总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",

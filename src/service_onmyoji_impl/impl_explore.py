@@ -211,9 +211,9 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
         time_round_avg = round(sum(time_round_list) / len(time_round_list), 3)
     # 记录项目执行结果
     game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
-                                      result='探索', cost_time=int(time_all),
-                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_false,
-                                      fight_avg=time_fight_avg)
+                                      result='探索', cost_time=int(time_all), fight_time=time_fight_all,
+                                      fight_times=len_time_fight_list, fight_win=num_win,
+                                      fight_fail=num_false, fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
     logger.debug(
         "{}章探索挑战，总用时{}，共{}轮，每轮平均战斗时间{}，战斗总用时{},每次战斗平均用时{}，挑战{}次，胜利{}次，失败{}次",

@@ -132,16 +132,16 @@ def region_border(game_task: []):
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     # 记录项目执行结果
     game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
-                                      result=game_project.project_name, cost_time=int(time_all),
-                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_fail,
-                                      fight_avg=time_fight_avg)
+                                      result="阴阳寮突破", cost_time=int(time_all),
+                                      fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
+                                      fight_fail=num_fail, fight_avg=time_fight_avg)
     if len_time_fight_list > 0:
-        game_project_log.result = "阴阳寮突破战斗完成"
+        game_project_log.result = game_project_log.result + "战斗完成"
         logger.debug("本轮阴阳寮总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                      UtilsTime.convert_seconds(time_all), UtilsTime.convert_seconds(time_fight_all), time_fight_avg,
                      len_time_fight_list, num_win, num_fail)
     else:
-        game_project_log.result = "无寮结界或无战斗次数"
+        game_project_log.result = "game_project_log.result" + "无寮结界或无战斗次数"
         logger.debug("无寮结界或无战斗次数，总用时{}秒", UtilsTime.convert_seconds(time_all))
     Mapper.save_game_project_log(game_project_log)
 
@@ -302,8 +302,8 @@ def border_fight(game_task: [], fight_times: int = 40):
     # 记录项目执行结果
     game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
                                       result=game_project.project_name, cost_time=int(time_all),
-                                      fight_times=time_fight_all, fight_win=num_win, fight_fail=num_false,
-                                      fight_avg=time_fight_avg)
+                                      fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
+                                      fight_fail=num_false, fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
     logger.debug(
         "本轮结界突破战斗结束，总用时{}，结界挑战劵{}张，战斗总用时{}秒,战斗次数{}次，胜利{}次，失败{}次，平均用时{}秒",
