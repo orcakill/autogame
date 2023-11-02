@@ -168,6 +168,7 @@ def initialization(game_task: [], login_type: int = 0):
     time_all = time_end - time_start
     if time_all >= 60 * 5:
         logger.info("当前状态初始化，用时超5分钟，实际用时{}", UtilsTime.convert_seconds(time_all))
+        # 超5分钟，判定为初始化失败，云手机重启设备，重新授权ADB，
     # 记录项目执行结果
     game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
                                       result='当前状态初始化', cost_time=int(time_all))

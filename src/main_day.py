@@ -79,7 +79,11 @@ if __name__ == '__main__':
                     logger.info("6-12,大号，阴阳寮挑战")
                     OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
                     logger.info("6-12,大小号，式神寄养")
-                    OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", game_id_all)
+                    OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", [1, 2])
+                    logger.info("6-12,大号，阴阳寮挑战")
+                    OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
+                    logger.info("6-12,大小号，式神寄养")
+                    OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", [3, 4, 5])
                     task_list2[1] = True
                     continue
                 if current_hour >= 6 and not task_list2[2]:

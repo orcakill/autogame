@@ -35,6 +35,7 @@ def region_border(game_task: []):
                                     GameProject(game_task[3]), GameDevices(game_task[4]))
     # 结界突破战斗用时
     time_fight_list = []
+    # 获取本日阴阳寮是否已攻破，，5-24 检查本日 05 检查昨日
     for i in range(3):
         logger.debug("进入探索")
         ImageService.touch(Onmyoji.home_TS)
@@ -51,6 +52,7 @@ def region_border(game_task: []):
             ComplexService.refuse_reward()
     logger.debug("锁定阵容")
     ImageService.touch(Onmyoji.region_SDZR)
+    # 检查已攻破100%,已有则插入
     logger.debug("检查寮结界")
     is_fight = ImageService.exists(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
     logger.debug("检查寮结界挑战次数")

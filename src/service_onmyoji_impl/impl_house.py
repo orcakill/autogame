@@ -13,6 +13,7 @@ from src.model.enum import Onmyoji
 from src.model.models import GameAccount, GameProjectLog, GameProjectsRelation, GameProject, GameDevices
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.ocr_service import OcrService
 from src.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
@@ -61,7 +62,9 @@ def foster_care(game_task: []):
             if is_foster and faster_place:
                 logger.debug("最优结界卡,进入好友结界")
                 faster_name = game_account.role_name + faster_place.replace("阴阳寮\\式神寄养\\结界卡\\", '_')
+                # 截图
                 ImageService.snapshot(faster_name, True)
+                logger.debug("进入好友结界")
                 ImageService.touch(Onmyoji.foster_JRJJ)
                 logger.debug("点击达摩,优先大吉达摩")
                 is_dharma = ImageService.touch(Onmyoji.foster_DMDJDM)
@@ -79,7 +82,8 @@ def foster_care(game_task: []):
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
-        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH, timeouts=10)
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+        ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
     time_end = time.time()
@@ -87,6 +91,7 @@ def foster_care(game_task: []):
     # 记录项目执行结果
     game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
                                       result='', cost_time=int(time_all))
+    # 有寄养结果，无寄养标志则寄养成功
     if foster_result:
         game_project_log.result = foster_result
         logger.debug("寄养用时{},寄养结果{}", UtilsTime.convert_seconds(time_all), foster_result)
@@ -269,6 +274,31 @@ def get_card_type(target_type: str, not_placed: int = 0):
     elif results[1]:
         logger.debug("检查结果：{}", Onmyoji.foster_JJK_WFZ)
         return Onmyoji.foster_JJK_WFZ
+    logger.debug("检查结果：其他情况")
+    return None
+
+
+def get_card_type_word(target_type: str, target_word, not_placed: int = 0):
+    logger.debug("获取{}", target_word)
+    result = OcrService.get_word(target_word)
+    if result is not None:
+        if result in [67, 76] and target_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG]:
+            logger.debug("检查结果：{}", target_type)
+            return target_type
+        if result in [59, 67] and target_type in [Onmyoji.foster_JJK_WXTG, Onmyoji.foster_JJK_SXTG]:
+            logger.debug("检查结果：{}", target_type)
+            return target_type
+        if result in [50, 59] and target_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG]:
+            logger.debug("检查结果：{}", target_type)
+            return target_type
+        if result in [42, 50] and target_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG]:
+            logger.debug("检查结果：{}", target_type)
+            return target_type
+    if not_placed == 1:
+        is_placed = ImageService.exists(Onmyoji.foster_JJK_WFZ)
+        if is_placed:
+            logger.debug("检查结果：{}", Onmyoji.foster_JJK_WFZ)
+            return Onmyoji.foster_JJK_WFZ
     logger.debug("检查结果：其他情况")
     return None
 
