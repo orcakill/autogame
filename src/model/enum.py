@@ -346,6 +346,7 @@ class Onmyoji:
     region_ZD = r"探索\阴阳寮突破\自动"
     region_TCTZ = r"探索\阴阳寮突破\退出挑战"
     region_SDZR = r"探索\阴阳寮突破\锁定阵容"
+    region_TPJDM = r"探索\阴阳寮突破\突破进度满"
     region_ZCTPJD = r"探索\阴阳寮突破\左侧突破进度"
     shack_XLTY = r"阴阳寮\寮管理\下拉太阴"
     shack_XLTG = r"阴阳寮\寮管理\下拉太鼓"

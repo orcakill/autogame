@@ -16,7 +16,6 @@ class OnmyojiController:
     def create_execute_tasks(game_device: str, projects_num, project_name: str, game_id: [], project_num: str = None,
                              game_round: str = 1, relation_num: str = 1, project_num_times: int = None):
         if projects_num:
-            # 获取任务
             game_tasks = MapperExtend.select_game_task("", projects_num)
         else:
             game_tasks = OnmyojiController.create_tasks(game_id, project_num, project_name, project_num_times)
@@ -108,6 +107,7 @@ class OnmyojiController:
                                 OnmyojiService.shack_house(game_task)
                             # 项目 7
                             elif game_project.project_name in ["阴阳寮突破"]:
+                                # 获取本日阴阳寮是否已攻破，，5-24 检查本日 05 检查昨日，已攻破则跳过，不执行项目
                                 OnmyojiService.region_border(game_task)
                                 if (game_projects_relation.wait_after_time
                                         and game_projects_relation.wait_after_time > 0):

@@ -46,25 +46,24 @@ def friends_fight(game_task: []):
     logger.debug("2.魂十协战")
     for i_cooperative_warfare in range(2):
         logger.debug("协战开始,第{}次", i_cooperative_warfare + 1)
-        logger.debug("确认首页")
-        impl_initialization.return_home(game_task)
-        ComplexService.refuse_reward()
-        logger.debug("进入好友界面")
-        ImageService.touch(Onmyoji.friends_HYTB)
-        logger.debug("进入右侧协战")
-        ImageService.touch(Onmyoji.friends_YCXZ)
-        logger.debug("判断是否已完成协战，1次")
-        is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
-        if not is_cooperative_warfare:
-            logger.debug("判断是否已完成协战，2次")
-            is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
-        if is_cooperative_warfare:
-            logger.debug("已完成协战，返回首页")
-            ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
-            continue
-        else:
-            logger.debug("未完成协战，返回首页")
-            ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+        # logger.debug("确认首页")
+        # ComplexService.refuse_reward()
+        # logger.debug("进入好友界面")
+        # ImageService.touch(Onmyoji.friends_HYTB)
+        # logger.debug("进入右侧协战")
+        # ImageService.touch(Onmyoji.friends_YCXZ)
+        # logger.debug("判断是否已完成协战，1次")
+        # is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
+        # if not is_cooperative_warfare:
+        #     logger.debug("判断是否已完成协战，2次")
+        #     is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
+        # if is_cooperative_warfare:
+        #     logger.debug("已完成协战，返回首页")
+        #     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+        #     continue
+        # else:
+        #     logger.debug("未完成协战，返回首页")
+        #     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
         logger.debug("好友魂十协战-进入探索")
         ImageService.touch(Onmyoji.home_TS)
         logger.debug("点击御魂图标")
@@ -162,7 +161,9 @@ def friends_fight(game_task: []):
                 logger.debug("返回两次")
                 ImageService.touch(Onmyoji.comm_FH_ZSJZKDZSHXJT)
                 logger.debug("确认")
-                ImageService.touch(Onmyoji.soul_BQ_QD)
+                ImageService.touch(Onmyoji.soul_BQ_QR)
+                logger.debug("战斗失败")
+                ImageService.touch(Onmyoji.soul_BQ_ZDSB)
                 logger.debug("锁定阵容")
                 ImageService.touch(Onmyoji.soul_BQ_SDZR, wait=5)
                 break

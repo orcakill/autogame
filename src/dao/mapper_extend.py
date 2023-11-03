@@ -49,14 +49,3 @@ class MapperExtend:
                          .all())
         session.close()
         return game_projects
-
-    @staticmethod
-    def select_game_project_log(game_project_log_id: str):
-        Session1 = sessionmaker(bind=engine)
-        session = Session1()
-        game_project_log = (session.query(GameProjectLog)
-                            .filter(or_(GameProjectLog.id == game_project_log_id, game_project_log_id == ""))
-                            .order_by(GameProjectLog.create_time)
-                            .all())
-        session.close()
-        return game_project_log

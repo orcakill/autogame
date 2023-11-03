@@ -35,7 +35,6 @@ def region_border(game_task: []):
                                     GameProject(game_task[3]), GameDevices(game_task[4]))
     # 结界突破战斗用时
     time_fight_list = []
-    # 获取本日阴阳寮是否已攻破，，5-24 检查本日 05 检查昨日
     for i in range(3):
         logger.debug("进入探索")
         ImageService.touch(Onmyoji.home_TS)
@@ -50,9 +49,10 @@ def region_border(game_task: []):
             break
         else:
             ComplexService.refuse_reward()
+    is_over = ImageService.exists(Onmyoji.region_TPJDM)
     logger.debug("锁定阵容")
     ImageService.touch(Onmyoji.region_SDZR)
-    # 检查已攻破100%,已有则插入
+    # 检查是否已攻破100%,已有则插入"阴阳寮已攻破"
     logger.debug("检查寮结界")
     is_fight = ImageService.exists(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
     logger.debug("检查寮结界挑战次数")
@@ -78,6 +78,8 @@ def region_border(game_task: []):
                 ComplexService.refuse_reward()
                 logger.debug("点击可能存在的退出挑战")
                 ImageService.touch(Onmyoji.region_TCTZ)
+                logger.debug("点击可能存在的战斗失败")
+                ImageService.touch(Onmyoji.region_ZDSB)
                 logger.debug("再次点击寮结界")
                 is_fight = ImageService.touch(Onmyoji.region_LJJ, cvstrategy=Cvstrategy.default)
                 if not is_fight:
@@ -143,8 +145,12 @@ def region_border(game_task: []):
                      UtilsTime.convert_seconds(time_all), UtilsTime.convert_seconds(time_fight_all), time_fight_avg,
                      len_time_fight_list, num_win, num_fail)
     else:
-        game_project_log.result = "game_project_log.result" + "无寮结界或无战斗次数"
-        logger.debug("无寮结界或无战斗次数，总用时{}秒", UtilsTime.convert_seconds(time_all))
+        if is_over:
+            game_project_log.result = game_project_log.result + "突破进度100%"
+            logger.debug("突破进度100%，总用时{}秒", UtilsTime.convert_seconds(time_all))
+        else:
+            game_project_log.result = game_project_log.result + "无寮结界或无战斗次数"
+            logger.debug("无寮结界或无战斗次数，总用时{}秒", UtilsTime.convert_seconds(time_all))
     Mapper.save_game_project_log(game_project_log)
 
 

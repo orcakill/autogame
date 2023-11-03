@@ -76,29 +76,25 @@ if __name__ == '__main__':
         elif 5 <= current_hour < 12:
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
                 if not task_list2[1]:
-                    logger.info("6-12,大号，阴阳寮挑战")
+                    logger.info("6-12,大号,阴阳寮突破")
                     OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
-                    logger.info("6-12,大小号，式神寄养")
+                    logger.info("6-12,大小号1,2，式神寄养")
                     OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", [1, 2])
-                    logger.info("6-12,大号，阴阳寮挑战")
-                    OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
-                    logger.info("6-12,大小号，式神寄养")
-                    OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", [3, 4, 5])
                     task_list2[1] = True
                     continue
-                if current_hour >= 6 and not task_list2[2]:
-                    logger.info("6-12,大号，阴阳寮挑战")
+                if not task_list2[2]:
+                    logger.info("6-12,大号,阴阳寮突破")
                     OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
-                    logger.info("6-12,大号,地域鬼王")
-                    OnmyojiController.create_execute_tasks(game_device, "", "地域鬼王", game_id_large)
+                    logger.info("6-12,小号3,4,5，式神寄养")
+                    OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", [3, 4, 5])
                     task_list2[2] = True
                     continue
-                if current_hour >= 6 and not task_list2[3]:
-                    logger.info("6-12,大号，阴阳寮挑战")
+                if current_hour >= 6 and not task_list2[4]:
+                    logger.info("6-12,大号,阴阳寮突破")
                     OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
                     logger.info("6-12,小号,地域鬼王")
                     OnmyojiController.create_execute_tasks(game_device, "", "地域鬼王", game_id_small)
-                    task_list2[3] = True
+                    task_list2[4] = True
                     continue
                 logger.info("6-12,大号阴阳寮突破循环")
                 OnmyojiController.create_execute_tasks(game_device, "3", "", game_id_large)
@@ -107,14 +103,28 @@ if __name__ == '__main__':
             if current_hour < 17 and not task_list3[1]:
                 logger.info("12-17,大号,阴阳寮突破")
                 OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
-                logger.info("12-17,大小号，式神寄养")
-                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", game_id_all)
+                logger.info("12-17,大小号1,2，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", [1, 2])
                 task_list3[1] = True
                 continue
             if current_hour < 17 and not task_list3[2]:
+                logger.info("12-17,大号,阴阳寮突破")
+                OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
+                logger.info("12-17,小号3,4,5，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, "", "式神寄养", [3, 4, 5])
+                task_list3[2] = True
+                continue
+            if current_hour < 17 and not task_list3[3]:
+                logger.info("12-17,大号,阴阳寮突破")
+                OnmyojiController.create_execute_tasks(game_device, "", "阴阳寮突破", game_id_large)
+                logger.info("12-17,大号，地域鬼王")
+                OnmyojiController.create_execute_tasks(game_device, "", "地域鬼王", game_id_large)
+                task_list3[3] = True
+                continue
+            if current_hour < 17 and not task_list3[4]:
                 logger.info("12-17,大小号,大号阴阳寮突破+大小号斗技+大小号每日奖励")
                 OnmyojiController.create_execute_tasks(game_device, "5", "", game_id_all)
-                task_list3[2] = True
+                task_list3[4] = True
                 continue
             logger.info("12-17,大号阴阳寮突破循环")
             OnmyojiController.create_execute_tasks(game_device, "3", "", game_id_large)
