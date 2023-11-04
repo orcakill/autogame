@@ -213,6 +213,10 @@ def friends_fight(game_task: []):
         logger.debug("好友协战-关闭御魂加成")
         ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC, Onmyoji.soul_BQ_JCK,
                                     Onmyoji.soul_BQ_JCG, 0)
+        logger.debug("加成取消")
+        ImageService.touch(Onmyoji.soul_BQ_JCQX)
+        logger.debug("拒接悬赏")
+        ComplexService.refuse_reward()
         logger.debug("好友协战-战斗结束，返回首页")
         ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
         logger.debug("好友协战-返回首页")
