@@ -1,10 +1,10 @@
+import datetime
 import random
 import time
 
 from src.dao.mapper import Mapper
 from src.dao.mapper_extend import MapperExtend
 from src.model.models import *
-from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.utils import utils_mail
 from src.utils.my_logger import my_logger as logger
@@ -13,49 +13,64 @@ from src.utils.utils_time import UtilsTime
 
 class OnmyojiController:
     @staticmethod
-    def create_execute_tasks(game_device: str, projects_num, project_name: str, game_id: [], project_num: str = None,
-                             game_round: str = 1, relation_num: str = 1, project_num_times: int = None):
+    def create_execute_tasks(game_device_id: str, game_id: str, projects_num: str = None, project_name: str = None,
+                             project_num: str = None, game_round: str = 1, relation_num: str = 1,
+                             project_num_times: {} = None, start_hour: int = 0, end_hour: int = 23):
         if projects_num:
             game_tasks = MapperExtend.select_game_task("", projects_num)
         else:
             game_tasks = OnmyojiController.create_tasks(game_id, project_num, project_name, project_num_times)
+        # 添加设备信息
+        game_devices = Mapper.select_game_devices(game_device_id)
+        game_device = GameDevices(game_devices)
+        game_tasks.append(game_device)
         # 执行任务
-        OnmyojiController.execute_tasks(game_tasks, game_round, relation_num, game_device)
+        OnmyojiController.execute_tasks(game_tasks, game_round, relation_num, start_hour, end_hour)
 
     @staticmethod
-    def create_tasks(game_ids: [], project_num: str, project_name: str, project_num_times: int = None):
+    def create_tasks(game_ids: str, project_num: str, project_name: str, project_num_times: {} = None):
         # 初始化任务信息
         task = []
-        for i in range(len(game_ids)):
+        num = 1
+        game_ids_list = game_ids.split(',')
+        project_num_list = project_num.split(',')
+        project_name_list = project_name.split(',')
+        for i in range(len(game_ids_list)):
             game_id = game_ids[i]
             game_projects = GameProjects()
             game_projects_relation = GameProjectsRelation()
             game_account = Mapper.select_game_account(game_id)
-            game_project = GameProject()
+            # 项目序号不为空
             if project_num:
-                game_project = MapperExtend.select_game_project("", project_num)
-                game_project = GameProject(game_project[0])
-            elif project_name and game_project.id is None:
-                game_project = MapperExtend.select_game_project("", "", project_name)
-                game_project = GameProject(game_project[0])
-            if not project_num and project_name:
-                game_project.project_name = project_name
-            if project_num_times:
-                if project_num_times > 0:
-                    game_projects_relation.project_num_times = project_num_times
-            game_projects_relation.relation_num = i + 1
-            game_task = [game_projects, game_projects_relation, game_account, game_project]
-            task.append(game_task)
+                for j in range(len(project_num_list)):
+                    game_project = GameProject(MapperExtend.select_game_project("", project_num_list[j])[0])
+                    game_projects_relation.relation_num = num + 1
+                    if project_num_times is not None and project_num_times > 0:
+                        game_projects_relation.project_num_times = project_num_times[game_project.project_name]
+                    game_task = [game_projects, game_projects_relation, game_account, game_project]
+                    task.append(game_task)
+            # 项目名称不为空
+            elif project_name:
+                for j in range(len(project_name_list)):
+                    game_project = GameProject(MapperExtend.select_game_project("", "", project_name_list[j])[0])
+                    game_projects_relation.relation_num = num + 1
+                    if project_num_times is not None and project_num_times > 0:
+                        game_projects_relation.project_num_times = project_num_times[game_project.project_name]
+                    game_task = [game_projects, game_projects_relation, game_account, game_project]
+                    task.append(game_task)
+            num = num + 1
         return task
 
     @staticmethod
-    def execute_tasks(game_tasks: [], game_round: str, relation_num: str, game_device_id: str) -> None:
+    def execute_tasks(game_tasks: [], game_round: str, relation_num: str, start_hour: int = 0,
+                      end_hour: int = 23) -> None:
         """
         项目组任务
-        :param game_device_id: 设备序号
         :param game_tasks: 项目组信息
         :param game_round: 项目组执行次数
         :param relation_num:  项目组中断后重新执行的序号
+        :param start_hour:开始时间
+        :param end_hour: 结束时间
         :return: None
         """
         try:
@@ -72,11 +87,14 @@ class OnmyojiController:
                     game_projects_relation = GameProjectsRelation(game_task[1])
                     game_account = GameAccount(game_task[2])
                     game_project = GameProject(game_task[3])
-                    game_devices = Mapper.select_game_devices(game_device_id)
-                    game_device = GameDevices(game_devices)
-                    ImageService.auto_setup(game_device_id)
+                    game_device = GameProject(game_task[4])
                     game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
-                    if game_projects_relation.relation_num >= int(relation_num):
+                    # 获取当前时间
+                    current_time1 = datetime.datetime.now()
+                    # 获取当前时间的小时数
+                    current_hour = current_time1.hour
+                    if (game_projects_relation.relation_num >= int(relation_num)
+                            and (start_hour <= current_hour <= end_hour)):
                         logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
                                     game_account.role_name)
                         logger.debug("当前状态初始化")

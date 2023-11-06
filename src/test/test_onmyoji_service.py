@@ -19,161 +19,161 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project(self, ['5'], "1", "登录")
+        TestOnmyojiService.test_project(self, '2', "1", "登录")
 
     def test_daily_rewards(self):
         """
         项目2 每日奖励
         :return:
         """
-        TestOnmyojiService.test_project(self, ['5'], '1', "每日奖励")
+        TestOnmyojiService.test_project(self, '5', '1', "每日奖励")
 
     def test_encounter_demons(self):
         """
         项目3 逢魔之时
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '2', "逢魔之时")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '2', "逢魔之时")
 
     def test_ghost_king(self):
         """
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project(self, ['4', '5'], '1', "地域鬼王")
+        TestOnmyojiService.test_project(self, '4,5', '1', "地域鬼王")
 
     def test_foster_care(self):
         """
         项目5 式神寄养
         :return:；
         """
-        TestOnmyojiService.test_project(self, ['3', '4', '5', '2'], '1', "式神寄养")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '1', "式神寄养")
 
     def test_shack_house(self):
         """
         项目6 阴阳寮管理
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2'], '1', "阴阳寮管理")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '1', "阴阳寮管理")
 
     def test_region_border(self):
         """
         项目7 阴阳寮突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '0', "阴阳寮突破")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '0', "阴阳寮突破")
 
     def test_border_fight(self):
         """
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "个人突破")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '1', "个人突破")
 
     def test_border_fight1(self):
         """
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '2', "个人突破")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '2', "个人突破")
 
     def test_friends_manage(self):
         """
         项目9 好友管理
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2'], '0', "好友管理")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '0', "好友管理")
 
     def test_friends_fight(self):
         """
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project(self, ['5'], '0', "好友协战")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '0', "好友协战")
 
     def test_awakening(self):
         """
         项目11 觉醒10
         :return:
         """
-        TestOnmyojiService.test_project(self, ['5'], '1', "觉醒十", fight_times=20)
+        TestOnmyojiService.test_project(self, '2,3,4,5', '1', "觉醒十", fight_times=20)
 
     def test_soul_fight_one(self):
         """
         项目12 魂一
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "魂一")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '0', "魂一")
 
     def test_soul_fight_ten(self):
         """
         项目13 魂十
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2', '3', '4', '5'], '0', "魂十")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '0', "魂十")
 
     def test_soul_fight_eleven(self):
         """
         项目14 魂十一
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '2', "魂十一", fight_times=60)
+        TestOnmyojiService.test_project(self, '2,3,4,5', '2', "魂十一", fight_times=60)
 
     def test_soul_fight_fire(self):
         """
         项目16 业原火
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '0', "业原火")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '0', "业原火")
 
     def test_soul_fight_sun(self):
         """
         项目17 日轮之陨
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '2', "日轮之陨", fight_times=50)
+        TestOnmyojiService.test_project(self, '2,3,4,5', '2', "日轮之陨", fight_times=50)
 
     def test_soul_fight_sea(self):
         """
         项目18 永生之海
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "永生之海")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '1', "永生之海")
 
     def test_pvp(self):
         """
         项目19 斗技
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "斗技", fight_times=10)
+        TestOnmyojiService.test_project(self, '2,3,4,5', '1', "斗技", fight_times=10)
 
     def test_soul_arrange(self):
         """
         项目20 御魂整理
         :return:
         """
-        TestOnmyojiService.test_project(self, ['2'], '2', "御魂整理")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '2', "御魂整理")
 
     def test_explore(self):
         """
         项目21 探索
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "探索")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '1', "探索")
 
     def test_spirit(self):
         """
         项目22 御灵
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '2', "御灵")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '2', "御灵")
 
     def test_deed(self):
         """
         项目23 契灵
         :return:
         """
-        TestOnmyojiService.test_project(self, ['1'], '1', "契灵")
+        TestOnmyojiService.test_project(self, '2,3,4,5', '1', "契灵")
 
     def test_project(self, test_names, test_devices, project_name, fight_times: int = 1, chapter: int = 28,
                      difficulty: int = 1):

@@ -33,10 +33,9 @@ if __name__ == '__main__':
         game_tasks = MapperExtend.select_game_task("", game_num)
     else:
         logger.debug("无项目组，按项目和账号执行")
-        project_num = input("请输入一个项目编号：")
+        project_num = input("请输入一组项目编号：")
         game_account = input("请输入一组账号：")
-        game_accounts = game_account.split(',')
-        game_tasks = OnmyojiController.create_tasks(game_accounts, project_num, "")
+        game_tasks = OnmyojiController.create_tasks(game_account, project_num, "")
     game_round = input("请输入一个项目组轮次：")
     game_relation_num = input("请输入一个项目组开始执行编号：")
     # 0 每个节点都发送邮件 1 进程结束后发送邮件  2不发送邮件
@@ -45,7 +44,7 @@ if __name__ == '__main__':
     logger.info("脚本类型{},脚本轮次 {},连接设备{}", game_num, game_round, game_device)
     logger.info("**************")
     logger.info("执行任务")
-    OnmyojiController.execute_tasks(game_tasks, game_round, game_relation_num, game_device)
+    OnmyojiController.execute_tasks(game_tasks, game_round, game_relation_num)
     if game_is_email == '1':
         logger.info("发送邮件")
         utils_mail.send_email("阴阳师脚本", "结束", "项目组执行结束")
