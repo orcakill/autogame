@@ -12,7 +12,7 @@ class TestModelsExtend(TestCase):
 
     def test_select_game_project(self):
         # 查询测试
-        task = MapperExtend.select_game_project("", "")
+        task = MapperExtend.select_game_project("", "8")
         logger.info(task)
 
     def test_select_game_projects(self):
@@ -22,5 +22,5 @@ class TestModelsExtend(TestCase):
 
     def test_select_game_project_log(self):
         # 查询测试
-        task = MapperExtend.select_game_project_log("")
+        task = MapperExtend.select_region_over("2023-11-06", "1")
         logger.info(task)

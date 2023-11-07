@@ -2,8 +2,10 @@
 # @Author: orcakill
 # @File: utils_time.py
 # @Description: 时间工具类
+from datetime import datetime
 
-class UtilsTime():
+
+class UtilsTime:
     @staticmethod
     def convert_seconds(seconds):
         if seconds < 60:
@@ -24,7 +26,15 @@ class UtilsTime():
             seconds = ((seconds % 86400) % 3600) % 60
             return f"{round(days)}天 {round(hours)}小时 {round(minutes)}分钟 {round(seconds)}秒"
 
+    @staticmethod
+    def get_day_str():
+        # 获取当前日期
+        current_date = datetime.now().date()
+        # 将日期转换为字符串类型
+        date_string = current_date.strftime('%Y-%m-%d')
+        return date_string
+
 
 if __name__ == '__main__':
     print(UtilsTime.convert_seconds(30))
-
+    print(UtilsTime.get_day_str())

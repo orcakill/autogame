@@ -50,7 +50,7 @@ class GameAccount(Base):
 class GameDevices(Base):
     __tablename__ = "game_devices"
 
-    id = Column(Integer, primary_key=True, info='设备ID')
+    id = Column(String(40), primary_key=True, info='设备ID')
     devices_name = Column(String(40), info='设备名称')
     devices_connect = Column(String(40), info='设备连接信息')
 

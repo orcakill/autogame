@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import sessionmaker
 
@@ -25,7 +27,7 @@ class MapperExtend:
         return task
 
     @staticmethod
-    def select_game_project(game_project_id: str, game_project_num: str, game_project_name: str = None):
+    def select_game_project(game_project_id: str, game_project_num: str, game_project_name: str = ''):
         Session = sessionmaker(bind=engine)
         session = Session()
         game_project = (session.query(GameProject)
@@ -49,3 +51,32 @@ class MapperExtend:
                          .all())
         session.close()
         return game_projects
+
+    @staticmethod
+    def select_region_over(day: str, game_id: str):
+        """
+        根据日期和用户获取当日阴阳寮突破的状态
+        :param day: 日期
+        :param game_id: 用户ID
+        :return: True 未攻破  False 已攻破100%
+        """
+        Session1 = sessionmaker(bind=engine)
+        session = Session1()
+        # 将字符串转换为日期类型
+        date = datetime.strptime(day, '%Y-%m-%d')
+        # 创建时间对象
+        time = datetime.strptime('05:00:00', '%H:%M:%S').time()
+        # 将日期和时间拼接起来
+        start_datetime = datetime.combine(date.date(), time)
+        end_datetime = start_datetime + timedelta(days=1)
+        game_project_log = (session.query(GameProjectLog)
+                            .filter(GameProjectLog.role_id == game_id,
+                                    GameProjectLog.result == "阴阳寮突破突破进度100%",
+                                    GameProjectLog.create_time >= start_datetime,
+                                    GameProjectLog.create_time <= end_datetime)
+                            .all())
+        session.close()
+        if len(game_project_log) > 0:
+            return False
+        else:
+            return True

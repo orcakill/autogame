@@ -49,6 +49,7 @@ def region_border(game_task: []):
             break
         else:
             ComplexService.refuse_reward()
+    logger.debug("检查寮结界是否已攻破")
     is_over = ImageService.exists(Onmyoji.region_TPJDM)
     logger.debug("锁定阵容")
     ImageService.touch(Onmyoji.region_SDZR)
@@ -91,9 +92,9 @@ def region_border(game_task: []):
                 logger.debug("再次点击进攻")
                 ImageService.touch(Onmyoji.region_JG)
                 logger.debug("再次检查自动战斗")
-                is_auto = ImageService.exists(Onmyoji.region_ZD)
+                is_auto = ImageService.exists(Onmyoji.region_ZD,timeouts=10)
             if not is_auto:
-                logger.debug("可能已被挑战,点击左侧突破进度")
+                logger.debug("未进入自动战斗，可能已被挑战,点击左侧突破进度")
                 ImageService.touch(Onmyoji.region_ZCTPJD)
                 logger.debug("寮结界挑战次数")
                 is_fight_times = OcrService.get_word(Onmyoji.region_TZCS)

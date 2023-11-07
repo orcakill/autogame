@@ -133,8 +133,7 @@ if __name__ == '__main__':
                 continue
             if not task_list3[4]:
                 logger.info("12-17,大小号,大号阴阳寮突破+大小号斗技+大小号每日奖励")
-                project_num_times = {'斗技': 20}
-                OnmyojiController.create_execute_tasks(game_device, game_id_all, project_num_times=project_num_times)
+                OnmyojiController.create_execute_tasks(game_device, game_id_all,projects_num="5")
                 task_list3[4] = True
                 continue
             logger.info("12-17,大号阴阳寮突破循环")
