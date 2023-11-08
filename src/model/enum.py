@@ -313,6 +313,7 @@ class Onmyoji:
     foster_JJK_ZCTG = r"阴阳寮\式神寄养\结界卡\左侧太鼓"
     foster_JJK_ZCDY = r"阴阳寮\式神寄养\结界卡\左侧斗鱼"
     foster_JJK_GY = r"阴阳寮\式神寄养\结界卡\勾玉"
+    foster_JJK_GYWZ = r"阴阳寮\式神寄养\结界卡\勾玉文字"
     foster_JJK_SXTG = r"阴阳寮\式神寄养\结界卡\三星太鼓"
     foster_JJK_SXTG1 = r"阴阳寮\式神寄养\结界卡\四星太鼓"
     foster_JJK_SXDY1 = r"阴阳寮\式神寄养\结界卡\四星斗鱼"

@@ -19,22 +19,33 @@ class OnmyojiController:
     def create_execute_tasks(game_device_id: str, game_id: str, projects_num: str = None, project_name: str = None,
                              project_num: str = None, game_round: str = 1, relation_num: str = 1,
                              project_num_times: {} = None, start_hour: int = 0, end_hour: int = 23):
+        # 设备信息
+        game_device = GameDevices(Mapper.select_game_devices(game_device_id))
+        # 创建项目信息
         if projects_num:
             game_tasks = MapperExtend.select_game_task("", projects_num)
         else:
-            game_tasks = OnmyojiController.create_tasks(game_device_id, game_id, project_num, project_name,
+            game_tasks = OnmyojiController.create_tasks(game_id, project_num, project_name,
                                                         project_num_times)
+        # 添加设备信息
+        for i in range(len(game_tasks)):
+            game_task = game_tasks[i]
+            game_projects = GameProjects(game_task[0])
+            game_projects_relation = GameProjectsRelation(game_task[1])
+            game_account = GameAccount(game_task[2])
+            game_project = GameProject(game_task[3])
+            game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
+            game_tasks[i] = game_task
         # 执行任务
         OnmyojiController.execute_tasks(game_tasks, game_round, relation_num, start_hour, end_hour)
 
     @staticmethod
-    def create_tasks(game_device_id: str, game_ids: str, project_num: str, project_name: str,
+    def create_tasks(game_ids: str, project_num: str, project_name: str,
                      project_num_times: {} = None):
         # 初始化任务信息
         task = []
         game_ids_list = []
         project_num_list = []
-        project_name_list = []
         num = 0
         if game_ids is not None:
             game_ids_list = game_ids.split(',')
@@ -45,9 +56,6 @@ class OnmyojiController:
             for i_num in range(len(project_name_list)):
                 project_number = GameProject(MapperExtend.select_game_project("", "", project_name_list[i_num])[0])
                 project_num_list.append(project_number.project_num)
-        # 添加设备信息
-        game_devices = Mapper.select_game_devices(game_device_id)
-        game_device = GameDevices(game_devices)
         for i in range(len(game_ids_list)):
             game_id = game_ids_list[i]
             game_projects = GameProjects()
@@ -58,7 +66,7 @@ class OnmyojiController:
                 game_projects_relation.relation_num = num + 1
                 if project_num_times is not None and project_num_times > 0:
                     game_projects_relation.project_num_times = project_num_times[game_project.project_name]
-                game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
+                game_task = [game_projects, game_projects_relation, game_account, game_project]
                 day = UtilsTime.get_day_str()
                 region_over = MapperExtend.select_region_over(day, game_id)
                 if not region_over and game_project.project_name == "阴阳寮突破":
@@ -95,12 +103,10 @@ class OnmyojiController:
                     for j in range(len(game_tasks)):
                         time_task_start = time.time()
                         game_task = game_tasks[j]
-                        game_projects = GameProjects(game_task[0])
                         game_projects_relation = GameProjectsRelation(game_task[1])
                         game_account = GameAccount(game_task[2])
                         game_project = GameProject(game_task[3])
                         game_device = GameDevices(game_task[4])
-                        game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
                         # 获取当前时间
                         current_time1 = datetime.datetime.now()
                         # 获取当前时间的小时数

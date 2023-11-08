@@ -117,6 +117,8 @@ def get_optimal_card():
     target_type = Onmyoji.foster_JJK_TG
     target_left_card = Onmyoji.foster_ZCJJK_LXTG
     target_card = Onmyoji.foster_JJK_LXTG
+    coordinate_friend = ()
+    coordinate_region = ()
     # 寄养检查好友数
     num_friends = 0
     for i_type in range(7):
@@ -154,16 +156,23 @@ def get_optimal_card():
             target_left_card = Onmyoji.foster_ZCJJK_SXDY1
             target_card = Onmyoji.foster_JJK_SXDY1
         logger.debug("寄养-目标结界卡：{}", target_card)
-        logger.debug("寄养--点击可寄养标志")
-        ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10, wait=5)
-        logger.debug("寄养-获取上方好友坐标")
-        coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
-        logger.debug("寄养-获取上方跨区坐标")
-        coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
+        for i_sign in range(3):
+            logger.debug("寄养--点击可寄养标志")
+            ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10, wait=5)
+            logger.debug("寄养-获取上方好友坐标")
+            coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
+            logger.debug("寄养-获取上方跨区坐标")
+            coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
+            if coordinate_friend and coordinate_region:
+                logger.debug("找到上方好友和上方跨区")
+                break
+            else:
+                logger.debug("退出好友寄养列表")
+                ComplexService.get_reward(Onmyoji.foster_SFHY)
         if coordinate_friend and coordinate_region:
             logger.debug("计算跨区到好友1的间距,好友1和2的间距")
             coordinate_difference = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
-            coordinate_difference1 = 0.9002849002849003 * (coordinate_region[0] - coordinate_friend[0])
+            coordinate_difference1 = 0.8902849002849003 * (coordinate_region[0] - coordinate_friend[0])
             logger.debug("计算好友位置1、2、3、4")
             coordinate_friend1 = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
             coordinate_friend2 = (
@@ -193,7 +202,7 @@ def get_optimal_card():
                         logger.debug("左侧有目标结界卡,点击左侧坐标{}", is_left[1])
                         ImageService.touch_coordinate(is_left[1])
                         logger.debug("判断当前结界卡星级和类型")
-                        card_type = get_card_type(target_type, 0)
+                        card_type = get_card_type_word(target_card, Onmyoji.foster_JJK_GYWZ, 0)
                         logger.debug(card_type)
                         if card_type == target_card:
                             logger.debug("目标结界,中断查找")
@@ -212,6 +221,8 @@ def get_optimal_card():
                 ComplexService.refuse_reward()
                 ImageService.swipe(coordinate_friend4, coordinate_friend1, 2)
                 num_friends = num_friends + 4
+        else:
+            logger.debug("未获取到上方好友和上方跨区")
 
 
 def get_card_type(target_type: str, not_placed: int = 0):
@@ -279,19 +290,19 @@ def get_card_type(target_type: str, not_placed: int = 0):
 
 
 def get_card_type_word(target_type: str, target_word, not_placed: int = 0):
-    logger.debug("获取{}", target_word)
+    logger.debug("获取文字")
     result = OcrService.get_word(target_word)
-    if result is not None:
-        if result in [67, 76] and target_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG]:
+    if result:
+        if result in ['67', '76'] and target_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG]:
             logger.debug("检查结果：{}", target_type)
             return target_type
-        if result in [59, 67] and target_type in [Onmyoji.foster_JJK_WXTG, Onmyoji.foster_JJK_SXTG]:
+        if result in ['59', '67'] and target_type in [Onmyoji.foster_JJK_WXTG]:
             logger.debug("检查结果：{}", target_type)
             return target_type
-        if result in [50, 59] and target_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG]:
+        if result in ['50'] and target_type in [Onmyoji.foster_JJK_SXTG1]:
             logger.debug("检查结果：{}", target_type)
             return target_type
-        if result in [42, 50] and target_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG]:
+        if result in ['42', '50'] and target_type in [Onmyoji.foster_JJK_SXTG1, Onmyoji.foster_JJK_SXTG]:
             logger.debug("检查结果：{}", target_type)
             return target_type
     if not_placed == 1:

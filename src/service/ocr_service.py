@@ -6,7 +6,7 @@ import re
 
 import pytesseract
 
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -26,8 +26,8 @@ class OcrService:
         :return:
         """
         # 结界突破区域
-        logger.debug("获取{}", folder_path)
-        result = image_service.cv_match(folder_path)
+        logger.debug("获取{}的位置", folder_path)
+        result = image_service.cv_match(folder_path,cvstrategy=Cvstrategy.default)
         if result:
             pos1 = result['rectangle'][0]
             pos2 = result['rectangle'][2]
@@ -43,21 +43,24 @@ class OcrService:
             text = pytesseract.image_to_string(image, lang=lang)
             if text:
                 if folder_path == Onmyoji.border_JJTZJQY:
-                    text = re.search(r'\d+(?=/30)', text)
+                    text = re.search(r'\d+(?=/30)', text).group()
                 if folder_path == Onmyoji.friends_HYSQY:
-                    text = re.search(r'\d+(?=/200)', text)
+                    text = re.search(r'\d+(?=/200)', text).group()
                 if folder_path == Onmyoji.deed_MQSS:
-                    text = re.search(r'\d+(?=/30)', text)
+                    text = re.search(r'\d+(?=/30)', text).group()
                 if folder_path == Onmyoji.explore_DQLHSL:
-                    text = re.search(r'\d+(?=/50)', text)
+                    text = re.search(r'\d+(?=/50)', text).group()
                 if folder_path == Onmyoji.region_TZCS:
-                    text = re.search(r'\d+(?=/6)', text)
+                    text = re.search(r'\d+(?=/6)', text).group()
+                if folder_path == Onmyoji.foster_JJK_GYWZ:
+                    text = text.split('+')[-1].strip() if '+' in text else text
             if text:
-                text = text.group()
                 text.replace(" ", "")
                 logger.debug(text)
             else:
                 logger.debug("无{}", folder_path)
             return text
             # 文字判断
+        else:
+            logger.debug("未找到{}",folder_path)
         return None

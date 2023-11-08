@@ -203,7 +203,7 @@ def return_home(game_task: []):
     logger.debug("返回首页-检查探索")
     is_explore = ImageService.exists(Onmyoji.home_TS)
     if not is_index or not is_explore:
-        ImageService.snapshot("不在首页", True)
+        ImageService.snapshot(game_account.role_name + '_' + game_project.project_name + "_非首页", True)
         logger.info("不在账号首页，重新快速登录 {}:{}", game_account.role_name, game_project.project_name)
         initialization(game_task, 1)
     else:

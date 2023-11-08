@@ -92,7 +92,7 @@ def region_border(game_task: []):
                 logger.debug("再次点击进攻")
                 ImageService.touch(Onmyoji.region_JG)
                 logger.debug("再次检查自动战斗")
-                is_auto = ImageService.exists(Onmyoji.region_ZD,timeouts=10)
+                is_auto = ImageService.exists(Onmyoji.region_ZD, timeouts=10)
             if not is_auto:
                 logger.debug("未进入自动战斗，可能已被挑战,点击左侧突破进度")
                 ImageService.touch(Onmyoji.region_ZCTPJD)
@@ -247,7 +247,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                 logger.debug("再次点击个人结界")
                 ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("再次点击进攻")
-                is_attack1 = ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=1)
+                is_attack1 = ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("再次检查自动战斗")
                 is_auto = ImageService.exists(Onmyoji.region_ZD, timeouts=10)
                 if not is_auto and is_attack1:

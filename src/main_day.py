@@ -59,16 +59,16 @@ if __name__ == '__main__':
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="好友协战")
                 task_list1[2] = True
                 continue
-            if current_hour <= 5 and not task_list1[3]:
+            if not task_list1[3]:
                 logger.info("0-6,大号，个人突破")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="个人突破")
                 logger.info("0-6,大号，魂十一")
                 project_num_times = {'魂十一': 20}
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="魂十一",
-                                                       project_num_times=20)
+                                                       project_num_times=project_num_times)
                 task_list1[3] = True
                 continue
-            if current_hour <= 5 and not task_list1[4]:
+            if not task_list1[4]:
                 if weekday in [1, 6, 7]:
                     logger.info("0-6,周一、六、日，大号，日轮之陨")
                     OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="日轮之陨")
@@ -133,7 +133,7 @@ if __name__ == '__main__':
                 continue
             if not task_list3[4]:
                 logger.info("12-17,大小号,大号阴阳寮突破+大小号斗技+大小号每日奖励")
-                OnmyojiController.create_execute_tasks(game_device, game_id_all,projects_num="5")
+                OnmyojiController.create_execute_tasks(game_device, game_id_all, projects_num="5")
                 task_list3[4] = True
                 continue
             logger.info("12-17,大号阴阳寮突破循环")

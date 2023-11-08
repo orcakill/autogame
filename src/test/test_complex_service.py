@@ -6,7 +6,7 @@ import datetime
 import warnings
 from unittest import TestCase
 
-from src.dao.mapper import select_game_account
+from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
@@ -132,13 +132,22 @@ class TestComplexService(TestCase):
         now1 = datetime.datetime.now()
         print(now1 - now)
 
+    def test_card_word(self):
+        logger.debug("结界卡识别")
+        ImageService.auto_setup("1")
+        now = datetime.datetime.now()
+        result = impl_house.get_card_type_word(Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_GYWZ, 0)
+        logger.debug(result)
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
     def test_return_home(self):
         now = datetime.datetime.now()
         logger.debug("返回首页")
         # 初始化测试任务信息
         game_projects = GameProjects()
         game_projects_relation = GameProjectsRelation()
-        game_account = select_game_account("2")
+        game_account = Mapper.select_game_account("2")
         game_project = GameProject()
         game_project.project_name = "登录"
         game_task = [game_projects, game_projects_relation, game_account, game_project]
