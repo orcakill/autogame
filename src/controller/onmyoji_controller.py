@@ -64,7 +64,7 @@ class OnmyojiController:
             for j in range(len(project_num_list)):
                 game_project = GameProject(MapperExtend.select_game_project("", project_num_list[j])[0])
                 game_projects_relation.relation_num = num + 1
-                if project_num_times is not None and project_num_times > 0:
+                if project_num_times:
                     game_projects_relation.project_num_times = project_num_times[game_project.project_name]
                 game_task = [game_projects, game_projects_relation, game_account, game_project]
                 day = UtilsTime.get_day_str()
