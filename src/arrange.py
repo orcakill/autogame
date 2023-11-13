@@ -23,7 +23,7 @@ if __name__ == '__main__':
         rar.writeall(folder_path, os.path.basename(folder_path))
     logger.debug("压缩文件夹完成")
     server = utils_path.get_server()
-    # SSH连接参数
+    # SSH连接参数0
     host = server['ip']
     port = server['port']
     username = server['username']

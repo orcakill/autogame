@@ -116,7 +116,6 @@ class OnmyojiController:
                             logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
                                         game_account.role_name)
                             logger.debug("当前状态初始化")
-                            ImageService.auto_setup(game_device.id)
                             is_initialization = OnmyojiService.initialization(game_task)
                             if not is_initialization:
                                 # 如果是云手机，重启云手机，重新授权，重新初始化（待定）

@@ -1,4 +1,4 @@
 @echo off  
 cd %~dp0
 call venv\Scripts\activate  
-python src\main.py  
+python src\main_day.py

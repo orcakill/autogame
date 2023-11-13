@@ -7,6 +7,8 @@ import os
 import sys
 import time
 
+from src.service.image_service import ImageService
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.controller.onmyoji_controller import OnmyojiController
@@ -38,6 +40,7 @@ if __name__ == '__main__':
     game_id_large = '1'
     game_id_small = '2,3,4,5'
     logger.info("开始")
+    ImageService.auto_setup(game_device)
     while True:
         # 获取当前时间
         current_time1 = datetime.datetime.now()
@@ -140,25 +143,30 @@ if __name__ == '__main__':
             OnmyojiController.create_execute_tasks(game_device, game_id_large, projects_num="3")
         # 如果当前时间大于等于17点,小于24点
         elif 17 <= current_hour <= 23:
-            if not task_list4[1]:
-                logger.info("17-24,17点,大小号，式神寄养")
+            if current_hour < 19 and not task_list4[1]:
+                logger.info("17-24,17点,大号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, game_id_all, project_name="式神寄养")
                 task_list4[1] = True
                 continue
-            if not task_list4[2]:
-                logger.info("17-24,小号，逢魔之时")
-                OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="逢魔之时")
+            if  not task_list4[2]:
+                logger.info("17-24,17点,小号，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, game_id_all, project_name="式神寄养")
                 task_list4[2] = True
                 continue
-            if 19 <= current_hour <= 23 and weekday in [5, 6, 7] and not task_list4[3]:
-                logger.info("17-24,小号，阴界之门")
-                OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="阴界之门")
+            if not task_list4[3]:
+                logger.info("17-24,小号，逢魔之时")
+                OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="逢魔之时")
                 task_list4[3] = True
                 continue
-            if 19 <= current_hour <= 23 and not task_list4[4]:
+            if 19 <= current_hour <= 23 and weekday in [5, 6, 7] and not task_list4[4]:
+                logger.info("17-24,小号，阴界之门")
+                OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="阴界之门")
+                task_list4[4] = True
+                continue
+            if 19 <= current_hour <= 23 and not task_list4[5]:
                 logger.info("17-24,小号，全流程")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, projects_num="2")
-                task_list4[4] = True
+                task_list4[5] = True
                 continue
         # 等待1分钟
         time.sleep(60)
