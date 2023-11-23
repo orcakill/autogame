@@ -51,6 +51,17 @@ class MyLogger:
             retention="48h"
         )
 
+        # 输出到文件的格式，按日期分割日志文件，并设置日志文件名
+        self.logger.add(
+            os.path.join(log_file_path, "error/{time:YYYY-MM-DD_HH-mm-ss}.log"),
+            level='ERROR',
+            format='{time:YYYY-MM-DD HH:mm:ss.SSS} - '
+                   "{process.name} | "
+                   "{thread.name} | "
+                   '{module}.{function}:{line} - {level} - {message}',
+            retention="48h"
+        )
+
     def get_logger(self):
         return self.logger
 

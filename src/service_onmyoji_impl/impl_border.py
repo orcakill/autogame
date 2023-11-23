@@ -247,17 +247,16 @@ def border_fight(game_task: [], fight_times: int = 40):
                 logger.debug("再次点击个人结界")
                 ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("再次点击进攻")
-                is_attack1 = ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=2)
+                ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("再次检查自动战斗")
                 is_auto = ImageService.exists(Onmyoji.region_ZD, timeouts=10)
-                if not is_auto and is_attack1:
-                    logger.debug("可能已无结界挑战劵,点击消耗退出")
-                    ImageService.touch(Onmyoji.border_XH)
-                    logger.debug("判断是否存在结界挑战劵0/30")
-                    is_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
-                    if is_securities == "0":
-                        logger.debug("无结界挑战劵，跳出循环")
-                        break
+                logger.debug("可能已无结界挑战劵,点击消耗")
+                ImageService.touch(Onmyoji.border_XH)
+                logger.debug("判断是否存在结界挑战劵0/30")
+                is_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
+                if is_securities == "0":
+                    logger.debug("无结界挑战劵，跳出循环")
+                    break
             if is_auto:
                 logger.debug("点击准备")
                 is_unlock = ImageService.touch(Onmyoji.border_ZB, wait=10)

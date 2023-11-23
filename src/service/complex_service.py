@@ -215,14 +215,13 @@ class ComplexService:
                             ImageService.touch(word, wait=2)
                             return False
                     else:
-                        logger.debug("关闭加成")
-                        logger.debug("获取加成开的个数")
-                        coordinate_result = ImageService.find_all(add_open)
-                        logger.debug("有{}个加成开", len(coordinate_result))
-                        if len(coordinate_result) > 0:
-                            logger.debug("关闭所有加成", len(coordinate_result))
-                            for i in range(len(coordinate_result)):
-                                ImageService.touch_coordinate(coordinate_result[i]['result'])
+                        logger.debug("关闭所有的加成开")
+                        for i_close in range(2):
+                            logger.debug("第{}次检查",i_close+1)
+                            coordinate_result = ImageService.find_all(add_open)
+                            if len(coordinate_result) > 0:
+                                for i in range(len(coordinate_result)):
+                                    ImageService.touch_coordinate(coordinate_result[i]['result'])
                         logger.debug("退出顶部加成")
                         ImageService.touch(word, wait=2)
                         return True

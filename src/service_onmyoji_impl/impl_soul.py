@@ -77,12 +77,14 @@ def soul_fight(game_task: []):
         if is_unlock:
             logger.debug("本次锁定阵容")
             ImageService.touch(Onmyoji.soul_BQ_SDZR)
-        logger.debug("判断右侧是否有御魂自选")
-        is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
-        if is_self_selection:
-            ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-            logger.debug("返回")
+        if i == 0:
+            logger.debug("判断右侧是否有御魂自选")
+            is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
+            if is_self_selection:
+                ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+                logger.debug("返回")
         ImageService.touch(Onmyoji.soul_BQ_TZ)
+        logger.debug("检查是否自动战斗中")
         is_auto = ImageService.exists(Onmyoji.soul_BQ_ZD)
         if not is_auto:
             logger.debug("拒接悬赏")

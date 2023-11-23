@@ -77,7 +77,7 @@ class TestComplexService(TestCase):
         elif type1 == 2:
             logger.debug("经验加成")
             ComplexService.top_addition(Onmyoji.explore_JC, Onmyoji.explore_JYJC, Onmyoji.explore_JCK,
-                                        Onmyoji.explore_JCG, 1)
+                                        Onmyoji.explore_JCG, 0)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
