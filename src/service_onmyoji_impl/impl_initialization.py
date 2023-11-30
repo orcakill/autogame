@@ -6,6 +6,7 @@ import os
 import time
 
 from src.dao.mapper import Mapper
+from src.dao.mapper_extend import MapperExtend
 from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount, GameProject, GameProjectLog, GameDevices, GameProjectsRelation
 from src.service.complex_service import ComplexService
@@ -23,14 +24,11 @@ def initialization(game_task: [], login_type: int = 0):
     """
     # 开始时间
     time_start = time.time()
-    # 首页
-    is_index = False
-    # 探索
-    is_explore = False
     # 项目信息
-    (game_projects_relation, game_account,
-     game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+    (game_projects_relation, game_account, game_devices) = (
+        GameProjectsRelation(game_task[1]), GameAccount(game_task[2]), GameDevices(game_task[4]))
+    # 登录，每次重置项目信息为登录
+    game_project = GameProject(MapperExtend.select_game_project("", "1")[0])
     # 服务器信息
     server = os.path.join(Onmyoji.login_FWQ, game_account.role_region)
     # 账号首页信息
@@ -41,20 +39,23 @@ def initialization(game_task: [], login_type: int = 0):
     logger.debug("初始化-判断当前状态")
     # 当前状态 账号首页 1，2,3，4
     #        其它，不在账号首页
-    logger.debug("排除悬赏")
-    ComplexService.refuse_reward()
-    logger.debug("排除缓存过多")
-    ComplexService.refuse_cache()
-    logger.debug("检查失联掉线")
-    is_loss = ComplexService.loss_connection()
-    if is_loss:
-        logger.debug("重新登录")
-    else:
-        logger.debug("首页账号")
-        is_index = ImageService.exists(account_index)
-        logger.debug("首页探索")
-        is_explore = ImageService.exists(Onmyoji.home_TS)
-    if not is_index or not is_explore and is_loss:
+    logger.debug("首页账号")
+    is_index = ImageService.exists(account_index)
+    logger.debug("首页探索")
+    is_explore = ImageService.exists(Onmyoji.home_TS, rgb=True)
+    logger.debug("首页町中")
+    is_courtyard = ImageService.exists(Onmyoji.home_DZ)
+    if is_index and is_explore and not is_courtyard:
+        logger.debug("检查悬赏")
+        ComplexService.refuse_reward()
+        logger.debug("检查缓存过多")
+        ComplexService.refuse_cache()
+        logger.debug("检查加成取消")
+        ImageService.touch(Onmyoji.home_QX)
+        logger.debug("检查失联掉线")
+        ComplexService.loss_connection()
+        is_courtyard = ImageService.exists(Onmyoji.home_DZ)
+    if not is_index or not is_explore or not is_courtyard:
         # sys.exit()
         logger.debug("不在账号首页")
         str_login = '重新登录'
@@ -202,7 +203,9 @@ def return_home(game_task: []):
     is_index = ImageService.exists(account_index)
     logger.debug("返回首页-检查探索")
     is_explore = ImageService.exists(Onmyoji.home_TS)
-    if not is_index or not is_explore:
+    logger.debug("返回首页-检查町中")
+    is_courtyard = ImageService.exists(Onmyoji.home_DZ)
+    if not is_index or not is_explore or not is_courtyard:
         ImageService.snapshot(game_account.role_name + '_' + game_project.project_name + "_非首页", True)
         logger.info("不在账号首页，重新快速登录 {}:{}", game_account.role_name, game_project.project_name)
         initialization(game_task, 1)

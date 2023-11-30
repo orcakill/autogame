@@ -12,7 +12,7 @@ class TestModelsExtend(TestCase):
 
     def test_select_game_project(self):
         # 查询测试
-        task = MapperExtend.select_game_project("", "8")
+        task = MapperExtend.select_game_project("", "1")
         logger.info(task)
 
     def test_select_game_projects(self):

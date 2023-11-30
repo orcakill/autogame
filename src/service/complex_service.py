@@ -217,7 +217,7 @@ class ComplexService:
                     else:
                         logger.debug("关闭所有的加成开")
                         for i_close in range(2):
-                            logger.debug("第{}次检查",i_close+1)
+                            logger.debug("第{}次检查", i_close + 1)
                             coordinate_result = ImageService.find_all(add_open)
                             if len(coordinate_result) > 0:
                                 for i in range(len(coordinate_result)):
@@ -289,3 +289,16 @@ class ComplexService:
             return Onmyoji.comm_SL
         else:
             return False
+
+    @staticmethod
+    def touch_two(folder1: str, folder2: str, num1: int, num2: int):
+        coordinate1 = ImageService.find_all_coordinate(folder1)[num1 + 1]
+        coordinate2 = ImageService.find_all_coordinate(folder2)[num2 + 2]
+        if coordinate1 and coordinate2:
+            ImageService.touch_coordinate(coordinate1[0], coordinate2[0])
+        elif not coordinate1 and not coordinate2:
+            logger.debug("未找到{}和{}", folder1, folder2)
+        elif not coordinate1:
+            logger.debug("未找到{}", folder1)
+        elif not coordinate2:
+            logger.debug("未找到{}", folder2)

@@ -16,8 +16,8 @@ def get_subdirectories(folder_path):
 
 
 if __name__ == '__main__':
-    path_name = r'探索\章节探索'
-    prefix = 'explore_'
+    path_name = r'探索\六道之门\月之海'
+    prefix = 'six_moon_'
     # 指定文件夹路径
     folder_path1 = utils_path.get_project_path() + r'src\resources\static\onmyoji\\'
     folder_path2 = folder_path1 + path_name
@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
     for subdir in subdirectories:
         subdir = subdir.replace(folder_path1, "")
-        parts = subdir.replace(path_name+'\\',"")
-        result=parts.replace("\\","_")
+        parts = subdir.replace(path_name + '\\', "")
+        result = parts.replace("\\", "_")
 
         # 使用 pinyin() 函数将中文转换为拼音
         pinyin_text = pinyin(result, style=Style.FIRST_LETTER)

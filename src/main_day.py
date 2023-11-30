@@ -48,19 +48,19 @@ if __name__ == '__main__':
         weekday = today.weekday() + 1
         # 如果当前时间大于等于0点并且小于8点
         if 0 <= current_hour < 6:
-            if task_list1[1]:
+            if not task_list1[1]:
                 logger.info("0-6,大小号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, game_id_all, project_name='式神寄养',
                                                        start_hour=0, end_hour=6)
                 task_list1[1] = True
                 continue
-            if task_list1[2]:
+            if not task_list1[2]:
                 logger.info("0-6,小号，好友协战")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="好友协战",
                                                        start_hour=0, end_hour=6)
                 task_list1[2] = True
                 continue
-            if not task_list1[3]:
+            if task_list1[3]:
                 logger.info("0-6,大号，个人突破")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="个人突破",
                                                        start_hour=0, end_hour=6)
@@ -157,7 +157,7 @@ if __name__ == '__main__':
                 task_list3[4] = True
                 continue
             logger.info("12-17,大号阴阳寮突破循环")
-            OnmyojiController.create_execute_tasks(game_device, game_id_large, projects_num="3",
+            OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="阴阳寮突破",
                                                    start_hour=12, end_hour=17)
         # 如果当前时间大于等于17点,小于24点
         elif 17 <= current_hour <= 23:
@@ -188,15 +188,14 @@ if __name__ == '__main__':
             if 19 <= current_hour <= 21 and not task_list4[5]:
                 logger.info("17-24,小号，全流程")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, projects_num="2",
-                                                       start_hour=17, end_hour=21)
+                                                       start_hour=17, end_hour=23)
                 task_list4[5] = True
                 continue
         # 等待1分钟
         time.sleep(60)
-        # 获取当前时间
-        current_time2 = datetime.datetime.now()
-        current_different = current_time2 - current_time1
-        if current_different.days > 1:
+        # 获取当前日期
+        today1 = datetime.date.today()
+        if today != today1:
             logger.info("已过一天，重置变量")
             volume = False
             task_list1 = []
