@@ -19,8 +19,9 @@ class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("1")
-        ImageService.touch(Onmyoji.reward_DJKB,cvstrategy=Cvstrategy.default)
-        ComplexService.get_reward(Onmyoji.reward_DJKB)
+        logger.debug("开始")
+        ImageService.touch_all_coordinate(Onmyoji.six_moon_PT, rank=1)
+        logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
 

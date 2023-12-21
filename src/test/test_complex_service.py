@@ -12,7 +12,8 @@ from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
-from src.service_onmyoji_impl import impl_house, impl_initialization, impl_explore
+from src.service_onmyoji_impl import impl_house, impl_initialization, impl_explore, impl_six
+from src.service_onmyoji_impl.impl_six import current_count, deal_event
 from src.utils.my_logger import logger
 
 
@@ -192,6 +193,90 @@ class TestComplexService(TestCase):
         now = datetime.datetime.now()
         ImageService.auto_setup("1")
         impl_explore.automatic_rotation_type_god()
+        logger.debug("测试-结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)
+
+    def test_six_moon_event(self):
+        logger.debug("测试六道之门：月之海-回合事件")
+        now = datetime.datetime.now()
+        ImageService.auto_setup("1")
+        current_result = [("技能", "柔风抱暖")]
+        for i in range(20):
+            logger.debug("测试-第{}回合", i + 1)
+            logger.debug("测试-当前秘宝")
+            current_count(current_result, "秘宝")
+            logger.debug("测试-当前技能")
+            current_count(current_result, "技能")
+            logger.debug("测试-回合事件")
+            if i < 1:
+                current_result = deal_event("月之海", current_result, 1)
+            else:
+                current_result = deal_event("月之海", current_result, 4)
+            is_advance = ImageService.exists(Onmyoji.six_moon_KQ)
+            if is_advance:
+                logger.debug("月之海结束")
+        logger.debug("测试-结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)
+
+    def test_six_moon_skill(self):
+        logger.debug("测试六道之门：月之海-选择技能")
+        now = datetime.datetime.now()
+        ImageService.auto_setup("1")
+        # 月之海，技能+优先级+当前等级，按柔风抱暖、六道暴虐、细雨化屏、妖力化身选取
+        skill_list = [Onmyoji.six_moon_JN_RFBN, Onmyoji.six_moon_JN_LDBN, Onmyoji.six_moon_JN_XYHP,
+                      Onmyoji.six_moon_JN_YLHS]
+        impl_six.select_skills(skill_list, refresh_count=1)
+        logger.debug("测试-结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)
+
+    def test_six_moon_rare(self):
+        logger.debug("测试六道之门：月之海-选择秘宝")
+        now = datetime.datetime.now()
+        ImageService.auto_setup("1")
+        # 月之海，秘宝,攻击御守，火之卷
+        rare_list = [Onmyoji.six_moon_MB_GJYS, Onmyoji.six_moon_MB_HZJ]
+        impl_six.select_skills(rare_list, refresh_count=3)
+        logger.debug("测试-结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)
+
+    def test_six_moon_check_skill(self):
+        logger.debug("测试六道之门：月之海-多线程选择技能")
+        now = datetime.datetime.now()
+        ImageService.auto_setup("1")
+        # 月之海，技能+优先级+当前等级，按柔风抱暖、六道暴虐、细雨化屏、妖力化身选取
+        skill_list = [Onmyoji.six_moon_JN_RFBN, Onmyoji.six_moon_JN_LDBN, Onmyoji.six_moon_JN_XYHP,
+                      Onmyoji.six_moon_JN_YLHS]
+        skill = impl_six.check_list(skill_list)
+        logger.debug(skill)
+        logger.debug("测试-结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)
+
+    def test_six_moon_check_evnet(self):
+        logger.debug("测试六道之门：月之海-多线程选择事件")
+        now = datetime.datetime.now()
+        ImageService.auto_setup("1")
+        # 月之海，技能+优先级+当前等级，按柔风抱暖、六道暴虐、细雨化屏、妖力化身选取
+        event_list = [Onmyoji.six_moon_YXXZ, Onmyoji.six_moon_SJ_XZY, Onmyoji.six_moon_SJ_AZ, Onmyoji.six_moon_SJ_SM,
+                      Onmyoji.six_moon_SJ_HD, Onmyoji.six_moon_SJ_NX]
+        skill = impl_six.check_list(event_list)
+        logger.debug(skill)
+        logger.debug("测试-结束")
+        now1 = datetime.datetime.now()
+        logger.debug(now1 - now)
+
+    def test_six_moon_check_rare(self):
+        logger.debug("测试六道之门：月之海-多线程选择秘宝")
+        now = datetime.datetime.now()
+        ImageService.auto_setup("1")
+        # 月之海，秘宝,攻击御守，火之卷
+        rare_list = [Onmyoji.six_moon_MB_GJYS, Onmyoji.six_moon_MB_HZJ]
+        skill = impl_six.check_list(rare_list)
+        logger.debug(skill)
         logger.debug("测试-结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)

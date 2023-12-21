@@ -30,11 +30,13 @@ def initialization(game_task: [], login_type: int = 0):
     # 登录，每次重置项目信息为登录
     game_project = GameProject(MapperExtend.select_game_project("", "1")[0])
     # 服务器信息
-    server = os.path.join(Onmyoji.login_FWQ, game_account.role_region)
+    server = str(os.path.join(Onmyoji.login_FWQ, game_account.role_region))
     # 账号首页信息
-    account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
+    account_index = str(os.path.join(Onmyoji.user_SYTX, game_account.id))
     # 重新登录
     str_login = ''
+    # 分辨率
+    pos_resolution = ImageService.resolution_ratio()
     # 判断是否是待登录账号首页
     logger.debug("初始化-判断当前状态")
     # 当前状态 账号首页 1，2,3，4
@@ -99,14 +101,18 @@ def initialization(game_task: [], login_type: int = 0):
                 logger.debug("常用")
                 ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("选择账号")
-                account = os.path.join(Onmyoji.user_XZZH, game_account.account_name)
+                account = str(os.path.join(Onmyoji.user_XZZH, game_account.account_name))
                 is_account = ImageService.touch(account, wait=4)
                 logger.debug("登录")
                 ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4)
                 logger.debug("接受协议")
                 ImageService.touch(Onmyoji.login_JSXY, wait=3)
-                logger.debug("切换服务器")
-                ImageService.touch(Onmyoji.login_QHFWQ, cvstrategy=Cvstrategy.default, wait=3)
+                logger.debug("切换服务器,根据修复按钮位置确定切换按钮")
+                pos_XF = ImageService.exists(Onmyoji.login_XF)
+                if pos_resolution and pos_XF:
+                    ImageService.touch_coordinate((pos_resolution[0] / 2, pos_XF[1]))
+                else:
+                    logger.debug("没找到修复按钮或分辨率")
                 logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
                 pos_TCS = ImageService.exists(Onmyoji.login_TYCS, wait=2)
                 pos_JSX = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
@@ -199,7 +205,7 @@ def return_home(game_task: []):
     #        其它，不在账号首页
     ComplexService.refuse_reward()
     logger.debug("返回首页-检查首页账号")
-    account_index = os.path.join(Onmyoji.user_SYTX, game_account.id)
+    account_index = str(os.path.join(Onmyoji.user_SYTX, game_account.id))
     is_index = ImageService.exists(account_index)
     logger.debug("返回首页-检查探索")
     is_explore = ImageService.exists(Onmyoji.home_TS)

@@ -416,13 +416,15 @@ class ImageService:
             while time.time() - time_start < timeouts:
                 for template in template_list:
                     pos = AirtestService.find_all(template, cvstrategy, timeout, is_throw)
-                    if pos and len(pos) >= rank:
-                        logger.debug("图像查找成功:{}", folder_path)
-                        return pos[rank - 1]['result']
-            return None
+                    if pos and len(pos) >= rank - 1:
+                        coordinate = pos[rank - 1]['result']
+                        logger.debug("图像查找点击成功:{},坐标{}", folder_path,coordinate)
+                        ImageService.touch_coordinate(coordinate)
+                        return coordinate
+            return False
         except Exception as e:
             if is_throw:
                 logger.error("异常：{}", e)
             else:
                 pass
-        return None
+        return False

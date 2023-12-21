@@ -35,6 +35,8 @@ def soul_fight(game_task: []):
     project_name = game_project.project_name
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
+    if fight_time is None:
+        fight_time = 40
     # 层数-默认八岐大蛇 魂十一
     fight_layer = Onmyoji.soul_BQ_HELEVEN
     # 滑动方向,默认向下滑动
@@ -69,7 +71,12 @@ def soul_fight(game_task: []):
                                 1)
     logger.debug("{}-锁定阵容", project_name)
     ImageService.touch(Onmyoji.soul_BQ_SDZR)
-    # 默认锁定阵容
+    logger.debug("判断右侧是否有御魂自选")
+    is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
+    if is_self_selection:
+        logger.debug("返回")
+        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+        # 默认锁定阵容
     is_unlock = False
     for i in range(fight_time):
         time_fight_start = time.time()
@@ -77,20 +84,21 @@ def soul_fight(game_task: []):
         if is_unlock:
             logger.debug("本次锁定阵容")
             ImageService.touch(Onmyoji.soul_BQ_SDZR)
-        if i == 0:
-            logger.debug("判断右侧是否有御魂自选")
-            is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
-            if is_self_selection:
-                ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-                logger.debug("返回")
         ImageService.touch(Onmyoji.soul_BQ_TZ)
         logger.debug("检查是否自动战斗中")
-        is_auto = ImageService.exists(Onmyoji.soul_BQ_ZD)
+        is_auto = ImageService.exists(Onmyoji.soul_BQ_ZD, timeouts=10)
         if not is_auto:
             logger.debug("拒接悬赏")
             ComplexService.refuse_reward()
             logger.debug("点击可能的准备")
             is_unlock = ImageService.touch(Onmyoji.soul_BQ_ZB)
+            logger.debug("检查是否存在御魂自选")
+            is_select_soul = ImageService.exists(Onmyoji.soul_BQ_SYJC)
+            if is_select_soul:
+                logger.debug("点击御魂自选返回")
+                ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+            logger.debug("检查是否超时,重新开启加成")
+            ImageService.touch(Onmyoji.soul_BQ_QD)
         if i == 0:
             logger.debug("喂食")
             is_pets = ImageService.touch(Onmyoji.soul_BQ_CW, wait=5)

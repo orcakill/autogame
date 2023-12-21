@@ -9,6 +9,7 @@ from src.dao.mapper import Mapper
 from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameProjects, GameDevices
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
+from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
 
 
@@ -75,7 +76,7 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project(self, '2,3,4,5', '2', "个人突破")
+        TestOnmyojiService.test_project(self, '1', '2', "个人突破")
 
     def test_friends_manage(self):
         """
@@ -174,6 +175,14 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         TestOnmyojiService.test_project(self, '2,3,4,5', '1', "契灵")
+
+    def test_six_moon(self):
+        """
+        项目27 六道之门-月之海
+        :return:
+        """
+        WindowsService.limit_cpu_percentage(30)
+        TestOnmyojiService.test_project(self, '1', '2', "月之海",fight_times=1)
 
     def test_project(self, test_names, test_devices, project_name, fight_times: int = 1, chapter: int = 28,
                      difficulty: int = 1):
@@ -278,3 +287,6 @@ class TestOnmyojiService(TestCase):
             # 项目 23
             elif game_project.project_name in ["契灵"]:
                 OnmyojiService.deed_spirit(game_task)
+            # 项目 27
+            elif game_project.project_name in ["月之海"]:
+                OnmyojiService.six_moon(game_task)

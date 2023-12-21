@@ -115,6 +115,13 @@ class OnmyojiController:
                                 and (start_hour <= current_hour <= end_hour)):
                             logger.info("{},{}:{}", game_projects_relation.relation_num, game_project.project_name,
                                         game_account.role_name)
+                            # 获取本日阴阳寮是否已攻破，，5-24 检查本日 05 检查昨日，已攻破则跳过，不执行项目
+                            day = UtilsTime.get_day_str()
+                            region_over = MapperExtend.select_region_over(day, game_account.id)
+                            if not region_over and game_project.project_name == "阴阳寮突破":
+                                logger.info("{}：{},阴阳寮突破进度100%,跳过执行该任务", day,
+                                            game_account.role_name)
+                                continue
                             logger.debug("当前状态初始化")
                             ImageService.auto_setup(game_device.id)
                             is_initialization = OnmyojiService.initialization(game_task)
@@ -144,13 +151,6 @@ class OnmyojiController:
                                     OnmyojiService.shack_house(game_task)
                                 # 项目 7
                                 elif game_project.project_name in ["阴阳寮突破"]:
-                                    # 获取本日阴阳寮是否已攻破，，5-24 检查本日 05 检查昨日，已攻破则跳过，不执行项目
-                                    day = UtilsTime.get_day_str()
-                                    region_over = MapperExtend.select_region_over(day, game_account.id)
-                                    if not region_over and game_project.project_name == "阴阳寮突破":
-                                        logger.info("{}：{},阴阳寮突破进度100%,跳过执行该任务", day,
-                                                    game_account.role_name)
-                                        continue
                                     OnmyojiService.region_border(game_task)
                                     if (game_projects_relation.wait_after_time
                                             and game_projects_relation.wait_after_time > 0):

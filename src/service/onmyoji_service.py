@@ -4,7 +4,7 @@
 # @Description: 服务接口
 
 from src.service_onmyoji_impl import impl_border, impl_friends, impl_ghost, impl_reward, impl_awakening, impl_soul, \
-    impl_initialization, impl_explore, impl_pvp, impl_spirit, impl_deed
+    impl_initialization, impl_explore, impl_pvp, impl_spirit, impl_deed, impl_six
 from src.service_onmyoji_impl import impl_house
 
 
@@ -197,3 +197,12 @@ class OnmyojiService:
         :return:
         """
         impl_deed.deed_spirit(game_task)
+
+    @staticmethod
+    def six_moon(game_task: []):
+        """
+        六道之门
+        :param game_task: 项目信息
+        :return:
+        """
+        impl_six.sea_moon(game_task)

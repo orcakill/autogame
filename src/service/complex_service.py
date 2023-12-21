@@ -291,11 +291,11 @@ class ComplexService:
             return False
 
     @staticmethod
-    def touch_two(folder1: str, folder2: str, num1: int, num2: int):
-        coordinate1 = ImageService.find_all_coordinate(folder1)[num1 + 1]
-        coordinate2 = ImageService.find_all_coordinate(folder2)[num2 + 2]
+    def touch_two(folder1: str, folder2: str, rgb1: bool = True, rgb2: bool = True):
+        coordinate1 = ImageService.exists(folder1, rgb=rgb1)
+        coordinate2 = ImageService.exists(folder2, rgb=rgb2)
         if coordinate1 and coordinate2:
-            ImageService.touch_coordinate(coordinate1[0], coordinate2[0])
+            ImageService.touch_coordinate((coordinate1[0], coordinate2[1]))
         elif not coordinate1 and not coordinate2:
             logger.debug("未找到{}和{}", folder1, folder2)
         elif not coordinate1:
