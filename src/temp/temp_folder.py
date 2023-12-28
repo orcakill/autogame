@@ -16,8 +16,8 @@ def get_subdirectories(folder_path):
 
 
 if __name__ == '__main__':
-    path_name = r'探索\六道之门\月之海'
-    prefix = 'six_moon_'
+    path_name = r'活动\20231221\超鬼王'
+    prefix = 'super_'
     # 指定文件夹路径
     folder_path1 = utils_path.get_project_path() + r'src\resources\static\onmyoji\\'
     folder_path2 = folder_path1 + path_name

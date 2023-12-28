@@ -20,7 +20,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         ImageService.auto_setup("1")
         logger.debug("开始")
-        ImageService.touch_all_coordinate(Onmyoji.six_moon_PT, rank=1)
+        ImageService.touch(r"活动\20231221\超鬼王\入口2")
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -65,7 +65,7 @@ class TestImageService(TestCase):
     def test_snapshot_for(self):
         # 测试代码
         logger.debug("开始")
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("2")
         now = datetime.datetime.now()
         logger.debug("循环开始")
         for i in range(100):

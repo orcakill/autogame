@@ -4,7 +4,7 @@
 # @Description: 服务接口
 
 from src.service_onmyoji_impl import impl_border, impl_friends, impl_ghost, impl_reward, impl_awakening, impl_soul, \
-    impl_initialization, impl_explore, impl_pvp, impl_spirit, impl_deed, impl_six
+    impl_initialization, impl_explore, impl_pvp, impl_spirit, impl_deed, impl_six, impl_super
 from src.service_onmyoji_impl import impl_house
 
 
@@ -206,3 +206,13 @@ class OnmyojiService:
         :return:
         """
         impl_six.sea_moon(game_task)
+
+    @staticmethod
+    def current_activity(game_task: []):
+        """
+        当前活动1
+        超鬼王 impl_super.super_ghost(game_task)
+        :param game_task: 项目信息
+        :return:
+        """
+        impl_super.super_ghost(game_task)

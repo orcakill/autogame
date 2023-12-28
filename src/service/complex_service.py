@@ -4,6 +4,8 @@
 # @Description: 复杂逻辑处理
 import time
 
+from tornado import concurrent
+
 from src.model.enum import Cvstrategy, Onmyoji
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -302,3 +304,20 @@ class ComplexService:
             logger.debug("未找到{}", folder1)
         elif not coordinate2:
             logger.debug("未找到{}", folder2)
+
+    @staticmethod
+    def check_list(image_list: [], rgb: bool = False):
+        def check_image(num, image):
+            logger.debug("{} {}", num, image)
+            is_num = ImageService.exists(image, rgb=rgb)
+            if is_num:
+                return num
+            return 100
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = [executor.submit(check_image, i, image_list[i]) for i in range(len(image_list))]
+        results = [future.result() for future in futures]
+        min_value = min(results)
+        if min_value != 100:
+            return image_list[min_value]
+        return None

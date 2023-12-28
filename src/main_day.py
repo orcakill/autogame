@@ -135,6 +135,15 @@ if __name__ == '__main__':
                     logger.info("5-12,大号阴阳寮突破循环")
                     OnmyojiController.create_execute_tasks(game_device, game_id_large, projects_num="3",
                                                            start_hour=5, end_hour=12)
+                    # 超鬼王活动特加
+                    logger.info("5-12,大小号，个人突破")
+                    OnmyojiController.create_execute_tasks(game_device, '1,2,3', project_name="个人突破",
+                                                           start_hour=5, end_hour=12)
+                    logger.info("5-12,大小号，觉醒十")
+                    project_num_times = {'觉醒十': 10}
+                    OnmyojiController.create_execute_tasks(game_device, '1,2,3', project_name="觉醒十",
+                                                           project_num_times=project_num_times,
+                                                           start_hour=5, end_hour=12)
         # 如果当前时间大于等于12点,小于17点
         elif 12 <= current_hour < 17:
             if not task_list3[1]:
