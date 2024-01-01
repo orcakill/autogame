@@ -145,7 +145,7 @@ class TestOnmyojiService(TestCase):
         项目19 斗技
         :return:
         """
-        TestOnmyojiService.test_project('2,3,4,5', '1', "斗技", fight_times=10)
+        TestOnmyojiService.test_project('1', '2', "斗技", fight_times=10)
 
     def test_soul_arrange(self):
         """

@@ -18,9 +18,9 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("2")
         logger.debug("开始")
-        ImageService.touch(r"活动\20231221\超鬼王\入口2")
+        ImageService.touch(Onmyoji.login_QHFWQ)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

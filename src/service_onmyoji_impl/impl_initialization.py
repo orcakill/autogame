@@ -107,12 +107,8 @@ def initialization(game_task: [], login_type: int = 0):
                 ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4)
                 logger.debug("接受协议")
                 ImageService.touch(Onmyoji.login_JSXY, wait=3)
-                logger.debug("切换服务器,根据修复按钮位置确定切换按钮")
-                pos_XF = ImageService.exists(Onmyoji.login_XF)
-                if pos_resolution and pos_XF:
-                    ImageService.touch_coordinate((pos_resolution[0] / 2, pos_XF[1]))
-                else:
-                    logger.debug("没找到修复按钮或分辨率")
+                logger.debug("点击切换")
+                ImageService.touch(Onmyoji.login_QHFWQ)
                 logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
                 pos_TCS = ImageService.exists(Onmyoji.login_TYCS, wait=2)
                 pos_JSX = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
