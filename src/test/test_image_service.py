@@ -20,7 +20,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         ImageService.auto_setup("2")
         logger.debug("开始")
-        ImageService.touch(Onmyoji.login_QHFWQ)
+        ImageService.exists(Onmyoji.soul_BQ_HTEN,threshold=0.8)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

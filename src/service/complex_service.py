@@ -130,7 +130,7 @@ class ComplexService:
         :param times:  滑动次数
         :return:
         """
-        is_target = ImageService.exists(target, is_click=True)
+        is_target = ImageService.exists(target, is_click=True,threshold=0.8)
         xy1, xy2 = (), ()
         if not is_target:
             logger.debug("无目标{}", target)

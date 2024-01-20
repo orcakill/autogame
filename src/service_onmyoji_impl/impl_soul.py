@@ -277,6 +277,8 @@ def soul_fight_sun(game_task: []):
                                     GameProject(game_task[3]), GameDevices(game_task[4]))
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
+    if not fight_time or fight_time is None:
+        fight_time = 50
     # 战斗用时列表
     time_fight_list = []
     for i in range(3):
@@ -390,6 +392,8 @@ def soul_fight_sea(game_task: [], fight: int = 0):
                                     GameProject(game_task[3]), GameDevices(game_task[4]))
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
+    if not fight_time or fight_time is None:
+        fight_time = 50
     today = datetime.date.today()
     # 获取本日是周几（周一为0，周日为6）
     weekday = today.weekday() + 1

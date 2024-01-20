@@ -46,24 +46,24 @@ def friends_fight(game_task: []):
     logger.debug("2.魂十协战")
     for i_cooperative_warfare in range(2):
         logger.debug("协战开始,第{}次", i_cooperative_warfare + 1)
-        # logger.debug("确认首页")
-        # ComplexService.refuse_reward()
-        # logger.debug("进入好友界面")
-        # ImageService.touch(Onmyoji.friends_HYTB)
-        # logger.debug("进入右侧协战")
-        # ImageService.touch(Onmyoji.friends_YCXZ)
-        # logger.debug("判断是否已完成协战，1次")
-        # is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
-        # if not is_cooperative_warfare:
-        #     logger.debug("判断是否已完成协战，2次")
-        #     is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
-        # if is_cooperative_warfare:
-        #     logger.debug("已完成协战，返回首页")
-        #     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
-        #     continue
-        # else:
-        #     logger.debug("未完成协战，返回首页")
-        #     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+        logger.debug("确认首页")
+        ComplexService.refuse_reward()
+        logger.debug("进入好友界面")
+        ImageService.touch(Onmyoji.friends_HYTB)
+        logger.debug("进入右侧协战")
+        ImageService.touch(Onmyoji.friends_YCXZ)
+        logger.debug("判断是否已完成协战，1次")
+        is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
+        if not is_cooperative_warfare:
+            logger.debug("判断是否已完成协战，2次")
+            is_cooperative_warfare = ImageService.exists(Onmyoji.friends_XZYM)
+        if is_cooperative_warfare:
+            logger.debug("已完成协战，返回首页")
+            ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+            continue
+        else:
+            logger.debug("未完成协战，返回首页")
+            ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
         logger.debug("好友魂十协战-进入探索")
         ImageService.touch(Onmyoji.home_TS)
         logger.debug("点击御魂图标")
@@ -82,6 +82,11 @@ def friends_fight(game_task: []):
         logger.debug("好友协战-开启御魂加成")
         ComplexService.top_addition(Onmyoji.soul_BQ_JC, Onmyoji.soul_BQ_YHJC,
                                     Onmyoji.soul_BQ_JCK, Onmyoji.soul_BQ_JCG, 1)
+        logger.debug("判断右侧是否有御魂自选")
+        is_self_selection = ImageService.touch(Onmyoji.soul_BQ_YHZX)
+        if is_self_selection:
+            logger.debug("返回")
+            ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
         # 默认有协战式神
         is_assist_shikigami = True
         # 默认锁定阵容
@@ -178,6 +183,12 @@ def friends_fight(game_task: []):
                 ComplexService.get_reward(Onmyoji.soul_BQ_TCTZ)
                 logger.debug("发现宝藏")
                 ComplexService.get_reward(Onmyoji.soul_BQ_FXBZ)
+                logger.debug("检查是否存在御魂自选")
+                is_select_soul = ImageService.exists(Onmyoji.soul_BQ_SYJC)
+                if is_select_soul:
+                    logger.debug("点击御魂自选返回")
+                    ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+                logger.debug("检查是否超时,重新开启加成")
                 logger.debug("重新点击八岐大蛇挑战")
                 ImageService.touch(Onmyoji.soul_BQ_TZ, wait=2)
                 logger.debug("重新点击准备")

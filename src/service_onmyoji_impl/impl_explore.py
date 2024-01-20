@@ -251,27 +251,27 @@ def automatic_rotation_type_god():
             logger.debug("点击候补式神")
             ImageService.touch(Onmyoji.explore_HBSS)
             logger.debug("检查轮换数量,5次")
-            for i_full in range(7):
-                logger.debug("轮换数量不满50,检查一级N卡")
-                is_ration = ImageService.find_all(Onmyoji.explore_YJNK)
-                if is_ration:
-                    logger.debug("获取一级N卡纵坐标最大的坐标")
-                    result = max(is_ration, key=lambda x: x['result'][1])['result']
-                    logger.debug("长按一级N卡")
-                    ImageService.touch_coordinate(result, duration=2)
-                else:
-                    continue
+            for i_full in range(10):
                 logger.debug("检查轮换数量")
                 num_full = OcrService.get_word(Onmyoji.explore_DQLHSL, lang='chi_sim')
                 if num_full is not None and num_full == '50':
                     logger.debug("轮换数量已满")
                     break
                 else:
-                    logger.debug("检查滚轮")
-                    is_roller = ImageService.exists(Onmyoji.explore_LHGL, cvstrategy=Cvstrategy.default)
-                    if is_roller:
-                        logger.debug("滑动滚轮")
-                        ImageService.swipe(is_roller, (is_roller[0] + 10, is_roller[1]))
+                    logger.debug("轮换数量不满50,检查一级N卡")
+                    is_ration = ImageService.find_all(Onmyoji.explore_YJNK)
+                    if is_ration:
+                        logger.debug("获取一级N卡纵坐标最大的坐标")
+                        result = max(is_ration, key=lambda x: x['result'][1])['result']
+                        logger.debug("长按一级N卡")
+                        ImageService.touch_coordinate(result, duration=2)
+                    else:
+                        logger.debug("没有符合条件的N卡，检查滚轮")
+                        is_roller = ImageService.exists(Onmyoji.explore_LHGL, cvstrategy=Cvstrategy.default)
+                        if is_roller:
+                            logger.debug("滑动滚轮")
+                            ImageService.swipe(is_roller, (is_roller[0] + is_roller[0] * 0.1, is_roller[1]))
+
         else:
             logger.debug("没找到轮换数量")
     logger.debug("轮换确定")

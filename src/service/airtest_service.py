@@ -62,13 +62,12 @@ class AirtestService:
             time.sleep(10)
             logger.debug("重新判断是否已就绪")
             is_state = WindowsService.get_device_status_by_ip(devices_name)
-        logger.debug("设备已就绪,检查是否连接")
-        dev_dict = {dev.uuid: dev for dev in G.DEVICE_LIST}
-        if devices_name in dev_dict:
-            logger.debug("设备已连接")
-        else:
-            logger.debug("连接设备")
-            auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/" + connect_name])
+        # logger.debug("设备已就绪,检查是否连接")
+        # dev_dict = {dev.uuid: dev for dev in G.DEVICE_LIST}
+        # if devices_name in dev_dict:
+        #     logger.debug("设备已连接")
+        logger.debug("连接设备")
+        auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/" + connect_name])
 
     @staticmethod
     def snapshot(name: str, print_image: bool = False):
