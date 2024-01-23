@@ -22,15 +22,18 @@ def send_email(sender_name, subject, message):
 
     msg['To'] = recipient_email
 
-    # 连接到SMTP服务器
-    with smtplib.SMTP('smtp.163.com', 25) as server:
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.send_message(msg)
+    # SMTP 服务
+    try:
+        smtpObj = smtplib.SMTP_SSL('smtp.163.com', 465)  # 启用 SSL 发信，端口一般是 465
+        smtpObj.login(sender_email, sender_password)  # 登录验证
+        smtpObj.sendmail(sender_email,recipient_email,msg.as_string())  # 发送
+        print("邮件发送成功")
+    except smtplib.SMTPException as e:
+        print("Error: 无法发送邮件", e)
 
 
 if __name__ == '__main__':
     sender_name = '项目'
-    subject = '项目'
+    subject = '项目1'
     message = '这是一封测试邮件2。'
     send_email(sender_name, subject, message)
