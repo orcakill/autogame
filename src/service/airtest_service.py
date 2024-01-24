@@ -38,7 +38,7 @@ class AirtestService:
         devices_name = None
         connect_name = None
         if game_device == "0":
-            logger.debug("检查是否启动云手机")
+            logger.debug("检查是否启动云手机-001")
             WindowsService.start_exe("YsConsole", "云帅云手机")
             devices_name = "127.0.0.1:50000"
             connect_name = devices_name
@@ -48,12 +48,17 @@ class AirtestService:
             devices_name = "127.0.0.1:62001"
             connect_name = devices_name + "?cap_method=JAVACAP"
         if game_device == "2":
-            logger.debug("荣耀平板5")
+            logger.debug("检查是否启动荣耀平板5")
             devices_name = "E8X9X19719000371"
             connect_name = devices_name
         if game_device == "3":
-            logger.debug("小米13")
+            logger.debug("检查是否启动小米13")
             devices_name = "8ce78c9f"
+            connect_name = devices_name
+        if game_device == "4":
+            logger.debug("检查是否启动云手机-002")
+            WindowsService.start_exe("YsConsole", "云帅云手机")
+            devices_name = "127.0.0.1:50001"
             connect_name = devices_name
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
