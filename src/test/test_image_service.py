@@ -107,7 +107,7 @@ class TestImageService(TestCase):
         logger.debug(now1 - now)
 
     def test_cv_match(self):
-        ImageService.auto_setup("2")
+        ImageService.auto_setup("1")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")

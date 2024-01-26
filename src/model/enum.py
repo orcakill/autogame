@@ -7,6 +7,7 @@
 class Onmyoji:
     test_TEST1 = r"通用\测试\测试1"
     test_TEST2 = r"通用\测试\测试2"
+    windows_test1 = r"云手机\测试"
 
     awaken_BD = r"探索\觉醒\白蛋"
     awaken_C = r"探索\觉醒\层字"
