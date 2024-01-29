@@ -6,11 +6,13 @@ import numpy as np
 import win32con
 import win32gui
 import win32ui
+import time
 
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.utils.my_logger import my_logger as logger
+from PIL import Image
 
 # 图像识别算法
 CVSTRATEGY = Cvstrategy.sift
@@ -31,7 +33,7 @@ TIMES = 1
 # 按住时间
 DURATION = 0.01
 
-THROW = False
+THROW = True
 
 
 class ImageWindowsService:
@@ -60,7 +62,7 @@ class ImageWindowsService:
         :return:
         """
         try:
-            import time
+
             time.sleep(wait)
             resolution = ImageWindowsService.resolution_hwnd(windows_title)
             template_list = ImageService.get_template_list(folder_path, rgb, threshold)
@@ -108,48 +110,43 @@ class ImageWindowsService:
         """
         # 获取窗口句柄
         hwnd = win32gui.FindWindow(None, windows_title)
-
         # 判断窗口是否最大化
         if not win32gui.IsIconic(hwnd):
             # 将窗口最大化
             win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-
+            time.sleep(0.5)
         # 获取窗口位置和大小
         rect = win32gui.GetWindowRect(hwnd)
         x, y, w, h = rect
-
         # 创建一个与窗口大小相同的设备上下文
         hdc = win32gui.GetWindowDC(hwnd)
         dcObj = win32ui.CreateDCFromHandle(hdc)
         memDC = dcObj.CreateCompatibleDC()
-
         # 创建一个位图对象
         bitmap = win32ui.CreateBitmap()
         bitmap.CreateCompatibleBitmap(dcObj, w, h)
         memDC.SelectObject(bitmap)
-
         # 将窗口内容绘制到位图上
         memDC.BitBlt((0, 0), (w, h), dcObj, (0, 0), win32con.SRCCOPY)
-
         # 将位图保存为文件
-        # bitmap.SaveBitmapFile(memDC, "D://screenshot.png")
-
+        bitmap.SaveBitmapFile(memDC, "D://screenshot.png")
         # 释放资源
         win32gui.DeleteObject(bitmap.GetHandle())
         memDC.DeleteDC()
         dcObj.DeleteDC()
         win32gui.ReleaseDC(hwnd, hdc)
-
+        # 将位图转换为ndarray格式
         image_array = np.array(bitmap)
-
-        # 获取image_array的宽度和高度
-        width = image_array.shape[1]
-        height = image_array.shape[0]
-
-        # 根据四个点的坐标实现局部截图
-        cropped_image_array = image_array[width * x1:height * y1, width * x2:height * y2]
-
-        return cropped_image_array
+        # # 获取image_array的宽度和高度
+        # width = image_array.shape[1]
+        # height = image_array.shape[0]
+        # # 根据四个点的坐标实现局部截图
+        # cropped_image_array = image_array[width * x1:height * y1, width * x2:height * y2]
+        # 将ndarray格式的图片转换为PIL Image对象
+        image = Image.fromarray(image_array)
+        # 保存图片到磁盘
+        image.save("D://screenshot1.png")
+        return image_array
 
     @staticmethod
     def resolution_hwnd(windows_title: str):

@@ -11,5 +11,13 @@ from src.service.image_windows_service import ImageWindowsService
 class ImageWindowsServiceTest(TestCase):
 
     @staticmethod
+    def test_resolution_hwnd():
+        ImageWindowsService.resolution_hwnd("钉钉")
+
+    @staticmethod
+    def test_screenshot():
+        ImageWindowsService.screenshot("钉钉")
+
+    @staticmethod
     def test_exists():
-        ImageWindowsService.exists("钉钉", Onmyoji.windows_test1,is_click=True)
+        ImageWindowsService.exists("钉钉", Onmyoji.windows_test1, is_click=True)
