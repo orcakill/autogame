@@ -4,11 +4,16 @@
 # @Description: TODO
 from unittest import TestCase
 
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, Cvstrategy
 from src.service.image_windows_service import ImageWindowsService
 
 
 class ImageWindowsServiceTest(TestCase):
+
+    # 根据程序名获取句柄
+    @staticmethod
+    def test_find_window_handles_by_exe():
+        ImageWindowsService.find_window_handles_by_exe("D:\DingDing\main\current\DingTalk.exe")
 
     @staticmethod
     def test_resolution_hwnd():
@@ -20,4 +25,4 @@ class ImageWindowsServiceTest(TestCase):
 
     @staticmethod
     def test_exists():
-        ImageWindowsService.exists("钉钉", Onmyoji.windows_test1, is_click=True)
+        ImageWindowsService.exists("钉钉", Onmyoji.windows_test1, is_click=True,cvstrategy=Cvstrategy.default)
