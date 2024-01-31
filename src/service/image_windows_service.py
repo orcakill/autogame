@@ -8,7 +8,6 @@ import cv2
 import imageio
 import numpy as np
 import psutil
-import pyautogui
 import win32con
 import win32gui
 import win32process
@@ -75,12 +74,12 @@ class ImageWindowsService:
                 for template in template_list:
                     # 设备截图
                     image1 = ImageWindowsService.screenshot(windows_title, x1, x2, y1, y2)
-                    match= AirtestService.cv_match(template, image1, cvstrategy)
-                    pos=match['result']
+                    match = AirtestService.cv_match(template, image1, cvstrategy)
+                    pos = match['result']
                     if pos and pos is not None:
                         # 根据截取的比例，修正坐标
-                        # if (x1, y1, x2, y2) not in [0, 1, 0, 1]:
-                        #     pos = (pos[0] + resolution[0] * x1, pos[1] + resolution[1] * y1)
+                        if (x1, y1, x2, y2) not in [0, 1, 0, 1]:
+                            pos = (pos[0] + resolution[0] * x1, pos[1] + resolution[1] * y1)
                         if not is_click:
                             if is_throw:
                                 logger.debug("图像识别成功:{},{}", folder_path, template.filename)
@@ -89,11 +88,11 @@ class ImageWindowsService:
                             return pos
                         if is_click:
                             time.sleep(interval)
-                            re1=match['rectangle'][0]
-                            re2=match['rectangle'][2]
-                            ImageWindowsService.draw_rectangle(image1,re1[0],re1[1],re2[0],re2[1])
+                            re1 = match['rectangle'][0]
+                            re2 = match['rectangle'][2]
+                            ImageWindowsService.draw_rectangle(image1, re1[0], re1[1], re2[0], re2[1])
                             # 点击指定坐标
-                            pyautogui.click(pos[0], pos[1])
+                            ImageWindowsService.click(windows_title, pos[0], pos[1])
                             logger.debug("图像识别点击成功:{}", folder_path)
                             return True
             return False
@@ -199,6 +198,17 @@ class ImageWindowsService:
     @staticmethod
     def draw_rectangle(screen, x1, y1, x2, y2):
         cv2.rectangle(screen, (x1, y1), (x2, y2), (0, 0, 255), 2)
-
         # 保存图片到本地磁盘
         cv2.imwrite('D://draw.png', screen)
+
+    @staticmethod
+    def click(window_title: str, x, y, hwnd=None):
+        if window_title is not None and hwnd is None:
+            hwnd = win32gui.FindWindow(None, window_title)
+        if not hwnd:
+            raise Exception("找不到窗口")
+        try:
+            win32gui.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, (x, y))
+            win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, 0, (x, y))
+        except Exception as e:
+            print(f"点击失败：{e}")
