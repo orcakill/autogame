@@ -75,26 +75,27 @@ class ImageWindowsService:
                     # 设备截图
                     image1 = ImageWindowsService.screenshot(windows_title, x1, x2, y1, y2)
                     match = AirtestService.cv_match(template, image1, cvstrategy)
-                    pos = match['result']
-                    if pos and pos is not None:
-                        # 根据截取的比例，修正坐标
-                        if (x1, y1, x2, y2) not in [0, 1, 0, 1]:
-                            pos = (pos[0] + resolution[0] * x1, pos[1] + resolution[1] * y1)
-                        if not is_click:
-                            if is_throw:
-                                logger.debug("图像识别成功:{},{}", folder_path, template.filename)
-                            else:
-                                logger.debug("图像识别成功:{}", folder_path)
-                            return pos
-                        if is_click:
-                            time.sleep(interval)
-                            re1 = match['rectangle'][0]
-                            re2 = match['rectangle'][2]
-                            ImageWindowsService.draw_rectangle(image1, re1[0], re1[1], re2[0], re2[1])
-                            # 点击指定坐标
-                            ImageWindowsService.click(windows_title, pos[0], pos[1])
-                            logger.debug("图像识别点击成功:{}", folder_path)
-                            return True
+                    if match:
+                        pos = match['result']
+                        if pos and pos is not None:
+                            # 根据截取的比例，修正坐标
+                            if (x1, y1, x2, y2) not in [0, 1, 0, 1]:
+                                pos = (pos[0] + resolution[0] * x1, pos[1] + resolution[1] * y1)
+                            if not is_click:
+                                if is_throw:
+                                    logger.debug("图像识别成功:{},{}", folder_path, template.filename)
+                                else:
+                                    logger.debug("图像识别成功:{}", folder_path)
+                                return pos
+                            if is_click:
+                                time.sleep(interval)
+                                re1 = match['rectangle'][0]
+                                re2 = match['rectangle'][2]
+                                ImageWindowsService.draw_rectangle(image1, re1[0], re1[1], re2[0], re2[1])
+                                # 点击指定坐标
+                                ImageWindowsService.click(windows_title, pos)
+                                logger.debug("图像识别点击成功:{}", folder_path)
+                                return True
             return False
 
     @staticmethod
@@ -202,13 +203,18 @@ class ImageWindowsService:
         cv2.imwrite('D://draw.png', screen)
 
     @staticmethod
-    def click(window_title: str, x, y, hwnd=None):
+    def click(window_title: str, pos, hwnd=None):
+        x = pos[0]
+        y = pos[1]
         if window_title is not None and hwnd is None:
             hwnd = win32gui.FindWindow(None, window_title)
         if not hwnd:
             raise Exception("找不到窗口")
         try:
-            win32gui.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, (x, y))
-            win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, 0, (x, y))
+            X = "{:04x}".format(int(x))
+            Y = "{:04x}".format(int(y))
+            lparam = int(X + Y, 16)
+            win32gui.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lparam)
+            win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, win32con.WM_LBUTTONUP, lparam)
         except Exception as e:
             print(f"点击失败：{e}")
