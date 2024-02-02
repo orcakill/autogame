@@ -97,11 +97,11 @@ if __name__ == '__main__':
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, projects_num="3",
                                                        start_hour=start_hour, end_hour=end_hour)
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
-                if is_mode is None and not task_list2[1]:
+                if is_mode == "" and not task_list2[1]:
                     logger.info("5-11,大号,地域鬼王")
                     OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name='地域鬼王',
                                                            start_hour=start_hour, end_hour=end_hour)
-                if is_mode is None and not task_list2[2]:
+                if is_mode == "" and not task_list2[2]:
                     day = UtilsTime.get_day_str()
                     region_over = MapperExtend.select_region_over(day, game_id_large)
                     if not region_over:

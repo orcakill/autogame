@@ -24,5 +24,12 @@ class ImageWindowsServiceTest(TestCase):
         ImageWindowsService.screenshot("钉钉")
 
     @staticmethod
+    def test_mouser_click():
+        ImageWindowsService.mouse_click("钉钉", (182, 174))
+
+    @staticmethod
+    def test_mouse_position():
+        ImageWindowsService.mouse_position()
+    @staticmethod
     def test_exists():
-        ImageWindowsService.exists("钉钉", Onmyoji.windows_test1, is_click=True,cvstrategy=Cvstrategy.default)
+        ImageWindowsService.exists("钉钉", Onmyoji.windows_test1, is_click=True)

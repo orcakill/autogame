@@ -8,6 +8,8 @@ import cv2
 import imageio
 import numpy as np
 import psutil
+import pyautogui
+import win32api
 import win32con
 import win32gui
 import win32process
@@ -65,7 +67,7 @@ class ImageWindowsService:
         :param x1: x1坐标比例
         :return:
         """
-        if 1 == 1:
+        try:
             time.sleep(wait)
             resolution = ImageWindowsService.resolution_hwnd(windows_title)
             template_list = ImageService.get_template_list(folder_path, rgb, threshold)
@@ -91,12 +93,19 @@ class ImageWindowsService:
                                 time.sleep(interval)
                                 re1 = match['rectangle'][0]
                                 re2 = match['rectangle'][2]
+                                logger.debug(pos)
                                 ImageWindowsService.draw_rectangle(image1, re1[0], re1[1], re2[0], re2[1])
                                 # 点击指定坐标
-                                ImageWindowsService.click(windows_title, pos)
+                                ImageWindowsService.mouse_click(windows_title, pos)
                                 logger.debug("图像识别点击成功:{}", folder_path)
                                 return True
             return False
+        except Exception as e:
+            if is_throw:
+                logger.exception(e)
+            else:
+                pass
+        return False
 
     @staticmethod
     def screenshot(windows_title: str, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
@@ -113,53 +122,56 @@ class ImageWindowsService:
         hwnd = win32gui.FindWindow(None, windows_title)
         if hwnd:
             # 判断窗口是否最大化
-            # if not win32gui.IsIconic(hwnd):
-            #     # 将窗口最大化
-            #     win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-            #     time.sleep(0.5)
+            if not win32gui.IsIconic(hwnd):
+                # 将窗口最大化
+                win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
+                time.sleep(0.5)
             # 获取窗口位置和大小
             rect = win32gui.GetWindowRect(hwnd)
             x, y, w, h = rect
-            # 创建一个与窗口大小相同的设备上下文
-            hdc = win32gui.GetWindowDC(hwnd)
-            dcObj = win32ui.CreateDCFromHandle(hdc)
-            memDC = dcObj.CreateCompatibleDC()
-            # 创建一个位图对象
-            bitmap = win32ui.CreateBitmap()
-            bitmap.CreateCompatibleBitmap(dcObj, w, h)
-            memDC.SelectObject(bitmap)
-            # 将窗口内容绘制到位图上
-            memDC.BitBlt((0, 0), (w, h), dcObj, (0, 0), win32con.SRCCOPY)
-            # 将位图保存为文件
-            # bitmap.SaveBitmapFile(memDC, "D://screenshot.png")
+            if w >= 0 and h >= 0:
+                # 创建一个与窗口大小相同的设备上下文
+                hdc = win32gui.GetWindowDC(hwnd)
+                dcObj = win32ui.CreateDCFromHandle(hdc)
+                memDC = dcObj.CreateCompatibleDC()
+                # 创建一个位图对象
+                bitmap = win32ui.CreateBitmap()
+                bitmap.CreateCompatibleBitmap(dcObj, w, h)
+                memDC.SelectObject(bitmap)
+                # 将窗口内容绘制到位图上
+                memDC.BitBlt((0, 0), (w, h), dcObj, (0, 0), win32con.SRCCOPY)
+                # 将位图保存为文件
+                # bitmap.SaveBitmapFile(memDC, "D://screenshot.png")
 
-            # bitmap转换ndarray
-            signedIntsArray = bitmap.GetBitmapBits(True)
-            ndarray_image = np.fromstring(signedIntsArray, dtype='uint8')
-            ndarray_image.shape = (h, w, 4)
-            ndarray_image = cv2.cvtColor(ndarray_image, cv2.COLOR_BGRA2RGB)
-            # 释放位图资源
-            win32gui.DeleteObject(bitmap.GetHandle())
-            memDC.DeleteDC()
-            dcObj.DeleteDC()
-            win32gui.ReleaseDC(hwnd, hdc)
+                # bitmap转换ndarray
+                signedIntsArray = bitmap.GetBitmapBits(True)
+                ndarray_image = np.fromstring(signedIntsArray, dtype='uint8')
+                ndarray_image.shape = (h, w, 4)
+                ndarray_image = cv2.cvtColor(ndarray_image, cv2.COLOR_BGRA2RGB)
+                # 释放位图资源
+                win32gui.DeleteObject(bitmap.GetHandle())
+                memDC.DeleteDC()
+                dcObj.DeleteDC()
+                win32gui.ReleaseDC(hwnd, hdc)
 
-            # 保存图片到磁盘
-            imageio.imsave("D://screenshot2.png", ndarray_image)
+                # 保存图片到磁盘
+                imageio.imsave("D://screenshot2.png", ndarray_image)
 
-            coordinate1 = (int(w * x1), int(h * y1))
-            coordinate2 = (int(w * x2), int(h * y2))
+                coordinate1 = (int(w * x1), int(h * y1))
+                coordinate2 = (int(w * x2), int(h * y2))
 
-            # 截取图片
-            # cropped_image = ndarray_image[0:525,960:1920]
-            cropped_image = ndarray_image[coordinate1[1]:coordinate2[1], coordinate1[0]:coordinate2[0]]
+                # 截取图片
+                # cropped_image = ndarray_image[0:525,960:1920]
+                cropped_image = ndarray_image[coordinate1[1]:coordinate2[1], coordinate1[0]:coordinate2[0]]
 
-            # 保存图片到磁盘
-            imageio.imsave("D://screenshot3.png", cropped_image)
+                # 保存图片到磁盘
+                imageio.imsave("D://screenshot3.png", cropped_image)
 
-            return cropped_image
+                return cropped_image
+            else:
+                logger.debug("句柄宽高获取异常")
         else:
-            logger.debug("没有找到窗口句柄")
+            logger.debug("未找到窗口句柄")
 
     @staticmethod
     def resolution_hwnd(windows_title: str):
@@ -200,10 +212,10 @@ class ImageWindowsService:
     def draw_rectangle(screen, x1, y1, x2, y2):
         cv2.rectangle(screen, (x1, y1), (x2, y2), (0, 0, 255), 2)
         # 保存图片到本地磁盘
-        cv2.imwrite('D://draw.png', screen)
+        imageio.imsave("D://draw.png", screen)
 
     @staticmethod
-    def click(window_title: str, pos, hwnd=None):
+    def mouse_click(window_title: str, pos, hwnd=None):
         x = pos[0]
         y = pos[1]
         if window_title is not None and hwnd is None:
@@ -211,10 +223,20 @@ class ImageWindowsService:
         if not hwnd:
             raise Exception("找不到窗口")
         try:
-            X = "{:04x}".format(int(x))
-            Y = "{:04x}".format(int(y))
-            lparam = int(X + Y, 16)
+            lparam = win32api.MAKENLONG(x, y)
             win32gui.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lparam)
             win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, win32con.WM_LBUTTONUP, lparam)
+            logger.debug("点击成功")
         except Exception as e:
-            print(f"点击失败：{e}")
+            logger.debug(f"点击失败：{e}")
+
+    @staticmethod
+    def mouse_position():
+        """
+        获取当前鼠标坐标
+        :return:
+        """
+        time.sleep(3)
+        logger.debug("开始")
+        x, y = pyautogui.position()
+        logger.debug(f"当前鼠标坐标为：({x}, {y})")
