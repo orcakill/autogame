@@ -29,7 +29,7 @@ class Mapper:
         session = Session()
         if game_project_log1.id is None:
             game_project_log1.id = uuid4()
-            game_project_log1.create_user = WindowsService.computer_name(),
+            game_project_log1.create_user = WindowsService.get_computer_name(),
             game_project_log1.create_time = datetime.datetime.now()
         session.add(game_project_log1)
         session.commit()

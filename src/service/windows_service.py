@@ -10,6 +10,7 @@ import sys
 import time
 
 import psutil
+import pyautogui
 import pythoncom
 import win32com
 from win32com.client import Dispatch
@@ -21,6 +22,12 @@ from src.utils.my_logger import logger
 class WindowsService:
     @staticmethod
     def start_exe(process, name):
+        """
+        启动程序
+        :param process:
+        :param name:
+        :return:
+        """
         process_name = process  # 替换为你的应用程序进程名称
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
         shortcut_path = os.path.join(desktop_path, name + ".lnk")  # 替换为你的桌面快捷方式路径
@@ -35,17 +42,12 @@ class WindowsService:
             return True
 
     @staticmethod
-    def check_process_running(process_name):
-        # 使用tasklist命令检查进程是否正在运行
-        with os.popen('tasklist /FI "IMAGENAME eq {}.exe"'.format(process_name)) as proc:
-            output = proc.read()  # 检查输出结果中是否包含进程名称
-        if process_name in output:
-            return True
-        else:
-            return False
-
-    @staticmethod
     def start_process(shortcut_path):
+        """
+        使用快捷方式启动应用程序
+        :param shortcut_path: 快捷方式地址
+        :return:
+        """
         pythoncom.CoInitialize()
         # 使用快捷方式启动应用程序
         shell = win32com.client.Dispatch("WScript.Shell")
@@ -55,7 +57,27 @@ class WindowsService:
         subprocess.Popen(file_path, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
     @staticmethod
+    def check_process_running(process_name):
+        """
+        检查进程是否正在运行
+        :param process_name: 进程名
+        :return:
+        """
+        # 使用tasklist命令检查进程是否正在运行
+        with os.popen('tasklist /FI "IMAGENAME eq {}.exe"'.format(process_name)) as proc:
+            output = proc.read()  # 检查输出结果中是否包含进程名称
+        if process_name in output:
+            return True
+        else:
+            return False
+
+    @staticmethod
     def get_device_status_by_ip(ip):
+        """
+        根据  新春
+        :param ip:
+        :return:
+        """
         try:
             result = subprocess.run(['adb', 'devices'], stdout=subprocess.PIPE)
         except subprocess.CalledProcessError:
@@ -77,6 +99,11 @@ class WindowsService:
 
     @staticmethod
     def limit_cpu_percentage(percentage):
+        """
+        限制进程占CPU比例
+        :param percentage:
+        :return:
+        """
         process = psutil.Process(os.getpid())
         cpu_count = psutil.cpu_count()
         cpu_limit = int(cpu_count * (percentage / 100))
@@ -85,7 +112,7 @@ class WindowsService:
     @staticmethod
     def delete_folder_file(folder_path, day: int = 1):
         """
-        删除创建时间2天以上的
+        删除文件夹下文件，默认删除2天以上的
         :return:
         """
         # 获取当前时间
@@ -106,13 +133,32 @@ class WindowsService:
                     shutil.rmtree(file_path)
 
     @staticmethod
-    def computer_name():
+    def get_computer_name():
+        """
+        获取计算机名称
+        :return:
+        """
         return socket.gethostname()
 
     @staticmethod
     def restart_program():
+        """
+        重启进程
+        :return:
+        """
         python = sys.executable
         os.execl(python, python, *sys.argv)
+
+    @staticmethod
+    def mouse_position():
+        """
+        获取当前鼠标坐标
+        :return:
+        """
+        time.sleep(3)
+        logger.debug("开始")
+        x, y = pyautogui.position()
+        logger.debug(f"当前鼠标坐标为：({x}, {y})")
 
 
 if __name__ == '__main__':

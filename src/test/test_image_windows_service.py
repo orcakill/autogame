@@ -25,7 +25,7 @@ class ImageWindowsServiceTest(TestCase):
 
     @staticmethod
     def test_mouser_click():
-        ImageWindowsService.mouse_click("钉钉", (182, 174))
+        ImageWindowsService.mouse_click("*新建文本文档.txt-记事本", (182, 174))
 
     @staticmethod
     def test_mouse_position():
