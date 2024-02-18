@@ -59,7 +59,7 @@ class AirtestService:
             logger.debug("检查是否启动云手机-002")
             WindowsService.start_exe("YsConsole", "云帅云手机")
             devices_name = "127.0.0.1:50001"
-            connect_name = devices_name
+            connect_name = devices_name + "?cap_method=JAVACAP"
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
         while is_state != "device":
@@ -67,10 +67,8 @@ class AirtestService:
             time.sleep(10)
             logger.debug("重新判断是否已就绪")
             is_state = WindowsService.get_device_status_by_ip(devices_name)
-        # logger.debug("设备已就绪,检查是否连接")
-        # dev_dict = {dev.uuid: dev for dev in G.DEVICE_LIST}
-        # if devices_name in dev_dict:
-        #     logger.debug("设备已连接")
+        if is_state == "device":
+            logger.debug("设备已就绪")
         logger.debug("连接设备")
         auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/" + connect_name])
 

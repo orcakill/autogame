@@ -16,11 +16,13 @@ cvstrategy = Cvstrategy.default
 
 
 class TestImageService(TestCase):
+
     def test_exists(self):
         now = datetime.datetime.now()
         ImageService.auto_setup("2")
         logger.debug("开始")
-        ImageService.exists(Onmyoji.soul_BQ_HTEN,threshold=0.8)
+        t=ImageService.touch(Onmyoji.arrange_QZBZ,cvstrategy=Cvstrategy.default,duration=2)
+        logger.debug(t)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -48,10 +50,11 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        ImageService.touch_coordinate((873,357))
+        ImageService.touch_coordinate((873, 357))
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
+
     def test_snapshot(self):
         ImageService.auto_setup("2")
         now = datetime.datetime.now()
@@ -93,15 +96,17 @@ class TestImageService(TestCase):
         :return:
         """
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ImageService.auto_setup("2")
         # 测试代码
         logger.debug("开始")
-        result = ImageService.find_all(Onmyoji.explore_JYJC)
+        result = ImageService.find_all(Onmyoji.arrange_QZBZ)
         if result:
             logger.debug(result)
             logger.debug(len(result))
             logger.debug([d['result'] for d in result])
             logger.debug(max(result, key=lambda x: x['result'][1])['result'])
+        else:
+            logger.debug("无识别结果")
         logger.debug("结束")
         now1 = datetime.datetime.now()
         logger.debug(now1 - now)

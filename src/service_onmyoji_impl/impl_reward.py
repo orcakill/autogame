@@ -175,6 +175,8 @@ def soul_arrange(game_task: []):
         ImageService.touch(Onmyoji.arrange_YCYH)
         logger.debug("点击更换")
         ImageService.touch(Onmyoji.arrange_GH)
+        logger.debug("点击知道了")
+        ImageService.touch(Onmyoji.arrange_ZDL)
         logger.debug("1.贪吃鬼，清理待吃御魂1-4星")
         ImageService.touch(Onmyoji.arrange_TCG)
         logger.debug("点击进食习惯")

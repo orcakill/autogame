@@ -506,6 +506,7 @@ class Onmyoji:
     arrange_QZME = r"式神录\御魂整理\弃置满额"
     arrange_SSLTB = r"式神录\御魂整理\式神录图标"
     arrange_GH = r"式神录\御魂整理\更换"
+    arrange_ZDL = r"式神录\御魂整理\知道了"
     arrange_QD = r"式神录\御魂整理\确定"
     arrange_SC = r"式神录\御魂整理\神赐"
     arrange_LJJS = r"式神录\御魂整理\立即进食"
