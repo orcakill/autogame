@@ -2,15 +2,17 @@
 # @Author: orcakill
 # @File: image_windows_service.py
 # @Description: 图像识别，根据win32实现
+import ctypes
 import time
 
 import cv2
 import imageio
 import numpy as np
-import pyautogui
+import psutil
 import win32api
 import win32con
 import win32gui
+import win32process
 import win32ui
 
 from src.model.enum import Cvstrategy
@@ -203,8 +205,16 @@ class ImageWindowsService:
 
     @staticmethod
     def mouse_click(window_title: str, pos, hwnd=None):
+        """
+        鼠标点击，滑动
+        :param window_title:
+        :param pos:
+        :param hwnd:
+        :return:
+        """
         x = pos[0]
         y = pos[1]
+        # 检查句柄是否为空，为空则根据窗口标题获取句柄
         if window_title is not None and hwnd is None:
             hwnd = win32gui.FindWindow(None, window_title)
         if not hwnd:
@@ -214,3 +224,38 @@ class ImageWindowsService:
         win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, win32con.WM_LBUTTONUP, lparam)
         logger.debug("点击成功")
 
+    @staticmethod
+    def is_win32_api_blocked(window_title: str,hwnd=None):
+        """
+        检查是否屏蔽win32的api
+        :param hwnd: 句柄
+        :return:
+        """
+        kernel32 = ctypes.windll.kernel32
+        process_handle = kernel32.GetProcessHandleFromThread(ctypes.pointer(ctypes.c_void_p(hwnd)))
+        if process_handle == 0:
+            return True
+        else:
+            logger.debug("进程屏蔽了win32 api")
+            return False
+
+    @staticmethod
+    def get_process_info():
+        process_info_list = []
+        for process in psutil.process_iter(['pid', 'name', 'exe']):
+            pid = process.info['pid']
+            try:
+                process_handle = win32api.OpenProcess(win32con.PROCESS_QUERY_INFORMATION | win32con.PROCESS_VM_READ,
+                                                      False, pid)
+                exe_path = win32process.GetModuleFileNameEx(process_handle, 0)
+                window_title = win32gui.GetWindowText(win32gui.FindWindow(None, exe_path))
+                class_name = process.info['name']
+                process_info_list.append((class_name, window_title, pid, exe_path))
+            except Exception as e:
+                print(f"Error processing process {pid}: {e}")
+        return process_info_list
+
+if __name__ == "__main__":
+    process_info_list = ImageWindowsService.get_process_info()
+    for info in process_info_list:
+        print(f"类名： {info[0]}, 窗口标题： {info[1]}, 句柄： {info[2]}, 可执行文件路径： {info[3]}")
