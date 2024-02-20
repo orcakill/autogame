@@ -225,7 +225,7 @@ class ImageWindowsService:
         logger.debug("点击成功")
 
     @staticmethod
-    def is_win32_api_blocked(window_title: str,hwnd=None):
+    def is_win32_api_blocked(window_title: str, hwnd=None):
         """
         检查是否屏蔽win32的api
         :param hwnd: 句柄
@@ -240,22 +240,70 @@ class ImageWindowsService:
             return False
 
     @staticmethod
-    def get_process_info():
-        process_info_list = []
-        for process in psutil.process_iter(['pid', 'name', 'exe']):
-            pid = process.info['pid']
-            try:
-                process_handle = win32api.OpenProcess(win32con.PROCESS_QUERY_INFORMATION | win32con.PROCESS_VM_READ,
-                                                      False, pid)
-                exe_path = win32process.GetModuleFileNameEx(process_handle, 0)
-                window_title = win32gui.GetWindowText(win32gui.FindWindow(None, exe_path))
-                class_name = process.info['name']
-                process_info_list.append((class_name, window_title, pid, exe_path))
-            except Exception as e:
-                print(f"Error processing process {pid}: {e}")
-        return process_info_list
+    def get_windows():
+        windows1 = []
+        win32gui.EnumWindows(lambda hwnd1, param: param.append(hwnd1), windows1)
+        return windows1
+
+    @staticmethod
+    def get_window_info(hwnd):
+        try:
+            title = win32gui.GetWindowText(hwnd)
+            class_name = win32gui.GetClassName(hwnd)
+            _, pid = win32process.GetWindowThreadProcessId(hwnd)
+            process_name = psutil.Process(pid).name()
+            return process_name, title, class_name, hwnd
+        except Exception as e:
+            logger.debug(f"获取windows窗口异常: {e}")
+            return None
+
+    @staticmethod
+    def get_window_info_by_filter(filter_value, filter_type=None):
+        windows = ImageWindowsService.get_windows()
+        result = []
+        for hwnd in windows:
+            window_info = ImageWindowsService.get_window_info(hwnd)
+            if window_info:
+                process_name, title, class_name, hwnd = window_info
+                if filter_type is None or filter_value is None:
+                    result.append((process_name, title, class_name, hwnd))
+                #     进程名
+                elif filter_type == "process_name" and process_name == filter_value:
+                    result.append((process_name, title, class_name, hwnd))
+                #     窗口标题
+                elif filter_type == "window_title" and title == filter_value:
+                    result.append((process_name, title, class_name, hwnd))
+                #     类名
+                elif filter_type == "class_name" and class_name == filter_value:
+                    result.append((process_name, title, class_name, hwnd))
+                #     句柄
+                elif filter_type == "hwnd" and hwnd == int(filter_value):
+                    result.append((process_name, title, class_name, hwnd))
+        return result
+
 
 if __name__ == "__main__":
-    process_info_list = ImageWindowsService.get_process_info()
-    for info in process_info_list:
-        print(f"类名： {info[0]}, 窗口标题： {info[1]}, 句柄： {info[2]}, 可执行文件路径： {info[3]}")
+    # 示例：获取所有窗口的信息
+    all_windows_info = ImageWindowsService.get_window_info_by_filter(None)
+    for info in all_windows_info:
+        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
+
+    # 示例：获取指定进程名为"chrome.exe"的窗口信息
+    chrome_windows_info = ImageWindowsService.get_window_info_by_filter("chrome.exe", "process_name")
+    for info in chrome_windows_info:
+        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
+
+    # 示例：获取指定窗口标题为"Notepad"的窗口信息
+    notepad_windows_info = ImageWindowsService.get_window_info_by_filter("Notepad", "window_title")
+    for info in notepad_windows_info:
+        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
+
+    # 示例：获取指定类名为"ConsoleWindowClass"的窗口信息
+    console_windows_info = ImageWindowsService.get_window_info_by_filter("ConsoleWindowClass", "class_name")
+    for info in console_windows_info:
+        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
+
+    # 示例：获取指定句柄为10000的窗口信息
+    hwnd_10000_info = ImageWindowsService.get_window_info_by_filter("10000", "hwnd")
+    for info in hwnd_10000_info:
+        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
