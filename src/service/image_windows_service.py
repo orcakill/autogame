@@ -9,6 +9,7 @@ import cv2
 import imageio
 import numpy as np
 import psutil
+import pyautogui
 import win32api
 import win32con
 import win32gui
@@ -204,6 +205,17 @@ class ImageWindowsService:
         imageio.imsave("D://draw.png", screen)
 
     @staticmethod
+    def mouse_position():
+        """
+        获取当前鼠标坐标
+        :return:
+        """
+        time.sleep(3)
+        logger.debug("开始")
+        x, y = pyautogui.position()
+        logger.debug(f"当前鼠标坐标为：({x}, {y})")
+
+    @staticmethod
     def mouse_click(window_title: str, pos, hwnd=None):
         """
         鼠标点击，滑动
@@ -228,9 +240,13 @@ class ImageWindowsService:
     def is_win32_api_blocked(window_title: str, hwnd=None):
         """
         检查是否屏蔽win32的api
+        :param window_title:
         :param hwnd: 句柄
         :return:
         """
+        # 检查句柄是否为空，为空则根据窗口标题获取句柄
+        if window_title is not None and hwnd is None:
+            hwnd = win32gui.FindWindow(None, window_title)
         kernel32 = ctypes.windll.kernel32
         process_handle = kernel32.GetProcessHandleFromThread(ctypes.pointer(ctypes.c_void_p(hwnd)))
         if process_handle == 0:
@@ -240,13 +256,22 @@ class ImageWindowsService:
             return False
 
     @staticmethod
-    def get_windows():
+    def get_all_hwnd():
+        """
+        获取所有窗口句柄
+        :return:
+        """
         windows1 = []
         win32gui.EnumWindows(lambda hwnd1, param: param.append(hwnd1), windows1)
         return windows1
 
     @staticmethod
-    def get_window_info(hwnd):
+    def get_hwnd_info(hwnd):
+        """
+        根据一个窗口句柄获取一个窗口信息
+        :param hwnd:
+        :return:
+        """
         try:
             title = win32gui.GetWindowText(hwnd)
             class_name = win32gui.GetClassName(hwnd)
@@ -258,52 +283,27 @@ class ImageWindowsService:
             return None
 
     @staticmethod
-    def get_window_info_by_filter(filter_value, filter_type=None):
-        windows = ImageWindowsService.get_windows()
+    def get_hwnd_list(process_name=None, window_title=None, class_name=None, hwnd=None):
+        """
+        根据进程名、窗口标题、类名、句柄获取进程信息列表
+        :param process_name:
+        :param window_title:
+        :param class_name:
+        :param hwnd:
+        :return:
+        """
+
+        windows = ImageWindowsService.get_all_hwnd()
         result = []
-        for hwnd in windows:
-            window_info = ImageWindowsService.get_window_info(hwnd)
+        for window_hwnd in windows:
+            window_info = ImageWindowsService.get_hwnd_info(window_hwnd)
             if window_info:
-                process_name, title, class_name, hwnd = window_info
-                if filter_type is None or filter_value is None:
-                    result.append((process_name, title, class_name, hwnd))
-                #     进程名
-                elif filter_type == "process_name" and process_name == filter_value:
-                    result.append((process_name, title, class_name, hwnd))
-                #     窗口标题
-                elif filter_type == "window_title" and title == filter_value:
-                    result.append((process_name, title, class_name, hwnd))
-                #     类名
-                elif filter_type == "class_name" and class_name == filter_value:
-                    result.append((process_name, title, class_name, hwnd))
-                #     句柄
-                elif filter_type == "hwnd" and hwnd == int(filter_value):
-                    result.append((process_name, title, class_name, hwnd))
+                process_name1, window_title1, class_name1, hwnd1 = window_info
+                # 参数全为空，则获取全部
+                if process_name is None and window_title is None and class_name is None and hwnd is None:
+                    result.append((process_name1, window_title1, class_name1, hwnd1))
+                # 参数不为空，按参数获取数据
+                elif process_name == process_name1 or window_title == window_title1 \
+                        or class_name == class_name1 or hwnd == hwnd1:
+                    result.append((process_name1, window_title1, class_name1, hwnd1))
         return result
-
-
-if __name__ == "__main__":
-    # 示例：获取所有窗口的信息
-    all_windows_info = ImageWindowsService.get_window_info_by_filter(None)
-    for info in all_windows_info:
-        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
-
-    # 示例：获取指定进程名为"chrome.exe"的窗口信息
-    chrome_windows_info = ImageWindowsService.get_window_info_by_filter("chrome.exe", "process_name")
-    for info in chrome_windows_info:
-        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
-
-    # 示例：获取指定窗口标题为"Notepad"的窗口信息
-    notepad_windows_info = ImageWindowsService.get_window_info_by_filter("Notepad", "window_title")
-    for info in notepad_windows_info:
-        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
-
-    # 示例：获取指定类名为"ConsoleWindowClass"的窗口信息
-    console_windows_info = ImageWindowsService.get_window_info_by_filter("ConsoleWindowClass", "class_name")
-    for info in console_windows_info:
-        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")
-
-    # 示例：获取指定句柄为10000的窗口信息
-    hwnd_10000_info = ImageWindowsService.get_window_info_by_filter("10000", "hwnd")
-    for info in hwnd_10000_info:
-        print(f"进程名: {info[0]}, 窗口标题: {info[1]}, 类名: {info[2]}, 句柄: {info[3]}")

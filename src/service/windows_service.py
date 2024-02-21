@@ -149,16 +149,6 @@ class WindowsService:
         python = sys.executable
         os.execl(python, python, *sys.argv)
 
-    @staticmethod
-    def mouse_position():
-        """
-        获取当前鼠标坐标
-        :return:
-        """
-        time.sleep(3)
-        logger.debug("开始")
-        x, y = pyautogui.position()
-        logger.debug(f"当前鼠标坐标为：({x}, {y})")
 
 
 if __name__ == '__main__':

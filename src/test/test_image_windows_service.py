@@ -10,11 +10,6 @@ from src.service.image_windows_service import ImageWindowsService
 
 class ImageWindowsServiceTest(TestCase):
 
-    # 根据程序名获取句柄
-    @staticmethod
-    def test_find_window_handles_by_exe():
-        ImageWindowsService.find_window_handles_by_exe("D:\DingDing\main\current\DingTalk.exe")
-
     @staticmethod
     def test_resolution_hwnd():
         ImageWindowsService.resolution_hwnd("钉钉")
