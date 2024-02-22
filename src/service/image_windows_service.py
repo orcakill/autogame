@@ -237,25 +237,6 @@ class ImageWindowsService:
         logger.debug("点击成功")
 
     @staticmethod
-    def is_win32_api_blocked(window_title: str, hwnd=None):
-        """
-        检查是否屏蔽win32的api
-        :param window_title:
-        :param hwnd: 句柄
-        :return:
-        """
-        # 检查句柄是否为空，为空则根据窗口标题获取句柄
-        if window_title is not None and hwnd is None:
-            hwnd = win32gui.FindWindow(None, window_title)
-        kernel32 = ctypes.windll.kernel32
-        process_handle = kernel32.GetProcessHandleFromThread(ctypes.pointer(ctypes.c_void_p(hwnd)))
-        if process_handle == 0:
-            return True
-        else:
-            logger.debug("进程屏蔽了win32 api")
-            return False
-
-    @staticmethod
     def get_all_hwnd():
         """
         获取所有窗口句柄
