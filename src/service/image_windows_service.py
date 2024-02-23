@@ -231,10 +231,12 @@ class ImageWindowsService:
             hwnd = win32gui.FindWindow(None, window_title)
         if not hwnd:
             raise Exception("找不到窗口")
-        lparam = win32api.MAKELONG(x, y)
-        win32gui.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lparam)
-        win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, win32con.WM_LBUTTONUP, lparam)
+        lparam = win32api.MAKEWPARAM(x, y)
+        win32gui.SendMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lparam)
+        win32gui.SendMessage(hwnd, win32con.WM_LBUTTONUP, win32con.WM_LBUTTONUP, lparam)
         logger.debug("点击成功")
+
+
 
     @staticmethod
     def get_all_hwnd():
