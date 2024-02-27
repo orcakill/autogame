@@ -1,5 +1,7 @@
 import time
+
 import win32api
+import win32con
 import win32gui
 
 
@@ -67,6 +69,32 @@ def find_hwnd_by_title(title):
     return matched_windows
 
 
+# 声明鼠标操作的类
+class WinMouse(object):
+
+    # 初始化函数，接受传入的句柄id
+    def __init__(self, handle_num: int):
+        self.handle = handle_num
+
+        # 鼠标左键按下
+
+    def left_button_down(self, pos):
+        win32api.PostMessage(self.handle, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, pos)
+
+    # 鼠标左键释放
+    def left_button_up(self, pos):
+        win32api.PostMessage(self.handle, win32con.WM_LBUTTONUP, None, pos)
+
+
 if __name__ == '__main__':
     hwnd = find_hwnd_by_title("Edit")
     print(hwnd)
+    bd = WinMouse(hwnd[0])  # 实例化WinMouse 类,传入句柄值
+
+    pos = win32api.MAKELONG(328, 250)  # 将正常的x，y坐标值转换为特定的数据结构，
+    # 给win32api.PostMessage调用
+
+    # 按下、等待1s、松开
+    bd.left_button_down(pos)
+    time.sleep(1)
+    bd.left_button_up(pos)

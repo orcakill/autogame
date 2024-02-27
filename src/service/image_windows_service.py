@@ -2,7 +2,6 @@
 # @Author: orcakill
 # @File: image_windows_service.py
 # @Description: 图像识别，根据win32实现
-import ctypes
 import time
 
 import cv2
@@ -216,12 +215,12 @@ class ImageWindowsService:
         logger.debug(f"当前鼠标坐标为：({x}, {y})")
 
     @staticmethod
-    def mouse_click(window_title: str, pos, hwnd=None):
+    def mouse_click(pos, window_title: str = None, hwnd=None):
         """
         鼠标点击，滑动
-        :param window_title:
-        :param pos:
-        :param hwnd:
+        :param window_title:窗口标题
+        :param pos:坐标
+        :param hwnd:句柄
         :return:
         """
         x = pos[0]
@@ -231,12 +230,10 @@ class ImageWindowsService:
             hwnd = win32gui.FindWindow(None, window_title)
         if not hwnd:
             raise Exception("找不到窗口")
-        lparam = win32api.MAKEWPARAM(x, y)
-        win32gui.SendMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lparam)
-        win32gui.SendMessage(hwnd, win32con.WM_LBUTTONUP, win32con.WM_LBUTTONUP, lparam)
-        logger.debug("点击成功")
-
-
+        lparam = win32api.MAKELONG(x, y)
+        win32api.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lparam)
+        time.sleep(0.5)
+        win32api.PostMessage(hwnd, win32con.WM_LBUTTONUP, None, lparam)
 
     @staticmethod
     def get_all_hwnd():

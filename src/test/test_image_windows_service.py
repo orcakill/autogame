@@ -21,7 +21,7 @@ class ImageWindowsServiceTest(TestCase):
 
     @staticmethod
     def test_mouser_click():
-        ImageWindowsService.mouse_click("钉钉", (182, 238))
+        ImageWindowsService.mouse_click(pos=(182, 174),window_title="新建文本文档.txt - 记事本")
 
     @staticmethod
     def test_mouse_position():
@@ -33,6 +33,6 @@ class ImageWindowsServiceTest(TestCase):
 
     @staticmethod  # 获取所有的进程信息
     def test_get_hwnd_list():
-        result=ImageWindowsService.get_hwnd_list()
+        result=ImageWindowsService.get_hwnd_list(process_name="notepad.exe")
         for r in result:
             logger.debug(r)
