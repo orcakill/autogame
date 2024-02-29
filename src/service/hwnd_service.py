@@ -6,7 +6,6 @@ import time
 
 import psutil
 import win32api
-import win32con
 import win32gui
 import win32process
 
@@ -16,6 +15,10 @@ from src.utils.my_logger import my_logger as logger
 class HwndService:
     @staticmethod
     def get_current_hwnd():
+        """
+        获取当前窗口的信息，进程名，类名，句柄
+        :return:
+        """
         time.sleep(2)
 
         point = win32api.GetCursorPos()  # win32api.GetCursorPos 获取鼠标当前的坐标(x,y)
@@ -30,34 +33,9 @@ class HwndService:
         return class_name
 
     @staticmethod
-    def mouse_click(pos, window_title: str = None, hwnd=None):
-        """
-        鼠标点击，滑动
-        :param window_title:窗口标题
-        :param pos:坐标
-        :param hwnd:句柄
-        :return:
-        """
-        x = pos[0]
-        y = pos[1]
-        # 检查句柄是否为空，为空则根据窗口标题获取句柄
-        if window_title is not None and hwnd is None:
-            hwnd = win32gui.FindWindow(None, window_title)
-        if not hwnd:
-            raise Exception("找不到窗口")
-        logger.debug(hwnd)
-        lparam = win32api.MAKELONG(x, y)
-        win32api.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lparam)
-        time.sleep(0.5)
-        win32api.PostMessage(hwnd, win32con.WM_LBUTTONUP, None, lparam)
-
-    @staticmethod
     def get_all_hwnd():
-        """
-        获取所有窗口句柄
-        :return:
-        """
-        all_window_handles = []
+        # 获取当前主机上的所有句柄id
+        all_window_hwnd = []
 
         # 枚举所有窗口句柄，添加到列表中
         def enum_windows_proc(hwnd, param):
@@ -65,9 +43,57 @@ class HwndService:
             return True
 
         # 调用枚举窗口API
-        win32gui.EnumWindows(enum_windows_proc, all_window_handles)
+        win32gui.EnumWindows(enum_windows_proc, all_window_hwnd)
 
-        return all_window_handles  # 返回的是一个句柄id的列表
+        return all_window_hwnd  # 返回的是一个句柄id的列表
+
+    @staticmethod
+    # 查询传入的句柄id、类名
+    def get_title(hwnd, class_name):
+        # 查询句柄的类名
+        window_class = win32gui.GetClassName(hwnd)
+
+        # 判断窗口类名是否和指定的类名相同，如果相同则返回该窗口句柄，否则返回空值
+        if window_class == class_name:
+            return hwnd
+
+    @staticmethod
+    # 遍历窗口句柄的所有子窗口
+    def get_child_windows(parent_window_hwnd):
+        child_window_handles = []
+
+        def enum_windows_proc(hwnd, param):
+            param.append(hwnd)
+            return True
+
+        # win32gui.EnumChildWindows    遍历窗口句柄的所有子窗口
+        win32gui.EnumChildWindows(parent_window_hwnd, enum_windows_proc, child_window_handles)
+        return child_window_handles
+
+    @staticmethod
+    def find_hwnd(class_name):
+        all_windows = HwndService.get_all_hwnd()  # 查询所有句柄
+        matched_windows = []  # 存放所有匹配类名的句柄id
+
+        # 在所有窗口中查找类名匹配的窗口句柄
+        for window_handle in all_windows:
+            # get_title方法  检查传入句柄对应的类名和我们实际的类名是否对应
+            hwnd = HwndService.get_title(window_handle, class_name)
+            if hwnd:
+                matched_windows.append(hwnd)  # 如果对应就写入列表
+
+        # 如果没有匹配到，则在所有子窗口中查找标题匹配的窗口句柄
+        if matched_windows:
+            return matched_windows
+        else:
+            child_window_handles = []
+            for parent_window_handle in all_windows:
+                # 不论子窗口是否有数据都追加到列表
+                child_window_handles.extend(HwndService.get_child_windows(parent_window_handle))
+            for child_window_handle in child_window_handles:
+                if HwndService.get_title(child_window_handle, class_name):
+                    matched_windows.append(HwndService.get_title(child_window_handle, class_name))
+        return matched_windows
 
     @staticmethod
     def get_hwnd_info(hwnd):
@@ -85,29 +111,3 @@ class HwndService:
         except Exception as e:
             logger.debug(f"获取windows窗口异常: {e}")
             return None
-
-    @staticmethod
-    def get_hwnd_list(process_name=None, window_title=None, class_name=None, hwnd=None):
-        """
-        根据进程名、窗口标题、类名、句柄获取进程信息列表
-        :param process_name:
-        :param window_title:
-        :param class_name:
-        :param hwnd:
-        :return:
-        """
-
-        windows = HwndService.get_all_hwnd()
-        result = []
-        for window_hwnd in windows:
-            window_info = HwndService.get_hwnd_info(window_hwnd)
-            if window_info:
-                process_name1, window_title1, class_name1, hwnd1 = window_info
-                # 参数全为空，则获取全部
-                if process_name is None and window_title is None and class_name is None and hwnd is None:
-                    result.append((process_name1, window_title1, class_name1, hwnd1))
-                # 参数不为空，按参数获取数据
-                elif process_name == process_name1 or window_title == window_title1 \
-                        or class_name == class_name1 or hwnd == hwnd1:
-                    result.append((process_name1, window_title1, class_name1, hwnd1))
-        return result
