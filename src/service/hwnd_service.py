@@ -49,7 +49,7 @@ class HwndService:
 
     @staticmethod
     # 查询传入的句柄id、类名
-    def get_title(hwnd, class_name):
+    def is_hwnd_class_name(hwnd, class_name):
         # 查询句柄的类名
         window_class = win32gui.GetClassName(hwnd)
 
@@ -78,7 +78,7 @@ class HwndService:
         # 在所有窗口中查找类名匹配的窗口句柄
         for window_handle in all_windows:
             # get_title方法  检查传入句柄对应的类名和我们实际的类名是否对应
-            hwnd = HwndService.get_title(window_handle, class_name)
+            hwnd = HwndService.is_hwnd_class_name(window_handle, class_name)
             if hwnd:
                 matched_windows.append(hwnd)  # 如果对应就写入列表
 
@@ -91,8 +91,8 @@ class HwndService:
                 # 不论子窗口是否有数据都追加到列表
                 child_window_handles.extend(HwndService.get_child_windows(parent_window_handle))
             for child_window_handle in child_window_handles:
-                if HwndService.get_title(child_window_handle, class_name):
-                    matched_windows.append(HwndService.get_title(child_window_handle, class_name))
+                if HwndService.is_hwnd_class_name(child_window_handle, class_name):
+                    matched_windows.append(HwndService.is_hwnd_class_name(child_window_handle, class_name))
         return matched_windows
 
     @staticmethod
