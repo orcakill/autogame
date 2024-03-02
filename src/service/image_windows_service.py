@@ -7,12 +7,9 @@ import time
 import cv2
 import imageio
 import numpy as np
-import psutil
-import pyautogui
 import win32api
 import win32con
 import win32gui
-import win32process
 import win32ui
 
 from src.model.enum import Cvstrategy
@@ -108,9 +105,10 @@ class ImageWindowsService:
         return False
 
     @staticmethod
-    def screenshot(windows_title: str, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
+    def screenshot(windows_title: str, hwnd=None, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
         """
         设备截图，根据截图比例确定位置
+        :param hwnd:
         :param windows_title:
         :param x1:
         :param x2:
@@ -118,8 +116,9 @@ class ImageWindowsService:
         :param y2:
         :return:
         """
-        # 获取窗口句柄
-        hwnd = win32gui.FindWindow(None, windows_title)
+        if not hwnd:
+            # 获取窗口句柄
+            hwnd = win32gui.FindWindow(None, windows_title)
         if hwnd:
             # 判断窗口是否最大化
             if not win32gui.IsIconic(hwnd):
@@ -155,7 +154,7 @@ class ImageWindowsService:
                 win32gui.ReleaseDC(hwnd, hdc)
 
                 # 保存图片到磁盘
-                imageio.imsave("D://screenshot2.png", ndarray_image)
+                imageio.imsave("D://screenshot1.png", ndarray_image)
 
                 coordinate1 = (int(w * x1), int(h * y1))
                 coordinate2 = (int(w * x2), int(h * y2))
@@ -165,7 +164,7 @@ class ImageWindowsService:
                 cropped_image = ndarray_image[coordinate1[1]:coordinate2[1], coordinate1[0]:coordinate2[0]]
 
                 # 保存图片到磁盘
-                imageio.imsave("D://screenshot3.png", cropped_image)
+                imageio.imsave("D://screenshot2.png", cropped_image)
 
                 return cropped_image
             else:
@@ -202,3 +201,5 @@ class ImageWindowsService:
         cv2.rectangle(screen, (x1, y1), (x2, y2), (0, 0, 255), 2)
         # 保存图片到本地磁盘
         imageio.imsave("D://draw.png", screen)
+
+

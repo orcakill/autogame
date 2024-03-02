@@ -20,12 +20,18 @@ class HwndService:
         :return:
         """
         time.sleep(2)
+        logger.debug("开始")
 
         point = win32api.GetCursorPos()  # win32api.GetCursorPos 获取鼠标当前的坐标(x,y)
 
         hwnd = win32gui.WindowFromPoint(point)  # 查看坐标位置窗口的句柄
 
-        logger.debug(hwnd)
+        title = win32gui.GetWindowText(hwnd)
+        class_name = win32gui.GetClassName(hwnd)
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
+        process_name = psutil.Process(pid).name()
+
+        logger.debug((process_name,title, class_name, hwnd))
 
     @staticmethod
     def get_hwnd_class_name(hwnd):
@@ -46,6 +52,29 @@ class HwndService:
         win32gui.EnumWindows(enum_windows_proc, all_window_hwnd)
 
         return all_window_hwnd  # 返回的是一个句柄id的列表
+
+    @staticmethod
+    def get_all_hwnd_info():
+        # 获取当前主机上的所有句柄id,进程信息，窗口标题
+        all_window_hwnd = []
+        all_window_hwnd_info = []
+
+        # 枚举所有窗口句柄，添加到列表中
+        def enum_windows_proc(hwnd, param):
+            param.append(hwnd)
+            return True
+
+        # 调用枚举窗口API
+        win32gui.EnumWindows(enum_windows_proc, all_window_hwnd)
+
+        for hwnd in all_window_hwnd:
+            title = win32gui.GetWindowText(hwnd)
+            class_name = win32gui.GetClassName(hwnd)
+            _, pid = win32process.GetWindowThreadProcessId(hwnd)
+            process_name = psutil.Process(pid).name()
+            all_window_hwnd_info.append((process_name, title, class_name, hwnd))
+
+        return all_window_hwnd_info  # 返回的是一个句柄id的列表
 
     @staticmethod
     # 查询传入的句柄id、类名

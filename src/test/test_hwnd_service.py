@@ -5,6 +5,7 @@
 from unittest import TestCase
 
 from src.service.hwnd_service import HwndService
+from src.service.image_windows_service import ImageWindowsService
 from src.utils.my_logger import my_logger as logger
 
 
@@ -19,6 +20,26 @@ class TestHwndService(TestCase):
         :return:
         """
         HwndService.get_current_hwnd()
+        # ('notepad.exe', '', 'Edit', 264420)
+
+    @staticmethod
+    def test_get_all_hwnd_info():
+        """
+        获取当前窗口的信息，进程名，类名，句柄
+        :return:
+        """
+        result=HwndService.get_all_hwnd_info()
+        for r in result:
+            logger.debug(r)
+
+    @staticmethod
+    def test_screen():
+        """
+        获取当前窗口的信息，进程名，类名，句柄
+        :return:
+        """
+        ImageWindowsService.screenshot(windows_title="",hwnd="264420")
+
 
     @staticmethod
     def test_get_hwnd_class_name():
