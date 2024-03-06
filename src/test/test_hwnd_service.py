@@ -5,7 +5,6 @@
 from unittest import TestCase
 
 from src.service.hwnd_service import HwndService
-from src.service.image_windows_service import ImageWindowsService
 from src.utils.my_logger import my_logger as logger
 
 
@@ -25,28 +24,25 @@ class TestHwndService(TestCase):
     @staticmethod
     def test_get_all_hwnd_info():
         """
-        获取当前窗口的信息，进程名，类名，句柄
+        获取所有窗口的信息，进程名，类名，句柄
         :return:
         """
-        result=HwndService.get_all_hwnd_info()
+        logger.info("全部句柄及信息")
+        result = HwndService.get_all_hwnd_info()
         for r in result:
             logger.debug(r)
+        logger.info("指定标题的句柄及信息")
 
-    @staticmethod
-    def test_screen():
-        """
-        获取当前窗口的信息，进程名，类名，句柄
-        :return:
-        """
-        ImageWindowsService.screenshot(windows_title="",hwnd="264420")
-
-
-    @staticmethod
-    def test_get_hwnd_class_name():
-        class_name = HwndService.get_hwnd_class_name(133388)
-        logger.debug(class_name)
-
-    @staticmethod
-    def test_find_hwnd():
-        hwnd= HwndService.find_hwnd("Edit")
-        logger.debug(hwnd)
+        result = HwndService.get_all_hwnd_info(title="新建文本文档.txt - 记事本")
+        for r in result:
+            logger.debug(r)
+        logger.info("指定进程的句柄及信息")
+        result = HwndService.get_all_hwnd_info(process_name="notepad.exe")
+        for r in result:
+            logger.debug(r)
+        logger.info("指定句柄下属的句柄及信息")
+        result = HwndService.get_child_windows("660340")
+        for r in result:
+            result21 = HwndService.get_all_hwnd_info(hwnd=r)
+            logger.debug(r)
+            logger.debug(result21)

@@ -20,18 +20,14 @@ class HwndService:
         :return:
         """
         time.sleep(2)
-        logger.debug("开始")
-
+        logger.debug("获取当前窗口句柄")
         point = win32api.GetCursorPos()  # win32api.GetCursorPos 获取鼠标当前的坐标(x,y)
-
         hwnd = win32gui.WindowFromPoint(point)  # 查看坐标位置窗口的句柄
-
         title = win32gui.GetWindowText(hwnd)
         class_name = win32gui.GetClassName(hwnd)
         _, pid = win32process.GetWindowThreadProcessId(hwnd)
         process_name = psutil.Process(pid).name()
-
-        logger.debug((process_name,title, class_name, hwnd))
+        logger.debug((process_name, title, class_name, hwnd))
 
     @staticmethod
     def get_hwnd_class_name(hwnd):
@@ -54,7 +50,7 @@ class HwndService:
         return all_window_hwnd  # 返回的是一个句柄id的列表
 
     @staticmethod
-    def get_all_hwnd_info():
+    def get_all_hwnd_info(process_name=None, title=None, class_name=None, hwnd=None):
         # 获取当前主机上的所有句柄id,进程信息，窗口标题
         all_window_hwnd = []
         all_window_hwnd_info = []
@@ -67,14 +63,16 @@ class HwndService:
         # 调用枚举窗口API
         win32gui.EnumWindows(enum_windows_proc, all_window_hwnd)
 
-        for hwnd in all_window_hwnd:
-            title = win32gui.GetWindowText(hwnd)
-            class_name = win32gui.GetClassName(hwnd)
-            _, pid = win32process.GetWindowThreadProcessId(hwnd)
-            process_name = psutil.Process(pid).name()
-            all_window_hwnd_info.append((process_name, title, class_name, hwnd))
-
-        return all_window_hwnd_info  # 返回的是一个句柄id的列表
+        for hwnd1 in all_window_hwnd:
+            title1 = win32gui.GetWindowText(hwnd1)
+            class_name1 = win32gui.GetClassName(hwnd1)
+            _, pid = win32process.GetWindowThreadProcessId(hwnd1)
+            process_name1 = psutil.Process(pid).name()
+            if process_name is None and title is None and class_name is None and hwnd is None:
+                all_window_hwnd_info.append((process_name1, title1, class_name1, hwnd1))
+            elif process_name == process_name1 or title == title1 or class_name == class_name1 or hwnd == hwnd1:
+                all_window_hwnd_info.append((process_name1, title1, class_name1, hwnd1))
+        return all_window_hwnd_info  # 返回列表
 
     @staticmethod
     # 查询传入的句柄id、类名
@@ -123,20 +121,3 @@ class HwndService:
                 if HwndService.is_hwnd_class_name(child_window_handle, class_name):
                     matched_windows.append(HwndService.is_hwnd_class_name(child_window_handle, class_name))
         return matched_windows
-
-    @staticmethod
-    def get_hwnd_info(hwnd):
-        """
-        根据一个窗口句柄获取一个窗口信息
-        :param hwnd:
-        :return:
-        """
-        try:
-            title = win32gui.GetWindowText(hwnd)
-            class_name = win32gui.GetClassName(hwnd)
-            _, pid = win32process.GetWindowThreadProcessId(hwnd)
-            process_name = psutil.Process(pid).name()
-            return process_name, title, class_name, hwnd
-        except Exception as e:
-            logger.debug(f"获取windows窗口异常: {e}")
-            return None
