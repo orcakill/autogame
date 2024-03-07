@@ -7,7 +7,6 @@ import time
 import cv2
 import imageio
 import numpy as np
-import win32api
 import win32con
 import win32gui
 import win32ui
@@ -15,6 +14,7 @@ import win32ui
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
+from src.service.mouse_service import MouseService
 from src.utils.my_logger import my_logger as logger
 
 # 图像识别算法
@@ -42,13 +42,13 @@ THROW = True
 class ImageWindowsService:
 
     @staticmethod
-    def exists(windows_title: str, folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: float = TIMEOUTS,
+    def exists(hwnd,folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: float = TIMEOUTS,
                threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
                is_click: bool = False, rgb: bool = False, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
 
-        :param windows_title: 窗口标题
+        :param hwnd: 句柄
         :param folder_path: 图片文件夹路径
         :param cvstrategy: 图像识别算法
         :param threshold: 图像识别阈值
@@ -66,13 +66,13 @@ class ImageWindowsService:
         """
         try:
             time.sleep(wait)
-            resolution = ImageWindowsService.resolution_hwnd(windows_title)
+            resolution = ImageWindowsService.resolution_hwnd(hwnd)
             template_list = ImageService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
                     # 设备截图
-                    image1 = ImageWindowsService.screenshot(windows_title, x1, x2, y1, y2)
+                    image1 = ImageWindowsService.screenshot(hwnd, '', True, x1, x2, y1, y2)
                     match = AirtestService.cv_match(template, image1, cvstrategy)
                     if match:
                         pos = match['result']
@@ -93,7 +93,7 @@ class ImageWindowsService:
                                 logger.debug(pos)
                                 ImageWindowsService.draw_rectangle(image1, re1[0], re1[1], re2[0], re2[1])
                                 # 点击指定坐标
-                                ImageWindowsService.mouse_click(windows_title, pos)
+                                MouseService.mouse_click(hwnd, pos)
                                 logger.debug("图像识别点击成功:{}", folder_path)
                                 return True
             return False
@@ -105,20 +105,19 @@ class ImageWindowsService:
         return False
 
     @staticmethod
-    def screenshot(windows_title: str, hwnd=None, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
+    def screenshot(hwnd: int, name: str = None, print_image: bool = False, x1: float = 0, x2: float = 1, y1: float = 0,
+                   y2: float = 1):
         """
         设备截图，根据截图比例确定位置
+        :param print_image
+        :param name:
         :param hwnd:
-        :param windows_title:
         :param x1:
         :param x2:
         :param y1:
         :param y2:
         :return:
         """
-        if not hwnd:
-            # 获取窗口句柄
-            hwnd = win32gui.FindWindow(None, windows_title)
         if hwnd:
             # 判断窗口是否最大化
             if not win32gui.IsIconic(hwnd):
@@ -153,8 +152,9 @@ class ImageWindowsService:
                 dc_obj.DeleteDC()
                 win32gui.ReleaseDC(hwnd, hdc)
 
-                # 保存图片到磁盘
-                imageio.imsave("D://screenshot1.png", ndarray_image)
+                if print_image:
+                    # 保存图片到磁盘
+                    imageio.imsave("D://screenshot_" + name + "_1.png", ndarray_image)
 
                 coordinate1 = (int(w * x1), int(h * y1))
                 coordinate2 = (int(w * x2), int(h * y2))
@@ -163,8 +163,9 @@ class ImageWindowsService:
                 # cropped_image = ndarray_image[0:525,960:1920]
                 cropped_image = ndarray_image[coordinate1[1]:coordinate2[1], coordinate1[0]:coordinate2[0]]
 
-                # 保存图片到磁盘
-                imageio.imsave("D://screenshot2.png", cropped_image)
+                if print_image:
+                    # 保存图片到磁盘
+                    imageio.imsave("D://screenshot_" + name + "_2.png", cropped_image)
 
                 return cropped_image
             else:
@@ -173,9 +174,7 @@ class ImageWindowsService:
             logger.debug("未找到窗口句柄")
 
     @staticmethod
-    def resolution_hwnd(windows_title: str):
-        # 获取窗口句柄
-        hwnd = win32gui.FindWindow(None, windows_title)
+    def resolution_hwnd(hwnd: int):
         # 判断窗口是否最大化
         if not win32gui.IsIconic(hwnd):
             # 将窗口最大化
@@ -201,5 +200,3 @@ class ImageWindowsService:
         cv2.rectangle(screen, (x1, y1), (x2, y2), (0, 0, 255), 2)
         # 保存图片到本地磁盘
         imageio.imsave("D://draw.png", screen)
-
-

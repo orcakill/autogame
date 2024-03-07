@@ -6,15 +6,18 @@ from unittest import TestCase
 
 from src.model.enum import Onmyoji
 from src.service.image_windows_service import ImageWindowsService
-from src.utils.my_logger import logger
 
 
 class ImageWindowsServiceTest(TestCase):
 
     @staticmethod
     def test_resolution_hwnd():
-        ImageWindowsService.resolution_hwnd("钉钉")
+        ImageWindowsService.resolution_hwnd(123)
 
     @staticmethod
     def test_screenshot():
-        ImageWindowsService.screenshot("钉钉")
+        ImageWindowsService.screenshot(131740,'测试',True)
+
+    @staticmethod
+    def test_exists():
+        ImageWindowsService.exists(131740, Onmyoji.windows_test1,is_click=True)

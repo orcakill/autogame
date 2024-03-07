@@ -87,11 +87,11 @@ class WinMouse(object):
 
 
 if __name__ == '__main__':
-    hwnd = find_hwnd_by_title("Edit")
+    hwnd = find_hwnd_by_title("DingChatWnd")
     print(hwnd)
     bd = WinMouse(hwnd[0])  # 实例化WinMouse 类,传入句柄值
 
-    pos = win32api.MAKELONG(328, 250)  # 将正常的x，y坐标值转换为特定的数据结构，
+    pos = win32api.MAKELONG(182, 100)  # 将正常的x，y坐标值转换为特定的数据结构，
     # 给win32api.PostMessage调用
 
     # 按下、等待1s、松开

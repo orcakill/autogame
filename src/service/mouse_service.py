@@ -4,6 +4,8 @@
 # @Description: 鼠标操作类
 import time
 
+
+from src.utils.my_logger import my_logger as logger
 import win32api
 import win32con
 
@@ -26,22 +28,26 @@ class MouseService():
         if pos2:
             param2 = win32api.MAKELONG(pos2[0], pos1[2])
         # 双击
-        for i_click in range(1, times):
+        for i_click in range(times):
             # 左右键 点击
             if down_type == 'left_down':
+                logger.debug("左键点击")
                 win32api.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, param1)
                 time.sleep(wait_time)
                 win32api.PostMessage(hwnd, win32con.WM_LBUTTONUP, None, param1)
             elif down_type == 'right_down':
+                logger.debug("右键点击")
                 win32api.PostMessage(hwnd, win32con.WM_RBUTTONDOWN, win32con.MK_LBUTTON, param1)
                 time.sleep(wait_time)
                 win32api.PostMessage(hwnd, win32con.WM_RBUTTONUP, None, param1)
             # 左右键 拖拽
             elif down_type == 'left_move':
+                logger.debug("左键拖拽")
                 win32api.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, param1)
                 time.sleep(wait_time)
                 win32api.PostMessage(hwnd, win32con.WM_LBUTTONUP, None, param2)
             elif down_type == 'right_move':
+                logger.debug("右键拖拽")
                 win32api.PostMessage(hwnd, win32con.WM_RBUTTONDOWN, win32con.MK_LBUTTON, param1)
                 time.sleep(wait_time)
                 win32api.PostMessage(hwnd, win32con.WM_RBUTTONUP, None, param2)

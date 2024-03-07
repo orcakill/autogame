@@ -22,6 +22,7 @@ class HwndService:
         time.sleep(2)
         logger.debug("获取当前窗口句柄")
         point = win32api.GetCursorPos()  # win32api.GetCursorPos 获取鼠标当前的坐标(x,y)
+        logger.debug(point)
         hwnd = win32gui.WindowFromPoint(point)  # 查看坐标位置窗口的句柄
         title = win32gui.GetWindowText(hwnd)
         class_name = win32gui.GetClassName(hwnd)
@@ -56,12 +57,15 @@ class HwndService:
         all_window_hwnd_info = []
 
         # 枚举所有窗口句柄，添加到列表中
-        def enum_windows_proc(hwnd, param):
-            param.append(hwnd)
+        def enum_windows_proc(windows_hwnd, param):
+            param.append(windows_hwnd)
             return True
 
-        # 调用枚举窗口API
-        win32gui.EnumWindows(enum_windows_proc, all_window_hwnd)
+        if hwnd is None:
+            # 调用枚举窗口API
+            win32gui.EnumWindows(enum_windows_proc, all_window_hwnd)
+        else:
+            all_window_hwnd.append(hwnd)
 
         for hwnd1 in all_window_hwnd:
             title1 = win32gui.GetWindowText(hwnd1)
