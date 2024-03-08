@@ -159,6 +159,15 @@ class AirtestService:
         time.sleep(1)
 
     @staticmethod
+    def stop_app(app: str):
+        """
+        停止APP
+        :param app: app的包名
+        :return: 无
+        """
+        stop_app(app)
+
+    @staticmethod
     def swipe(v1: [], v2: [], duration):
         """
         重启APP

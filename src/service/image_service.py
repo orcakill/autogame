@@ -158,6 +158,15 @@ class ImageService:
         AirtestService.restart_app(app)
 
     @staticmethod
+    def stop_app(app: str):
+        """
+        重启APP
+        :param app: 包名
+        :return:
+        """
+        AirtestService.stop_app(app)
+
+    @staticmethod
     def swipe(v1: [], v2: [], duration: float = 0.5):
         """
         滑动

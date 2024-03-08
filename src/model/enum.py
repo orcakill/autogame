@@ -642,6 +642,13 @@ class Onmyoji:
     six_moon_TYQR = r"探索\六道之门\月之海\通用确认"
     six_moon_SLZMB = r"探索\六道之门\月之海\首领战秘宝"
     six_moon_SLZHDJL = r"探索\六道之门\月之海\首领战获得奖励"
+    prop_CH = r"道聚城\叉号"
+    prop_HD = r"道聚城\好的"
+    prop_WDYX = r"道聚城\我的游戏"
+    prop_MRCZ = r"道聚城\每日充值"
+    prop_QD = r"道聚城\签到"
+    prop_LQ = r"道聚城\领取"
+    prop_TG = r"道聚城\跳过"
 
 
 class Cvstrategy:
