@@ -9,29 +9,32 @@ from src.utils.my_logger import logger
 
 
 def prop():
-    logger.debug("启动道聚城")
+    logger.debug("启动道聚城,每日奖励")
     ImageService.restart_app("com.tencent.djcity")
     logger.debug("检查签到")
-    for i in range(10):
-        is_sign_in = ImageService.exists(Onmyoji.prop_QD)
-        if is_sign_in:
-            break
-        else:
-            logger.debug("点击跳过")
-            ImageService.exists(Onmyoji.prop_TG)
-            logger.debug("点击好的")
-            ImageService.exists(Onmyoji.prop_HD)
-            logger.debug("点击叉号")
-            ImageService.exists(Onmyoji.prop_CH)
     for i in range(5):
+        logger.debug("点击跳过")
+        ImageService.touch(Onmyoji.prop_TG)
+        logger.debug("点击好的")
+        ImageService.touch(Onmyoji.prop_HD)
+        logger.debug("点击叉号")
+        ImageService.touch(Onmyoji.prop_CH)
         logger.debug("点击我的游戏")
-        ImageService.exists(Onmyoji.prop_WDYX)
+        ImageService.touch(Onmyoji.prop_WDYX)
         logger.debug("每日充值")
-        ImageService.exists(Onmyoji.prop_MRCZ)
+        ImageService.touch(Onmyoji.prop_MRCZ)
         logger.debug("领取")
-        is_get = ImageService.exists(Onmyoji.prop_LQ)
-        if is_get:
-            break
+        ImageService.touch(Onmyoji.prop_LQ)
+    logger.debug("启动道聚城,签到任务")
+    ImageService.restart_app("com.tencent.djcity")
+    logger.debug("检查签到")
+    for i in range(5):
+        logger.debug("点击跳过")
+        ImageService.touch(Onmyoji.prop_TG)
+        logger.debug("点击好的")
+        ImageService.touch(Onmyoji.prop_HD)
+        logger.debug("点击叉号")
+        ImageService.touch(Onmyoji.prop_CH)
     logger.debug("关闭道聚城")
     ImageService.stop_app("com.tencent.djcity")
 
