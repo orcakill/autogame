@@ -13,6 +13,7 @@ from airtest.core.api import *
 from airtest.core.helper import G
 from airtest.core.settings import Settings
 
+from src.model.enum import WinClassName, Onmyoji
 from src.service.windows_service import WindowsService
 from src.utils import utils_path
 from src.utils.my_logger import my_logger as logger
@@ -27,49 +28,7 @@ WAIT = 2
 
 class AirtestService:
     @staticmethod
-    def auto_setup(game_device: str):
-        """
-        设备连接
-        1、已启动的设备，不再重新启动，检查是否已就绪
-        2、就绪检查1分钟，云手机无法就绪则重启软件，重新授权
-        3、判断当前是否半黑屏
-        :return:
-        """
-        devices_name = None
-        connect_name = None
-        if game_device == "0":
-            logger.debug("检查是否启动云手机-001")
-            WindowsService.start_exe("YsConsole", "云帅云手机")
-            devices_name = "127.0.0.1:50000"
-            connect_name = devices_name
-        if game_device == "1":
-            logger.debug("检查是否启动夜神模拟器")
-            WindowsService.start_exe("Nox", "夜神模拟器")
-            devices_name = "127.0.0.1:62001"
-            connect_name = devices_name + "?cap_method=JAVACAP"
-        if game_device == "2":
-            logger.debug("检查是否启动荣耀平板5")
-            devices_name = "E8X9X19719000371"
-            connect_name = devices_name
-        if game_device == "3":
-            logger.debug("检查是否启动小米13")
-            devices_name = "8ce78c9f"
-            connect_name = devices_name
-        if game_device == "4":
-            logger.debug("检查是否启动云手机-002")
-            WindowsService.start_exe("YsConsole", "云帅云手机")
-            devices_name = "127.0.0.1:50001"
-            connect_name = devices_name + "?cap_method=JAVACAP"
-        logger.debug("判断设备是否已就绪")
-        is_state = WindowsService.get_device_status_by_ip(devices_name)
-        while is_state != "device":
-            logger.debug("未就绪，设备状态{},等待10s", is_state)
-            time.sleep(10)
-            logger.debug("重新判断是否已就绪")
-            is_state = WindowsService.get_device_status_by_ip(devices_name)
-        if is_state == "device":
-            logger.debug("设备已就绪")
-        logger.debug("连接设备")
+    def auto_setup(connect_name: str):
         auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/" + connect_name])
 
     @staticmethod
@@ -279,3 +238,13 @@ class AirtestService:
         """
         text1 = "input text '" + word + "'"
         shell(text1)
+
+    @staticmethod
+    def phone(game_device):
+        logger.debug("句柄操作云手机")
+        login_hwnd = HwndService.find_hwnd(WinClassName.phone_home)
+        logger.debug("登录")
+        ImageWindowsService.exists(login_hwnd, Onmyoji.phone_DL)
+        logger.debug("登录{}", game_device)
+        if game_device == "1":
+            logger.debug("登录云手机001的窗口")

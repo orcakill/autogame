@@ -10,7 +10,6 @@ import sys
 import time
 
 import psutil
-import pyautogui
 import pythoncom
 import win32com
 from win32com.client import Dispatch

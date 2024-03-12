@@ -650,6 +650,18 @@ class Onmyoji:
     prop_LQ = r"道聚城\领取"
     prop_TG = r"道聚城\跳过"
 
+    phone_YLSQK = r"云手机\一律授权框"
+    phone_XLLB = r"云手机\下拉列表"
+    phone_CS = r"云手机\测试"
+    phone_DL = r"云手机\登录"
+    phone_QDSQ = r"云手机\确定授权"
+    phone_CQYSJ = r"云手机\重启云手机"
+
+
+class WinClassName:
+    # 云手机登录界面类名
+    phone_home = r"Qt5QWindowIcon"
+
 
 class Cvstrategy:
     # 图像文字识别类型
