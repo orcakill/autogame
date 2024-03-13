@@ -123,10 +123,10 @@ class ImageWindowsService:
         """
         if hwnd:
             # 判断窗口是否最大化
-            if not win32gui.IsIconic(hwnd):
-                # 将窗口最大化
-                win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-                time.sleep(0.5)
+            # if not win32gui.IsIconic(hwnd):
+            #     # 将窗口最大化
+            #     win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
+            #     time.sleep(0.5)
             # 获取窗口位置和大小
             rect = win32gui.GetWindowRect(hwnd)
             x, y, w, h = rect
@@ -293,7 +293,7 @@ class ImageWindowsService:
         return child_window_handles
 
     @staticmethod
-    def find_hwnd(class_name):
+    def find_hwnd(process_name,class_name):
         all_windows = ImageWindowsService.get_all_hwnd()  # 查询所有句柄
         matched_windows = []  # 存放所有匹配类名的句柄id
 

@@ -30,20 +30,24 @@ class ImageWindowsServiceTest(TestCase):
         for r in result:
             logger.debug(r)
         logger.info("指定标题的句柄及信息")
-        result = ImageWindowsService.get_all_hwnd_info(title="钉钉")
+        result = ImageWindowsService.get_all_hwnd_info(title="云帅云手机")
         for r in result:
             logger.debug(r)
         logger.info("指定进程的句柄及信息")
-        result = ImageWindowsService.get_all_hwnd_info(process_name="DingTalk.exe")
-        for r in result:
-            logger.debug(r)
-        logger.info("指定句柄下属的句柄及信息")
-        result = ImageWindowsService.get_child_windows("131674")
+        result = ImageWindowsService.get_all_hwnd_info(process_name="YsConsole.exe")
         for i in range(len(result)):
-            result1 = ImageWindowsService.get_all_hwnd_info(hwnd=result[i])
+            hwnd=result[i][3]
+            result1 = ImageWindowsService.get_all_hwnd_info(hwnd=hwnd)
             logger.debug(result[i])
             logger.debug(result1)
-            ImageWindowsService.screenshot(result[i], name=str(result[i]), print_image=True)
+            ImageWindowsService.screenshot(hwnd, name=str(hwnd), print_image=True)
+        logger.info("指定句柄下属的句柄及信息")
+        result = ImageWindowsService.get_child_windows("264916")
+        # for i in range(len(result)):
+        #     result1 = ImageWindowsService.get_all_hwnd_info(hwnd=result[i])
+        #     logger.debug(result[i])
+        #     logger.debug(result1)
+        #     ImageWindowsService.screenshot(result[i], name=str(result[i]), print_image=True)
 
     @staticmethod
     def test_resolution_hwnd():
