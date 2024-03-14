@@ -293,7 +293,7 @@ class ImageWindowsService:
         return child_window_handles
 
     @staticmethod
-    def find_hwnd(process_name,class_name):
+    def find_hwnd(process_name, class_name):
         all_windows = ImageWindowsService.get_all_hwnd()  # 查询所有句柄
         matched_windows = []  # 存放所有匹配类名的句柄id
 
@@ -302,7 +302,10 @@ class ImageWindowsService:
             # get_title方法  检查传入句柄对应的类名和我们实际的类名是否对应
             hwnd = ImageWindowsService.is_hwnd_class_name(window_handle, class_name)
             if hwnd:
-                matched_windows.append(hwnd)  # 如果对应就写入列表
+                _, pid = win32process.GetWindowThreadProcessId(hwnd)
+                process_name1 = psutil.Process(pid).name()
+                if process_name1 == process_name:
+                    matched_windows.append(hwnd)  # 如果对应就写入列表
 
         # 如果没有匹配到，则在所有子窗口中查找标题匹配的窗口句柄
         if matched_windows:
@@ -314,5 +317,10 @@ class ImageWindowsService:
                 child_window_handles.extend(ImageWindowsService.get_child_windows(parent_window_handle))
             for child_window_handle in child_window_handles:
                 if ImageWindowsService.is_hwnd_class_name(child_window_handle, class_name):
-                    matched_windows.append(ImageWindowsService.is_hwnd_class_name(child_window_handle, class_name))
+                    _, pid = win32process.GetWindowThreadProcessId(child_window_handle)
+                    process_name1 = psutil.Process(pid).name()
+                    if process_name1 == process_name:
+                        matched_windows.append(ImageWindowsService.is_hwnd_class_name(child_window_handle, class_name))
+        if len(matched_windows) >= 1:
+            return matched_windows[0]
         return matched_windows
