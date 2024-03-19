@@ -239,12 +239,4 @@ class AirtestService:
         text1 = "input text '" + word + "'"
         shell(text1)
 
-    @staticmethod
-    def phone(game_device):
-        logger.debug("句柄操作云手机")
-        login_hwnd = HwndService.find_hwnd(WinClassName.phone_home)
-        logger.debug("登录")
-        ImageWindowsService.exists(login_hwnd, Onmyoji.phone_DL)
-        logger.debug("登录{}", game_device)
-        if game_device == "1":
-            logger.debug("登录云手机001的窗口")
+
