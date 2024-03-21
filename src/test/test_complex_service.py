@@ -12,15 +12,17 @@ from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
-from src.service_onmyoji_impl import impl_house, impl_initialization, impl_explore, impl_six
-from src.service_onmyoji_impl.impl_six import current_count, deal_event
+from src.service.service_onmyoji_impl import impl_six, impl_explore, impl_house, impl_initialization
+from src.service.service_onmyoji_impl import current_count, deal_event
 from src.utils.my_logger import logger
 
 
 class TestComplexService(TestCase):
+    def test_auto_setup(self):
+        ComplexService.auto_setup("0")
 
     def test_fight(self):
-        ImageService.auto_setup("0")
+        ComplexService.auto_setup("0")
         fight_fight = Onmyoji.awaken_TZ
         fight_win = Onmyoji.awaken_ZDSL
         fight_fail = Onmyoji.awaken_ZDSB
@@ -43,7 +45,7 @@ class TestComplexService(TestCase):
         print(now1 - now)
 
     def test_fight_end(self):
-        ImageService.auto_setup("0")
+        ComplexService.auto_setup("0")
         logger.debug("开始")
         now = datetime.datetime.now()
         ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
@@ -54,7 +56,7 @@ class TestComplexService(TestCase):
         print(now1 - now)
 
     def test_swipe_floor(self):
-        ImageService.auto_setup("0")
+        ComplexService.auto_setup("0")
         logger.debug("开始")
         now = datetime.datetime.now()
         ComplexService.swipe_floor(Onmyoji.awaken_C, Onmyoji.awaken_SC, 1, 5)
@@ -63,7 +65,7 @@ class TestComplexService(TestCase):
         print(now1 - now)
 
     def test_top_addition(self):
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()
         type1 = 2
@@ -88,7 +90,7 @@ class TestComplexService(TestCase):
         式神碎片
         :return: 
         """
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()
         for i in range(20):
@@ -106,7 +108,7 @@ class TestComplexService(TestCase):
         """
         logger.debug("寄养列表检查")
         WindowsService.limit_cpu_percentage(30)
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()
         impl_house.get_optimal_card()
@@ -117,7 +119,7 @@ class TestComplexService(TestCase):
     def test_card(self):
         logger.debug("结界卡识别")
         warnings.simplefilter('ignore', ResourceWarning)
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         now = datetime.datetime.now()
         logger.debug(impl_house.get_card_type(Onmyoji.foster_JJK_TG, 0))
         now1 = datetime.datetime.now()
@@ -126,7 +128,7 @@ class TestComplexService(TestCase):
     def test_left_card(self):
         logger.debug("左侧结界卡识别")
         warnings.simplefilter('ignore', ResourceWarning)
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         now = datetime.datetime.now()
         result = impl_house.get_card_left_type(Onmyoji.foster_JJK_WXTG)
         logger.debug(result)
@@ -135,7 +137,7 @@ class TestComplexService(TestCase):
 
     def test_card_word(self):
         logger.debug("结界卡识别")
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         now = datetime.datetime.now()
         result = impl_house.get_card_type_word(Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_GYWZ, 0)
         logger.debug(result)
@@ -152,7 +154,7 @@ class TestComplexService(TestCase):
         game_project = GameProject()
         game_project.project_name = "登录"
         game_task = [game_projects, game_projects_relation, game_account, game_project]
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         impl_initialization.initialization(game_task, 1)
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -162,7 +164,7 @@ class TestComplexService(TestCase):
         计算比例
         :return:
         """
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("测试-开始")
@@ -191,7 +193,7 @@ class TestComplexService(TestCase):
     def test_automatic_rotation_type_god(self):
         logger.debug("测试-开始")
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         impl_explore.automatic_rotation_type_god()
         logger.debug("测试-结束")
         now1 = datetime.datetime.now()
@@ -200,7 +202,7 @@ class TestComplexService(TestCase):
     def test_six_moon_event(self):
         logger.debug("测试六道之门：月之海-回合事件")
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         current_result = [("技能", "柔风抱暖")]
         for i in range(20):
             logger.debug("测试-第{}回合", i + 1)
@@ -223,7 +225,7 @@ class TestComplexService(TestCase):
     def test_six_moon_skill(self):
         logger.debug("测试六道之门：月之海-选择技能")
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         # 月之海，技能+优先级+当前等级，按柔风抱暖、六道暴虐、细雨化屏、妖力化身选取
         skill_list = [Onmyoji.six_moon_JN_RFBN, Onmyoji.six_moon_JN_LDBN, Onmyoji.six_moon_JN_XYHP,
                       Onmyoji.six_moon_JN_YLHS]
@@ -235,7 +237,7 @@ class TestComplexService(TestCase):
     def test_six_moon_rare(self):
         logger.debug("测试六道之门：月之海-选择秘宝")
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         # 月之海，秘宝,攻击御守，火之卷
         rare_list = [Onmyoji.six_moon_MB_GJYS, Onmyoji.six_moon_MB_HZJ]
         impl_six.select_skills(rare_list, refresh_count=3)
@@ -246,7 +248,7 @@ class TestComplexService(TestCase):
     def test_six_moon_check_skill(self):
         logger.debug("测试六道之门：月之海-多线程选择技能")
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         # 月之海，技能+优先级+当前等级，按柔风抱暖、六道暴虐、细雨化屏、妖力化身选取
         skill_list = [Onmyoji.six_moon_JN_RFBN, Onmyoji.six_moon_JN_LDBN, Onmyoji.six_moon_JN_XYHP,
                       Onmyoji.six_moon_JN_YLHS]
@@ -259,7 +261,7 @@ class TestComplexService(TestCase):
     def test_six_moon_check_evnet(self):
         logger.debug("测试六道之门：月之海-多线程选择事件")
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         # 月之海，技能+优先级+当前等级，按柔风抱暖、六道暴虐、细雨化屏、妖力化身选取
         event_list = [Onmyoji.six_moon_YXXZ, Onmyoji.six_moon_SJ_XZY, Onmyoji.six_moon_SJ_AZ, Onmyoji.six_moon_SJ_SM,
                       Onmyoji.six_moon_SJ_HD, Onmyoji.six_moon_SJ_NX]
@@ -272,7 +274,7 @@ class TestComplexService(TestCase):
     def test_six_moon_check_rare(self):
         logger.debug("测试六道之门：月之海-多线程选择秘宝")
         now = datetime.datetime.now()
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         # 月之海，秘宝,攻击御守，火之卷
         rare_list = [Onmyoji.six_moon_MB_GJYS, Onmyoji.six_moon_MB_HZJ]
         skill = impl_six.check_list(rare_list)

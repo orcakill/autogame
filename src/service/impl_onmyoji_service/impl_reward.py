@@ -9,7 +9,7 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameProjectLog, GameAccount, GameProject, GameDevices, GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
-from src.service_onmyoji_impl import impl_initialization
+from src.service.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 

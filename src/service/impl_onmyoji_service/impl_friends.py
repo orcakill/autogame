@@ -12,7 +12,8 @@ from src.model.models import GameAccount, GameProjectsRelation, GameProjects, Ga
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
-from src.service_onmyoji_impl import impl_awakening, impl_initialization
+from src.service.service_onmyoji_impl import impl_awakening
+from src.service.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 

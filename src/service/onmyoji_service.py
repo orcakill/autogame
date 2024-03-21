@@ -3,9 +3,9 @@
 # @File: onmyoji_service.py
 # @Description: 服务接口
 
-from src.service_onmyoji_impl import impl_border, impl_friends, impl_ghost, impl_reward, impl_awakening, impl_soul, \
-    impl_initialization, impl_explore, impl_pvp, impl_spirit, impl_deed, impl_six, impl_super
-from src.service_onmyoji_impl import impl_house
+from src.service.service_onmyoji_impl import impl_ghost, impl_awakening, impl_deed
+from src.service.service_onmyoji_impl import impl_six, impl_pvp, impl_super, impl_border, impl_friends, impl_explore, \
+    impl_soul, impl_spirit, impl_reward, impl_house, impl_initialization
 
 
 class OnmyojiService:

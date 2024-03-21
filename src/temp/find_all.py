@@ -4,9 +4,8 @@
 # @File: find_all.py
 # @Description: 寻找数量
 """
-import re
 
-from src.service_onmyoji_impl.impl_six import current_exist
+from src.service.service_onmyoji_impl import current_exist
 from src.utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':

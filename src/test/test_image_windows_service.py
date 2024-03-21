@@ -40,7 +40,7 @@ class ImageWindowsServiceTest(TestCase):
             result1 = ImageWindowsService.get_all_hwnd_info(hwnd=hwnd)
             logger.debug(result[i])
             logger.debug(result1)
-            ImageWindowsService.screenshot(hwnd, name=str(hwnd), print_image=True)
+            ImageWindowsService.windows_screenshot(hwnd, name=str(hwnd), print_image=True)
         logger.info("指定句柄下属的句柄及信息")
         result = ImageWindowsService.get_child_windows("264916")
         # for i in range(len(result)):
@@ -59,7 +59,7 @@ class ImageWindowsServiceTest(TestCase):
         logger.debug(hwnd)
         hwnd2=ImageWindowsService.get_all_hwnd_info(class_name="Qt5QWindowIcon")
         logger.debug(hwnd2)
-        ImageWindowsService.screenshot(hwnd[0], '测试', True)
+        ImageWindowsService.windows_screenshot(hwnd[0], '测试', True)
 
     @staticmethod
     def test_exists():

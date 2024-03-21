@@ -658,6 +658,11 @@ class Onmyoji:
     phone_CQYSJ = r"云手机\重启云手机"
 
 
+class WinProcessName:
+    # 云手机进程名
+    phone_exe = r"YsPhone.exe"
+
+
 class WinClassName:
     # 云手机登录界面类名
     phone_home = r"Qt5QWindowIcon"

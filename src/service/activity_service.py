@@ -11,7 +11,7 @@ from src.model.models import GameAccount
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
-from src.service_onmyoji_impl import impl_initialization
+from src.service.service_onmyoji_impl import impl_initialization
 from src.utils.my_logger import logger
 
 # 服务接口

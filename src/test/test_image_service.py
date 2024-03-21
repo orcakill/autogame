@@ -19,16 +19,14 @@ class TestImageService(TestCase):
 
     def test_exists(self):
         now = datetime.datetime.now()
-        ImageService.auto_setup("2")
         logger.debug("开始")
-        t=ImageService.touch(Onmyoji.arrange_QZBZ,cvstrategy=Cvstrategy.default,duration=2)
-        logger.debug(t)
+        ComplexService.auto_setup("0")
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
 
     def test_exists_coordinate(self):
-        ImageService.auto_setup("0")
+        ComplexService.auto_setup("0")
         now = datetime.datetime.now()
         ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
                                  Onmyoji.border_ZCTZ, Onmyoji.home_TS, Onmyoji.border_GRJJ, None, 60, 1)
@@ -36,7 +34,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_touch(self):
-        ImageService.auto_setup("0")
+        ComplexService.auto_setup("0")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
@@ -46,7 +44,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_touch_coordinate(self):
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
@@ -56,7 +54,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_snapshot(self):
-        ImageService.auto_setup("2")
+        ComplexService.auto_setup("2")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
@@ -68,7 +66,7 @@ class TestImageService(TestCase):
     def test_snapshot_for(self):
         # 测试代码
         logger.debug("开始")
-        ImageService.auto_setup("2")
+        ComplexService.auto_setup("2")
         now = datetime.datetime.now()
         logger.debug("循环开始")
         for i in range(100):
@@ -80,7 +78,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_crop_image(self):
-        ImageService.auto_setup("0")
+        ComplexService.auto_setup("0")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
@@ -96,7 +94,7 @@ class TestImageService(TestCase):
         :return:
         """
         now = datetime.datetime.now()
-        ImageService.auto_setup("2")
+        ComplexService.auto_setup("2")
         # 测试代码
         logger.debug("开始")
         result = ImageService.find_all(Onmyoji.arrange_QZBZ)
@@ -112,7 +110,7 @@ class TestImageService(TestCase):
         logger.debug(now1 - now)
 
     def test_cv_match(self):
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
@@ -123,7 +121,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_text(self):
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
