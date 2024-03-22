@@ -5,6 +5,7 @@
 # @Description: airtest接口
 """
 import logging
+import random
 from datetime import datetime as imp_datetime
 
 from airtest import aircv
@@ -13,10 +14,10 @@ from airtest.core.api import *
 from airtest.core.helper import G
 from airtest.core.settings import Settings
 
-from src.model.enum import WinClassName, Onmyoji
 from src.service.windows_service import WindowsService
 from src.utils import utils_path
 from src.utils.my_logger import my_logger as logger
+from src.utils.utils_path import get_onmyoji_image_path
 
 # 控制airtest的日志输出
 log_airtest = logging.getLogger("airtest")
@@ -24,6 +25,8 @@ log_airtest.setLevel(logging.CRITICAL)
 
 # 图片点击识别等待时间(秒）·
 WAIT = 2
+# 图像识别阈值
+THRESHOLD = 0.7
 
 
 class AirtestService:
@@ -239,4 +242,29 @@ class AirtestService:
         text1 = "input text '" + word + "'"
         shell(text1)
 
-
+    @staticmethod
+    def get_template_list(folder_path: str, rgb: bool = False, threshold: float = THRESHOLD):
+        """
+        根据文件夹名获取图片集合，转为template列表
+        :param threshold: 图像识别阈值
+        :param rgb: RGB
+        :param folder_path: 图片文件夹路径
+        :return:
+        """
+        template_list = []
+        folder_all_path = os.path.join(get_onmyoji_image_path(), folder_path)
+        folder_list = os.listdir(folder_all_path)
+        random.shuffle(folder_list)
+        for file_name in folder_list:
+            file_path = os.path.abspath(os.path.join(folder_all_path, file_name))
+            # 判断文件是否存在
+            if os.path.isfile(file_path):
+                # 判断文件是否是图片类型
+                file_ext = file_path.split('.')[-1].lower()
+                if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp']:
+                    # 图片类赋值
+                    template = Template(filename=file_path, rgb=rgb, threshold=threshold)
+                    template_list.append(template)
+            else:
+                logger.debug("{}文件不存在", file_path)
+        return template_list
