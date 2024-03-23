@@ -2,8 +2,7 @@
 # @Author  : orcakill
 # @File    : image_service.py
 # @Description : 图像识别接口
-import os
-import random
+
 import time
 
 import cv2
@@ -15,13 +14,12 @@ import win32con
 import win32gui
 import win32process
 import win32ui
-from airtest.core.cv import Template
 
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
+from src.service.impl_image_service import impl_exists
 from src.service.mouse_service import MouseService
 from src.utils.my_logger import my_logger as logger
-from src.utils.utils_path import get_onmyoji_image_path
 
 # 图像识别算法
 CVSTRATEGY = Cvstrategy.sift
@@ -52,43 +50,10 @@ class ImageService:
                is_click: bool = False, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
-        :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 单张图片超时时间
-        :param threshold: 图像识别阈值
-        :param interval: 图片识别点击间隔时间
-        :param rgb: 带颜色
-        :param timeouts: 图片组超时时间
-        :param wait: 图片等待识别时间
-        :param is_click: 是否点击坐标
-        :param is_throw: 是否显示异常
-        :return:
         """
-        try:
-            time.sleep(wait)
-            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
-            time_start = time.time()
-            while time.time() - time_start < timeouts:
-                for template in template_list:
-                    pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
-                    if pos and not is_click:
-                        if is_throw:
-                            logger.debug("图像识别成功:{},{}", folder_path, template.filename)
-                        else:
-                            logger.debug("图像识别成功:{}", folder_path)
-                        return pos
-                    if pos and is_click:
-                        time.sleep(interval)
-                        logger.debug("图像识别点击成功:{}", folder_path)
-                        ImageService.touch_coordinate(pos)
-                        return True
-            return False
-        except Exception as e:
-            if is_throw:
-                logger.exception("异常：{}", e)
-            else:
-                pass
-        return False
+        return impl_exists.exists(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout, timeouts=timeouts,
+                                  threshold=threshold, wait=wait, interval=interval, is_throw=is_throw,
+                                  is_click=is_click, rgb=rgb)
 
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
@@ -110,7 +75,7 @@ class ImageService:
         """
         try:
             time.sleep(wait)
-            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
@@ -206,8 +171,6 @@ class ImageService:
         """
         return AirtestService.cv2_2_pil(local)
 
-
-
     @staticmethod
     def find_all(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
                  threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
@@ -226,7 +189,7 @@ class ImageService:
         """
         try:
             time.sleep(wait)
-            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
@@ -260,7 +223,7 @@ class ImageService:
         """
         try:
             time.sleep(wait)
-            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
@@ -308,7 +271,7 @@ class ImageService:
         try:
             resolution = ImageService.resolution_ratio()
             time.sleep(wait)
-            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
@@ -348,7 +311,7 @@ class ImageService:
                 result_xy1 = result['rectangle'][0]
                 result_xy2 = result['rectangle'][1]
                 result_screen = ImageService.crop_image(result_xy1[0], result_xy1[1], result_xy2[0], result_xy2[1])
-                template_list = ImageService.get_template_list(folder_path2, rgb, threshold)
+                template_list = AirtestService.get_template_list(folder_path2, rgb, threshold)
                 time_start = time.time()
                 while time.time() - time_start < timeouts:
                     for template in template_list:
@@ -395,7 +358,7 @@ class ImageService:
         """
         try:
             time.sleep(wait)
-            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:
@@ -441,7 +404,7 @@ class ImageService:
         try:
             time.sleep(wait)
             resolution = ImageService.resolution_hwnd(hwnd)
-            template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
                 for template in template_list:

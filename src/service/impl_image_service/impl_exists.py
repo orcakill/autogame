@@ -2,26 +2,11 @@
 # @Author: orcakill
 # @File: impl_exists.py
 # @Description: 图像识别接口，实现类
-import os
-import random
 import time
-
-import cv2
-import imageio
-import numpy as np
-import psutil
-import win32api
-import win32con
-import win32gui
-import win32process
-import win32ui
-from airtest.core.cv import Template
 
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
-from src.service.mouse_service import MouseService
 from src.utils.my_logger import my_logger as logger
-from src.utils.utils_path import get_onmyoji_image_path
 
 # 图像识别算法
 CVSTRATEGY = Cvstrategy.sift
@@ -44,6 +29,7 @@ DURATION = 0.01
 
 THROW = False
 
+
 def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
            threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
            is_click: bool = False, rgb: bool = False):
@@ -63,7 +49,7 @@ def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEO
     """
     try:
         time.sleep(wait)
-        template_list = ImageService.get_template_list(folder_path, rgb, threshold)
+        template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
         time_start = time.time()
         while time.time() - time_start < timeouts:
             for template in template_list:
@@ -77,7 +63,7 @@ def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEO
                 if pos and is_click:
                     time.sleep(interval)
                     logger.debug("图像识别点击成功:{}", folder_path)
-                    ImageService.touch_coordinate(pos)
+                    AirtestService.touch_coordinate(pos, duration=DURATION, wait_time=WAIT)
                     return True
         return False
     except Exception as e:
