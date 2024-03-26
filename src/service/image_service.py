@@ -17,7 +17,8 @@ import win32ui
 
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
-from src.service.impl_image_service import impl_exists
+from src.service.impl_image_service.impl_exists import ImplExistsTouch
+from src.service.impl_image_service.impl_find import ImplFind
 from src.service.mouse_service import MouseService
 from src.utils.my_logger import my_logger as logger
 
@@ -51,9 +52,10 @@ class ImageService:
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
         """
-        return impl_exists.exists(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout, timeouts=timeouts,
-                                  threshold=threshold, wait=wait, interval=interval, is_throw=is_throw,
-                                  is_click=is_click, rgb=rgb)
+        return ImplExistsTouch.exists(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout,
+                                      timeouts=timeouts,
+                                      threshold=threshold, wait=wait, interval=interval, is_throw=is_throw,
+                                      is_click=is_click, rgb=rgb)
 
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
@@ -61,38 +63,10 @@ class ImageService:
               duration: float = DURATION, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，点击图片
-        :param rgb: rgb
-        :param timeouts: 图片组超时时间
-        :param wait: 点击间隔时间
-        :param times: 点击次数
-        :param duration: 按住时间
-        :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 超时时间
-        :param threshold: 图像识别阈值
-        :param is_throw: 是否显示异常,默认不显示异常
-        :return: bool
         """
-        try:
-            time.sleep(wait)
-            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
-            time_start = time.time()
-            while time.time() - time_start < timeouts:
-                for template in template_list:
-                    is_click = AirtestService.touch(template, cvstrategy, timeout, is_throw, times, duration)
-                    if is_click:
-                        # word=folder_path.replace("\\","_")
-                        # ImageService.snapshot(word, True)
-                        logger.debug("图像识别点击成功:{}", folder_path)
-                        return True
-            return False
-        except Exception as e:
-            if is_throw:
-                logger.error("异常：{}", e)
-            else:
-                pass
-
-        return False
+        return ImplExistsTouch.touch(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout, timeouts=timeouts,
+                                     threshold=threshold, wait=wait, is_throw=is_throw, times=times,
+                                     duration=duration, rgb=rgb)
 
     @staticmethod
     def snapshot(name: str = None, print_image: bool = False):
@@ -187,23 +161,8 @@ class ImageService:
         :param threshold: 图像识别阈值
         :return:
         """
-        try:
-            time.sleep(wait)
-            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
-            time_start = time.time()
-            while time.time() - time_start < timeouts:
-                for template in template_list:
-                    pos = AirtestService.find_all(template, cvstrategy, timeout, is_throw)
-                    if pos:
-                        logger.debug("图像查找成功:{}", folder_path)
-                        return pos
-            return None
-        except Exception as e:
-            if is_throw:
-                logger.error("异常：{}", e)
-            else:
-                pass
-        return None
+        return ImplFind.find_all(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout, timeouts=timeouts,
+                                 threshold=threshold, wait=wait, is_throw=is_throw, rgb=rgb)
 
     @staticmethod
     def find_all_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
@@ -221,33 +180,7 @@ class ImageService:
         :param threshold: 图像识别阈值
         :return:
         """
-        try:
-            time.sleep(wait)
-            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
-            time_start = time.time()
-            while time.time() - time_start < timeouts:
-                for template in template_list:
-                    pos = AirtestService.find_all(template, cvstrategy, timeout, is_throw)
-                    if pos:
-                        logger.debug("图像查找成功:{}", folder_path)
-                        return [d['result'] for d in pos]
-            return None
-        except Exception as e:
-            if is_throw:
-                logger.error("异常：{}", e)
-            else:
-                pass
         return None
-
-    @staticmethod
-    def find_all_num(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
-                     threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
-                     rgb: bool = False):
-        result = ImageService.find_all(folder_path, cvstrategy, timeout, timeouts, threshold, wait, is_throw, rgb)
-        if result:
-            return len(result)
-        else:
-            return 0
 
     @staticmethod
     def cv_match(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: int = TIMEOUTS,
