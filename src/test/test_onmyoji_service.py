@@ -149,17 +149,18 @@ class TestOnmyojiService(TestCase):
 
     def test_pvp(self):
         """
-        项目19 斗技
+        项目19 斗技   
         :return:
         """
         TestOnmyojiService.test_project('1', '2', "斗技", fight_times=10)
 
     def test_soul_arrange(self):
+
         """
         项目20 御魂整理
         :return:
         """
-        TestOnmyojiService.test_project('1', '1', "御魂整理")
+        TestOnmyojiService.test_project('1', '2', "御魂整理")
 
     def test_explore(self):
         """
@@ -181,7 +182,6 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         TestOnmyojiService.test_project('2,3,4,5', '1', "契灵")
-
 
     def test_six_moon(self):
         """

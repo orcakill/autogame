@@ -180,7 +180,9 @@ class ImageService:
         :param threshold: 图像识别阈值
         :return:
         """
-        return None
+        return ImplFind.find_all_coordinate(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout,
+                                            timeouts=timeouts, threshold=threshold, wait=wait, is_throw=is_throw,
+                                            rgb=rgb)
 
     @staticmethod
     def cv_match(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: int = TIMEOUTS,

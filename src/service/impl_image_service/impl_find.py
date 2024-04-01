@@ -26,7 +26,7 @@ INTERVAL = 1
 TIMES = 1
 # 按住时间
 DURATION = 0.01
-
+# 是否抛出异常
 THROW = False
 
 

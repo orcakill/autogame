@@ -131,7 +131,7 @@ if __name__ == '__main__':
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="阴阳寮突破",
                                                        start_hour=start_hour, end_hour=end_hour)
             if not task_list3[2]:
-                logger.info("12-16,小号，斗技")
+                logger.info("12-16,大号，斗技")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name='斗技',
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list3[2] = True
