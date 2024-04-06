@@ -32,7 +32,7 @@ DURATION = 0.01
 THROW = False
 
 
-class ImplMatchService:
+class ImplMatch:
     @staticmethod
     def cv_match(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: int = TIMEOUTS,
                  threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,

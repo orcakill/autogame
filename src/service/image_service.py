@@ -19,6 +19,7 @@ from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.impl_image_service.impl_exists import ImplExistsTouch
 from src.service.impl_image_service.impl_find import ImplFind
+from src.service.impl_image_service.impl_match import ImplMatch
 from src.service.mouse_service import MouseService
 from src.utils.my_logger import my_logger as logger
 
@@ -203,24 +204,9 @@ class ImageService:
         :param threshold: 图像识别阈值
         :return:
         """
-        try:
-            resolution = ImageService.resolution_ratio()
-            time.sleep(wait)
-            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
-            time_start = time.time()
-            while time.time() - time_start < timeouts:
-                for template in template_list:
-                    # 设备截图
-                    image1 = ImageService.crop_image(x1 * resolution[0], y1 * resolution[1], x2 * resolution[0],
-                                                     y2 * resolution[1])
-                    return AirtestService.cv_match(template, image1, cvstrategy)
-            return None
-        except Exception as e:
-            if is_throw:
-                logger.error("异常：{}", e)
-            else:
-                pass
-        return None
+        return ImplMatch.cv_match(folder_path=folder_path, cvstrategy=cvstrategy, timeouts=timeouts,
+                                  threshold=threshold, wait=wait, is_throw=is_throw, rgb=rgb, x1=x1, x2=x2, y1=y1,
+                                  y2=y2)
 
     @staticmethod
     def crop_exists(folder_path1: str, folder_path2: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
@@ -516,6 +502,15 @@ class ImageService:
     def get_all_hwnd_info(process_name=None, title=None, class_name=None, hwnd=None):
         # 获取当前主机上的所有句柄id,进程信息，窗口标题
         all_window_hwnd = []
+
+
+
+
+
+
+
+
+
         all_window_hwnd_info = []
 
         # 枚举所有窗口句柄，添加到列表中
