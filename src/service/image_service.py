@@ -213,7 +213,7 @@ class ImageService:
                     timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
                     is_throw: bool = THROW, rgb: bool = False):
         """
-        根据文件夹名获取图片进行图像识别，判断图片是否存在
+        根据文件夹名获取图片进行图像识别，判断图片内图片是否存在
         :param rgb: 带颜色
         :param timeouts: 图片组超时时间
         :param wait: 图片等待识别时间
@@ -502,14 +502,6 @@ class ImageService:
     def get_all_hwnd_info(process_name=None, title=None, class_name=None, hwnd=None):
         # 获取当前主机上的所有句柄id,进程信息，窗口标题
         all_window_hwnd = []
-
-
-
-
-
-
-
-
 
         all_window_hwnd_info = []
 
