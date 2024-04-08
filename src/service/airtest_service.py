@@ -101,6 +101,13 @@ class AirtestService:
 
     @staticmethod
     def touch_coordinate(v: [], duration: float, wait_time: float):
+        """
+        点击坐标
+        :param duration: 按住时间
+        :param v: 坐标
+        :param wait: 等待开始时间
+        :return:
+        """
         time.sleep(wait_time)
         if touch(v, duration=duration):
             logger.debug("坐标点击成功")
@@ -132,11 +139,11 @@ class AirtestService:
     @staticmethod
     def swipe(v1: [], v2: [], duration):
         """
-        重启APP
-        :param duration: 滑动间隔
-        :param v1: 图片1
-        :param v2: 图片2
-        :return: 无
+        滑动
+        :param duration: 间隔
+        :param v1: 坐标1
+        :param v2: 坐标2
+        :return:
         """
         if swipe(v1, v2, duration=duration):
             return True
@@ -145,6 +152,14 @@ class AirtestService:
 
     @staticmethod
     def crop_image(x1, y1, x2, y2):
+        """
+        局部截图
+        :param x1: x1
+        :param y1: y1
+        :param x2: x2
+        :param y2: y2
+        :return:
+        """
         screen = G.DEVICE.snapshot()
         # 局部截图
         local_screen = aircv.crop_image(screen, (x1, y1, x2, y2))
@@ -152,6 +167,10 @@ class AirtestService:
 
     @staticmethod
     def resolution_ratio():
+        """
+        获取分辨率
+        :return:
+        """
         if G.DEVICE.display_info['orientation'] in [1, 3]:
             height = G.DEVICE.display_info['width']
             width = G.DEVICE.display_info['height']

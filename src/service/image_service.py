@@ -54,9 +54,8 @@ class ImageService:
         根据文件夹名获取图片进行图像识别，判断图片是否存在
         """
         return ImplExistsTouch.exists(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout,
-                                      timeouts=timeouts,
-                                      threshold=threshold, wait=wait, interval=interval, is_throw=is_throw,
-                                      is_click=is_click, rgb=rgb)
+                                      timeouts=timeouts, threshold=threshold, wait=wait, interval=interval,
+                                      is_throw=is_throw, is_click=is_click, rgb=rgb)
 
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
@@ -73,7 +72,6 @@ class ImageService:
     def snapshot(name: str = None, print_image: bool = False):
         """
         设备截图
-        :return:
         """
         return AirtestService.snapshot(name, print_image)
 
@@ -81,10 +79,6 @@ class ImageService:
     def touch_coordinate(v: [], wait: float = WAIT, duration: float = DURATION):
         """
         点击坐标
-        :param duration: 按住时间
-        :param v: 坐标
-        :param wait: 等待开始时间
-        :return:
         """
         AirtestService.touch_coordinate(v, wait, duration)
 
@@ -92,17 +86,13 @@ class ImageService:
     def restart_app(app: str):
         """
         重启APP
-        :param app: 包名
-        :return:
         """
         AirtestService.restart_app(app)
 
     @staticmethod
     def stop_app(app: str):
         """
-        重启APP
-        :param app: 包名
-        :return:
+        停止APP
         """
         AirtestService.stop_app(app)
 
@@ -110,10 +100,6 @@ class ImageService:
     def swipe(v1: [], v2: [], duration: float = 0.5):
         """
         滑动
-        :param duration: 间隔
-        :param v1: 坐标1
-        :param v2: 坐标2
-        :return:
         """
         AirtestService.swipe(v1, v2, duration)
 
@@ -121,11 +107,6 @@ class ImageService:
     def crop_image(x1, y1, x2, y2):
         """
         局部截图
-        :param x1: x1
-        :param y1: y1
-        :param x2: x2
-        :param y2: y2
-        :return:
         """
         return AirtestService.crop_image(x1, y1, x2, y2)
 
@@ -133,7 +114,6 @@ class ImageService:
     def resolution_ratio():
         """
         获取分辨率
-        :return:
         """
         return AirtestService.resolution_ratio()
 
@@ -141,8 +121,6 @@ class ImageService:
     def cv2_2_pil(local):
         """
         转换图片格式
-        :param local:图片
-        :return:
         """
         return AirtestService.cv2_2_pil(local)
 
@@ -151,7 +129,7 @@ class ImageService:
                  threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
                  rgb: bool = False):
         """
-        多图查找
+        多图查找，获取多个坐标
         :param rgb: 带颜色
         :param timeouts: 图片组超时时间
         :param wait: 图片等待识别时间
@@ -209,9 +187,9 @@ class ImageService:
                                   y2=y2)
 
     @staticmethod
-    def crop_exists(folder_path1: str, folder_path2: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
-                    timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
-                    is_throw: bool = THROW, rgb: bool = False):
+    def match_in(folder_path1: str, folder_path2: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+                 timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
+                 is_throw: bool = THROW, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，判断图片内图片是否存在
         :param rgb: 带颜色

@@ -70,3 +70,46 @@ class ImplMatch:
             else:
                 pass
         return None
+
+    @staticmethod
+    def match_in(folder_path1: str, folder_path2: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+                 timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
+                 is_throw: bool = THROW, rgb: bool = False):
+        """
+        根据文件夹名获取图片进行图像识别，判断图片内图片是否存在
+        :param rgb: 带颜色
+        :param timeouts: 图片组超时时间
+        :param wait: 图片等待识别时间
+        :param is_throw: 是否显示异常
+        :param folder_path1: 图片文件夹路径1 局部图
+        :param folder_path2: 图片文件夹路径2 局部图内图片
+        :param cvstrategy: 图像识别算法
+        :param timeout: 单张图片超时时间
+        :param threshold: 图像识别阈值
+        :return:
+        """
+        try:
+            time.sleep(wait)
+            result = ImplMatch.cv_match(folder_path1)
+            if result:
+                result_xy1 = result['rectangle'][0]
+                result_xy2 = result['rectangle'][1]
+                result_screen = AirtestService.crop_image(result_xy1[0], result_xy1[1], result_xy2[0], result_xy2[1])
+                template_list = AirtestService.get_template_list(folder_path2, rgb, threshold)
+                time_start = time.time()
+                while time.time() - time_start < timeouts:
+                    for template in template_list:
+                        pos = AirtestService.match_in(template, result_screen, cvstrategy, timeout, is_throw)
+                        if pos:
+                            if is_throw:
+                                logger.debug("局部图内图像识别成功:{},{}", folder_path2, template.filename)
+                            else:
+                                logger.debug("局部图内图像识别成功:{}", folder_path2)
+                            return pos
+            return False
+        except Exception as e:
+            if is_throw:
+                logger.exception("异常：{}", e)
+            else:
+                pass
+        return False
