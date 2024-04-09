@@ -120,7 +120,7 @@ class ImageService:
     @staticmethod
     def cv2_2_pil(local):
         """
-        转换图片格式
+        转换图片格式 将cv2转换为pil
         """
         return AirtestService.cv2_2_pil(local)
 
