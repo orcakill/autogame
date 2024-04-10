@@ -105,7 +105,7 @@ class AirtestService:
         点击坐标
         :param duration: 按住时间
         :param v: 坐标
-        :param wait: 等待开始时间
+        :param wait_time: 等待开始时间
         :return:
         """
         time.sleep(wait_time)

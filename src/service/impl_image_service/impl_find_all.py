@@ -30,7 +30,7 @@ DURATION = 0.01
 THROW = False
 
 
-class ImplFind:
+class ImplFindAll:
     @staticmethod
     def find_all(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
                  threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
@@ -126,7 +126,7 @@ class ImplFind:
                     if pos and len(pos) >= rank - 1:
                         coordinate = pos[rank - 1]['result']
                         logger.debug("图像查找点击成功:{},坐标{}", folder_path, coordinate)
-                        ImageService.touch_coordinate(coordinate)
+                        AirtestService.touch_coordinate(coordinate, WAIT, DURATION)
                         return coordinate
             return False
         except Exception as e:
