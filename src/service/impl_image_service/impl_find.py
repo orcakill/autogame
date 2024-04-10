@@ -98,3 +98,40 @@ class ImplFind:
             else:
                 pass
         return None
+
+    @staticmethod
+    def touch_all_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+                             timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
+                             is_throw: bool = THROW, rgb: bool = False, rank: int = 1):
+        """
+        多图查找点击 获取坐标并点击
+        :param rank: 点击第几个
+        :param rgb: 带颜色
+        :param timeouts: 图片组超时时间
+        :param wait: 图片等待识别时间
+        :param is_throw: 是否显示异常
+        :param folder_path: 图片文件夹路径
+        :param cvstrategy: 图像识别算法
+        :param timeout: 单张图片超时时间
+        :param threshold: 图像识别阈值
+        :return:
+        """
+        try:
+            time.sleep(wait)
+            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
+            time_start = time.time()
+            while time.time() - time_start < timeouts:
+                for template in template_list:
+                    pos = AirtestService.find_all(template, cvstrategy, timeout, is_throw)
+                    if pos and len(pos) >= rank - 1:
+                        coordinate = pos[rank - 1]['result']
+                        logger.debug("图像查找点击成功:{},坐标{}", folder_path, coordinate)
+                        ImageService.touch_coordinate(coordinate)
+                        return coordinate
+            return False
+        except Exception as e:
+            if is_throw:
+                logger.error("异常：{}", e)
+            else:
+                pass
+        return False

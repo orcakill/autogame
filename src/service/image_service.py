@@ -130,15 +130,6 @@ class ImageService:
                  rgb: bool = False):
         """
         多图查找，获取多个坐标
-        :param rgb: 带颜色
-        :param timeouts: 图片组超时时间
-        :param wait: 图片等待识别时间
-        :param is_throw: 是否显示异常
-        :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 单张图片超时时间
-        :param threshold: 图像识别阈值
-        :return:
         """
         return ImplFind.find_all(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout, timeouts=timeouts,
                                  threshold=threshold, wait=wait, is_throw=is_throw, rgb=rgb)
@@ -149,15 +140,6 @@ class ImageService:
                             is_throw: bool = THROW, rgb: bool = False):
         """
         多图查找 只获取坐标
-        :param rgb: 带颜色
-        :param timeouts: 图片组超时时间
-        :param wait: 图片等待识别时间
-        :param is_throw: 是否显示异常
-        :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 单张图片超时时间
-        :param threshold: 图像识别阈值
-        :return:
         """
         return ImplFind.find_all_coordinate(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout,
                                             timeouts=timeouts, threshold=threshold, wait=wait, is_throw=is_throw,
@@ -169,18 +151,6 @@ class ImageService:
                  rgb: bool = False, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
         """
         计算图片和设备截图的匹配结果，有result 坐标  confidence 相似度 区域范围
-         :param cvstrategy: 图像识别算法
-        :param y2: y2坐标比例
-        :param x2: x2坐标比例
-        :param y1: y1坐标比例
-        :param x1: x1坐标比例
-        :param rgb: 带颜色
-        :param timeouts: 图片组超时时间
-        :param wait: 图片等待识别时间
-        :param is_throw: 是否显示异常
-        :param folder_path: 图片文件夹路径
-        :param threshold: 图像识别阈值
-        :return:
         """
         return ImplMatch.cv_match(folder_path=folder_path, cvstrategy=cvstrategy, timeouts=timeouts,
                                   threshold=threshold, wait=wait, is_throw=is_throw, rgb=rgb, x1=x1, x2=x2, y1=y1,
@@ -192,49 +162,15 @@ class ImageService:
                  is_throw: bool = THROW, rgb: bool = False):
         """
         根据文件夹名获取图片进行图像识别，判断图片内图片是否存在
-        :param rgb: 带颜色
-        :param timeouts: 图片组超时时间
-        :param wait: 图片等待识别时间
-        :param is_throw: 是否显示异常
-        :param folder_path1: 图片文件夹路径1 局部图
-        :param folder_path2: 图片文件夹路径2 局部图内图片
-        :param cvstrategy: 图像识别算法
-        :param timeout: 单张图片超时时间
-        :param threshold: 图像识别阈值
-        :return:
         """
-        try:
-            time.sleep(wait)
-            result = ImageService.cv_match(folder_path1)
-            if result:
-                result_xy1 = result['rectangle'][0]
-                result_xy2 = result['rectangle'][1]
-                result_screen = ImageService.crop_image(result_xy1[0], result_xy1[1], result_xy2[0], result_xy2[1])
-                template_list = AirtestService.get_template_list(folder_path2, rgb, threshold)
-                time_start = time.time()
-                while time.time() - time_start < timeouts:
-                    for template in template_list:
-                        pos = AirtestService.match_in(template, result_screen, cvstrategy, timeout, is_throw)
-                        if pos:
-                            if is_throw:
-                                logger.debug("局部图内图像识别成功:{},{}", folder_path2, template.filename)
-                            else:
-                                logger.debug("局部图内图像识别成功:{}", folder_path2)
-                            return pos
-            return False
-        except Exception as e:
-            if is_throw:
-                logger.exception("异常：{}", e)
-            else:
-                pass
-        return False
+        return ImplMatch.match_in(folder_path1=folder_path1, folder_path2=folder_path2, cvstrategy=cvstrategy,
+                                  timeout=timeout, timeouts=timeouts, threshold=threshold, wait=wait, is_throw=is_throw,
+                                  rgb=rgb)
 
     @staticmethod
     def text(word: str):
         """
-        文字
-        :param word: 文字内容
-        :return:
+        输入文字
         """
         AirtestService.text(word)
 
@@ -243,17 +179,7 @@ class ImageService:
                              timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
                              is_throw: bool = THROW, rgb: bool = False, rank: int = 1):
         """
-        多图查找 只获取坐标
-        :param rank: 点击第几个
-        :param rgb: 带颜色
-        :param timeouts: 图片组超时时间
-        :param wait: 图片等待识别时间
-        :param is_throw: 是否显示异常
-        :param folder_path: 图片文件夹路径
-        :param cvstrategy: 图像识别算法
-        :param timeout: 单张图片超时时间
-        :param threshold: 图像识别阈值
-        :return:
+        多图查找点击 获取坐标并点击
         """
         try:
             time.sleep(wait)
