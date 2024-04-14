@@ -2,10 +2,8 @@
 # @Author: orcakill
 # @File: onmyoji_service.py
 # @Description: 服务接口
-
-from src.service.service_onmyoji_impl import impl_ghost, impl_awakening, impl_deed
-from src.service.service_onmyoji_impl import impl_six, impl_pvp, impl_super, impl_border, impl_friends, impl_explore, \
-    impl_soul, impl_spirit, impl_reward, impl_house, impl_initialization
+from src.service.impl_onmyoji_service import impl_initialization, impl_soul, impl_border, impl_awakening, impl_reward, \
+    impl_ghost, impl_friends, impl_house, impl_pvp, impl_explore, impl_spirit, impl_deed, impl_six, impl_super
 
 
 class OnmyojiService:

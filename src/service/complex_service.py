@@ -10,7 +10,6 @@ from src.model.enum import Cvstrategy, Onmyoji
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
-from src.service_windows_impl import impl_phone
 from src.utils.my_logger import logger
 
 
@@ -53,12 +52,13 @@ class ComplexService:
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
         while is_state != "device":
-            if game_device in ["0", "4"]:
-                logger.debug("自动登录并连接")
-                impl_phone.phone_login(game_device)
-            else:
-                logger.debug("未就绪，设备状态{},等待10s", is_state)
-                time.sleep(10)
+            # if game_device in ["0", "4"]:
+            #     logger.debug("自动登录并连接")
+            #     impl_phone.phone_login(game_device)
+            # else:
+            #     logger.debug("未就绪，设备状态{},等待10s", is_state)
+            #     time.sleep(10)
+            time.sleep(10)
             logger.debug("重新判断是否已就绪")
             is_state = WindowsService.get_device_status_by_ip(devices_name)
         if is_state == "device":

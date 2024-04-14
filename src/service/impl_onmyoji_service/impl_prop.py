@@ -5,7 +5,6 @@
 from src.model.enum import Onmyoji, WinProcessName, WinClassName
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
-from src.service.image_windows_service import ImageWindowsService
 from src.utils.my_logger import logger
 
 
@@ -46,10 +45,10 @@ def phone_login(game_device: str):
     :param game_device:
     :return:
     """
-    # 获取云手机句柄
-    hwnd = ImageWindowsService.find_hwnd(WinProcessName.phone_exe, WinClassName.phone_home)
-    # 登录，或者根据设备号登录云手机
-    ImageWindowsService.exists(hwnd, Onmyoji.phone_DL)
+    # # 获取云手机句柄
+    # hwnd = ImageSerfind_hwnd(WinProcessName.phone_exe, WinClassName.phone_home)
+    # # 登录，或者根据设备号登录云手机
+    # ImageWindowsService.exists(hwnd, Onmyoji.phone_DL)
     # 连接adb
     # 同意连接
 

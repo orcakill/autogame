@@ -17,7 +17,7 @@ fight_interrupt_flag = False
 fight_result = None
 
 
-class ComplexService:
+class TestComplexService:
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_none: str = None,
                   timeouts: float = 60, timeout: float = 1):
@@ -40,16 +40,16 @@ class ComplexService:
         fight_interrupt_flag = False
         fight_result = None
         # 创建线程1，战斗胜利，退出挑战
-        thread1 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-11",
+        thread1 = threading.Thread(target=TestComplexService.fight_end_thread, name="fight-11",
                                    args=(fight_win, True, fight_quit, True, timeouts, timeout, True))
         # 创建线程2，退出挑战,无
-        thread2 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-12",
+        thread2 = threading.Thread(target=TestComplexService.fight_end_thread, name="fight-12",
                                    args=(fight_quit, True, None, True, timeouts, timeout, True))
         # 创建线程3，再次挑战，战斗失败
-        thread3 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-13",
+        thread3 = threading.Thread(target=TestComplexService.fight_end_thread, name="fight-13",
                                    args=(fight_again, False, fight_fail, True, timeouts, timeout))
         # 创建线程4，未挑战
-        thread4 = threading.Thread(target=ComplexService.fight_end_thread, name="fight-14",
+        thread4 = threading.Thread(target=TestComplexService.fight_end_thread, name="fight-14",
                                    args=(fight_none, False, None, True, timeouts, timeout))
         thread1.start()
         thread2.start()

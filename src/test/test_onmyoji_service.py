@@ -7,7 +7,7 @@ from unittest import TestCase
 from src.controller.onmyoji_controller import OnmyojiController
 from src.dao.mapper import Mapper
 from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameProjects, GameDevices
-from src.service.image_service import ImageService
+from src.service.complex_service import ComplexService
 from src.service.onmyoji_service import OnmyojiService
 from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
@@ -34,7 +34,7 @@ class TestOnmyojiService(TestCase):
         项目2 每日奖励
         :return:
         """
-        TestOnmyojiService.test_project('5', '1', "每日奖励")
+        TestOnmyojiService.test_project('1', '0', "每日奖励")
 
     def test_encounter_demons(self):
         """
@@ -214,7 +214,7 @@ class TestOnmyojiService(TestCase):
             game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
             logger.debug("当前状态初始化:{}", game_account.role_name)
             # 连接设备
-            ImageService.auto_setup(test_devices)
+            ComplexService.auto_setup(test_devices)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 项目 1、

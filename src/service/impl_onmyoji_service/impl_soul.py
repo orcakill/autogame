@@ -10,7 +10,7 @@ from src.model.enum import Onmyoji
 from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameDevices, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
-from src.service.service_onmyoji_impl import impl_initialization
+from src.service.impl_onmyoji_service import impl_initialization
 from src.utils.my_logger import logger
 
 
@@ -390,11 +390,11 @@ def soul_fight_sea(game_task: [], fight: int = 0):
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
                                     GameProject(game_task[3]), GameDevices(game_task[4]))
+    today = datetime.date.today()
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
     if not fight_time or fight_time is None:
         fight_time = 50
-    today = datetime.date.today()
     # 获取本日是周几（周一为0，周日为6）
     weekday = today.weekday() + 1
     if weekday == 5 or fight == 1:
