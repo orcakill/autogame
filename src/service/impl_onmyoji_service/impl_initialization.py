@@ -35,8 +35,6 @@ def initialization(game_task: [], login_type: int = 0):
     account_index = str(os.path.join(Onmyoji.user_SYTX, game_account.id))
     # 重新登录
     str_login = ''
-    # 分辨率
-    pos_resolution = ImageService.resolution_ratio()
     # 判断是否是待登录账号首页
     logger.debug("初始化-判断当前状态")
     # 当前状态 账号首页 1，2,3，4
@@ -110,11 +108,11 @@ def initialization(game_task: [], login_type: int = 0):
                 logger.debug("点击切换")
                 ImageService.touch(Onmyoji.login_QHFWQ)
                 logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
-                pos_TCS = ImageService.exists(Onmyoji.login_TYCS, wait=2)
-                pos_JSX = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
-                if pos_TCS and pos_JSX:
+                pos_tcs = ImageService.exists(Onmyoji.login_TYCS, wait=2)
+                pos_jsx = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
+                if pos_tcs and pos_jsx:
                     logger.debug("有小三角")
-                    ImageService.touch_coordinate((pos_TCS[0], pos_JSX[1]))
+                    ImageService.touch_coordinate((pos_tcs[0], pos_jsx[1]))
                 logger.debug("选择服务器:{}", game_account.role_region)
                 is_server = ImageService.touch(server, wait=2)
                 logger.debug("账号选择：{},服务器选择：{}", is_account, is_server)
@@ -128,14 +126,14 @@ def initialization(game_task: [], login_type: int = 0):
             ImageService.touch(Onmyoji.login_KSYX, wait=5)
         time.sleep(15)
     logger.debug("{}首页,判断底部菜单", game_account.role_name)
-    is_openBottom = ImageService.exists(Onmyoji.home_DBCDDK)
-    if not is_openBottom:
+    is_open_bottom = ImageService.exists(Onmyoji.home_DBCDDK)
+    if not is_open_bottom:
         for i_openBottom in range(4):
             logger.debug("当前页面无底部菜单打开")
             logger.debug("点击可能存在的底部菜单")
             ImageService.touch(Onmyoji.home_DBCD, timeouts=3)
-            is_openBottom = ImageService.exists(Onmyoji.home_DBCDDK)
-            if is_openBottom:
+            is_open_bottom = ImageService.exists(Onmyoji.home_DBCDDK)
+            if is_open_bottom:
                 logger.debug("底部菜单已打开")
                 break
             logger.debug("开始游戏")
@@ -158,8 +156,8 @@ def initialization(game_task: [], login_type: int = 0):
             logger.debug("点击可能存在的底部菜单")
             ImageService.touch(Onmyoji.home_DBCD, timeouts=3)
             logger.debug("重新判断是否存在底部菜单打开")
-            is_openBottom = ImageService.exists(Onmyoji.home_DBCDDK)
-            if is_openBottom:
+            is_open_bottom = ImageService.exists(Onmyoji.home_DBCDDK)
+            if is_open_bottom:
                 logger.debug("底部菜单已打开")
                 break
     time.sleep(5)
