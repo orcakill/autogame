@@ -183,3 +183,10 @@ class ImageService:
         return ImplHwnd.exists_windows(hwnd, folder_path=folder_path, cvstrategy=cvstrategy, timeouts=timeouts,
                                        threshold=threshold, wait=wait, interval=interval, is_throw=is_throw,
                                        is_click=is_click, rgb=rgb, x1=x1, x2=x2, y1=y1, y2=y2)
+
+    @staticmethod
+    def find_hwnd(process_name, class_name):
+        """
+        windows 根据进程名、类名获取句柄
+        """
+        return ImplHwnd.find_hwnd(process_name, class_name)

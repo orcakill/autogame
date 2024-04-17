@@ -18,19 +18,20 @@ class ComplexService:
     @staticmethod
     def auto_setup(game_device: str):
         """
-                设备连接
-                1、已启动的设备，不再重新启动，检查是否已就绪
-                2、就绪检查1分钟，云手机无法就绪则重启软件，重新授权
-                3、判断当前是否半黑屏
-                :return:
-                """
+        设备连接
+         1、已启动的设备，不再重新启动，检查是否已就绪
+         2、就绪检查1分钟，云手机无法就绪则重启软件，重新授权
+         3、判断当前是否半黑屏
+        :param game_device: 设备号
+        :return:
+        """
         devices_name = None
         connect_name = None
         if game_device == "0":
-            logger.debug("检查是否启动云手机-001")
-            WindowsService.start_exe("YsConsole", "云帅云手机")
             devices_name = "127.0.0.1:50000"
             connect_name = devices_name
+            logger.debug("检查是否启动云手机-001")
+            WindowsService.start_exe("YsConsole", "云帅云手机")
         if game_device == "1":
             logger.debug("检查是否启动夜神模拟器")
             WindowsService.start_exe("Nox", "夜神模拟器")
@@ -52,12 +53,6 @@ class ComplexService:
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
         while is_state != "device":
-            # if game_device in ["0", "4"]:
-            #     logger.debug("自动登录并连接")
-            #     impl_phone.phone_login(game_device)
-            # else:
-            #     logger.debug("未就绪，设备状态{},等待10s", is_state)
-            #     time.sleep(10)
             time.sleep(10)
             logger.debug("重新判断是否已就绪")
             is_state = WindowsService.get_device_status_by_ip(devices_name)
