@@ -6,7 +6,7 @@ import time
 
 from tornado import concurrent
 
-from src.model.enum import Cvstrategy, Onmyoji
+from src.model.enum import Cvstrategy, Onmyoji, WinProcessName, WinClassName
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
@@ -55,10 +55,15 @@ class ComplexService:
         while is_state != "device":
             if game_device in ['0','4']:
                 logger.debug("云手机自动登录")
+                logger.debug("获取云手机句柄")
+                hwnd=ImageService.find_hwnd(WinProcessName.phone_exe,WinClassName.phone_home)
                 logger.debug("登录")
-                logger.debug("点击云手机窗口")
+                ImageService.exists_windows(hwnd,Onmyoji.phone_DL)
+                logger.debug("点击云手机窗口,选择")
                 logger.debug("点击右侧散点")
-
+                logger.debug("点击ADB")
+                logger.debug("等待ADB窗口启动")
+                logger.debug("点击界面上的授权")
             time.sleep(10)
             logger.debug("重新判断是否已就绪")
             is_state = WindowsService.get_device_status_by_ip(devices_name)

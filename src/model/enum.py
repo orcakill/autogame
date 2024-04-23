@@ -650,11 +650,13 @@ class Onmyoji:
     prop_LQ = r"道聚城\领取"
     prop_TG = r"道聚城\跳过"
 
-    phone_YLSQK = r"云手机\一律授权框"
-    phone_XLLB = r"云手机\下拉列表"
+    phone_YXSQ = r"云手机\允许授权"
+    phone_GD = r"云手机\更多"
     phone_CS = r"云手机\测试"
     phone_DL = r"云手机\登录"
-    phone_QDSQ = r"云手机\确定授权"
+    phone_Z = r"云手机\组"
+    phone_SBLB = r"云手机\设备列表"
+    phone_TS = r"云手机\调试"
     phone_CQYSJ = r"云手机\重启云手机"
 
 
