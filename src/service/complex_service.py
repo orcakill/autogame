@@ -53,6 +53,12 @@ class ComplexService:
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
         while is_state != "device":
+            if game_device in ['0','4']:
+                logger.debug("云手机自动登录")
+                logger.debug("登录")
+                logger.debug("点击云手机窗口")
+                logger.debug("点击右侧散点")
+
             time.sleep(10)
             logger.debug("重新判断是否已就绪")
             is_state = WindowsService.get_device_status_by_ip(devices_name)
