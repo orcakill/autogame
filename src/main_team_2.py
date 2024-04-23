@@ -17,7 +17,7 @@ from utils.my_logger import my_logger as logger
 
 def soul2(game_devices: str):
     # 队员
-    ImageService.auto_setup(game_devices)
+    ComplexService.auto_setup(game_devices)
     for i in range(80):
         logger.debug("第{}次等待战斗结果", i + 1)
         ComplexService.fight_end_win(Onmyoji.soul_BQ_ZDSL, Onmyoji.soul_BQ_TCTZ, 100, 2)

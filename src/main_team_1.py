@@ -15,7 +15,7 @@ from utils.my_logger import my_logger as logger
 
 def soul_captain(game_devices: str):
     # 队长
-    ImageService.auto_setup(game_devices)
+    ComplexService.auto_setup(game_devices)
     for i in range(80):
         logger.debug("第{}次挑战", i + 1)
         is_fight = ImageService.touch(Onmyoji.soul_BQ_ZDTZ, wait=4)
