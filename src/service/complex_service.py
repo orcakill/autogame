@@ -53,17 +53,22 @@ class ComplexService:
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
         while is_state != "device":
-            if game_device in ['0','4']:
+            if game_device in ['0', '4']:
                 logger.debug("云手机自动登录")
                 logger.debug("获取云手机句柄")
-                hwnd=ImageService.find_hwnd(WinProcessName.phone_exe,WinClassName.phone_home)
+                hwnd = ImageService.find_hwnd(WinProcessName.phone_exe, WinClassName.phone_home)
                 logger.debug("登录")
-                ImageService.exists_windows(hwnd,Onmyoji.phone_DL)
-                logger.debug("点击云手机窗口,选择")
-                logger.debug("点击右侧散点")
+                ImageService.touch_windows(hwnd, Onmyoji.phone_DL)
+                logger.debug("点击云手机窗口,选择设备列表和组的交点")
+                ComplexService.touch_two_windows(hwnd, Onmyoji.phone_SBLB, Onmyoji.phone_Z, 1, 0, 0, 1)
+                logger.debug("点击右侧更多")
+                ImageService.touch_windows(hwnd, Onmyoji.phone_GD)
                 logger.debug("点击ADB")
+                ImageService.touch_windows(hwnd, Onmyoji.phone_TS)
                 logger.debug("等待ADB窗口启动")
+                time.sleep(5)
                 logger.debug("点击界面上的授权")
+                ImageService.touch_windows(hwnd, Onmyoji.phone_YXSQ)
             time.sleep(10)
             logger.debug("重新判断是否已就绪")
             is_state = WindowsService.get_device_status_by_ip(devices_name)
@@ -357,6 +362,21 @@ class ComplexService:
         coordinate2 = ImageService.exists(folder2, rgb=rgb2)
         if coordinate1 and coordinate2:
             ImageService.touch_coordinate((coordinate1[0], coordinate2[1]))
+        elif not coordinate1 and not coordinate2:
+            logger.debug("未找到{}和{}", folder1, folder2)
+        elif not coordinate1:
+            logger.debug("未找到{}", folder1)
+        elif not coordinate2:
+            logger.debug("未找到{}", folder2)
+
+    @staticmethod
+    def touch_two_windows(hwnd, folder1: str, folder2: str, x1: int = 1, y1: int = 1, x2: int = 0, y2: int = 0):
+        coordinate1 = ImageService.exists_windows(hwnd, folder1)
+        coordinate2 = ImageService.exists_windows(hwnd, folder2)
+        if coordinate1 and coordinate2:
+            logger.debug("图片都识别成功")
+            ImageService.touch_coordinate(
+                (coordinate1[0] * x1 + coordinate2[0] * x2, coordinate1[1] * y1 + coordinate2[1] * y2))
         elif not coordinate1 and not coordinate2:
             logger.debug("未找到{}和{}", folder1, folder2)
         elif not coordinate1:

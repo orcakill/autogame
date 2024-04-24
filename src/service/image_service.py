@@ -185,6 +185,18 @@ class ImageService:
                                        is_click=is_click, rgb=rgb, x1=x1, x2=x2, y1=y1, y2=y2)
 
     @staticmethod
+    def touch_windows(hwnd, folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: float = TIMEOUTS,
+                      threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL,
+                      is_throw: bool = THROW, is_click: bool = True, rgb: bool = False, x1: float = 0, x2: float = 1,
+                      y1: float = 0, y2: float = 1):
+        """
+        windows 根据文件夹名获取图片进行图像识别，判断图片是否存在
+        """
+        return ImplHwnd.exists_windows(hwnd, folder_path=folder_path, cvstrategy=cvstrategy, timeouts=timeouts,
+                                       threshold=threshold, wait=wait, interval=interval, is_throw=is_throw,
+                                       is_click=is_click, rgb=rgb, x1=x1, x2=x2, y1=y1, y2=y2)
+
+    @staticmethod
     def find_hwnd(process_name, class_name):
         """
         windows 根据进程名、类名获取句柄

@@ -11,9 +11,9 @@ from src.model.enum import Onmyoji
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.impl_onmyoji_service import impl_house, impl_initialization, impl_explore, impl_six
+from src.service.impl_onmyoji_service.impl_six import current_count, deal_event
 from src.service.windows_service import WindowsService
-from src.service.service_onmyoji_impl import impl_six, impl_explore, impl_house, impl_initialization
-from src.service.service_onmyoji_impl import current_count, deal_event
 from src.utils.my_logger import logger
 
 
