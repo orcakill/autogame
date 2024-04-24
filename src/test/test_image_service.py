@@ -129,3 +129,13 @@ class TestImageService(TestCase):
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
+
+    def test_find_hwnd(self):
+        ComplexService.auto_setup("1")
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        result = ImageService.text("666")
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)

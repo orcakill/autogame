@@ -325,5 +325,6 @@ class ImplHwnd:
                     if process_name1 == process_name:
                         matched_windows.append(ImplHwnd.is_hwnd_class_name(child_window_handle, class_name))
         if len(matched_windows) >= 1:
+            logger.debug("获取句柄成功")
             return matched_windows[0]
         return matched_windows

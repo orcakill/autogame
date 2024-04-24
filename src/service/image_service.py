@@ -202,3 +202,10 @@ class ImageService:
         windows 根据进程名、类名获取句柄
         """
         return ImplHwnd.find_hwnd(process_name, class_name)
+
+    @staticmethod
+    def get_current_hwnd():
+        """
+        windows 获取全部句柄等信息
+        """
+        return ImplHwnd.get_all_hwnd()
