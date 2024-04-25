@@ -206,6 +206,35 @@ class ImageService:
     @staticmethod
     def get_current_hwnd():
         """
-        windows 获取全部句柄等信息
+        windows 获取当前句柄等信息
         """
         return ImplHwnd.get_all_hwnd()
+
+    @staticmethod
+    def get_all_hwnd_info(process_name=None, title=None, class_name=None, hwnd=None):
+        """
+        windows 获取全部句柄等信息
+        """
+        return ImplHwnd.get_all_hwnd_info(process_name, title, class_name, hwnd)
+
+    @staticmethod
+    def windows_screenshot(hwnd: int, name: str = None, print_image: bool = False, x1: float = 0, x2: float = 1,
+                           y1: float = 0, y2: float = 1):
+        """
+        windows  设备截图，根据截图比例确定位置
+        """
+        return ImplHwnd.windows_screenshot(hwnd, name, print_image, x1, x2, y1, y2)
+
+    @staticmethod
+    def get_child_windows(parent_window_hwnd):
+        """
+        # 遍历窗口句柄的所有子窗口
+        """
+        return ImplHwnd.get_child_windows(parent_window_hwnd)
+
+    @staticmethod
+    def find_resolution_hwnd(hwnd: int):
+        """
+        获取句柄的分辨率
+        """
+        return ImplHwnd.find_resolution_hwnd(hwnd)

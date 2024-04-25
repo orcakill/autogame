@@ -69,7 +69,7 @@ class ImplHwnd:
         """
         try:
             time.sleep(wait)
-            resolution = ImplHwnd.resolution_hwnd(hwnd)
+            resolution = ImplHwnd.find_resolution_hwnd(hwnd)
             template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
             time_start = time.time()
             while time.time() - time_start < timeouts:
@@ -110,8 +110,7 @@ class ImplHwnd:
 
     @staticmethod
     def windows_screenshot(hwnd: int, name: str = None, print_image: bool = False, x1: float = 0, x2: float = 1,
-                           y1: float = 0,
-                           y2: float = 1):
+                           y1: float = 0, y2: float = 1):
         """
         设备截图，根据截图比例确定位置
         :param print_image
@@ -179,7 +178,7 @@ class ImplHwnd:
             logger.debug("未找到窗口句柄")
 
     @staticmethod
-    def resolution_hwnd(hwnd: int):
+    def find_resolution_hwnd(hwnd: int):
         # 判断窗口是否最大化
         if not win32gui.IsIconic(hwnd):
             # 将窗口最大化

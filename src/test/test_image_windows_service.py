@@ -36,13 +36,13 @@ class ImageWindowsServiceTest(TestCase):
         logger.info("指定进程的句柄及信息")
         result = ImageService.get_all_hwnd_info(process_name="YsConsole.exe")
         for i in range(len(result)):
-            hwnd=result[i][3]
+            hwnd = result[i][3]
             result1 = ImageService.get_all_hwnd_info(hwnd=hwnd)
             logger.debug(result[i])
             logger.debug(result1)
             ImageService.windows_screenshot(hwnd, name=str(hwnd), print_image=True)
         logger.info("指定句柄下属的句柄及信息")
-        result = ImageService.get_child_windows("264916")
+        ImageService.get_child_windows("264916")
         # for i in range(len(result)):
         #     result1 = ImageService.get_all_hwnd_info(hwnd=result[i])
         #     logger.debug(result[i])
@@ -51,16 +51,16 @@ class ImageWindowsServiceTest(TestCase):
 
     @staticmethod
     def test_resolution_hwnd():
-        ImageService.resolution_hwnd(123)
+        ImageService.find_resolution_hwnd(123)
 
     @staticmethod
     def test_screenshot():
-        hwnd = ImageService.find_hwnd("Qt5QWindowIcon")
+        hwnd = ImageService.find_hwnd("YsPhone.exe", "Qt5QWindowIcon")
         logger.debug(hwnd)
-        hwnd2=ImageService.get_all_hwnd_info(class_name="Qt5QWindowIcon")
+        hwnd2 = ImageService.get_all_hwnd_info(class_name="Qt5QWindowIcon")
         logger.debug(hwnd2)
         ImageService.windows_screenshot(hwnd[0], '测试', True)
 
     @staticmethod
     def test_exists():
-        ImageService.exists(131740, Onmyoji.windows_test1, is_click=True)
+        ImageService.exists_windows(131740, Onmyoji.windows_test1, is_click=True)
