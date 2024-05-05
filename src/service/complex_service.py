@@ -53,7 +53,7 @@ class ComplexService:
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
         while is_state != "device":
-            if game_device in ['0', '4']:
+            if game_device in ['-1']:
                 logger.debug("云手机自动登录")
                 logger.debug("获取云手机句柄")
                 hwnd = ImageService.find_hwnd(WinProcessName.phone_exe, WinClassName.phone_home)

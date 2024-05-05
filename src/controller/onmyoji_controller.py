@@ -6,6 +6,7 @@ import time
 from src.dao.mapper import Mapper
 from src.dao.mapper_extend import MapperExtend
 from src.model.models import *
+from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.service.windows_service import WindowsService
@@ -123,7 +124,7 @@ class OnmyojiController:
                                             game_account.role_name)
                                 continue
                             logger.debug("当前状态初始化")
-                            ImageService.auto_setup(game_device.id)
+                            ComplexService.auto_setup(game_device.id)
                             is_initialization = OnmyojiService.initialization(game_task)
                             if not is_initialization:
                                 # 如果是云手机，重启云手机，重新授权，重新初始化（待定）

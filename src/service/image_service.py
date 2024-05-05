@@ -33,6 +33,7 @@ THROW = False
 
 
 class ImageService:
+
     @staticmethod
     def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
                threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
@@ -120,6 +121,16 @@ class ImageService:
         """
         return ImplFindAll.find_all(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout, timeouts=timeouts,
                                     threshold=threshold, wait=wait, is_throw=is_throw, rgb=rgb)
+
+    @staticmethod
+    def find_all_num(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
+                     threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
+                     rgb: bool = False):
+        """
+        多图查找，获取多个坐标数量0000
+        """
+        return ImplFindAll.find_all_num(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout,
+                                        timeouts=timeouts, threshold=threshold, wait=wait, is_throw=is_throw, rgb=rgb)
 
     @staticmethod
     def find_all_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,

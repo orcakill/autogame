@@ -218,7 +218,7 @@ def border_fight(game_task: [], fight_times: int = 40):
                         ImageService.touch(Onmyoji.border_SXQD, wait=2)
             # 保级，打9退4
             logger.debug("统计攻破次数")
-            num_break = len(ImageService.find_all(Onmyoji.border_GP))
+            num_break = ImageService.find_all_num(Onmyoji.border_GP)
             logger.debug("当前攻破数{}", num_break)
             if num_break and num_break == 8:
                 logger.debug("保级")
