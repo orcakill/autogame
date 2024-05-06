@@ -16,12 +16,13 @@ from src.utils.my_logger import logger
 class ComplexService:
 
     @staticmethod
-    def auto_setup(game_device: str):
+    def auto_setup(game_device: str, auto_adb: int = 0):
         """
         设备连接
          1、已启动的设备，不再重新启动，检查是否已就绪
          2、就绪检查1分钟，云手机无法就绪则重启软件，重新授权
          3、判断当前是否半黑屏
+        :param auto_adb: 是否自动进行ADB连接
         :param game_device: 设备号
         :return:
         """
@@ -53,7 +54,7 @@ class ComplexService:
         logger.debug("判断设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(devices_name)
         while is_state != "device":
-            if game_device in ['-1']:
+            if game_device in ['0', '4'] and auto_adb == 1:
                 logger.debug("云手机自动登录")
                 logger.debug("获取云手机句柄")
                 hwnd = ImageService.find_hwnd(WinProcessName.phone_exe, WinClassName.phone_home)
