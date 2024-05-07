@@ -16,7 +16,7 @@ class ImageWindowsServiceTest(TestCase):
         获取当前窗口的信息，进程名，类名，句柄
         :return:
         """
-        ImageService.get_current_hwnd()
+        logger.debug(ImageService.get_current_hwnd())
         # ('notepad.exe', '', 'Edit', 264420)
 
     @staticmethod

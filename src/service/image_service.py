@@ -219,7 +219,7 @@ class ImageService:
         """
         windows 获取当前句柄等信息
         """
-        return ImplHwnd.get_all_hwnd()
+        return ImplHwnd.get_current_hwnd()
 
     @staticmethod
     def get_all_hwnd_info(process_name=None, title=None, class_name=None, hwnd=None):
