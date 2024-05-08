@@ -9,6 +9,7 @@ logger.remove()  # 移除默认的日志记录器
 # 设置主日志文件目录,所有日志都会记录在此文件夹中
 my_log_file_path = get_project_path_log()
 
+
 class MyLogger:
     def __init__(self, log_file_path=my_log_file_path):
         self.logger = logger

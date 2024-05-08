@@ -19,7 +19,10 @@ from src.utils.my_logger import logger
 
 class TestComplexService(TestCase):
     def test_auto_setup(self):
-        ComplexService.auto_setup("0")
+        ComplexService.auto_setup("0",1)
+
+    def test_auto_setup_hwnd(self):
+        ComplexService.auto_setup("0",1)
 
     def test_fight(self):
         ComplexService.auto_setup("0")
