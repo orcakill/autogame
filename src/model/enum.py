@@ -662,7 +662,7 @@ class Onmyoji:
 
 class WinProcessName:
     # 云手机进程名
-    phone_exe = r"YsPhone.exe"
+    phone_exe = r"YsConsole.exe"
 
 
 class WinClassName:

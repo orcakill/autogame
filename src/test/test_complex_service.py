@@ -7,7 +7,7 @@ import warnings
 from unittest import TestCase
 
 from src.dao.mapper import Mapper
-from src.model.enum import Onmyoji
+from src.model.enum import Onmyoji, WinProcessName, WinClassName
 from src.model.models import GameProjects, GameProjectsRelation, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
@@ -22,7 +22,14 @@ class TestComplexService(TestCase):
         ComplexService.auto_setup("0",1)
 
     def test_auto_setup_hwnd(self):
-        ComplexService.auto_setup("0",1)
+        # 初始化
+        # ComplexService.auto_setup("0",0)
+        hwnd = ImageService.find_hwnd(WinProcessName.phone_exe, WinClassName.phone_home)
+        logger.debug("句柄{}",hwnd)
+        for i in hwnd:
+            logger.debug("登录")
+            ImageService.touch_windows(i, Onmyoji.phone_DL)
+
 
     def test_fight(self):
         ComplexService.auto_setup("0")

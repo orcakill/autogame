@@ -170,7 +170,6 @@ class ImplHwnd:
                 if print_image:
                     # 保存图片到磁盘
                     imageio.imsave("D://screenshot_" + name + "_2.png", cropped_image)
-
                 return cropped_image
             else:
                 logger.debug("句柄宽高获取异常")
@@ -180,10 +179,10 @@ class ImplHwnd:
     @staticmethod
     def find_resolution_hwnd(hwnd: int):
         # 判断窗口是否最大化
-        if not win32gui.IsIconic(hwnd):
-            # 将窗口最大化
-            win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-            time.sleep(0.5)
+        # if not win32gui.IsIconic(hwnd):
+        #     # 将窗口最大化
+        #     win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
+        #     time.sleep(0.5)
         # 获取窗口位置和大小
         rect = win32gui.GetWindowRect(hwnd)
         x, y, w, h = rect
@@ -310,9 +309,7 @@ class ImplHwnd:
                     matched_windows.append(hwnd)  # 如果对应就写入列表
 
         # 如果没有匹配到，则在所有子窗口中查找标题匹配的窗口句柄
-        if matched_windows:
-            return matched_windows
-        else:
+        if not matched_windows:
             child_window_handles = []
             for parent_window_handle in all_windows:
                 # 不论子窗口是否有数据都追加到列表
@@ -323,7 +320,4 @@ class ImplHwnd:
                     process_name1 = psutil.Process(pid).name()
                     if process_name1 == process_name:
                         matched_windows.append(ImplHwnd.is_hwnd_class_name(child_window_handle, class_name))
-        if len(matched_windows) >= 1:
-            logger.debug("获取句柄成功")
-            return matched_windows[0]
         return matched_windows
