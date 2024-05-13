@@ -39,8 +39,8 @@ class ComplexService:
             devices_name = "127.0.0.1:62001"
             connect_name = devices_name + "?cap_method=JAVACAP"
         if game_device == "2":
-            logger.debug("检查是否启动荣耀平板5")
-            devices_name = "E8X9X19719000371"
+            logger.debug("检查是否启动荣耀平板11")
+            devices_name = "A2CDUN4312H00817"
             connect_name = devices_name
         if game_device == "3":
             logger.debug("检查是否启动小米13")

@@ -4,13 +4,13 @@
 # @Description: 鼠标操作类
 import time
 
-
-from src.utils.my_logger import my_logger as logger
 import win32api
 import win32con
 
+from src.utils.my_logger import my_logger as logger
 
-class MouseService():
+
+class MouseService:
     @staticmethod
     def mouse_click(hwnd, pos1, pos2: tuple = None, down_type: str = 'left_down', times: int = 1, wait_time: int = 0.4):
         """

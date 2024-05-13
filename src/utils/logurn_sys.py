@@ -47,7 +47,7 @@ my_logger = logging.getLogger('root')
 if __name__ == '__main__':
     log = logging.getLogger('root')
     # 使用标注日志系统输出
-    log.info('hello wrold, that is from logging')
+    log.info('hello world, that is from logging')
     log.debug('debug hello world, that is from logging')
     log.error('error hello world, that is from logging')
     log.warning('warning hello world, that is from logging')

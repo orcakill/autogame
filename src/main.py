@@ -1,6 +1,8 @@
 import os
 import sys
 
+from src.service.complex_service import ComplexService
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.service.image_service import ImageService
 from src.controller.onmyoji_controller import OnmyojiController
@@ -41,7 +43,7 @@ if __name__ == '__main__':
     logger.info("脚本类型{},脚本轮次 {},连接设备{}", game_num, game_round, game_device)
     logger.info("**************")
     logger.info("执行任务")
-    ImageService.auto_setup(game_device)
+    ComplexService.auto_setup(game_device)
     if game_num:
         OnmyojiController.create_execute_tasks(game_device, game_id, projects_num=game_num, game_round=game_round,
                                                relation_num=game_relation_num)

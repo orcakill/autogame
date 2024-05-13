@@ -115,7 +115,6 @@ def get_optimal_card():
     # 寄养开始时间
     time_start = time.time()
     # 结界卡，默认太鼓，六星太鼓
-    target_type = Onmyoji.foster_JJK_TG
     target_left_card = Onmyoji.foster_ZCJJK_LXTG
     target_card = Onmyoji.foster_JJK_LXTG
     coordinate_friend = ()
@@ -129,31 +128,24 @@ def get_optimal_card():
             logger.debug("轮次执行时间超20分钟")
             break
         if i_type == 0:
-            target_type = Onmyoji.foster_JJK_TG
             target_left_card = Onmyoji.foster_ZCJJK_LXTG
             target_card = Onmyoji.foster_JJK_LXTG
         elif i_type == 1:
-            target_type = Onmyoji.foster_JJK_TG
             target_left_card = Onmyoji.foster_ZCJJK_WXTG
             target_card = Onmyoji.foster_JJK_WXTG
         elif i_type == 2:
-            target_type = Onmyoji.foster_JJK_TG
             target_left_card = Onmyoji.foster_ZCJJK_SXTG1
             target_card = Onmyoji.foster_JJK_SXTG1
         elif i_type == 3:
-            target_type = Onmyoji.foster_JJK_TG
             target_left_card = Onmyoji.foster_ZCJJK_SXTG
             target_card = Onmyoji.foster_JJK_SXTG
         elif i_type == 4:
-            target_type = Onmyoji.foster_JJK_DY
             target_left_card = Onmyoji.foster_ZCJJK_LXDY
             target_card = Onmyoji.foster_JJK_LXDY
         elif i_type == 5:
-            target_type = Onmyoji.foster_JJK_DY
             target_left_card = Onmyoji.foster_ZCJJK_WXDY
             target_card = Onmyoji.foster_JJK_WXDY
         elif i_type == 6:
-            target_type = Onmyoji.foster_JJK_DY
             target_left_card = Onmyoji.foster_ZCJJK_SXDY1
             target_card = Onmyoji.foster_JJK_SXDY1
         logger.debug("寄养-目标结界卡：{}", target_card)

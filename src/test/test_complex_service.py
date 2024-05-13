@@ -19,17 +19,16 @@ from src.utils.my_logger import logger
 
 class TestComplexService(TestCase):
     def test_auto_setup(self):
-        ComplexService.auto_setup("0",1)
+        ComplexService.auto_setup("0", 1)
 
     def test_auto_setup_hwnd(self):
         # 初始化
         # ComplexService.auto_setup("0",0)
         hwnd = ImageService.find_hwnd(WinProcessName.phone_exe, WinClassName.phone_home)
-        logger.debug("句柄{}",hwnd)
+        logger.debug("句柄{}", hwnd)
         for i in hwnd:
             logger.debug("登录")
             ImageService.touch_windows(i, Onmyoji.phone_DL)
-
 
     def test_fight(self):
         ComplexService.auto_setup("0")

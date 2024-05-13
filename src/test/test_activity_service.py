@@ -13,7 +13,6 @@ from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
 from src.service.onmyoji_service import OnmyojiService
-from src.test.test_onmyoji_service import TestOnmyojiService
 from src.utils.my_logger import logger
 
 activity_service = ActivityService()
@@ -34,7 +33,6 @@ class TestActivityService(TestCase):
         """
         TestActivityService.test_project(['2', '3', '4', '5'], '1', '买票')
         logger.debug("活动-结束")
-
 
     @staticmethod
     def test_project(test_names, test_devices, project_name):
@@ -57,7 +55,7 @@ class TestActivityService(TestCase):
             game_project = GameProject(game_task[3])
             logger.debug("活动-当前状态初始化:{}", game_account.role_name)
             # 连接设备
-            ImageService.auto_setup(test_devices)
+            ComplexService.auto_setup(test_devices)
             # 当前状态初始化
             OnmyojiService.initialization(game_task)
             # 项目 1、

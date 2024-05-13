@@ -5,13 +5,12 @@
 from src.utils.my_logger import logger
 
 
-def debris_ghosts(game_task: []):
+def debris_ghosts():
     """
     百鬼夜行
     1、准备  拉好友，选鬼王
     2、撒豆  有加成撒加成，无加成则撒式神
     3、结束  记录撒豆结果有那些目标式神，命中几片
-    :param game_task:
     :return:
     """
     logger.debug("百鬼夜行")

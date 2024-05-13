@@ -149,7 +149,6 @@ class WindowsService:
         os.execl(python, python, *sys.argv)
 
 
-
 if __name__ == '__main__':
     path = os.path.join(utils_path.get_project_path_log(), "debug")
     WindowsService.delete_folder_file(path, 2)

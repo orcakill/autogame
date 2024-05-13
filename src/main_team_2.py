@@ -5,12 +5,9 @@
 import os
 import sys
 
-from src.controller.onmyoji_controller import OnmyojiController
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.model.enum import Onmyoji
 from src.service.complex_service import ComplexService
-from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
 from utils.my_logger import my_logger as logger
 
@@ -27,5 +24,3 @@ if __name__ == '__main__':
     WindowsService.limit_cpu_percentage(30)
     game_device = input("队员 请输入一个设备 0 云手机 1 夜神模拟器 2 荣耀平板 3 小米手机：")
     soul2(game_device)
-
-
