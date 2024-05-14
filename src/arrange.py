@@ -39,12 +39,6 @@ if __name__ == '__main__':
     sftp.put(rar_path, remote_rar_path)
     sftp.close()
     logger.debug("上传完成")
-    # # 在服务器上解压缩文件（覆盖已有文件）
-    # logger.debug("正在服务器解压缩")
-    # # 构建解压缩命令
-    # unrar_cmd = f'unrar.exe x -o+ C:\projects\autogame1\src.rar C:\projects\autogame1\''
-    # ssh.exec_command(unrar_cmd)
-    # logger.debug("服务器解压缩完成")
     # 关闭SSH连接
     ssh.close()
     logger.debug("自动化部署完成")
