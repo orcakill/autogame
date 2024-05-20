@@ -320,4 +320,6 @@ class ImplHwnd:
                     process_name1 = psutil.Process(pid).name()
                     if process_name1 == process_name:
                         matched_windows.append(ImplHwnd.is_hwnd_class_name(child_window_handle, class_name))
+        if matched_windows is not None:
+            return matched_windows[0]
         return matched_windows

@@ -21,13 +21,22 @@ class TestComplexService(TestCase):
     def test_auto_setup(self):
         ComplexService.auto_setup("0", 1)
 
-    def test_auto_setup_hwnd(self):
+    def test_auto_setup_hwnd1(self):
         # 初始化
         # ComplexService.auto_setup("0",0)
         hwnd = ImageService.find_hwnd(WinProcessName.phone_exe, WinClassName.phone_home)
         logger.debug("句柄{}", hwnd)
         for i in hwnd:
             logger.debug("登录")
+            ImageService.touch_windows(i, Onmyoji.phone_DL)
+
+    def test_auto_setup_hwnd2(self):
+        # 初始化
+        # ComplexService.auto_setup("0",0)
+        hwnd = ImageService.find_hwnd('notepad.exe', 'Notepad')
+        logger.debug("句柄{}", hwnd)
+        for i in hwnd:
+            logger.debug("点击")
             ImageService.touch_windows(i, Onmyoji.phone_DL)
 
     def test_fight(self):
