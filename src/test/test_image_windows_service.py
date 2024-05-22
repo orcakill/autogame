@@ -25,23 +25,23 @@ class ImageWindowsServiceTest(TestCase):
         获取所有窗口的信息，进程名，类名，句柄
         :return:
         """
-        logger.info("全部句柄及信息")
+        logger.info("1全部句柄及信息")
         result = ImageService.get_all_hwnd_info()
         for r in result:
             logger.debug(r)
-        logger.info("指定标题的句柄及信息")
+        logger.info("2指定标题的句柄及信息")
         result = ImageService.get_all_hwnd_info(title="云帅云手机")
         for r in result:
             logger.debug(r)
-        logger.info("指定进程的句柄及信息")
-        result = ImageService.get_all_hwnd_info(process_name="YsConsole.exe")
+        logger.info("3指定进程的句柄及信息")
+        result = ImageService.get_all_hwnd_info(process_name="notepad.exe")
         for i in range(len(result)):
             hwnd = result[i][3]
             result1 = ImageService.get_all_hwnd_info(hwnd=hwnd)
             logger.debug(result[i])
             logger.debug(result1)
             ImageService.windows_screenshot(hwnd, name=str(hwnd), print_image=True)
-        logger.info("指定句柄下属的句柄及信息")
+        logger.info("4指定句柄下属的句柄及信息")
         ImageService.get_child_windows("264916")
         # for i in range(len(result)):
         #     result1 = ImageService.get_all_hwnd_info(hwnd=result[i])
