@@ -30,7 +30,7 @@ class ImageWindowsServiceTest(TestCase):
         for r in result:
             logger.debug(r)
         logger.info("2指定标题的句柄及信息")
-        result = ImageService.get_all_hwnd_info(title="云帅云手机")
+        result = ImageService.get_all_hwnd_info(title="新建文本文档.txt - 记事本")
         for r in result:
             logger.debug(r)
         logger.info("3指定进程的句柄及信息")
@@ -42,7 +42,7 @@ class ImageWindowsServiceTest(TestCase):
             logger.debug(result1)
             ImageService.windows_screenshot(hwnd, name=str(hwnd), print_image=True)
         logger.info("4指定句柄下属的句柄及信息")
-        ImageService.get_child_windows("264916")
+        ImageService.get_child_windows("67766")
         # for i in range(len(result)):
         #     result1 = ImageService.get_all_hwnd_info(hwnd=result[i])
         #     logger.debug(result[i])
