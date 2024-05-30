@@ -24,3 +24,8 @@ class TestModelsExtend(TestCase):
         # 查询测试
         task = MapperExtend.select_region_over("2023-11-06", "1")
         logger.info(task)
+
+    def test_select_game_run_log(self):
+        # 查询测试
+        task = MapperExtend.select_game_run_log("小号脚本")
+        logger.info(task)

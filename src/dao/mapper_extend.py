@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 
-from sqlalchemy import create_engine, or_
+from sqlalchemy import create_engine, or_, desc
 from sqlalchemy.orm import sessionmaker
 
-from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount, GameProjectLog
+from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount, GameProjectLog, GameRunLog
 from src.utils.utils_path import get_database_url
 
 url = get_database_url()
@@ -82,9 +82,14 @@ class MapperExtend:
             return True
 
     @staticmethod
-    def select_game_run_log(run_name:str):
-        session = sessionmaker(bind=engine)
-        session1 = session()
-        game_run_log = ''
-        session1.close()
-        return game_run_log
+    def select_game_run_log(run_name: str):
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
+        game_run_log = (session.query(GameRunLog)
+                        .filter(GameRunLog.run_name == run_name)
+                        .order_by(desc(GameRunLog.run_date)).first())
+        session.close()
+        if game_run_log:
+            return game_run_log.run_date
+        else:
+            return None

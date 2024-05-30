@@ -211,5 +211,5 @@ class OnmyojiController:
 
     @staticmethod
     def run_log(run_name: str):
-        game_run_log = GameRunLog(run_date=datetime.datetime.now(), run_name=run_name)
+        game_run_log = GameRunLog(run_date=datetime.datetime.now(), run_name=run_name,run_state=1)
         Mapper.save_game_run_log(game_run_log)

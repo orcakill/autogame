@@ -125,8 +125,8 @@ if __name__ == '__main__':
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list4[4] = True
                 continue
-        # 等待1分钟
-        time.sleep(60 * 5)
+        # 等待5分钟
+        logger.debug("等待5分钟")
         # 重新获取当前日期
         today1 = datetime.date.today()
         logger.debug("云手机002,日期对比 {}:{}", today, today1)
