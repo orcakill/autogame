@@ -7,7 +7,6 @@ from src.dao.mapper import Mapper
 from src.dao.mapper_extend import MapperExtend
 from src.model.models import *
 from src.service.complex_service import ComplexService
-from src.service.image_service import ImageService
 from src.service.onmyoji_service import OnmyojiService
 from src.service.windows_service import WindowsService
 from src.utils import utils_mail, utils_path
@@ -208,5 +207,9 @@ class OnmyojiController:
                                         UtilsTime.convert_seconds(time_end - time_start))
         except Exception as e:
             utils_mail.send_email("阴阳师脚本", "异常", e)
-            logger.error(e)
             logger.exception(e)
+
+    @staticmethod
+    def run_log(run_name: str):
+        game_run_log = GameRunLog(run_date=datetime.datetime.now(), run_name=run_name)
+        Mapper.save_game_run_log(game_run_log)

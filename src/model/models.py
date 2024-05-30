@@ -311,3 +311,32 @@ class GameProjectsRelation(Base):
             self.wait_before_time = game_projects_relation.wait_before_time
             self.wait_after_time = game_projects_relation.wait_after_time
             self.project_state = game_projects_relation.project_state
+
+
+class GameRunLog(Base):
+    __tablename__ = "game_run_log"
+
+    id = Column(String(40), primary_key=True, info='ID')
+    run_date = Column(DateTime, info='运行时间')
+    run_name = Column(String(40), info='运行名称')
+    run_state = Column(Integer, info='运行状态')
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}:" \
+               f"id= {self.id}," \
+               f"run_date= {self.run_date}," \
+               f"run_name= {self.run_name}," \
+               f"run_state= {self.run_state}"
+
+    def __init__(self, game_run_log: () = None, **kwargs):
+        if game_run_log is None:
+            self.id = kwargs.get('id')
+            self.run_date = kwargs.get('run_date')
+            self.run_name = kwargs.get('run_name')
+            self.run_state = kwargs.get('run_state')
+        else:
+            super().__init__(**kwargs)
+            self.id = game_run_log.id
+            self.run_date = game_run_log.run_date
+            self.run_name = game_run_log.run_name
+            self.run_state = game_run_log.run_state

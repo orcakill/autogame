@@ -40,6 +40,7 @@ if __name__ == '__main__':
         if 0 <= current_hour <= 5:
             start_hour, end_hour = 0, 5
             if not task_list1[1]:
+                OnmyojiController.run_log("小号脚本")
                 logger.info("0-5,小号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name='式神寄养',
                                                        start_hour=start_hour, end_hour=end_hour)
@@ -55,28 +56,30 @@ if __name__ == '__main__':
                 logger.info("0-5,小号，全流程任务")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, projects_num="2",
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list4[5] = True
+                task_list4[3] = True
                 continue
         # 如果当前时间大于等于6点并且小于等于11点
         elif 5 <= current_hour <= 11:
             start_hour, end_hour = 5, 11
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
                 if not task_list2[1]:
+                    OnmyojiController.run_log("小号脚本")
                     logger.info("6-11,小号，式神寄养")
                     OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name='式神寄养',
                                                            start_hour=start_hour, end_hour=end_hour)
                     task_list2[1] = True
                     continue
-                if not task_list2[1]:
+                if not task_list2[2]:
                     logger.info("6-11,小号，全流程任务")
                     OnmyojiController.create_execute_tasks(game_device, game_id_small, projects_num="2",
                                                            start_hour=start_hour, end_hour=end_hour)
-                    task_list2[1] = True
+                    task_list2[2] = True
                     continue
         # 如果当前时间大于等于12点,小于等于16点
         elif 12 <= current_hour <= 16:
             start_hour, end_hour = 12, 17
             if not task_list3[1]:
+                OnmyojiController.run_log("小号脚本")
                 logger.info("12-16,小号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name='式神寄养',
                                                        start_hour=start_hour, end_hour=end_hour)
@@ -97,32 +100,33 @@ if __name__ == '__main__':
         # 如果当前时间大于等于17点,小于等于23点
         elif 17 <= current_hour <= 23:
             start_hour, end_hour = 17, 23
-            if not task_list4[2]:
+            if not task_list4[1]:
+                OnmyojiController.run_log("小号脚本")
                 logger.info("17-24,17点,小号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="式神寄养",
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list4[2] = True
+                task_list4[1] = True
                 continue
-            if current_hour <= 22 and not task_list4[3]:
+            if current_hour <= 22 and not task_list4[2]:
                 logger.info("17-24,小号，逢魔之时")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="逢魔之时",
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list4[3] = True
+                task_list4[2] = True
                 continue
-            if 19 <= current_hour <= 20 and weekday in [5, 6, 7] and not task_list4[4]:
+            if 19 <= current_hour <= 20 and weekday in [5, 6, 7] and not task_list4[3]:
                 logger.info("17-24,小号，阴界之门")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="阴界之门",
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list4[4] = True
+                task_list4[3] = True
                 continue
-            if 19 <= current_hour <= 21 and not task_list4[5]:
+            if 19 <= current_hour <= 21 and not task_list4[4]:
                 logger.info("17-24,小号，全流程")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, projects_num="2",
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list4[5] = True
+                task_list4[4] = True
                 continue
         # 等待1分钟
-        time.sleep(60)
+        time.sleep(60 * 5)
         # 重新获取当前日期
         today1 = datetime.date.today()
         logger.debug("云手机002,日期对比 {}:{}", today, today1)

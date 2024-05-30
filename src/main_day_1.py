@@ -58,6 +58,7 @@ if __name__ == '__main__':
             #             周一，月之海2次
             start_hour, end_hour = 0, 5
             if not task_list1[1]:
+                OnmyojiController.run_log("大号脚本")
                 logger.info("0-5,大号，大号全流程任务")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, projects_num="1",
                                                        start_hour=start_hour, end_hour=end_hour)
@@ -78,16 +79,12 @@ if __name__ == '__main__':
                     logger.info("0-5,周五，大号，永生之海")
                     OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="永生之海",
                                                            start_hour=start_hour, end_hour=end_hour)
-                task_list1[4] = True
+                task_list1[2] = True
                 continue
             if is_mode == "绘卷":
-                logger.debug("0开绘卷")
-                logger.info("0-5,大号，个人突破")
-                OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="个人突破",
-                                                       start_hour=start_hour, end_hour=end_hour)
-                project_num_times = {'探索': 20}
-                OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="探索",
-                                                       project_num_times=project_num_times,
+                logger.debug("开绘卷")
+                logger.info("0-5,大号，绘卷项目组")
+                OnmyojiController.create_execute_tasks(game_device, game_id_large, projects_num="4",
                                                        start_hour=start_hour, end_hour=end_hour)
         # 如果当前时间大于等于6点并且小于等于11点
         elif 5 <= current_hour <= 11:
@@ -99,15 +96,17 @@ if __name__ == '__main__':
                                                        start_hour=start_hour, end_hour=end_hour)
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
                 if is_mode == "" and not task_list2[1]:
+                    OnmyojiController.run_log("大号脚本")
                     logger.info("5-11,大号,地域鬼王")
                     OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name='地域鬼王',
                                                            start_hour=start_hour, end_hour=end_hour)
+                    task_list2[1] = True
                 if is_mode == "" and not task_list2[2]:
                     day = UtilsTime.get_day_str()
                     region_over = MapperExtend.select_region_over(day, game_id_large)
                     if not region_over:
                         logger.debug("阴阳寮突破进度100%")
-                        task_list3[6] = True
+                        task_list2[2] = True
                         continue
                     logger.info("5-12,大号阴阳寮突破循环")
                     OnmyojiController.create_execute_tasks(game_device, game_id_large, projects_num="3",
@@ -121,20 +120,28 @@ if __name__ == '__main__':
         elif 12 <= current_hour <= 16:
             start_hour, end_hour = 12, 16
             if not task_list3[1]:
+                OnmyojiController.run_log("大号脚本")
+                logger.info("12-16,17点,大号，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="式神寄养",
+                                                       start_hour=start_hour, end_hour=end_hour)
+                task_list3[1] = True
+                continue
+            if not task_list3[2]:
+                OnmyojiController.run_log("大号脚本")
                 day = UtilsTime.get_day_str()
                 region_over = MapperExtend.select_region_over(day, game_id_large)
                 if not region_over:
                     logger.debug("阴阳寮突破进度100%")
-                    task_list3[6] = True
+                    task_list3[2] = True
                     continue
                 logger.info("12-17,大号阴阳寮突破循环")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="阴阳寮突破",
                                                        start_hour=start_hour, end_hour=end_hour)
-            if not task_list3[2]:
+            if not task_list3[3]:
                 logger.info("12-16,大号，斗技")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name='斗技',
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list3[2] = True
+                task_list3[3] = True
             if is_mode == "绘卷":
                 logger.debug("开绘卷")
                 logger.info("12-17,大号，绘卷项目组")
@@ -146,7 +153,8 @@ if __name__ == '__main__':
             # 19点-23点 大号，周一到周四，狩猎战，道馆突破
             #          大号，周五到周日，狭间暗域，首领退治
             start_hour, end_hour = 17, 23
-            if current_hour <= 17 and not task_list4[1]:
+            if not task_list4[1]:
+                OnmyojiController.run_log("大号脚本")
                 logger.info("17-24,17点,大号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="式神寄养",
                                                        start_hour=start_hour, end_hour=end_hour)
@@ -165,7 +173,7 @@ if __name__ == '__main__':
                 task_list4[3] = True
                 continue
         # 等待1分钟
-        time.sleep(60)
+        time.sleep(60 * 5)
         # 重新获取当前日期
         today1 = datetime.date.today()
         logger.debug("云手机001,日期对比 {}:{}", today, today1)

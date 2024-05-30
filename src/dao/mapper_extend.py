@@ -60,8 +60,8 @@ class MapperExtend:
         :param game_id: 用户ID
         :return: True 未攻破  False 已攻破100%
         """
-        Session1 = sessionmaker(bind=engine)
-        session = Session1()
+        session1 = sessionmaker(bind=engine)
+        session = session1()
         # 将字符串转换为日期类型
         date = datetime.strptime(day, '%Y-%m-%d')
         # 创建时间对象
@@ -80,3 +80,11 @@ class MapperExtend:
             return False
         else:
             return True
+
+    @staticmethod
+    def select_game_run_log(run_name:str):
+        session = sessionmaker(bind=engine)
+        session1 = session()
+        game_run_log = ''
+        session1.close()
+        return game_run_log
