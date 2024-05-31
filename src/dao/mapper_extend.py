@@ -13,8 +13,8 @@ engine = create_engine(url, echo=False, pool_pre_ping=True, pool_recycle=1800)  
 class MapperExtend:
     @staticmethod
     def select_game_task(object_id: str, object_projects_num: str):
-        Session = sessionmaker(bind=engine)
-        session = Session()
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
         task = session.query(GameProjects, GameProjectsRelation, GameAccount, GameProject) \
             .join(GameProjectsRelation, GameProjects.id == GameProjectsRelation.projects_id) \
             .join(GameProject, GameProjectsRelation.project_id == GameProject.id) \
@@ -28,8 +28,8 @@ class MapperExtend:
 
     @staticmethod
     def select_game_project(game_project_id: str, game_project_num: str, game_project_name: str = ''):
-        Session = sessionmaker(bind=engine)
-        session = Session()
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
         game_project = (session.query(GameProject)
                         .filter(or_(GameProject.id == game_project_id, game_project_id == ""),
                                 or_(GameProject.project_num == game_project_num, game_project_num == ""),
@@ -42,8 +42,8 @@ class MapperExtend:
 
     @staticmethod
     def select_game_projects(game_projects_id: str, game_projects_num: str):
-        Session1 = sessionmaker(bind=engine)
-        session = Session1()
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
         game_projects = (session.query(GameProjects)
                          .filter(or_(GameProjects.id == game_projects_id, game_projects_id == ""),
                                  or_(GameProjects.projects_num == game_projects_num, game_projects_num == ""))
@@ -60,8 +60,8 @@ class MapperExtend:
         :param game_id: 用户ID
         :return: True 未攻破  False 已攻破100%
         """
-        session1 = sessionmaker(bind=engine)
-        session = session1()
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
         # 将字符串转换为日期类型
         date = datetime.strptime(day, '%Y-%m-%d')
         # 创建时间对象
