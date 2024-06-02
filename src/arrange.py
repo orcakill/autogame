@@ -28,6 +28,7 @@ if __name__ == '__main__':
     port = server['port']
     username = server['username']
     password = server['password']
+
     # 连接SSH
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())

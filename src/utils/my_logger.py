@@ -38,7 +38,8 @@ class MyLogger:
                    "{process.name} | "
                    "{thread.name} | "
                    '{module}.{function}:{line} - {level} - {message}',
-            retention="48h"
+            retention="48h",
+            enqueue=True
         )
 
         # 输出到文件的格式，按日期分割日志文件，并设置日志文件名
@@ -49,7 +50,8 @@ class MyLogger:
                    "{process.name} | "
                    "{thread.name} | "
                    '{module}.{function}:{line} - {level} - {message}',
-            retention="48h"
+            retention="48h",
+            enqueue=True
         )
 
         # 输出到文件的格式，按日期分割日志文件，并设置日志文件名
@@ -60,7 +62,8 @@ class MyLogger:
                    "{process.name} | "
                    "{thread.name} | "
                    '{module}.{function}:{line} - {level} - {message}',
-            retention="48h"
+            retention="48h",
+            enqueue=True
         )
 
     def get_logger(self):

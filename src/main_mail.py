@@ -18,10 +18,11 @@ if __name__ == '__main__':
         current_time = datetime.datetime.now()
         # 获取当前时间的小时数
         current_hour = current_time.hour
+        current_minute = current_time.minute
         logger.debug("当前{}", current_time)
-        if current_hour in [8, 14]:
+        if current_hour in [8, 14, 20]:
             logger.debug("运行检查")
-            # time.sleep(60 * 10)
+            time.sleep(60 * 10)
             # 获取大号脚本最后一次的日期
             run_date1 = MapperExtend.select_game_run_log("大号脚本")
             run_date2 = MapperExtend.select_game_run_log("小号脚本")
@@ -41,4 +42,4 @@ if __name__ == '__main__':
                 else:
                     logger.debug("小号脚本正常运行")
         logger.debug("等待1小时")
-        time.sleep(60 * 60)
+        time.sleep(60 * (60 - current_minute))
