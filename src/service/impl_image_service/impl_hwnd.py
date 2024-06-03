@@ -123,12 +123,9 @@ class ImplHwnd:
         :return:
         """
         if hwnd:
-            # 判断窗口是否最大化
-            # if not win32gui.IsIconic(hwnd):
-            #     # 将窗口最大化
-            #     win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-            #     time.sleep(0.5)
-            # 获取窗口位置和大小
+            if win32gui.IsIconic(hwnd):
+                win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+                win32gui.SetForegroundWindow(hwnd)
             rect = win32gui.GetWindowRect(hwnd)
             x, y, w, h = rect
             if w > 0 and h > 0:
@@ -254,20 +251,24 @@ class ImplHwnd:
             return True
 
         if hwnd is None:
-            # 调用枚举窗口API
+            # 调用枚举窗口API，获取全部句柄
             win32gui.EnumWindows(enum_windows_proc, all_window_hwnd)
         else:
+            # 根据传参确定句柄
             all_window_hwnd.append(hwnd)
+        # 根据父句柄获取子句柄
+        for parent_window_hwnd in all_window_hwnd:
+            win32gui.EnumChildWindows(parent_window_hwnd, enum_windows_proc, all_window_hwnd)
 
-        for hwnd1 in all_window_hwnd:
-            title1 = win32gui.GetWindowText(hwnd1)
-            class_name1 = win32gui.GetClassName(hwnd1)
-            _, pid = win32process.GetWindowThreadProcessId(hwnd1)
+        for window_hwnd in all_window_hwnd:
+            title1 = win32gui.GetWindowText(window_hwnd)
+            class_name1 = win32gui.GetClassName(window_hwnd)
+            _, pid = win32process.GetWindowThreadProcessId(window_hwnd)
             process_name1 = psutil.Process(pid).name()
             if process_name is None and title is None and class_name is None and hwnd is None:
-                all_window_hwnd_info.append((process_name1, title1, class_name1, hwnd1))
-            elif process_name == process_name1 or title == title1 or class_name == class_name1 or hwnd == hwnd1:
-                all_window_hwnd_info.append((process_name1, title1, class_name1, hwnd1))
+                all_window_hwnd_info.append((process_name1, title1, class_name1, window_hwnd))
+            elif process_name == process_name1 or title == title1 or class_name == class_name1 or hwnd == window_hwnd:
+                all_window_hwnd_info.append((process_name1, title1, class_name1, window_hwnd))
         return all_window_hwnd_info  # 返回列表
 
     @staticmethod

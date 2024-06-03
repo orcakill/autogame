@@ -37,9 +37,8 @@ class ImageWindowsServiceTest(TestCase):
         result = ImageService.get_all_hwnd_info(process_name="notepad.exe")
         for i in range(len(result)):
             hwnd = result[i][3]
-            result1 = ImageService.get_all_hwnd_info(hwnd=hwnd)
-            logger.debug(result[i])
-            logger.debug(result1)
+            result_child = ImageService.get_all_hwnd_info(hwnd=hwnd)
+            logger.debug(result_child)
             ImageService.windows_screenshot(hwnd, name=str(hwnd), print_image=True)
         logger.info("4指定句柄下属的句柄及信息")
         ImageService.get_child_windows("67766")
@@ -64,3 +63,12 @@ class ImageWindowsServiceTest(TestCase):
     @staticmethod
     def test_exists():
         ImageService.exists_windows(131740, Onmyoji.windows_test1, is_click=True)
+
+    @staticmethod
+    def test_get_all_hwnd_info():
+        result = ImageService.get_all_hwnd_info(process_name="notepad.exe")
+        for i in range(len(result)):
+            hwnd = result[i][3]
+            result_child = ImageService.get_all_hwnd_info(hwnd=hwnd)
+            logger.debug(result_child)
+            ImageService.windows_screenshot(hwnd, name=str(hwnd), print_image=True)
