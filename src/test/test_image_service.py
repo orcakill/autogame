@@ -21,7 +21,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         ComplexService.auto_setup("2")
         logger.debug("开始")
-        ImageService.exists(Onmyoji.home_TS, rgb=True)
+        ImageService.exists(Onmyoji.home_TS)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

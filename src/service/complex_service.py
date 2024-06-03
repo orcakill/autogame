@@ -41,7 +41,7 @@ class ComplexService:
         if game_device == "2":
             logger.debug("检查是否启动荣耀平板11")
             devices_name = "A2CDUN4312H00817"
-            connect_name = devices_name
+            connect_name = devices_name + "?cap_method=MINICAP"
         if game_device == "3":
             logger.debug("检查是否启动小米13")
             devices_name = "8ce78c9f"

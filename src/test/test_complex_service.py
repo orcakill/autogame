@@ -15,11 +15,12 @@ from src.service.impl_onmyoji_service import impl_house, impl_initialization, im
 from src.service.impl_onmyoji_service.impl_six import current_count, deal_event
 from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
-
+import socket
 
 class TestComplexService(TestCase):
     def test_auto_setup(self):
-        ComplexService.auto_setup("0", 1)
+        ComplexService.auto_setup("2")
+        ComplexService.refuse_reward()
 
     def test_auto_setup_hwnd1(self):
         # 初始化
