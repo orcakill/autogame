@@ -44,9 +44,19 @@ if __name__ == '__main__':
         current_time1 = datetime.datetime.now()
         # 获取当前时间的小时数
         current_hour = current_time1.hour
+        # 获取当前时间的分钟
+        current_minute = current_time1.minute
         # 获取本日是周几（周一为0，周日为6）
         weekday = today.weekday() + 1
-        logger.debug("当前日期{}:{}", today, current_hour)
+        logger.debug("当前日期{}:{}:{}", today, current_hour, current_minute)
+        if current_hour / 2 == 0 and 0 <= current_minute <= 20:
+            start_hour, end_hour = 0, 23
+            OnmyojiController.run_log("大号脚本")
+            logger.info("0-23,大号，式神寄养")
+            OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="式神寄养",
+                                                   start_hour=start_hour, end_hour=end_hour)
+        else:
+            logger.info("不满足偶数点前20分钟的条件")
         # 如果当前时间大于等于0点并且小于8点
         if 0 <= current_hour <= 5:
             # 0点-5点 大号-式神寄养，签到，每日奖励，阴阳寮管理，好友管理，御魂20次，每日奖励，御魂整理
@@ -121,27 +131,20 @@ if __name__ == '__main__':
             start_hour, end_hour = 12, 16
             if not task_list3[1]:
                 OnmyojiController.run_log("大号脚本")
-                logger.info("12-16,17点,大号，式神寄养")
-                OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="式神寄养",
-                                                       start_hour=start_hour, end_hour=end_hour)
-                task_list3[1] = True
-                continue
-            if not task_list3[2]:
-                OnmyojiController.run_log("大号脚本")
                 day = UtilsTime.get_day_str()
                 region_over = MapperExtend.select_region_over(day, game_id_large)
                 if not region_over:
                     logger.debug("阴阳寮突破进度100%")
-                    task_list3[2] = True
+                    task_list3[1] = True
                     continue
                 logger.info("12-17,大号阴阳寮突破循环")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="阴阳寮突破",
                                                        start_hour=start_hour, end_hour=end_hour)
-            if not task_list3[3]:
+            if not task_list3[2]:
                 logger.info("12-16,大号，斗技")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name='斗技',
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list3[3] = True
+                task_list3[2] = True
             if is_mode == "绘卷":
                 logger.debug("开绘卷")
                 logger.info("12-17,大号，绘卷项目组")
@@ -153,24 +156,17 @@ if __name__ == '__main__':
             # 19点-23点 大号，周一到周四，狩猎战，道馆突破
             #          大号，周五到周日，狭间暗域，首领退治
             start_hour, end_hour = 17, 23
-            if not task_list4[1]:
-                OnmyojiController.run_log("大号脚本")
-                logger.info("17-24,17点,大号，式神寄养")
-                OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="式神寄养",
-                                                       start_hour=start_hour, end_hour=end_hour)
-                task_list4[1] = True
-                continue
-            if current_hour <= 17 and not task_list4[2]:
+            if current_hour <= 17 and not task_list4[1]:
                 logger.info("17-24,17点，大号，逢魔之时")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="逢魔之时",
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list4[2] = True
+                task_list4[1] = True
                 continue
-            if current_hour == 20 and weekday in [5, 6, 7] and not task_list4[3]:
+            if current_hour == 20 and weekday in [5, 6, 7] and not task_list4[2]:
                 logger.info("17-24,大号，阴界之门")
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="阴界之门",
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list4[3] = True
+                task_list4[2] = True
                 continue
         # 等待5分钟
         logger.debug("等待5分钟")
