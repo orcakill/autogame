@@ -49,7 +49,7 @@ if __name__ == '__main__':
         # 获取本日是周几（周一为0，周日为6）
         weekday = today.weekday() + 1
         logger.debug("当前日期{}:{}:{}", today, current_hour, current_minute)
-        if current_hour / 2 == 0 and 0 <= current_minute <= 20:
+        if current_hour % 2 == 0 and 0 <= current_minute <= 20:
             start_hour, end_hour = 0, 23
             OnmyojiController.run_log("大号脚本")
             logger.info("0-23,大号，式神寄养")
