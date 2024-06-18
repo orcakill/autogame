@@ -45,18 +45,7 @@ def initialization(game_task: [], login_type: int = 0):
     is_explore = ImageService.exists(Onmyoji.home_TS, rgb=True)
     logger.debug("首页町中")
     is_courtyard = ImageService.exists(Onmyoji.home_DZ)
-    if is_index and is_explore and not is_courtyard:
-        logger.debug("检查悬赏")
-        ComplexService.refuse_reward()
-        logger.debug("检查缓存过多")
-        ComplexService.refuse_cache()
-        logger.debug("检查加成取消")
-        ImageService.touch(Onmyoji.home_QX)
-        logger.debug("检查失联掉线")
-        ComplexService.loss_connection()
-        is_courtyard = ImageService.exists(Onmyoji.home_DZ)
     if not is_index or not is_explore or not is_courtyard:
-        # sys.exit()
         logger.debug("不在账号首页")
         str_login = '重新登录'
         # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
@@ -88,10 +77,11 @@ def initialization(game_task: [], login_type: int = 0):
         if login_type == 0:
             for i_account in range(5):
                 logger.debug("第{}次切换账号", i_account + 1)
-                logger.debug("点击可能存在的登录")
-                ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=3)
-                logger.debug("点击可能存在选择区域")
-                ComplexService.get_reward(Onmyoji.login_XZQY)
+                if i_account > 0:
+                    logger.debug("点击可能存在的登录")
+                    ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=3)
+                    logger.debug("点击可能存在选择区域")
+                    ComplexService.get_reward(Onmyoji.login_XZQY)
                 logger.debug("用户中心")
                 ImageService.touch(Onmyoji.login_YHZX, wait=2)
                 logger.debug("切换账号")
