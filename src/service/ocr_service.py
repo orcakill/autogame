@@ -5,6 +5,7 @@
 import re
 
 import pytesseract
+from paddleocr import PaddleOCR
 
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
@@ -70,3 +71,30 @@ class OcrService:
         if text:
             text = text.group()
         return text
+
+    @staticmethod
+    def ocr_paddle(img, word):
+        """
+        根据图片识别文字
+        :param img: 图片   路径或ndarray
+        :param word: 文字
+        :return: 文字坐标
+        """
+        pos = ""
+        ocr = PaddleOCR()
+        result = ocr.ocr(img, det=True)
+        if result:
+            for field in result:
+                for index, value in enumerate(field):
+                    text = field[index][1][0]
+                    similarity = field[index][1][1]
+                    if word in text and similarity > 0.9:
+                        box = field[index][0]
+                        x1 = int(box[0][0])
+                        y1 = int(box[0][1])
+                        x2 = int(box[2][0])
+                        y2 = int(box[2][1])
+                        # image_ndarray = cv2.imread(img)
+                        # ImageService.draw_rectangle(image_ndarray ,x1,y1,x2,y2)
+                        pos = ((x1 + x2) / 2, (y1 + y2) / 2)
+        return pos

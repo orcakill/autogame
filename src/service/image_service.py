@@ -9,6 +9,7 @@ from src.service.impl_image_service.impl_exists import ImplExistsTouch
 from src.service.impl_image_service.impl_find_all import ImplFindAll
 from src.service.impl_image_service.impl_hwnd import ImplHwnd
 from src.service.impl_image_service.impl_match import ImplMatch
+from src.service.impl_image_service.impl_ocr import ImplOcr
 
 # 图像识别算法
 CVSTRATEGY = Cvstrategy.sift
@@ -249,3 +250,17 @@ class ImageService:
         获取句柄的分辨率
         """
         return ImplHwnd.find_resolution_hwnd(hwnd)
+
+    @staticmethod
+    def draw_rectangle(screen, x1, y1, x2, y2):
+        """
+        在图上画框，确定识别准确率
+        """
+        return ImplHwnd.draw_rectangle(screen, x1, y1, x2, y2)
+
+    @staticmethod
+    def ocr_touch(word):
+        """
+        在图上画框，确定识别准确率
+        """
+        return ImplOcr.ocr_touch(word)

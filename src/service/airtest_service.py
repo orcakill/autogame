@@ -24,9 +24,11 @@ log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
 
 # 图片点击识别等待时间(秒）·
-WAIT = 2
+WAIT = 0
 # 图像识别阈值
 THRESHOLD = 0.7
+# 按住时间
+DURATION = 0
 
 
 class AirtestService:
@@ -35,7 +37,7 @@ class AirtestService:
         auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/" + connect_name])
 
     @staticmethod
-    def snapshot(name: str, print_image: bool = False):
+    def snapshot(name: str = None, print_image: bool = False):
         """
         这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
@@ -100,7 +102,7 @@ class AirtestService:
                 pass
 
     @staticmethod
-    def touch_coordinate(v: [], duration: float, wait_time: float):
+    def touch_coordinate(v: [], duration: float = DURATION, wait_time: float = wait):
         """
         点击坐标
         :param duration: 按住时间
@@ -108,7 +110,8 @@ class AirtestService:
         :param wait_time: 等待开始时间
         :return:
         """
-        time.sleep(wait_time)
+        if wait_time > 0:
+            time.sleep(wait_time)
         if touch(v, duration=duration):
             logger.debug("坐标点击成功")
             return True
