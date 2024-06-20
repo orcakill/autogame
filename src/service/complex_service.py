@@ -232,7 +232,7 @@ class ComplexService:
     @staticmethod
     def top_addition(word: str, add_type: str, add_open: str, add_close: str, add_switch: int):
         """
-
+        加成 开关
         :param word:  加成文字
         :param add_type:  加成类型
         :param add_open: 打开加成

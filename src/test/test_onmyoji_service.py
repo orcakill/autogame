@@ -20,7 +20,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project('1', "0", "登录")
+        TestOnmyojiService.test_project('2', "3", "登录")
 
     def test_initialization1(self):
         """
@@ -34,7 +34,7 @@ class TestOnmyojiService(TestCase):
         项目2 每日奖励
         :return:
         """
-        TestOnmyojiService.test_project('1', '0', "每日奖励")
+        TestOnmyojiService.test_project('3', '3', "每日奖励")
 
     def test_encounter_demons(self):
         """

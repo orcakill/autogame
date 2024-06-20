@@ -38,12 +38,6 @@ def friends_fight(game_task: []):
     game_devices = GameDevices(game_task[4])
     logger.debug(game_account.role_name)
     logger.debug("好友协战")
-    logger.debug("1.觉醒挑战")
-    game_projects_relation.project_num_times = 13
-    game_task = [game_projects, game_projects_relation, game_account, game_project, game_devices]
-    # 觉醒挑战
-    impl_awakening.awakening(game_task)
-    logger.debug("2.魂十协战")
     for i_cooperative_warfare in range(2):
         logger.debug("协战开始,第{}次", i_cooperative_warfare + 1)
         logger.debug("确认首页")

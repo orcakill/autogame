@@ -4,14 +4,19 @@
 # @Description: 图像文字识别
 from src.service.airtest_service import AirtestService
 from src.service.ocr_service import OcrService
+from src.utils.my_logger import logger
 
 
 class ImplOcr:
     @staticmethod
     def ocr_touch(word):
-        # 获取当前图片
+        logger.debug("获取当前页面截图")
         screen = AirtestService.snapshot()
-        # 获取文字坐标
+        logger.debug("获取文字坐标")
         pos = OcrService.ocr_paddle(screen, word)
-        # 点击
-        AirtestService.touch_coordinate(pos)
+        if pos:
+            logger.debug("点击文字坐标")
+            AirtestService.touch_coordinate(pos)
+        else:
+            logger.debug("未识别到文字坐标")
+

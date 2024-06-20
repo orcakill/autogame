@@ -28,7 +28,7 @@ WAIT = 0
 # 图像识别阈值
 THRESHOLD = 0.7
 # 按住时间
-DURATION = 0
+DURATION = 0.1
 
 
 class AirtestService:
@@ -102,7 +102,7 @@ class AirtestService:
                 pass
 
     @staticmethod
-    def touch_coordinate(v: [], duration: float = DURATION, wait_time: float = wait):
+    def touch_coordinate(v: [], duration: float = DURATION, wait_time: float = WAIT):
         """
         点击坐标
         :param duration: 按住时间
@@ -110,8 +110,7 @@ class AirtestService:
         :param wait_time: 等待开始时间
         :return:
         """
-        if wait_time > 0:
-            time.sleep(wait_time)
+        time.sleep(wait_time)
         if touch(v, duration=duration):
             logger.debug("坐标点击成功")
             return True

@@ -5,6 +5,7 @@
 from unittest import TestCase
 
 from src.model.enum import Onmyoji
+from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
 from src.utils.my_logger import my_logger as logger
@@ -12,7 +13,13 @@ from src.utils.my_logger import my_logger as logger
 
 class TestOcrService(TestCase):
     def test_border_bond(self):
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("1")
         result = OcrService.get_word(Onmyoji.explore_DQLHSL, lang='chi_sim')
         logger.debug(result)
+        logger.debug("结束")
+
+    @staticmethod
+    def test_ocr():
+        ComplexService.auto_setup("3")
+        ImageService.ocr_touch("切换")
         logger.debug("结束")

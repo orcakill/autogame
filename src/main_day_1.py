@@ -7,6 +7,9 @@ import os
 import sys
 import time
 
+from src.dao.mapper import Mapper
+from src.model.models import GameAccount
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.dao.mapper_extend import MapperExtend
@@ -17,6 +20,9 @@ from utils.my_logger import my_logger as logger
 if __name__ == '__main__':
     # 云手机001
     game_device = "0"
+    # 大号
+    game_id_large = '1'
+    game_account = GameAccount(Mapper.select_game_account(game_id_large))
     # 特殊模式 ，绘卷，超鬼王
     is_mode = ""
     # 0-5
@@ -33,8 +39,6 @@ if __name__ == '__main__':
         task_list2.append(False)
         task_list3.append(False)
         task_list4.append(False)
-    # 大号
-    game_id_large = '1'
     logger.info("云手机001,开始")
     # 获取当前日期
     today = datetime.date.today()

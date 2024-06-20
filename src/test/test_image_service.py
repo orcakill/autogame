@@ -4,6 +4,7 @@
 # @Description : 图像识别测试类
 
 import datetime
+import os
 import time
 from unittest import TestCase
 
@@ -19,9 +20,11 @@ class TestImageService(TestCase):
 
     def test_exists(self):
         now = datetime.datetime.now()
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("3")
         logger.debug("开始")
-        ImageService.exists(Onmyoji.home_TS)
+        logger.debug("选择账号")
+        account = str(os.path.join(Onmyoji.user_XZZH, "3"))
+        ImageService.touch(account)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -55,7 +58,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_snapshot(self):
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("3")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
