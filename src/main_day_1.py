@@ -7,9 +7,6 @@ import os
 import sys
 import time
 
-from src.dao.mapper import Mapper
-from src.model.models import GameAccount
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.dao.mapper_extend import MapperExtend
@@ -22,9 +19,8 @@ if __name__ == '__main__':
     game_device = "0"
     # 大号
     game_id_large = '1'
-    game_account = GameAccount(Mapper.select_game_account(game_id_large))
     # 特殊模式 ，绘卷，超鬼王
-    is_mode = ""
+    is_mode = "绘卷"
     # 0-5
     task_list1 = []
     # 6-11

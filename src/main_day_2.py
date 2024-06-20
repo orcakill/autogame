@@ -65,10 +65,10 @@ if __name__ == '__main__':
             start_hour, end_hour = 5, 11
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
                 if not task_list2[1]:
-                    logger.info("6-11,小号，全流程任务")
-                    OnmyojiController.create_execute_tasks(game_device, game_id_small, projects_num="2",
+                    logger.info("6-11,小号，好友协战")
+                    OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="好友协战",
                                                            start_hour=start_hour, end_hour=end_hour)
-                    task_list2[1] = True
+                    task_list1[1] = True
                     continue
         # 如果当前时间大于等于12点,小于等于16点
         elif 12 <= current_hour <= 16:
@@ -80,10 +80,10 @@ if __name__ == '__main__':
                 task_list3[1] = True
                 continue
             if not task_list3[2]:
-                logger.info("6-16,小号，全流程任务")
-                OnmyojiController.create_execute_tasks(game_device, game_id_small, projects_num="2",
+                logger.info("12-16,小号，好友协战")
+                OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="好友协战",
                                                        start_hour=start_hour, end_hour=end_hour)
-                task_list3[2] = True
+                task_list1[1] = True
                 continue
         # 如果当前时间大于等于17点,小于等于23点
         elif 17 <= current_hour <= 23:
