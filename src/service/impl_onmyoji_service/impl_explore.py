@@ -277,3 +277,16 @@ def automatic_rotation_type_god():
     logger.debug("轮换确定")
     ImageService.touch(Onmyoji.explore_LHQD)
     ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)
+
+
+def submit_emaki():
+    logger.debug("首页召唤")
+    logger.debug("右上绘卷")
+    logger.debug("点击左下角，排除干扰")
+    logger.debug("选择图四")
+    logger.debug("拉满大碎片")
+    logger.debug("拉满中碎片")
+    logger.debug("拉满小碎片")
+    logger.debug("捐赠")
+    logger.debug("领取奖励")
+    logger.debug("返回首页")

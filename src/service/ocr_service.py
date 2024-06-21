@@ -10,6 +10,7 @@ from paddleocr import PaddleOCR
 
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
+from src.service.impl_image_service.impl_match import ImplMatch
 from src.utils.my_logger import logger
 
 # 控制paddleocrt的日志输出
@@ -29,7 +30,7 @@ class OcrService:
         """
         # 结界突破区域
         logger.debug("获取{}的位置", folder_path)
-        result = AirtestService.cv_match(folder_path, cvstrategy=Cvstrategy.default)
+        result = ImplMatch.cv_match(folder_path, cvstrategy=Cvstrategy.default)
         if result:
             pos1 = result['rectangle'][0]
             pos2 = result['rectangle'][2]
