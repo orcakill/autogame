@@ -91,7 +91,10 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                 ImageService.touch(Onmyoji.home_TS)
                 logger.debug("选择章节")
                 if chapter == 28:
-                    select_chapter()
+                    is_select_chapter = select_chapter()
+                    if not is_select_chapter:
+                        logger.debug("切换文字识别")
+                        ImageService.ocr_touch("第二十八章")
                 else:
                     ImageService.touch(chapter_layers)
                 logger.debug("选择困难")
@@ -226,13 +229,15 @@ def select_chapter():
     选择最大章节
     :return:
     """
-    results = ImageService.find_all(Onmyoji.explore_ZZ)
+    results = ImageService.find_all(Onmyoji.explore_ZZ, cvstrategy=Cvstrategy.default)
     if results:
         result = max(results, key=lambda x: x['result'][1])['result']
         if result:
             ImageService.touch_coordinate(result)
+            return True
     else:
         logger.debug("找不到章节")
+        return False
 
 
 def automatic_rotation_type_god():
