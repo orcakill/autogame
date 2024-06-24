@@ -4,7 +4,6 @@
 # @Description : 图像识别测试类
 
 import datetime
-import os
 import time
 from unittest import TestCase
 
@@ -20,11 +19,12 @@ class TestImageService(TestCase):
 
     def test_exists(self):
         now = datetime.datetime.now()
-        ComplexService.auto_setup("3")
+        ComplexService.auto_setup("2")
         logger.debug("开始")
-        logger.debug("选择账号")
-        account = str(os.path.join(Onmyoji.user_XZZH, "3"))
-        ImageService.touch(account)
+        is_roller = ImageService.exists(Onmyoji.explore_LHGL, cvstrategy=Cvstrategy.default, is_throw=True)
+        if is_roller:
+            logger.debug("滑动滚轮")
+            ImageService.swipe(is_roller, (is_roller[0] + (is_roller[0] * 0.1), is_roller[1]))
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
@@ -58,7 +58,7 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_snapshot(self):
-        ComplexService.auto_setup("3")
+        ComplexService.auto_setup("2")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")

@@ -186,20 +186,7 @@ class ImplHwnd:
         resolution = (w, h)
         return resolution
 
-    @staticmethod
-    def draw_rectangle(screen, x1, y1, x2, y2):
-        """
-        画图，根据指定范围的坐标在原图上画框
-        :param screen:
-        :param x1:
-        :param y1:
-        :param x2:
-        :param y2:
-        :return:
-        """
-        cv2.rectangle(screen, (x1, y1), (x2, y2), (0, 0, 255), 2)
-        # 保存图片到本地磁盘
-        imageio.imsave("D://draw.png", screen)
+
 
     @staticmethod
     def get_current_hwnd():

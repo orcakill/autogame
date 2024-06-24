@@ -8,6 +8,8 @@ import logging
 import random
 from datetime import datetime as imp_datetime
 
+import cv2
+import imageio
 from airtest import aircv
 from airtest.aircv import cv2_2_pil
 from airtest.core.api import *
@@ -42,9 +44,10 @@ class AirtestService:
         这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
         """
-        screen = G.DEVICE.snapshot()
+        screen = ""
+        if not print_image:
+            screen = G.DEVICE.snapshot(filename=None, quality=99, max_size=1200)
         if print_image:
-            pil_image = cv2_2_pil(screen)
             # 获取当前时间
             now = imp_datetime.now()
             # 将时间转换为字符串
@@ -52,8 +55,38 @@ class AirtestService:
             path = os.path.join(utils_path.get_project_path_log(), "image")
             WindowsService.delete_folder_file(path, 2)
             path = os.path.join(path, time_str)
-            pil_image.save(path + ".png", quality=99, optimize=True)
+            screen = G.DEVICE.snapshot(filename=path + ".png", quality=99, max_size=1200)
         return screen
+
+    @staticmethod
+    def draw_rectangle(screen, x1, y1, x2, y2):
+        """
+        画图，根据指定范围的坐标在原图上画框
+        :param screen:
+        :param x1:
+        :param y1:
+        :param x2:
+        :param y2:
+        :return:
+        """
+        cv2.rectangle(screen, (x1, y1), (x2, y2), (0, 0, 255), 2)
+        # 保存图片到本地磁盘
+        imageio.imsave("D://draw_rectangle.png", screen)
+
+    @staticmethod
+    def draw_point(screen, x, y):
+        """
+        画图，根据指定范围的坐标在原图上画框
+        :param screen:
+        :param x:
+        :param y:
+        :return:
+        """
+        if not screen:
+            screen=AirtestService.snapshot(name="截图",print_image=True)
+        cv2.circle(screen, (x, y), 5, (255, 0, 0), -1)
+        # 保存图片到本地磁盘
+        imageio.imsave("D://draw_point.png", screen)
 
     @staticmethod
     def exists(template: Template, cvstrategy: [], timeout: float, is_throw: bool):
