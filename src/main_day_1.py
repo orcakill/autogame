@@ -15,9 +15,9 @@ from src.controller.onmyoji_controller import OnmyojiController
 from utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
-    # 云手机001
+    # 设备：云手机001
     game_device = "0"
-    # 大号
+    # 账号：大号
     game_id_large = '1'
     # 特殊模式 ，绘卷，超鬼王
     is_mode = "绘卷"
