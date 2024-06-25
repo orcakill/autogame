@@ -4,6 +4,7 @@
 # @File: airtest_service.py
 # @Description: airtest接口
 """
+import datetime
 import logging
 import random
 from datetime import datetime as imp_datetime
@@ -12,6 +13,8 @@ import cv2
 import imageio
 from airtest import aircv
 from airtest.aircv import cv2_2_pil
+from airtest.core.android import Android
+from airtest.core.android.cap_methods.screen_proxy import ScreenProxy
 from airtest.core.api import *
 from airtest.core.helper import G
 from airtest.core.settings import Settings
@@ -36,7 +39,31 @@ DURATION = 0.1
 class AirtestService:
     @staticmethod
     def auto_setup(connect_name: str):
-        auto_setup(__file__, logdir=False, devices=["Android://127.0.0.1:5037/" + connect_name])
+        devices = "Android://127.0.0.1:5037/" + connect_name
+        auto_setup(__file__, logdir=False, devices=[devices])
+
+    @staticmethod
+    def get_cap_method(serialno):
+        dev = Android(serialno=serialno)
+        screen_proxy = ScreenProxy.auto_setup(dev.adb, rotation_watcher=dev.rotation_watcher)
+        all_methods = screen_proxy.SCREEN_METHODS
+        methods_class = screen_proxy.screen_method
+        for index, (key, value) in enumerate(all_methods.items(), start=1):
+            if isinstance(methods_class, value):
+                logger.debug(key)
+                return key
+        return None
+
+    @staticmethod
+    def check_method(serialno):
+        dev = Android(serialno=serialno)
+        screen_proxy = ScreenProxy.auto_setup(dev.adb, rotation_watcher=dev.rotation_watcher)
+        all_methods = screen_proxy.SCREEN_METHODS
+        for index, (key, value) in enumerate(all_methods.items(), start=1):
+            now1 = datetime.datetime.now()
+            screen_proxy.check_frame(value)
+            now2 = datetime.datetime.now()
+            logger.debug("{}:{}", key, now2 - now1)
 
     @staticmethod
     def snapshot(name: str = None, print_image: bool = False):
@@ -83,7 +110,7 @@ class AirtestService:
         :return:
         """
         if not screen:
-            screen=AirtestService.snapshot(name="截图",print_image=True)
+            screen = AirtestService.snapshot(name="截图", print_image=True)
         cv2.circle(screen, (x, y), 5, (255, 0, 0), -1)
         # 保存图片到本地磁盘
         imageio.imsave("D://draw_point.png", screen)

@@ -58,11 +58,36 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_snapshot(self):
-        ComplexService.auto_setup("2")
+        """
+        0云手机-001
+        1 夜神模拟器
+        2 平板
+        3 手机
+        4 云手机-002
+        :return:
+        """
+        ComplexService.auto_setup("3")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
         ImageService.snapshot("1", True)
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
+    def test_check_method(self):
+        """
+        0云手机-001
+        1 夜神模拟器
+        2 平板
+        3 手机
+        4 云手机-002
+        :return:
+        """
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        ComplexService.auto_setup("3")
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

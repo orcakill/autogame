@@ -22,6 +22,12 @@ class ComplexService:
          1、已启动的设备，不再重新启动，检查是否已就绪
          2、就绪检查1分钟，云手机无法就绪则重启软件，重新授权
          3、判断当前是否半黑屏
+
+         0 云手机-001
+         1 夜神模拟器
+         2 平板
+         3 手机
+         4 云手机-002
         :param auto_adb: 是否自动进行ADB连接
         :param game_device: 设备号
         :return:
@@ -77,6 +83,10 @@ class ComplexService:
             logger.debug("设备已就绪")
         logger.debug("连接设备")
         AirtestService.auto_setup(connect_name)
+        logger.debug("检查截图方法")
+        AirtestService.get_cap_method(devices_name)
+        logger.debug("测试各方法的时间")
+        AirtestService.check_method(devices_name)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,

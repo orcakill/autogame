@@ -65,6 +65,20 @@ class ImageService:
         return AirtestService.snapshot(name, print_image)
 
     @staticmethod
+    def get_cap_method(device):
+        """
+        设备截图
+        """
+        return AirtestService.get_cap_method(device)
+
+    @staticmethod
+    def get_check_method(device):
+        """
+        设备截图
+        """
+        return AirtestService.check_method(device)
+
+    @staticmethod
     def touch_coordinate(v: [], wait: float = WAIT, duration: float = DURATION):
         """
         点击坐标
