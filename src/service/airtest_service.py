@@ -23,6 +23,7 @@ from src.service.windows_service import WindowsService
 from src.utils import utils_path
 from src.utils.my_logger import my_logger as logger
 from src.utils.utils_path import get_onmyoji_image_path
+from src.utils.utils_time import UtilsTime
 
 # 控制airtest的日志输出
 log_airtest = logging.getLogger("airtest")
@@ -59,11 +60,13 @@ class AirtestService:
         dev = Android(serialno=serialno)
         screen_proxy = ScreenProxy.auto_setup(dev.adb, rotation_watcher=dev.rotation_watcher)
         all_methods = screen_proxy.SCREEN_METHODS
-        for index, (key, value) in enumerate(all_methods.items(), start=1):
-            now1 = datetime.datetime.now()
-            screen_proxy.check_frame(value)
-            now2 = datetime.datetime.now()
-            logger.debug("{}:{}", key, now2 - now1)
+        # 从self.SCREEN_METHODS中，逆序取出可用的方法
+        for name, screen_class in reversed(all_methods.items()):
+            screen = screen_class(dev.adb, rotation_watcher=dev.rotation_watcher)
+            now1 = time.time()
+            result = screen_proxy.check_frame(screen)
+            now2 = time.time()
+            logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(now2 - now1))
 
     @staticmethod
     def snapshot(name: str = None, print_image: bool = False):

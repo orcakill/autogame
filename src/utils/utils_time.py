@@ -8,7 +8,9 @@ from datetime import datetime
 class UtilsTime:
     @staticmethod
     def convert_seconds(seconds):
-        if seconds < 60:
+        if seconds < 10:
+            return f"{round(seconds, 4)}秒"
+        elif seconds < 60:
             return f"{round(seconds)}秒"
         elif seconds < 3600:
             minutes = seconds // 60
