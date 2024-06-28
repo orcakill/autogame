@@ -2,6 +2,7 @@ import subprocess
 import time, os, datetime
 from PIL import Image
 import win32gui, win32ui, win32api, win32con
+from src.utils.my_logger import logger
 
 hwnd_title = dict()  # 获取windows窗口句柄+标题
 
@@ -75,9 +76,10 @@ if __name__ == '__main__':
     cmdstr = "scrcpy" + device_n + " --crop=1080:1920:0:0 --window-title "
     cmdstr = cmdstr + win_title
     cmdstr = cmdstr + " -m 1024 -b 4M"
-    print(cmdstr)
-    subprocess.Popen(cmdstr, shell=True,encoding='utf-8') # 打开scrcpy
+    logger.debug("执行命令{}",cmdstr)
+    subprocess.call(cmdstr, shell=True) # 打开scrcpy
     time.sleep(3)  # 等待3秒，等待窗体彻底弹出
+    logger.debug("获取全部句柄")
     win32gui.EnumWindows(_get_all_hwnd, 0)  # 获取所有windows窗口句柄
     hwnd = 0
     for wnd in hwnd_title.items():  # 循环获取所有的windows句柄
@@ -86,10 +88,10 @@ if __name__ == '__main__':
         if win_title == get_win_title:  # 根据windows窗口标题判断，是不是需要截图的窗口。
             hwnd = wnd[0]
             break
-    print("windows句柄ID:", hwnd)
+    logger.debug("windows句柄ID:", hwnd)
     cut_image_file = './image/scrcpy' + str(device_name) + '.png'
     get_png = window_capture(cut_image_file, hwnd)  # 对windows窗体进行截图
-    print(get_png)
+    logger.debug(get_png)
     # 关闭windows窗体
     # win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
 
