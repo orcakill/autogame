@@ -73,10 +73,10 @@ if __name__ == '__main__':
     # cmdstr = "adb devices"
     # backstr = os.popen(cmdstr).read()
     # print(backstr)
-    device_name = "8ce78c9f"
+    # device_name = "8ce78c9f"
+    device_name = "A2CDUN4312H00817"
     is_device = WindowsService.get_device_status_by_ip(device_name)
     if is_device:
-        # device_name = "A2CDUN4312H00817"
         device_n = ' -s ' + device_name
         # scrcpy --crop设定屏幕=1080*1920并且偏移坐标为 (0,0)
         # 这里的--crop命令就是老版本的-c命令，新版本升级了，-c命令是错误的了。
@@ -89,8 +89,9 @@ if __name__ == '__main__':
         # 会出现错误，找不到句柄
         # 获取设备分辨率
         resolution = get_adb_resolution(device_name)
-        cmdstr = 'scrcpy' + device_n + ' --crop=' + str(resolution[0]) + ':' + str(
-            resolution[1]) + ':0:0 --window-title '
+        logger.debug(resolution)
+        cmdstr = 'scrcpy' + device_n + ' --crop=' + str(resolution[1]) + ':' + str(
+            resolution[0]) + ':0:0 --window-title '
         cmdstr = cmdstr + win_title
         cmdstr = cmdstr + " -m 1024 -b 4M"
         logger.debug("执行命令{}", cmdstr)
