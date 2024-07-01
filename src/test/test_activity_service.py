@@ -8,14 +8,14 @@ from unittest import TestCase
 
 from src.controller.onmyoji_controller import OnmyojiController
 from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount
-from src.service.activity_service import ActivityService
+from src.service.impl_onmyoji_service.impl_activity import ImplActivity
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.ocr_service import OcrService
 from src.service.onmyoji_service import OnmyojiService
 from src.utils.my_logger import logger
 
-activity_service = ActivityService()
+activity_service = ImplActivity()
 # 服务接口
 image_service = ImageService()
 complex_service = ComplexService()
@@ -61,6 +61,6 @@ class TestActivityService(TestCase):
             # 项目 1、
             if game_project.project_name in ["买票"]:
                 game_task = [game_projects, game_projects_relation, game_account, game_project]
-                ActivityService.current_buy(game_task)
+                ImplActivity.current_buy(game_task)
             logger.debug("活动-结束")
         logger.debug("活动-结束")

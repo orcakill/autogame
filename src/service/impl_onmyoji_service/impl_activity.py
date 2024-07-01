@@ -20,21 +20,21 @@ complex_service = ComplexService()
 ocr_service = OcrService()
 
 
-class ActivityService:
+class ImplActivity:
     @staticmethod
     def current_activity(game_task: []):
         # 当前活动 2023-08-23 至 2023-08-30
-        ActivityService.climbing_tower_20230823(game_task)
+        ImplActivity.climbing_tower_20230823(game_task)
 
     @staticmethod
     def current_lbs(game_task: []):
         # 当前活动 2023-08-23 至 2023-08-30   lbs鬼王
-        ActivityService.lbs_20230823(game_task)
+        ImplActivity.lbs_20230823(game_task)
 
     @staticmethod
     def current_buy(game_task: []):
         # 当前活动 2023-10-18 至 2023-08-30   买票
-        ActivityService.buy_20231018(game_task)
+        ImplActivity.buy_20231018(game_task)
 
     @staticmethod
     def climbing_tower_20230823(game_task: []):
