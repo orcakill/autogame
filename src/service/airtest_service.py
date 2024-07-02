@@ -16,7 +16,6 @@ from airtest.aircv import cv2_2_pil
 from airtest.core.android import Android
 from airtest.core.android.cap_methods.screen_proxy import ScreenProxy
 from airtest.core.api import *
-from airtest.core.error import AdbShellError, AirtestError
 from airtest.core.helper import G
 from airtest.core.settings import Settings
 
@@ -205,20 +204,16 @@ class AirtestService:
     def adb_start_app(package: str, device_name: str, activity: str = None):
         """
         停止APP
+        :param activity: 活动名
         :param package: app的包名
         :param device_name: 设备名
         :return: 无
         """
         if not activity:
-            try:
-                ret = subprocess.run(['monkey', '-p', package, '-c', 'android.intent.category.LAUNCHER', '1'],
-                                     shell=True)
-            except AdbShellError as e:
-                raise AirtestError("Starting App: %s Failed! No activities found to run." % package)
-            if "No activities found to run" in ret:
-                raise AirtestError("Starting App: %s Failed! No activities found to run." % package)
+            command = f'adb -s {device_name} shell monkey -p {package} 1'
+            subprocess.run(command, shell=True)
         else:
-            subprocess.run(['am', 'start', '-n', '%s/%s.%s' % (package, package, activity)], shell=True)
+            subprocess.run(['am', 'start', '-n', '%s/%s.%s' % (package, package, activity)])
 
     @staticmethod
     def adb_restart_app(package: str, device_name: str):
@@ -230,7 +225,6 @@ class AirtestService:
         """
         AirtestService.adb_stop_app(package, device_name)
         time.sleep(2)
-        start_app(package)
         AirtestService.adb_start_app(package, device_name)
         time.sleep(2)
 

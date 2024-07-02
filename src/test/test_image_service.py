@@ -8,6 +8,7 @@ import time
 from unittest import TestCase
 
 from src.model.enum import Onmyoji, Cvstrategy
+from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -155,6 +156,16 @@ class TestImageService(TestCase):
         # 测试代码
         logger.debug("开始")
         ImageService.text("666")
+        logger.debug("结束")
+        now1 = datetime.datetime.now()
+        print(now1 - now)
+
+    @staticmethod
+    def test_app():
+        now = datetime.datetime.now()
+        # 测试代码
+        logger.debug("开始")
+        AirtestService.adb_restart_app("com.netease.onmyoji", "A2CDUN4312H00817")
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

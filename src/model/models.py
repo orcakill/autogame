@@ -16,6 +16,8 @@ class GameAccount(Base):
     role_region = Column(String(40), info='角色服务器')
     role_name = Column(String(40), info='角色名称')
     role_class = Column(String(40), info='角色等级')
+    game_emaki = Column(Integer, info='绘卷模式')
+    super_ghost_king = Column(Integer, info='超鬼王')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
@@ -25,7 +27,9 @@ class GameAccount(Base):
                f"account_password= {self.account_password}," \
                f"role_region= {self.role_region}," \
                f"role_name= {self.role_name}," \
-               f"role_class= {self.role_class}"
+               f"role_class= {self.role_class}," \
+               f"game_emaki= {self.game_emaki}," \
+               f"super_ghost_king= {self.super_ghost_king}"
 
     def __init__(self, game_account: () = None, **kwargs):
         if game_account is None:
@@ -36,6 +40,8 @@ class GameAccount(Base):
             self.role_region = kwargs.get('role_region')
             self.role_name = kwargs.get('role_name')
             self.role_class = kwargs.get('role_class')
+            self.game_emaki = kwargs.get('game_emaki')
+            self.super_ghost_king = kwargs.get('super_ghost_king')
         else:
             super().__init__(**kwargs)
             self.id = game_account.id
@@ -45,29 +51,35 @@ class GameAccount(Base):
             self.role_region = game_account.role_region
             self.role_name = game_account.role_name
             self.role_class = game_account.role_class
+            self.game_emaki = game_account.game_emaki
+            self.super_ghost_king = game_account.super_ghost_king
 
 
 class GameDevices(Base):
     __tablename__ = "game_devices"
 
     id = Column(String(40), primary_key=True, info='设备ID')
+    device_serialno = Column(String(40), info='设备序列号')
     devices_name = Column(String(40), info='设备名称')
     devices_connect = Column(String(40), info='设备连接信息')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
                f"id= {self.id}," \
+               f"device_serialno= {self.device_serialno}," \
                f"devices_name= {self.devices_name}," \
                f"devices_connect= {self.devices_connect}"
 
     def __init__(self, game_devices: () = None, **kwargs):
         if game_devices is None:
             self.id = kwargs.get('id')
+            self.device_serialno = kwargs.get('device_serialno')
             self.devices_name = kwargs.get('devices_name')
             self.devices_connect = kwargs.get('devices_connect')
         else:
             super().__init__(**kwargs)
             self.id = game_devices.id
+            self.device_serialno = game_devices.device_serialno
             self.devices_name = game_devices.devices_name
             self.devices_connect = game_devices.devices_connect
 
