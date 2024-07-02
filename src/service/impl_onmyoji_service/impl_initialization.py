@@ -18,6 +18,7 @@ from src.utils.utils_time import UtilsTime
 def initialization(game_task: [], login_type: int = 0):
     """
     项目1 当前状态初始化
+    :param device_name: 设备信息
     :param login_type: 登录类型 默认 0 按账号登录 1 快速登录
     :param game_task: 任务信息
     :return:
@@ -50,7 +51,7 @@ def initialization(game_task: [], login_type: int = 0):
         str_login = '重新登录'
         # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
         logger.debug("启动阴阳师app")
-        ImageService.restart_app("com.netease.onmyoji")
+        ImageService.restart_app("com.netease.onmyoji",game_devices.devices_name)
         logger.debug("判断是否存在适龄提示")
         is_age_appropriate_reminder = ImageService.exists(Onmyoji.login_SLTS, timeouts=30)
         # 不存在适龄提示

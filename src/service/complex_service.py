@@ -2,6 +2,7 @@
 # @Author: orcakill
 # @File: complex_service.py
 # @Description: 复杂逻辑处理
+import subprocess
 import time
 
 from tornado import concurrent
@@ -32,33 +33,33 @@ class ComplexService:
         :param game_device: 设备号
         :return:
         """
-        devices_name = None
-        connect_name = None
+        serialno = None
+        connect_info = None
         if game_device == "0":
-            devices_name = "127.0.0.1:50000"
-            connect_name = devices_name
+            serialno = "127.0.0.1:50000"
+            connect_info = serialno
             logger.debug("检查是否启动云手机-001")
             WindowsService.start_exe("YsConsole", "云帅云手机")
         if game_device == "1":
             logger.debug("检查是否启动夜神模拟器")
             WindowsService.start_exe("Nox", "夜神模拟器")
-            devices_name = "127.0.0.1:62001"
-            connect_name = devices_name + "?cap_method=JAVACAP"
+            serialno = "127.0.0.1:62001"
+            connect_info = serialno + "?cap_method=JAVACAP"
         if game_device == "2":
             logger.debug("检查是否启动荣耀平板9")
-            devices_name = "A2CDUN4312H00817"
-            connect_name = devices_name
+            serialno = "A2CDUN4312H00817"
+            connect_info = serialno
         if game_device == "3":
             logger.debug("检查是否启动小米13")
-            devices_name = "8ce78c9f"
-            connect_name = devices_name
+            serialno = "8ce78c9f"
+            connect_info = serialno
         if game_device == "4":
             logger.debug("检查是否启动云手机-002")
             WindowsService.start_exe("YsConsole", "云帅云手机")
-            devices_name = "127.0.0.1:50001"
-            connect_name = devices_name + "?cap_method=JAVACAP"
+            serialno = "127.0.0.1:50001"
+            connect_info = serialno + "?cap_method=JAVACAP"
         logger.debug("判断设备是否已就绪")
-        is_state = WindowsService.get_device_status_by_ip(devices_name)
+        is_state = WindowsService.get_device_status_by_ip(serialno)
         while is_state != "device":
             if game_device in ['0', '4'] and auto_adb == 1:
                 logger.debug("云手机自动登录")
@@ -78,15 +79,25 @@ class ComplexService:
                 ImageService.touch_windows(hwnd, Onmyoji.phone_YXSQ)
             time.sleep(10)
             logger.debug("重新判断是否已就绪")
-            is_state = WindowsService.get_device_status_by_ip(devices_name)
+            is_state = WindowsService.get_device_status_by_ip(serialno)
         if is_state == "device":
             logger.debug("设备已就绪")
         logger.debug("连接设备")
-        AirtestService.auto_setup(connect_name)
+        AirtestService.auto_setup(connect_info)
         logger.debug("检查截图方法")
-        AirtestService.check_method(devices_name)
+        AirtestService.check_method(serialno)
         logger.debug("检查当前最优截图方法")
-        AirtestService.get_cap_method(devices_name)
+        cap = AirtestService.get_cap_method(serialno)
+        if cap:
+            logger.debug("检查scrcpy投屏")
+            hwnd = ImageService.get_all_hwnd_info(title=serialno)
+            if hwnd is not None:
+                cmd_str = 'scrcpy -s' + serialno + ' --window-title ' + serialno
+                logger.debug("执行命令{}", cmd_str)
+                subprocess.Popen(cmd_str, shell=True)  # 打开scrcpy
+                time.sleep(3)
+                logger.debug("连接windows窗口")
+                AirtestService.auto_setup_windows(title=serialno)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,

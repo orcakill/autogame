@@ -86,18 +86,18 @@ class ImageService:
         AirtestService.touch_coordinate(v, wait, duration)
 
     @staticmethod
-    def restart_app(app: str):
+    def restart_app(app: str,device_name:str):
         """
         重启APP
         """
-        AirtestService.restart_app(app)
+        AirtestService.adb_restart_app(app,device_name)
 
     @staticmethod
     def stop_app(app: str):
         """
         停止APP
         """
-        AirtestService.stop_app(app)
+        AirtestService.adb_stop_app(app)
 
     @staticmethod
     def swipe(v1: [], v2: [], duration: float = 0.5):

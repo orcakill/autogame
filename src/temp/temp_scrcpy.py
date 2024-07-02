@@ -63,7 +63,7 @@ def screen_hwnd(windows_title):
     hwnd = hwnd_tuple[-1]
     if hwnd:
         logger.debug("句柄ID:{}", str(hwnd))
-        ImplHwnd.windows_screenshot(hwnd=hwnd,name='测试',print_image=True)
+        ImplHwnd.windows_screenshot(hwnd=hwnd, name='测试', print_image=True)
     else:
         logger.debug("未找到句柄")
 
@@ -90,9 +90,7 @@ if __name__ == '__main__':
         # 获取设备分辨率
         resolution = get_adb_resolution(device_name)
         logger.debug(resolution)
-        cmdstr = 'scrcpy' + device_n + ' --crop=' + str(resolution[1]) + ':' + str(
-            resolution[0]) + ':0:0 --window-title '
-        cmdstr = cmdstr + win_title
+        cmdstr = 'scrcpy' + device_n + ' --crop=1080:1920:0:0 --window-title ' + win_title
         cmdstr = cmdstr + " -m 1024 -b 4M"
         logger.debug("执行命令{}", cmdstr)
         subprocess.Popen(cmdstr, shell=True)  # 打开scrcpy

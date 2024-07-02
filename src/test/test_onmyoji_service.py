@@ -33,7 +33,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project('2', "3", "登录")
+        TestOnmyojiService.test_project('1', "3", "登录")
 
     def test_initialization1(self):
         """

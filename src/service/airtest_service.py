@@ -4,9 +4,9 @@
 # @File: airtest_service.py
 # @Description: airtest接口
 """
-import datetime
 import logging
 import random
+import subprocess
 from datetime import datetime as imp_datetime
 
 import cv2
@@ -16,6 +16,7 @@ from airtest.aircv import cv2_2_pil
 from airtest.core.android import Android
 from airtest.core.android.cap_methods.screen_proxy import ScreenProxy
 from airtest.core.api import *
+from airtest.core.error import AdbShellError, AirtestError
 from airtest.core.helper import G
 from airtest.core.settings import Settings
 
@@ -41,6 +42,15 @@ class AirtestService:
     @staticmethod
     def auto_setup(connect_name: str):
         devices = "Android://127.0.0.1:5037/" + connect_name
+        auto_setup(__file__, logdir=False, devices=[devices])
+
+    @staticmethod
+    def auto_setup_windows(hwnd: str = None, title: str = None):
+        devices = "Windows:///"
+        if hwnd is not None:
+            devices = devices + hwnd
+        elif title is not None:
+            devices = devices + '?title_re=' + title + '.*'
         auto_setup(__file__, logdir=False, devices=[devices])
 
     @staticmethod
@@ -181,25 +191,48 @@ class AirtestService:
             return False
 
     @staticmethod
-    def restart_app(app: str):
-        """
-        重启APP
-        :param app: app的包名
-        :return: 无
-        """
-        stop_app(app)
-        time.sleep(2)
-        start_app(app)
-        time.sleep(1)
-
-    @staticmethod
-    def stop_app(app: str):
+    def adb_stop_app(package: str, device_name: str):
         """
         停止APP
-        :param app: app的包名
+        :param package: app的包名
+        :param device_name: 设备名
         :return: 无
         """
-        stop_app(app)
+        command = f'adb -s {device_name} shell am force-stop {package}'
+        subprocess.run(command, shell=True)
+
+    @staticmethod
+    def adb_start_app(package: str, device_name: str, activity: str = None):
+        """
+        停止APP
+        :param package: app的包名
+        :param device_name: 设备名
+        :return: 无
+        """
+        if not activity:
+            try:
+                ret = subprocess.run(['monkey', '-p', package, '-c', 'android.intent.category.LAUNCHER', '1'],
+                                     shell=True)
+            except AdbShellError as e:
+                raise AirtestError("Starting App: %s Failed! No activities found to run." % package)
+            if "No activities found to run" in ret:
+                raise AirtestError("Starting App: %s Failed! No activities found to run." % package)
+        else:
+            subprocess.run(['am', 'start', '-n', '%s/%s.%s' % (package, package, activity)], shell=True)
+
+    @staticmethod
+    def adb_restart_app(package: str, device_name: str):
+        """
+        重启APP
+        :param device_name: 设备信息
+        :param package: app的包名
+        :return: 无
+        """
+        AirtestService.adb_stop_app(package, device_name)
+        time.sleep(2)
+        start_app(package)
+        AirtestService.adb_start_app(package, device_name)
+        time.sleep(2)
 
     @staticmethod
     def swipe(v1: [], v2: [], duration):
