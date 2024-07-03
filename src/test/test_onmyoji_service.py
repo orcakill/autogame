@@ -5,7 +5,6 @@
 from unittest import TestCase
 
 from src.controller.onmyoji_controller import OnmyojiController
-from src.dao.mapper import Mapper
 from src.dao.mapper_extend import MapperExtend
 from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameProjects, GameDevices
 from src.service.complex_service import ComplexService
@@ -33,7 +32,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project('1', "2", "登录")
+        TestOnmyojiService.test_project('1', "3", "登录")
 
     def test_initialization1(self):
         """
@@ -252,9 +251,7 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         # 初始化项目组信息
-        # 设备信息
-        game_device = GameDevices(Mapper.select_game_devices(test_devices))
-        game_tasks = OnmyojiController.create_tasks(test_names, "", project_name)
+        game_tasks = OnmyojiController.create_tasks(test_devices, test_names, "", project_name)
         reslut = False
         for i in range(len(game_tasks)):
             game_task = game_tasks[i]
@@ -262,7 +259,8 @@ class TestOnmyojiService(TestCase):
             game_projects, game_projects_relation = GameProjects(game_task[0]), GameProjectsRelation(game_task[1])
             game_account = GameAccount(game_task[2])
             game_project = GameProject(game_task[3])
-            game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
+            game_devices = GameDevices(game_task[4])
+            game_task = [game_projects, game_projects_relation, game_account, game_project, game_devices]
             logger.debug("当前状态初始化:{}", game_account.role_name)
             # 连接设备
             ComplexService.auto_setup(test_devices)

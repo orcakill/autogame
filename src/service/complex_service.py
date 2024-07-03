@@ -97,7 +97,7 @@ class ComplexService:
                 subprocess.Popen(cmd_str, shell=True)  # 打开scrcpy
                 time.sleep(3)
                 logger.debug("连接windows窗口")
-                AirtestService.auto_setup_windows(title=serialno)
+            AirtestService.auto_setup_windows(title=serialno)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,

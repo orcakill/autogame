@@ -20,7 +20,7 @@ class TestImageService(TestCase):
 
     def test_exists(self):
         now = datetime.datetime.now()
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("3")
         logger.debug("开始")
         is_roller = ImageService.exists(Onmyoji.explore_LHGL, cvstrategy=Cvstrategy.default, is_throw=True)
         if is_roller:
@@ -164,8 +164,10 @@ class TestImageService(TestCase):
     def test_app():
         now = datetime.datetime.now()
         # 测试代码
+        serialno = "8ce78c9f"
+        # serialno = "A2CDUN4312H00817"
         logger.debug("开始")
-        AirtestService.adb_restart_app("com.netease.onmyoji", "A2CDUN4312H00817")
+        AirtestService.adb_restart_app("com.netease.onmyoji", serialno)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
