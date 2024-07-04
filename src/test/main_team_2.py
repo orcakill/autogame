@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.model.enum import Onmyoji
 from src.service.complex_service import ComplexService
 from src.service.windows_service import WindowsService
-from utils.my_logger import my_logger as logger
+from src.utils.my_logger import my_logger as logger
 
 
 def soul2(game_devices: str):

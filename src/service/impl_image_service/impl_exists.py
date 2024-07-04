@@ -6,7 +6,6 @@ import time
 
 from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
-from src.service.impl_image_service.impl_hwnd import ImplHwnd
 from src.utils.my_logger import my_logger as logger
 
 # 图像识别算法
@@ -59,7 +58,7 @@ class ImplExistsTouch:
                     pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
                     if pos:
                         # 截图打印
-                        ImplHwnd.draw_point("",pos[0],pos[1])
+                        AirtestService.draw_point("", pos[0], pos[1])
                         if is_click:
                             time.sleep(interval)
                             logger.debug("图像识别点击成功:{}", folder_path)

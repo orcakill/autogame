@@ -12,6 +12,7 @@ from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
+from src.utils.utils_time import UtilsTime
 
 cvstrategy = Cvstrategy.default
 
@@ -19,16 +20,14 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        now = datetime.datetime.now()
         ComplexService.auto_setup("3")
         logger.debug("开始")
-        is_roller = ImageService.exists(Onmyoji.explore_LHGL, cvstrategy=Cvstrategy.default, is_throw=True)
-        if is_roller:
-            logger.debug("滑动滚轮")
-            ImageService.swipe(is_roller, (is_roller[0] + (is_roller[0] * 0.1), is_roller[1]))
+        now = time.time()
+        result = ImageService.exists(Onmyoji.login_YYSTB,is_click=True)
+        logger.debug(result)
         logger.debug("结束")
-        now1 = datetime.datetime.now()
-        print(now1 - now)
+        now1 = time.time()
+        print(UtilsTime.convert_seconds(now1 - now))
 
     def test_exists_coordinate(self):
         ComplexService.auto_setup("0")
@@ -160,8 +159,7 @@ class TestImageService(TestCase):
         now1 = datetime.datetime.now()
         print(now1 - now)
 
-    @staticmethod
-    def test_app():
+    def test_app(self):
         now = datetime.datetime.now()
         # 测试代码
         serialno = "8ce78c9f"

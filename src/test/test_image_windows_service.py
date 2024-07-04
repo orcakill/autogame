@@ -30,11 +30,11 @@ class ImageWindowsServiceTest(TestCase):
         for r in result:
             logger.debug(r)
         logger.info("2指定标题的句柄及信息")
-        result = ImageService.get_all_hwnd_info(title="新建文本文档.txt - 记事本")
+        result = ImageService.get_all_hwnd_info(title="8ce78c9f")
         for r in result:
             logger.debug(r)
         logger.info("3指定进程的句柄及信息")
-        result = ImageService.get_all_hwnd_info(process_name="notepad.exe")
+        result = ImageService.get_all_hwnd_info(process_name="scrcpy.exe")
         for i in range(len(result)):
             hwnd = result[i][3]
             result_child = ImageService.get_all_hwnd_info(hwnd=hwnd)
