@@ -26,8 +26,8 @@ from src.utils.utils_path import get_onmyoji_image_path
 from src.utils.utils_time import UtilsTime
 
 # 控制airtest的日志输出
-# log_airtest = logging.getLogger("airtest")
-# log_airtest.setLevel(logging.CRITICAL)
+log_airtest = logging.getLogger("airtest")
+log_airtest.setLevel(logging.CRITICAL)
 
 # 图片点击识别等待时间(秒）·
 WAIT = 0

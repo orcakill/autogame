@@ -89,15 +89,17 @@ class ComplexService:
         logger.debug("检查当前最优截图方法")
         cap = AirtestService.get_cap_method(serialno)
         if cap:
+            logger.debug("注册scrcpy截图")
             logger.debug("检查scrcpy投屏")
             hwnd = ImageService.get_all_hwnd_info(title=serialno)
-            if hwnd is not None:
-                cmd_str = 'scrcpy -s' + serialno + ' --window-title ' + serialno
+            if hwnd:
+                logger.debug("已启用scrcpy投屏")
+            else:
+                logger.debug("启用scrcpy投屏")
+                cmd_str = 'scrcpy -s ' + serialno + ' --window-title ' + serialno
                 logger.debug("执行命令{}", cmd_str)
                 subprocess.Popen(cmd_str, shell=True)  # 打开scrcpy
                 time.sleep(3)
-                logger.debug("连接windows窗口")
-            AirtestService.auto_setup_windows(title=serialno)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,
