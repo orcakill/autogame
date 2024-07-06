@@ -51,7 +51,7 @@ def initialization(game_task: [], login_type: int = 0):
         str_login = '重新登录'
         # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
         logger.debug("启动阴阳师app")
-        ImageService.restart_app("com.netease.onmyoji", game_devices.device_serialno)
+        ImageService.restart_app("com.netease.onmyoji")
         logger.debug("判断是否存在适龄提示")
         is_age_appropriate_reminder = ImageService.exists(Onmyoji.login_SLTS, timeouts=30)
         # 不存在适龄提示

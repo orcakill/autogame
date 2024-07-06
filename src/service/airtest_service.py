@@ -190,18 +190,17 @@ class AirtestService:
             return False
 
     @staticmethod
-    def adb_stop_app(package: str, device_name: str):
+    def adb_stop_app(package: str):
         """
         停止APP
         :param package: app的包名
         :param device_name: 设备名
         :return: 无
         """
-        command = f'adb -s {device_name} shell am force-stop {package}'
-        subprocess.run(command, shell=True)
+        stop_app(package=package)
 
     @staticmethod
-    def adb_start_app(package: str, device_name: str, activity: str = None):
+    def adb_start_app(package: str):
         """
         停止APP
         :param activity: 活动名
@@ -209,23 +208,19 @@ class AirtestService:
         :param device_name: 设备名
         :return: 无
         """
-        if not activity:
-            command = f'adb -s {device_name} shell monkey -p {package} 1'
-            subprocess.run(command, shell=True)
-        else:
-            subprocess.run(['am', 'start', '-n', '%s/%s.%s' % (package, package, activity)])
+        start_app(package=package)
 
     @staticmethod
-    def adb_restart_app(package: str, device_name: str):
+    def adb_restart_app(package: str):
         """
         重启APP
         :param device_name: 设备信息
         :param package: app的包名
         :return: 无
         """
-        AirtestService.adb_stop_app(package, device_name)
+        AirtestService.adb_stop_app(package)
         time.sleep(2)
-        AirtestService.adb_start_app(package, device_name)
+        AirtestService.adb_start_app(package)
         time.sleep(2)
 
     @staticmethod

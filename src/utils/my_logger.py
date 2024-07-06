@@ -3,11 +3,11 @@ import sys
 
 from loguru import logger
 
-from src.utils.utils_path import get_project_path_log
+from src.utils.utils_path import UtilsPath
 
 logger.remove()  # 移除默认的日志记录器
 # 设置主日志文件目录,所有日志都会记录在此文件夹中
-my_log_file_path = get_project_path_log()
+my_log_file_path = UtilsPath.get_project_path_log()
 
 
 class MyLogger:

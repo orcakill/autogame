@@ -86,11 +86,11 @@ class ImageService:
         AirtestService.touch_coordinate(v, wait, duration)
 
     @staticmethod
-    def restart_app(app: str,device_name:str):
+    def restart_app(app: str):
         """
         重启APP
         """
-        AirtestService.adb_restart_app(app,device_name)
+        AirtestService.adb_restart_app(app)
 
     @staticmethod
     def stop_app(app: str):
