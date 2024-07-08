@@ -48,7 +48,7 @@ class ComplexService:
         if game_device == "2":
             logger.debug("检查是否启动荣耀平板9")
             serialno = "A2CDUN4312H00817"
-            connect_info = serialno
+            connect_info = serialno + "?cap_method=JAVACAP"
         if game_device == "3":
             logger.debug("检查是否启动小米13")
             serialno = "8ce78c9f"

@@ -75,14 +75,14 @@ class AirtestService:
             now1 = time.time()
             result = screen_proxy.check_frame(screen)
             now2 = time.time()
+            best_time1 = now2 - now1
             if result:
-                best_time1 = now2 - now1
                 if best_time:
                     if best_time1 < best_time:
                         best_time = best_time1
-                        best_method = name
                 else:
                     best_time = best_time1
+                best_method = name
             logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(best_time))
         logger.debug("最快的截图方法{}", best_method)
         return best_method

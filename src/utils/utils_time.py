@@ -8,25 +8,28 @@ from datetime import datetime
 class UtilsTime:
     @staticmethod
     def convert_seconds(seconds):
-        if seconds < 10:
-            return f"{round(seconds, 4)}秒"
-        elif seconds < 60:
-            return f"{round(seconds)}秒"
-        elif seconds < 3600:
-            minutes = seconds // 60
-            seconds = seconds % 60
-            return f"{round(minutes)}分钟 {round(seconds)}秒"
-        elif seconds < 86400:
-            hours = seconds // 3600
-            minutes = (seconds % 3600) // 60
-            seconds = (seconds % 3600) % 60
-            return f"{round(hours)}小时 {round(minutes)}分钟 {round(seconds)}秒"
+        if seconds:
+            if seconds < 10:
+                return f"{round(seconds, 4)}秒"
+            elif seconds < 60:
+                return f"{round(seconds)}秒"
+            elif seconds < 3600:
+                minutes = seconds // 60
+                seconds = seconds % 60
+                return f"{round(minutes)}分钟 {round(seconds)}秒"
+            elif seconds < 86400:
+                hours = seconds // 3600
+                minutes = (seconds % 3600) // 60
+                seconds = (seconds % 3600) % 60
+                return f"{round(hours)}小时 {round(minutes)}分钟 {round(seconds)}秒"
+            else:
+                days = seconds // 86400
+                hours = (seconds % 86400) // 3600
+                minutes = ((seconds % 86400) % 3600) // 60
+                seconds = ((seconds % 86400) % 3600) % 60
+                return f"{round(days)}天 {round(hours)}小时 {round(minutes)}分钟 {round(seconds)}秒"
         else:
-            days = seconds // 86400
-            hours = (seconds % 86400) // 3600
-            minutes = ((seconds % 86400) % 3600) // 60
-            seconds = ((seconds % 86400) % 3600) % 60
-            return f"{round(days)}天 {round(hours)}小时 {round(minutes)}分钟 {round(seconds)}秒"
+            return None
 
     @staticmethod
     def get_day_str():
