@@ -32,7 +32,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project('1', "3", "登录")
+        TestOnmyojiService.test_project('2', "1", "登录")
 
     def test_initialization1(self):
         """
@@ -234,8 +234,8 @@ class TestOnmyojiService(TestCase):
                 result_report = [num_report, name, game_project_name, result]
                 test_reports.append(result_report)
                 logger.debug("打印报告")
-                for i in range(len(test_reports)):
-                    logger.debug(test_reports[i])
+                for k in range(len(test_reports)):
+                    logger.debug(test_reports[k])
         logger.debug("最终打印报告")
         for i in range(len(test_reports)):
             logger.debug(test_reports[i])
@@ -252,15 +252,15 @@ class TestOnmyojiService(TestCase):
         """
         # 初始化项目组信息
         game_tasks = OnmyojiController.create_tasks(test_devices, test_names, "", project_name)
-        reslut = False
+        result = False
         for i in range(len(game_tasks)):
             game_task = game_tasks[i]
             logger.debug("初始化项目信息")
             game_projects, game_projects_relation = GameProjects(game_task[0]), GameProjectsRelation(game_task[1])
             game_account = GameAccount(game_task[2])
             game_project = GameProject(game_task[3])
-            game_devices = GameDevices(game_task[4])
-            game_task = [game_projects, game_projects_relation, game_account, game_project, game_devices]
+            game_device = GameDevices(game_task[4])
+            game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
             logger.debug("当前状态初始化:{}", game_account.role_name)
             # 连接设备
             ComplexService.auto_setup(test_devices)

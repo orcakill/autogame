@@ -70,7 +70,7 @@ class TestImageService(TestCase):
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        ImageService.snapshot("1", True)
+        ImageService.snapshot("1", False)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

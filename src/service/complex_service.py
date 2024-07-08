@@ -2,7 +2,6 @@
 # @Author: orcakill
 # @File: complex_service.py
 # @Description: 复杂逻辑处理
-import subprocess
 import time
 
 from tornado import concurrent
@@ -17,7 +16,7 @@ from src.utils.my_logger import logger
 class ComplexService:
 
     @staticmethod
-    def auto_setup(game_device: str, auto_adb: int = 0):
+    def auto_setup(game_device: str, auto_adb: int = 0, cap_method: str = None):
         """
         设备连接
          1、已启动的设备，不再重新启动，检查是否已就绪
@@ -29,6 +28,7 @@ class ComplexService:
          2 平板
          3 手机
          4 云手机-002
+        :param cap_method: 截图方法
         :param auto_adb: 是否自动进行ADB连接
         :param game_device: 设备号
         :return:
@@ -58,9 +58,10 @@ class ComplexService:
             WindowsService.start_exe("YsConsole", "云帅云手机")
             serialno = "127.0.0.1:50001"
             connect_info = serialno + "?cap_method=JAVACAP"
-        logger.debug("判断设备是否已就绪")
+        logger.debug("检查设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(serialno)
         while is_state != "device":
+            logger.debug("设备未就绪")
             if game_device in ['0', '4'] and auto_adb == 1:
                 logger.debug("云手机自动登录")
                 logger.debug("获取云手机句柄")
@@ -77,8 +78,9 @@ class ComplexService:
                 time.sleep(5)
                 logger.debug("点击界面上的授权")
                 ImageService.touch_windows(hwnd, Onmyoji.phone_YXSQ)
+            logger.debug("等待10s")
             time.sleep(10)
-            logger.debug("重新判断是否已就绪")
+            logger.debug("重新检查是否已就绪")
             is_state = WindowsService.get_device_status_by_ip(serialno)
         if is_state == "device":
             logger.debug("设备已就绪")
@@ -86,20 +88,8 @@ class ComplexService:
         AirtestService.auto_setup(connect_info)
         logger.debug("检查截图方法")
         AirtestService.check_method(serialno)
-        logger.debug("检查当前最优截图方法")
-        cap = AirtestService.get_cap_method(serialno)
-        if cap:
-            logger.debug("注册scrcpy截图")
-            logger.debug("检查scrcpy投屏")
-            hwnd = ImageService.get_all_hwnd_info(title=serialno)
-            if hwnd:
-                logger.debug("已启用scrcpy投屏")
-            else:
-                logger.debug("启用scrcpy投屏")
-                cmd_str = 'scrcpy -s ' + serialno + ' --window-title ' + serialno
-                logger.debug("执行命令{}", cmd_str)
-                subprocess.Popen(cmd_str, shell=True)  # 打开scrcpy
-                time.sleep(3)
+        logger.debug("检查当前默认截图方法")
+        AirtestService.get_cap_method(serialno)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,

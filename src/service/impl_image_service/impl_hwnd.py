@@ -130,6 +130,8 @@ class ImplHwnd:
             x, y, w, h = rect
             if w > 0 and h > 0:
                 logger.debug("{},{}",w,h)
+                w=1920
+                h=1080
                 # 创建一个与窗口大小相同的设备上下文
                 hdc = win32gui.GetWindowDC(hwnd)
                 dc_obj = win32ui.CreateDCFromHandle(hdc)
@@ -140,9 +142,6 @@ class ImplHwnd:
                 mem_dc.SelectObject(bitmap)
                 # 将窗口内容绘制到位图上
                 mem_dc.BitBlt((0, 0), (w, h), dc_obj, (0, 0), win32con.SRCCOPY)
-                # 将位图保存为文件
-                # bitmap.SaveBitmapFile(memDC, "D://screenshot.png")
-
                 # bitmap转换ndarray
                 signed_ints_array = bitmap.GetBitmapBits(True)
                 ndarray_image = np.fromstring(signed_ints_array, dtype='uint8', count=-1, sep='')

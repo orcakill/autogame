@@ -6,9 +6,9 @@ from sqlalchemy.orm import sessionmaker
 
 from src.model.models import GameAccount, GameProjectLog, GameDevices, GameRunLog
 from src.service.windows_service import WindowsService
-from src.utils.utils_path import get_database_url
+from src.utils.utils_path import UtilsPath
 
-url = get_database_url()
+url = UtilsPath.get_database_url()
 engine = create_engine(url, echo=False, pool_pre_ping=True, pool_recycle=1800)  # 实例化数据库连接
 
 

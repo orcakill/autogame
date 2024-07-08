@@ -6,7 +6,6 @@
 """
 import logging
 import random
-import subprocess
 from datetime import datetime as imp_datetime
 
 import cv2
@@ -20,9 +19,8 @@ from airtest.core.helper import G
 from airtest.core.settings import Settings
 
 from src.service.windows_service import WindowsService
-from src.utils import utils_path
 from src.utils.my_logger import my_logger as logger
-from src.utils.utils_path import get_onmyoji_image_path
+from src.utils.utils_path import UtilsPath
 from src.utils.utils_time import UtilsTime
 
 # 控制airtest的日志输出
@@ -70,12 +68,24 @@ class AirtestService:
         screen_proxy = ScreenProxy.auto_setup(dev.adb, rotation_watcher=dev.rotation_watcher)
         all_methods = screen_proxy.SCREEN_METHODS
         # 从self.SCREEN_METHODS中，逆序取出可用的方法
+        best_method = None
+        best_time = None
         for name, screen_class in reversed(all_methods.items()):
             screen = screen_class(dev.adb, rotation_watcher=dev.rotation_watcher)
             now1 = time.time()
             result = screen_proxy.check_frame(screen)
             now2 = time.time()
-            logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(now2 - now1))
+            if result:
+                best_time1 = now2 - now1
+                if best_time:
+                    if best_time1 < best_time:
+                        best_time = best_time1
+                        best_method = name
+                else:
+                    best_time = best_time1
+            logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(best_time))
+        logger.debug("最快的截图方法{}", best_method)
+        return best_method
 
     @staticmethod
     def snapshot(name: str = None, print_image: bool = False):
@@ -83,18 +93,22 @@ class AirtestService:
         这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
         """
+
         screen = ""
-        if not print_image:
-            screen = G.DEVICE.snapshot(filename=None, quality=99, max_size=1200)
         if print_image:
             # 获取当前时间
             now = imp_datetime.now()
             # 将时间转换为字符串
             time_str = now.strftime("%Y-%m-%d_%H-%M-%S") + "_" + name
-            path = os.path.join(utils_path.get_project_path_log(), "image")
+            path = os.path.join(UtilsPath.get_project_path_log(), "image")
             WindowsService.delete_folder_file(path, 2)
             path = os.path.join(path, time_str)
-            screen = G.DEVICE.snapshot(filename=path + ".png", quality=99, max_size=1200)
+            screen = snapshot(filename=path + ".png", quality=99, max_size=1200)
+        else:
+            try:
+                screen = G.DEVICE.snapshot(quality=99, max_size=1200)
+            except Exception as e:
+                logger.debug("截图异常{}", e)
         return screen
 
     @staticmethod
@@ -194,7 +208,6 @@ class AirtestService:
         """
         停止APP
         :param package: app的包名
-        :param device_name: 设备名
         :return: 无
         """
         stop_app(package=package)
@@ -203,9 +216,7 @@ class AirtestService:
     def adb_start_app(package: str):
         """
         停止APP
-        :param activity: 活动名
         :param package: app的包名
-        :param device_name: 设备名
         :return: 无
         """
         start_app(package=package)
@@ -214,7 +225,6 @@ class AirtestService:
     def adb_restart_app(package: str):
         """
         重启APP
-        :param device_name: 设备信息
         :param package: app的包名
         :return: 无
         """
@@ -358,7 +368,7 @@ class AirtestService:
         :return:
         """
         template_list = []
-        folder_all_path = os.path.join(get_onmyoji_image_path(), folder_path)
+        folder_all_path = os.path.join(UtilsPath.get_onmyoji_image_path(), folder_path)
         folder_list = os.listdir(folder_all_path)
         random.shuffle(folder_list)
         for file_name in folder_list:
