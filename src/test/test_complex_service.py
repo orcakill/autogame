@@ -13,7 +13,6 @@ from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_house, impl_initialization, impl_explore, impl_six
 from src.service.impl_onmyoji_service.impl_six import current_count, deal_event
-from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
 
 
@@ -27,7 +26,7 @@ class TestComplexService(TestCase):
          4 云手机-002
         :return:
         """
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("1")
 
     def test_auto_setup_hwnd1(self):
         # 初始化
@@ -133,7 +132,6 @@ class TestComplexService(TestCase):
         :return:
         """
         logger.debug("寄养列表检查")
-        WindowsService.limit_cpu_percentage(30)
         ComplexService.auto_setup("1")
         logger.debug("开始")
         now = datetime.datetime.now()

@@ -6,7 +6,7 @@
 """
 import logging
 import random
-from datetime import datetime as imp_datetime
+import subprocess
 
 import cv2
 import imageio
@@ -83,7 +83,7 @@ class AirtestService:
                 else:
                     best_time = best_time1
                 best_method = name
-            logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(best_time))
+            logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(best_time1))
         logger.debug("最快的截图方法{}", best_method)
         return best_method
 
@@ -96,17 +96,12 @@ class AirtestService:
 
         screen = ""
         if print_image:
-            # 获取当前时间
-            now = imp_datetime.now()
-            # 将时间转换为字符串
-            time_str = now.strftime("%Y-%m-%d_%H-%M-%S") + "_" + name
-            path = os.path.join(UtilsPath.get_project_path_log(), "image")
-            WindowsService.delete_folder_file(path, 2)
-            path = os.path.join(path, time_str)
-            screen = snapshot(filename=path + ".png", quality=99, max_size=1200)
+            WindowsService.delete_folder_file(UtilsPath.get_log_image_path(), 2)
+            img_path = UtilsPath.get_print_image_path(name)
+            screen = snapshot(filename=img_path)
         else:
             try:
-                screen = G.DEVICE.snapshot(quality=99, max_size=1200)
+                screen = G.DEVICE.snapshot()
             except Exception as e:
                 logger.debug("截图异常{}", e)
         return screen
@@ -124,7 +119,8 @@ class AirtestService:
         """
         cv2.rectangle(screen, (x1, y1), (x2, y2), (0, 0, 255), 2)
         # 保存图片到本地磁盘
-        imageio.imsave("D://draw_rectangle.png", screen)
+        img_path = UtilsPath.get_print_image_path()
+        imageio.imsave(img_path, screen)
 
     @staticmethod
     def draw_point(screen, x, y):
@@ -135,11 +131,12 @@ class AirtestService:
         :param y:
         :return:
         """
-        if not screen:
-            screen = AirtestService.snapshot(name="截图", print_image=True)
+        if screen == '':
+            screen = AirtestService.snapshot(name="截图")
         cv2.circle(screen, (x, y), 5, (255, 0, 0), -1)
         # 保存图片到本地磁盘
-        imageio.imsave("D://draw_point.png", screen)
+        img_path = UtilsPath.get_print_image_path()
+        imageio.imsave(img_path, screen)
 
     @staticmethod
     def exists(template: Template, cvstrategy: [], timeout: float, is_throw: bool):
@@ -384,3 +381,13 @@ class AirtestService:
             else:
                 logger.debug("{}文件不存在", file_path)
         return template_list
+
+    @staticmethod
+    def get_adb_resolution(device_address):
+        command = 'adb -s ' + device_address + ' shell wm size'
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output, error = process.communicate()
+        resolution_tuple = output.decode().strip().split(' ')[-1]
+        resolution_tuple = tuple(map(int, resolution_tuple.split('x')))
+        if resolution_tuple:
+            return resolution_tuple

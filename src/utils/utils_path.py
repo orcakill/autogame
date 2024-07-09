@@ -1,5 +1,6 @@
 import configparser
 import os
+from datetime import datetime as imp_datetime
 
 
 class UtilsPath:
@@ -58,6 +59,21 @@ class UtilsPath:
         return dict1
 
     @staticmethod
-    def get_srccpy_path():
+    def get_scrcpy_path():
         project_path = UtilsPath.get_project_path()
         return project_path + "src\\resources\\static\\scrcpy\\"
+
+    @staticmethod
+    def get_print_image_path(name: str = 'img'):
+        # 获取当前时间
+        now = imp_datetime.now()
+        # 将时间转换为字符串
+        time_str = now.strftime("%Y-%m-%d_%H-%M-%S") + "_" + name
+        path = os.path.join(UtilsPath.get_project_path_log(), "image")
+        img_path = os.path.join(path, time_str) + '.png'
+        return img_path
+
+    @staticmethod
+    def get_log_image_path():
+        path = os.path.join(UtilsPath.get_project_path_log(), "image")
+        return path

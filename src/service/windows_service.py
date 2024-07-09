@@ -14,8 +14,8 @@ import pythoncom
 import win32com
 from win32com.client import Dispatch
 
-from src.utils import utils_path
 from src.utils.my_logger import logger
+from src.utils.utils_path import UtilsPath
 
 
 class WindowsService:
@@ -150,5 +150,5 @@ class WindowsService:
 
 
 if __name__ == '__main__':
-    path = os.path.join(utils_path.get_project_path_log(), "debug")
+    path = os.path.join(UtilsPath.get_project_path_log(), "debug")
     WindowsService.delete_folder_file(path, 2)

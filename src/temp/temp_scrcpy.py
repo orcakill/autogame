@@ -5,6 +5,7 @@ import win32con
 import win32gui
 import win32ui
 
+from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 from src.service.impl_image_service.impl_hwnd import ImplHwnd
 from src.service.windows_service import WindowsService
@@ -32,16 +33,6 @@ def window_capture(filename, windows_hwnd, resolution_tuple):  # 窗口截屏
     save_bit_map.SaveBitmapFile(save_dc, filename)
 
 
-def get_adb_resolution(device_address):
-    command = 'adb -s ' + device_address + ' shell wm size'
-    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    resolution_tuple = output.decode().strip().split(' ')[-1]
-    resolution_tuple = tuple(map(int, resolution_tuple.split('x')))
-    if resolution_tuple:
-        return resolution_tuple
-
-
 if __name__ == '__main__':
     # 可以运行以下注释的代码，获得手机的序列号,诸君可自行提取自己的手机序列号
     # cmdstr = "adb devices"
@@ -63,7 +54,7 @@ if __name__ == '__main__':
     if is_device:
         logger.debug("检查设备是否开启scrcpy")
         is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
-        resolution = get_adb_resolution(serialno)
+        resolution = AirtestService.get_adb_resolution(serialno)
         logger.debug(resolution)
         if is_scrcpy:
             logger.debug("已开启scrcpy")

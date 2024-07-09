@@ -270,7 +270,7 @@ class ImageService:
         """
         在图上画框，确定识别准确率
         """
-        return ImplHwnd.draw_rectangle(screen, x1, y1, x2, y2)
+        return AirtestService.draw_rectangle(screen, x1, y1, x2, y2)
 
     @staticmethod
     def ocr_touch(word):
@@ -278,3 +278,10 @@ class ImageService:
         在图上画框，确定识别准确率
         """
         return ImplOcr.ocr_touch(word)
+
+    @staticmethod
+    def get_adb_resolution(device_address):
+        """
+        获取安卓设备分辨率
+        """
+        return AirtestService.get_adb_resolution(device_address)

@@ -2,13 +2,16 @@
 # @Author: orcakill
 # @File: complex_service.py
 # @Description: 复杂逻辑处理
+import subprocess
 import time
 
+from airtest.core.android.cap_methods.screen_proxy import ScreenProxy
 from tornado import concurrent
 
 from src.model.enum import Cvstrategy, Onmyoji, WinProcessName, WinClassName
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
+from src.service.impl_cap.scrcpy_cap import ScrcpyCap
 from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
 
@@ -16,7 +19,7 @@ from src.utils.my_logger import logger
 class ComplexService:
 
     @staticmethod
-    def auto_setup(game_device: str, auto_adb: int = 0, cap_method: str = None):
+    def auto_setup(game_device: str, auto_adb: int = 0):
         """
         设备连接
          1、已启动的设备，不再重新启动，检查是否已就绪
@@ -28,7 +31,6 @@ class ComplexService:
          2 平板
          3 手机
          4 云手机-002
-        :param cap_method: 截图方法
         :param auto_adb: 是否自动进行ADB连接
         :param game_device: 设备号
         :return:
@@ -44,11 +46,11 @@ class ComplexService:
             logger.debug("检查是否启动夜神模拟器")
             WindowsService.start_exe("Nox", "夜神模拟器")
             serialno = "127.0.0.1:62001"
-            connect_info = serialno + "?cap_method=JAVACAP"
+            connect_info = serialno
         if game_device == "2":
             logger.debug("检查是否启动荣耀平板9")
             serialno = "A2CDUN4312H00817"
-            connect_info = serialno + "?cap_method=JAVACAP"
+            connect_info = serialno
         if game_device == "3":
             logger.debug("检查是否启动小米13")
             serialno = "8ce78c9f"
@@ -57,7 +59,7 @@ class ComplexService:
             logger.debug("检查是否启动云手机-002")
             WindowsService.start_exe("YsConsole", "云帅云手机")
             serialno = "127.0.0.1:50001"
-            connect_info = serialno + "?cap_method=JAVACAP"
+            connect_info = serialno
         logger.debug("检查设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(serialno)
         while is_state != "device":
@@ -87,9 +89,38 @@ class ComplexService:
         logger.debug("连接设备")
         AirtestService.auto_setup(connect_info)
         logger.debug("检查截图方法")
-        AirtestService.check_method(serialno)
+        best_cap = AirtestService.check_method(serialno)
         logger.debug("检查当前默认截图方法")
-        AirtestService.get_cap_method(serialno)
+        default_cap = AirtestService.get_cap_method(serialno)
+        if best_cap != default_cap:
+            logger.debug("默认截图方法和最优截图方法不一致，以最优截图方法{}重新连接", best_cap)
+            cap_method = "?cap_method=" + best_cap
+            connect_info = serialno + cap_method
+            AirtestService.auto_setup(connect_info)
+        if game_device in ['2']:
+            logger.debug("注册scrcpy windows截图")
+            logger.debug("检查windows是否开启scrcpy")
+            is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
+            if is_scrcpy:
+                logger.debug("已开启scrcpy")
+            else:
+                logger.debug("开启scrcpy")
+                str_device = ' -s ' + serialno
+                str_title = '  --window-title ' + serialno
+                str_border = ' --window-borderless'
+                str_control = ' --no-control'
+                str_cmd = 'scrcpy' + str_control + str_device + str_border + str_title
+                logger.debug("执行命令{}", str_cmd)
+                subprocess.Popen(str_cmd, shell=True)  # 打开scrcpy
+                time.sleep(5)
+            logger.debug("注册scrcpy截图")
+            ScreenProxy.register_method("SCRCPYCAP", ScrcpyCap)
+            logger.debug("重新连接设备")
+            AirtestService.auto_setup(serialno)
+            logger.debug("检查截图方法")
+            AirtestService.check_method(serialno)
+            logger.debug("检查当前默认截图方法")
+            AirtestService.get_cap_method(serialno)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,
