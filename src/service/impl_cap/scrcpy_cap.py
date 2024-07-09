@@ -19,5 +19,16 @@ class ScrcpyCap(BaseCap):
         scrcpy_hwnd_tuple = scrcpy_hwnd_info[0]
         scrcpy_hwnd = scrcpy_hwnd_tuple[-1]
         screen = ImplHwnd.windows_screenshot(hwnd=scrcpy_hwnd)
-        screen_bytes = screen.tobytes()
-        return screen_bytes
+        return screen
+
+    def snapshot(self, ensure_orientation=True, *args, **kwargs):
+        """
+        Take a screenshot and convert it into a cv2 image object
+
+        获取一张屏幕截图，并转化成cv2的图像对象
+
+        Returns: numpy.ndarray
+
+        """
+        screen = self.get_frame_from_stream()
+        return screen

@@ -131,8 +131,6 @@ class ImplHwnd:
             rect = win32gui.GetWindowRect(hwnd)
             x, y, w, h = rect
             if w > 0 and h > 0:
-                w = 2560
-                h = 1600
                 # 创建一个与窗口大小相同的设备上下文
                 hdc = win32gui.GetWindowDC(hwnd)
                 dc_obj = win32ui.CreateDCFromHandle(hdc)

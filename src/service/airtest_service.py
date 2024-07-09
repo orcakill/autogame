@@ -97,10 +97,10 @@ class AirtestService:
         screen = ""
         if print_image:
             img_path = UtilsPath.get_print_image_path(name)
-            screen = snapshot(img_path)
+            screen = snapshot(filename=img_path,quality=99)
         else:
             try:
-                screen = G.DEVICE.snapshot()
+                screen = G.DEVICE.snapshot(quality=99)
             except Exception as e:
                 logger.debug("截图异常:{}", e)
         return screen
