@@ -20,6 +20,7 @@ from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.mouse_service import MouseService
 from src.utils.my_logger import my_logger as logger
+from src.utils.utils_path import UtilsPath
 
 # 图像识别算法
 CVSTRATEGY = Cvstrategy.sift
@@ -109,10 +110,11 @@ class ImplHwnd:
         return False
 
     @staticmethod
-    def windows_screenshot(hwnd: int, name: str = None, print_image: bool = False, x1: float = 0, x2: float = 1,
-                           y1: float = 0, y2: float = 1):
+    def windows_screenshot(hwnd: int, name: str = None, print_image: bool = False,
+                           crop_image: bool = False, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
         """
         设备截图，根据截图比例确定位置
+        :param crop_image: 是否裁剪
         :param print_image
         :param name:
         :param hwnd:
@@ -129,9 +131,8 @@ class ImplHwnd:
             rect = win32gui.GetWindowRect(hwnd)
             x, y, w, h = rect
             if w > 0 and h > 0:
-                logger.debug("{},{}",w,h)
-                w=1920
-                h=1080
+                w = 2560
+                h = 1600
                 # 创建一个与窗口大小相同的设备上下文
                 hdc = win32gui.GetWindowDC(hwnd)
                 dc_obj = win32ui.CreateDCFromHandle(hdc)
@@ -153,21 +154,22 @@ class ImplHwnd:
                 dc_obj.DeleteDC()
                 win32gui.ReleaseDC(hwnd, hdc)
 
-                if print_image:
+                if not print_image and not crop_image:
+                    return ndarray_image
+                if print_image and not crop_image:
                     # 保存图片到磁盘
-                    imageio.imsave("D://screenshot_" + name + "_1.png", ndarray_image)
-
-                coordinate1 = (int(w * x1), int(h * y1))
-                coordinate2 = (int(w * x2), int(h * y2))
-
-                # 截取图片
-                # cropped_image = ndarray_image[0:525,960:1920]
-                cropped_image = ndarray_image[coordinate1[1]:coordinate2[1], coordinate1[0]:coordinate2[0]]
-
-                if print_image:
+                    imageio.imsave(UtilsPath.get_print_image_path("hwnd"), ndarray_image)
+                    return ndarray_image
+                if crop_image and crop_image:
                     # 保存图片到磁盘
-                    imageio.imsave("D://screenshot_" + name + "_2.png", cropped_image)
-                return cropped_image
+                    imageio.imsave("D://screenshot_" + name + "_裁剪前.png", ndarray_image)
+                    coordinate1 = (int(w * x1), int(h * y1))
+                    coordinate2 = (int(w * x2), int(h * y2))
+                    cropped_image = ndarray_image[coordinate1[1]:coordinate2[1], coordinate1[0]:coordinate2[0]]
+                    if print_image:
+                        # 保存图片到磁盘
+                        imageio.imsave("D://screenshot_" + name + "_裁剪后.png", cropped_image)
+                        return cropped_image
             else:
                 logger.debug("句柄宽高获取异常")
         else:
@@ -185,8 +187,6 @@ class ImplHwnd:
         x, y, w, h = rect
         resolution = (w, h)
         return resolution
-
-
 
     @staticmethod
     def get_current_hwnd():

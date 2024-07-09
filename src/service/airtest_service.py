@@ -18,7 +18,6 @@ from airtest.core.api import *
 from airtest.core.helper import G
 from airtest.core.settings import Settings
 
-from src.service.windows_service import WindowsService
 from src.utils.my_logger import my_logger as logger
 from src.utils.utils_path import UtilsPath
 from src.utils.utils_time import UtilsTime
@@ -77,12 +76,13 @@ class AirtestService:
             now2 = time.time()
             best_time1 = now2 - now1
             if result:
-                if best_time:
-                    if best_time1 < best_time:
+                if best_time1:
+                    if best_time is None:
                         best_time = best_time1
-                else:
-                    best_time = best_time1
-                best_method = name
+                        best_method = name
+                    elif best_time1 < best_time:
+                        best_time = best_time1
+                        best_method = name
             logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(best_time1))
         logger.debug("最快的截图方法{}", best_method)
         return best_method
@@ -96,14 +96,13 @@ class AirtestService:
 
         screen = ""
         if print_image:
-            WindowsService.delete_folder_file(UtilsPath.get_log_image_path(), 2)
             img_path = UtilsPath.get_print_image_path(name)
-            screen = snapshot(filename=img_path)
+            screen = snapshot(img_path)
         else:
             try:
                 screen = G.DEVICE.snapshot()
             except Exception as e:
-                logger.debug("截图异常{}", e)
+                logger.debug("截图异常:{}", e)
         return screen
 
     @staticmethod

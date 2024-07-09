@@ -2,7 +2,6 @@
 # @Author: orcakill
 # @File: scrcpy_cap.py
 # @Description: 通过scrcpy截图
-from airtest.core.android import Android
 from airtest.core.android.cap_methods.base_cap import BaseCap
 
 from src.service.impl_image_service.impl_hwnd import ImplHwnd
@@ -19,5 +18,6 @@ class ScrcpyCap(BaseCap):
         scrcpy_hwnd_info = ImplHwnd.get_all_hwnd_info(title=serialno)
         scrcpy_hwnd_tuple = scrcpy_hwnd_info[0]
         scrcpy_hwnd = scrcpy_hwnd_tuple[-1]
-        screen = ImplHwnd.windows_screenshot(scrcpy_hwnd)
-        return screen
+        screen = ImplHwnd.windows_screenshot(hwnd=scrcpy_hwnd)
+        screen_bytes = screen.tobytes()
+        return screen_bytes
