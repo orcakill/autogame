@@ -38,11 +38,11 @@ class TestImageService(TestCase):
         print(now1 - now)
 
     def test_touch(self):
-        ComplexService.auto_setup("0")
+        ComplexService.auto_setup("1")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        ImageService.exists(Onmyoji.home_DBCDDK)
+        ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

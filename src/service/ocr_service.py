@@ -90,7 +90,7 @@ class OcrService:
                 for index, value in enumerate(field):
                     text = field[index][1][0]
                     similarity = field[index][1][1]
-                    if word in text and similarity > 0.9:
+                    if word in text and similarity >= 0.9:
                         box = field[index][0]
                         x1 = int(box[0][0])
                         y1 = int(box[0][1])
@@ -102,6 +102,7 @@ class OcrService:
                         y = (y1 + y2) / 2
                         if x and y:
                             pos = (x, y)
+                            break
                         else:
                             logger.debug("文字坐标计算有误")
         return pos

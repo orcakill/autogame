@@ -12,6 +12,7 @@ from src.model.models import GameAccount, GameProject, GameProjectLog, GameDevic
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
+from src.utils.utils_mail import UtilsMail
 from src.utils.utils_time import UtilsTime
 
 
@@ -114,6 +115,10 @@ def initialization(game_task: [], login_type: int = 0):
                     is_login = ImageService.touch(Onmyoji.login_KSYX, wait=2)
                     if is_login:
                         break
+                if i_account + 1 == 5:
+                    logger.debug("第五次尝试登录失败,邮件发送")
+                    UtilsMail.send_email("阴阳师脚本", "登录失败5次",
+                                         "账号选择：" + is_account + ",服务器选择：" + is_server)
         else:
             logger.debug("开始游戏")
             ImageService.touch(Onmyoji.login_KSYX, wait=5)

@@ -53,7 +53,7 @@ class WindowsService:
         shortcut = shell.CreateShortCut(shortcut_path)
         file_path = shortcut.Targetpath
         # 使用subprocess模块运行程序，并创建新的控制台窗口
-        subprocess.Popen(file_path, creationflags=subprocess.CREATE_NEW_CONSOLE)
+        subprocess.Popen(file_path, creationflags=subprocess.CREATE_NEW_CONSOLE,start_new_session=True)
 
     @staticmethod
     def check_process_running(process_name):
@@ -73,7 +73,7 @@ class WindowsService:
     @staticmethod
     def get_device_status_by_ip(ip):
         """
-        根据  新春
+        根据
         :param ip:
         :return:
         """

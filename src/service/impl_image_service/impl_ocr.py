@@ -13,7 +13,7 @@ class ImplOcr:
         logger.debug("获取当前页面截图")
         screen = AirtestService.snapshot()
         if len(screen)>0:
-            logger.debug("获取文字坐标")
+            logger.debug("检查文字坐标")
             pos = OcrService.ocr_paddle(screen, word)
             if pos:
                 logger.debug("点击文字坐标")
