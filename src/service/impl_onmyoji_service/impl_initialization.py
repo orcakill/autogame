@@ -116,9 +116,9 @@ def initialization(game_task: [], login_type: int = 0):
                     if is_login:
                         break
                 if i_account + 1 == 5:
+                    send_text = "账号：" + game_account.account_name + "\n\r账号选择：" + is_account + "\n\r服务器选择：" + is_server
                     logger.debug("第五次尝试登录失败,邮件发送")
-                    UtilsMail.send_email("阴阳师脚本", "登录失败5次",
-                                         "账号选择：" + is_account + ",服务器选择：" + is_server)
+                    UtilsMail.send_email("阴阳师脚本", "登录失败5次", send_text)
         else:
             logger.debug("开始游戏")
             ImageService.touch(Onmyoji.login_KSYX, wait=5)
