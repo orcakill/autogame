@@ -86,18 +86,8 @@ class ComplexService:
             is_state = WindowsService.get_device_status_by_ip(serialno)
         if is_state == "device":
             logger.debug("设备已就绪")
-        logger.debug("连接设备")
-        AirtestService.auto_setup(connect_info)
-        logger.debug("检查截图方法")
-        best_cap = AirtestService.check_method(serialno)
-        logger.debug("检查当前默认截图方法")
-        default_cap = AirtestService.get_cap_method(serialno)
-        if best_cap != default_cap:
-            logger.debug("默认截图方法和最优截图方法不一致，以最优截图方法{}重新连接", best_cap)
-            cap_method = "?cap_method=" + best_cap
-            connect_info = serialno + cap_method
-            AirtestService.auto_setup(connect_info)
-        if game_device in ['2']:
+        logger.debug("准备连接设备")
+        if game_device in ['1']:
             logger.debug("注册scrcpy windows截图")
             logger.debug("检查windows是否开启scrcpy")
             is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
@@ -109,14 +99,22 @@ class ComplexService:
                 str_title = '  --window-title ' + serialno
                 str_border = ' --window-borderless'
                 str_control = ' --no-control'
-                str_cmd = 'scrcpy' + str_control + str_device + str_border + str_title
+                str_size = ' --max-fps 30'
+                str_bt = " -b 2M"
+                str_audio = " --no-audio"
+                str_buffer = " --display-buffer=10"
+                str_port = " -p 5038"
+                str_cmd = 'scrcpy' + str_device + str_port + str_audio + str_control + str_border + str_title + str_size + str_bt + str_buffer+str_port
                 logger.debug("执行命令{}", str_cmd)
-                subprocess.Popen(str_cmd, shell=True)  # 打开scrcpy
+                subprocess.Popen(str_cmd, shell=True, start_new_session=True)  # 打开scrcpy
                 time.sleep(5)
             logger.debug("注册scrcpy截图")
             ScreenProxy.register_method("SCRCPYCAP", ScrcpyCap)
-            logger.debug("重新连接设备")
+            logger.debug("连接设备")
             AirtestService.auto_setup(serialno)
+        else:
+            logger.debug("连接设备")
+            AirtestService.auto_setup(connect_info)
             logger.debug("检查截图方法")
             AirtestService.check_method(serialno)
             logger.debug("检查当前默认截图方法")

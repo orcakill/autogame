@@ -116,7 +116,7 @@ def initialization(game_task: [], login_type: int = 0):
                     if is_login:
                         break
                 if i_account + 1 == 5:
-                    send_text = "账号：" + game_account.account_name + "\n\r账号选择：" + is_account + "\n\r服务器选择：" + is_server
+                    send_text = "账号：" + game_account.account_name + "\n\r账号选择：" + str(is_account) + "\n\r服务器选择：" + str(is_server)
                     logger.debug("第五次尝试登录失败,邮件发送")
                     UtilsMail.send_email("阴阳师脚本", "登录失败5次", send_text)
         else:
