@@ -5,6 +5,7 @@
 # @Description: window 图像识别
 """
 import time
+from ctypes import windll
 
 import cv2
 import imageio
@@ -111,9 +112,12 @@ class ImplHwnd:
 
     @staticmethod
     def windows_screenshot(hwnd: int, name: str = None, print_image: bool = False,
-                           crop_image: bool = False, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
+                           crop_image: bool = False, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1,
+                           ):
         """
         设备截图，根据截图比例确定位置
+        :param weight:
+        :param high:
         :param crop_image: 是否裁剪
         :param print_image
         :param name:
@@ -132,6 +136,10 @@ class ImplHwnd:
             x, y, w, h = rect
             if w > 0 and h > 0:
                 # 创建一个与窗口大小相同的设备上下文
+                scale_ratio = ImplHwnd.get_scale_ratio()
+                if scale_ratio != 1:
+                    w = int(w * scale_ratio)
+                    h = int(h * scale_ratio)
                 hdc = win32gui.GetWindowDC(hwnd)
                 dc_obj = win32ui.CreateDCFromHandle(hdc)
                 mem_dc = dc_obj.CreateCompatibleDC()
@@ -143,7 +151,7 @@ class ImplHwnd:
                 mem_dc.BitBlt((0, 0), (w, h), dc_obj, (0, 0), win32con.SRCCOPY)
                 # bitmap转换ndarray
                 signed_ints_array = bitmap.GetBitmapBits(True)
-                ndarray_image = np.fromstring(signed_ints_array, dtype='uint8', count=-1, sep='')
+                ndarray_image = np.frombuffer(signed_ints_array, dtype='uint8', count=-1)
                 ndarray_image.shape = (h, w, 4)
                 ndarray_image = cv2.cvtColor(ndarray_image, cv2.COLOR_BGRA2RGB)
                 # 释放位图资源
@@ -185,6 +193,19 @@ class ImplHwnd:
         x, y, w, h = rect
         resolution = (w, h)
         return resolution
+
+    @staticmethod
+    def get_scale_ratio():
+        user32 = windll.user32
+        # 获取现在的尺寸（缩放后
+        now_width = user32.GetSystemMetrics(0)
+        # 限制UI缩放
+        user32.SetProcessDPIAware()
+        # 获取屏幕真实的尺寸
+        origin_width = user32.GetSystemMetrics(0)
+        # 计算缩放比例
+        scaling = round(origin_width / now_width, 2)
+        return scaling
 
     @staticmethod
     def get_current_hwnd():

@@ -9,8 +9,9 @@ from src.model.models import *
 from src.service.complex_service import ComplexService
 from src.service.onmyoji_service import OnmyojiService
 from src.service.windows_service import WindowsService
-from src.utils import utils_mail, utils_path
 from src.utils.my_logger import my_logger as logger
+from src.utils.utils_mail import UtilsMail
+from src.utils.utils_path import UtilsPath
 from src.utils.utils_time import UtilsTime
 
 
@@ -19,10 +20,18 @@ class OnmyojiController:
     def create_execute_tasks(game_device_id: str, game_id: str, projects_num: str = None, project_name: str = None,
                              project_num: str = None, game_round: str = 1, relation_num: str = 1,
                              project_num_times: {} = None, start_hour: int = 0, end_hour: int = 23):
-
+        game_tasks = []
         # 创建项目信息
         if projects_num:
-            game_tasks = MapperExtend.select_game_task("", projects_num)
+            game_task_before = MapperExtend.select_game_task("", projects_num)
+            for game_task in game_task_before:
+                game_projects = GameProjects(game_task[0])
+                game_projects_relation = GameProjectsRelation(game_task[1])
+                game_account = GameAccount(game_task[2])
+                game_project = GameProject(game_task[3])
+                game_device = GameDevices(Mapper.select_game_devices(game_device_id))
+                game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
+                game_tasks.append(game_task)
         else:
             game_tasks = OnmyojiController.create_tasks(game_device_id, game_id, project_num, project_name,
                                                         project_num_times)
@@ -82,9 +91,9 @@ class OnmyojiController:
         """
         try:
             time_start = time.time()
-            path1 = os.path.join(utils_path.get_project_path_log(), "info")
+            path1 = os.path.join(UtilsPath.get_project_path_log(), "info")
             WindowsService.delete_folder_file(path1, 2)
-            path2 = os.path.join(utils_path.get_project_path_log(), "debug")
+            path2 = os.path.join(UtilsPath.get_project_path_log(), "debug")
             WindowsService.delete_folder_file(path2, 2)
             if len(game_tasks) > 0:
                 logger.info("任务开始")
@@ -198,7 +207,7 @@ class OnmyojiController:
                                         UtilsTime.convert_seconds(time_end - time_task_start),
                                         UtilsTime.convert_seconds(time_end - time_start))
         except Exception as e:
-            utils_mail.send_email("阴阳师脚本", "异常", e)
+            UtilsMail.send_email("阴阳师脚本", "异常", e)
             logger.exception(e)
 
     @staticmethod

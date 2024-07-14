@@ -10,6 +10,7 @@ import subprocess
 
 import cv2
 import imageio
+import numpy as np
 from airtest import aircv
 from airtest.aircv import cv2_2_pil
 from airtest.core.android import Android
@@ -97,10 +98,12 @@ class AirtestService:
         screen = ""
         if print_image:
             img_path = UtilsPath.get_print_image_path(name)
-            screen = snapshot(filename=img_path,quality=99)
+            screen = snapshot(img_path, quality=99)
         else:
             try:
                 screen = G.DEVICE.snapshot(quality=99)
+                # img_path = UtilsPath.get_print_image_path(name)
+                # aircv.imwrite(img_path, screen, 99, 1200)
             except Exception as e:
                 logger.debug("截图异常:{}", e)
         return screen
@@ -132,10 +135,11 @@ class AirtestService:
         """
         if screen == '':
             screen = AirtestService.snapshot(name="截图")
-        cv2.circle(screen, (x, y), 5, (255, 0, 0), -1)
+        rgb_image = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
+        cv2.circle(rgb_image,(x, y), 5, (255, 0, 0), -1)
         # 保存图片到本地磁盘
         img_path = UtilsPath.get_print_image_path()
-        imageio.imsave(img_path, screen)
+        imageio.imsave(img_path, rgb_image)
 
     @staticmethod
     def exists(template: Template, cvstrategy: [], timeout: float, is_throw: bool):
@@ -390,3 +394,17 @@ class AirtestService:
         resolution_tuple = tuple(map(int, resolution_tuple.split('x')))
         if resolution_tuple:
             return resolution_tuple
+
+    @staticmethod
+    def get_color_format(arr):
+        r_mean = np.mean(arr[:, :, 0])
+        g_mean = np.mean(arr[:, :, 1])
+        b_mean = np.mean(arr[:, :, 2])
+
+        if r_mean > g_mean and r_mean > b_mean:
+            return 'RGB'
+        elif b_mean > r_mean and b_mean > g_mean:
+            return 'BGR'
+        else:
+            # 可能需要更复杂的判断逻辑或者无法确定
+            return False

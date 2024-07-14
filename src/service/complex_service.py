@@ -14,6 +14,7 @@ from src.service.image_service import ImageService
 from src.service.impl_cap.scrcpy_cap import ScrcpyCap
 from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
+from src.utils.utils_path import UtilsPath
 
 
 class ComplexService:
@@ -37,6 +38,7 @@ class ComplexService:
         """
         serialno = None
         connect_info = None
+        WindowsService.delete_folder_file(UtilsPath.get_log_image_path(), 2)
         if game_device == "0":
             serialno = "127.0.0.1:50000"
             connect_info = serialno
@@ -87,7 +89,7 @@ class ComplexService:
         if is_state == "device":
             logger.debug("设备已就绪")
         logger.debug("准备连接设备")
-        if game_device in ['1']:
+        if game_device in ['2']:
             logger.debug("注册scrcpy windows截图")
             logger.debug("检查windows是否开启scrcpy")
             is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
@@ -95,16 +97,16 @@ class ComplexService:
                 logger.debug("已开启scrcpy")
             else:
                 logger.debug("开启scrcpy")
+                str_f = ' -f'
                 str_device = ' -s ' + serialno
                 str_title = '  --window-title ' + serialno
                 str_border = ' --window-borderless'
                 str_control = ' --no-control'
                 str_size = ' --max-fps 30'
-                str_bt = " -b 2M"
+                str_bt = " -b 8M"
                 str_audio = " --no-audio"
                 str_buffer = " --display-buffer=10"
-                str_port = " -p 5038"
-                str_cmd = 'scrcpy' + str_device + str_port + str_audio + str_control + str_border + str_title + str_size + str_bt + str_buffer+str_port
+                str_cmd = 'scrcpy' + str_device + str_f + str_audio + str_control + str_border + str_title + str_size + str_bt + str_buffer
                 logger.debug("执行命令{}", str_cmd)
                 subprocess.Popen(str_cmd, shell=True, start_new_session=True)  # 打开scrcpy
                 time.sleep(5)
@@ -115,10 +117,10 @@ class ComplexService:
         else:
             logger.debug("连接设备")
             AirtestService.auto_setup(connect_info)
-            logger.debug("检查截图方法")
-            AirtestService.check_method(serialno)
-            logger.debug("检查当前默认截图方法")
-            AirtestService.get_cap_method(serialno)
+        logger.debug("检查截图方法")
+        AirtestService.check_method(serialno)
+        logger.debug("检查当前默认截图方法")
+        AirtestService.get_cap_method(serialno)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,

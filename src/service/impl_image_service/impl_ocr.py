@@ -12,7 +12,7 @@ class ImplOcr:
     def ocr_touch(word):
         logger.debug("获取当前页面截图")
         screen = AirtestService.snapshot()
-        if len(screen)>0:
+        if screen is not None:
             logger.debug("检查文字坐标")
             pos = OcrService.ocr_paddle(screen, word)
             if pos:

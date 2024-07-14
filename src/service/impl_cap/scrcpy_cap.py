@@ -2,6 +2,7 @@
 # @Author: orcakill
 # @File: scrcpy_cap.py
 # @Description: 通过scrcpy截图
+import cv2
 from airtest.core.android.cap_methods.base_cap import BaseCap
 
 from src.service.impl_image_service.impl_hwnd import ImplHwnd
@@ -18,8 +19,9 @@ class ScrcpyCap(BaseCap):
         scrcpy_hwnd_info = ImplHwnd.get_all_hwnd_info(title=serialno)
         scrcpy_hwnd_tuple = scrcpy_hwnd_info[0]
         scrcpy_hwnd = scrcpy_hwnd_tuple[-1]
-        screen = ImplHwnd.windows_screenshot(hwnd=scrcpy_hwnd)
-        return screen
+        ndarray_image = ImplHwnd.windows_screenshot(hwnd=scrcpy_hwnd)
+        bgr_image = cv2.cvtColor(ndarray_image, cv2.COLOR_RGB2BGR)
+        return bgr_image
 
     def snapshot(self, ensure_orientation=True, *args, **kwargs):
         """
@@ -30,5 +32,5 @@ class ScrcpyCap(BaseCap):
         Returns: numpy.ndarray
 
         """
-        screen = self.get_frame_from_stream()
-        return screen
+        ndarray_image = self.get_frame_from_stream()
+        return ndarray_image

@@ -20,10 +20,10 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("0")
         logger.debug("开始")
         now = time.time()
-        result = ImageService.exists(Onmyoji.login_YYSTB, is_click=True,is_throw=True)
+        result=ImageService.exists(Onmyoji.home_TS)
         logger.debug(result)
         logger.debug("结束")
         now1 = time.time()
@@ -66,11 +66,11 @@ class TestImageService(TestCase):
         4 云手机-002
         :return:
         """
-        ComplexService.auto_setup("1")
+        ComplexService.auto_setup("0")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        ImageService.snapshot("1", True)
+        ImageService.snapshot("1", False)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)

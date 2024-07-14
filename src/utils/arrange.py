@@ -8,11 +8,11 @@ import os
 import paramiko
 import py7zr
 
-from src.utils import utils_path
-from utils.my_logger import my_logger as logger
+from my_logger import my_logger as logger
+from src.utils.utils_path import UtilsPath
 
 if __name__ == '__main__':
-    project_path = utils_path.get_project_path()
+    project_path = UtilsPath.get_project_path()
     # 指定要压缩的文件夹路径
     folder_path = os.path.join(project_path, 'src')
     # 指定压缩包保存的路径和名称
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     with py7zr.SevenZipFile(rar_path, mode='w') as rar:
         rar.writeall(folder_path, os.path.basename(folder_path))
     logger.debug("压缩文件夹完成")
-    server = utils_path.get_server()
+    server = UtilsPath.get_server()
     # SSH连接参数0
     host = server['ip']
     port = server['port']

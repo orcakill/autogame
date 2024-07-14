@@ -107,6 +107,8 @@ def initialization(game_task: [], login_type: int = 0):
                 if pos_tcs and pos_jsx:
                     logger.debug("有小三角")
                     ImageService.touch_coordinate((pos_tcs[0], pos_jsx[1]))
+                else:
+                    logger.debug("特邀测试{}，注销角色{}", pos_tcs, pos_jsx)
                 logger.debug("选择服务器:{}", game_account.role_region)
                 is_server = ImageService.touch(server, wait=2)
                 logger.debug("账号选择：{},服务器选择：{}", is_account, is_server)
@@ -116,7 +118,8 @@ def initialization(game_task: [], login_type: int = 0):
                     if is_login:
                         break
                 if i_account + 1 == 5:
-                    send_text = "账号：" + game_account.account_name + "\n\r账号选择：" + str(is_account) + "\n\r服务器选择：" + str(is_server)
+                    send_text = "账号：" + game_account.account_name + "\n\r账号选择：" + str(
+                        is_account) + "\n\r服务器选择：" + str(is_server)
                     logger.debug("第五次尝试登录失败,邮件发送")
                     UtilsMail.send_email("阴阳师脚本", "登录失败5次", send_text)
         else:

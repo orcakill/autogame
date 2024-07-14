@@ -2,7 +2,8 @@ import os
 
 from pypinyin import pinyin, Style
 
-from src.utils import utils_path
+
+from src.utils.utils_path import UtilsPath
 
 
 def get_subdirectories(folder_path):
@@ -16,10 +17,10 @@ def get_subdirectories(folder_path):
 
 
 if __name__ == '__main__':
-    path_name = r'云手机'
-    prefix = 'phone_'
+    path_name = r'式神录\御魂整理'
+    prefix = 'arrange_'
     # 指定文件夹路径
-    folder_path1 = utils_path.get_project_path() + r'src\resources\static\onmyoji\\'
+    folder_path1 = UtilsPath.get_project_path() + r'src\resources\static\onmyoji\\'
     folder_path2 = folder_path1 + path_name
 
     # 获取所有文件

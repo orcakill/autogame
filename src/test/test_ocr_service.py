@@ -18,8 +18,7 @@ class TestOcrService(TestCase):
         logger.debug(result)
         logger.debug("结束")
 
-    @staticmethod
-    def test_ocr():
-        ComplexService.auto_setup("1")
+    def test_ocr(self):
+        ComplexService.auto_setup("0")
         ImageService.ocr_touch("切换")
         logger.debug("结束")
