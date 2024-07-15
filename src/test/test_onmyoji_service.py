@@ -30,6 +30,11 @@ class TestOnmyojiService(TestCase):
     def test_initialization(self):
         """
         项目一：登录
+        0 云手机-001
+        1 夜神模拟器
+        2 平板
+        3 手机
+        4 云手机-002
         :return:
         """
         TestOnmyojiService.test_project('1', "0", "登录")
