@@ -19,7 +19,7 @@ if __name__ == '__main__':
     game_device = "0"
     # 账号：大号
     game_id_large = '1'
-    # 特殊模式 ，绘卷，超鬼王
+    # 特殊模式处理 ，绘卷
     is_mode = "绘卷"
     # 0-5
     task_list1 = []
@@ -50,11 +50,15 @@ if __name__ == '__main__':
         weekday = today.weekday() + 1
         logger.debug("当前日期{}:{}:{}", today, current_hour, current_minute)
         if current_hour % 2 == 0 and 0 <= current_minute <= 20:
-            start_hour, end_hour = 0, 23
-            OnmyojiController.run_log("大号脚本")
-            logger.info("0-23,大号，式神寄养")
-            OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="式神寄养",
-                                                   start_hour=start_hour, end_hour=end_hour)
+            if weekday == 3 and 6 <= current_hour <= 8:
+                logger.info("周三维护中")
+            else:
+                start_hour, end_hour = 0, 23
+                OnmyojiController.run_log("大号脚本")
+                logger.info("0-23,大号，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name="式神寄养",
+                                                       start_hour=start_hour, end_hour=end_hour)
+
         else:
             logger.info("不满足偶数点前20分钟的条件")
         # 如果当前时间大于等于0点并且小于8点
@@ -105,7 +109,7 @@ if __name__ == '__main__':
                 OnmyojiController.create_execute_tasks(game_device, game_id_large, projects_num="3",
                                                        start_hour=start_hour, end_hour=end_hour)
             if (weekday == 3 and current_hour >= 9) or (weekday != 3):
-                if is_mode == "" and not task_list2[1]:
+                if not task_list2[1]:
                     OnmyojiController.run_log("大号脚本")
                     logger.info("5-11,大号,地域鬼王")
                     OnmyojiController.create_execute_tasks(game_device, game_id_large, project_name='地域鬼王',

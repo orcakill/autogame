@@ -38,11 +38,14 @@ if __name__ == '__main__':
         weekday = today.weekday() + 1
         logger.debug("当前日期{}:{}", today, current_hour)
         if current_hour % 2 == 0 and 0 <= current_minute <= 20:
-            start_hour, end_hour = 0, 23
-            OnmyojiController.run_log("小号脚本")
-            logger.info("0-23,小号，式神寄养")
-            OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="式神寄养",
-                                                   start_hour=start_hour, end_hour=end_hour)
+            if weekday == 3 and 6 <= current_hour <= 8:
+                logger.info("周三维护中")
+            else:
+                start_hour, end_hour = 0, 23
+                OnmyojiController.run_log("小号脚本")
+                logger.info("0-23,小号，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="式神寄养",
+                                                       start_hour=start_hour, end_hour=end_hour)
         else:
             logger.info("不满足偶数点前20分钟的条件")
         # 如果当前时间大于等于0点并且小于8点
