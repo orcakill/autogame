@@ -178,7 +178,7 @@ class TestOnmyojiService(TestCase):
         项目20 御魂整理
         :return:
         """
-        WindowsService.limit_cpu_percentage(30)
+
         TestOnmyojiService.test_project('1', '0', "御魂整理")
 
     def test_explore(self):
@@ -257,6 +257,7 @@ class TestOnmyojiService(TestCase):
         :return:
         """
         # 初始化项目组信息
+        WindowsService.limit_cpu_percentage(30)
         game_tasks = OnmyojiController.create_tasks(test_devices, test_names, "", project_name)
         result = False
         for i in range(len(game_tasks)):
