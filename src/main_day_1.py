@@ -29,7 +29,7 @@ if __name__ == '__main__':
     task_list3 = []
     # 17-23
     task_list4 = []
-    # 初始化项目组进度
+    # 初始化项目组任务及进度
     for i in range(10):
         task_list1.append(False)
         task_list2.append(False)
