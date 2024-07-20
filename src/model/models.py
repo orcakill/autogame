@@ -16,8 +16,6 @@ class GameAccount(Base):
     role_region = Column(String(40), info='角色服务器')
     role_name = Column(String(40), info='角色名称')
     role_class = Column(String(40), info='角色等级')
-    game_emaki = Column(Integer, info='绘卷模式')
-    super_ghost_king = Column(Integer, info='超鬼王')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
@@ -27,9 +25,7 @@ class GameAccount(Base):
                f"account_password= {self.account_password}," \
                f"role_region= {self.role_region}," \
                f"role_name= {self.role_name}," \
-               f"role_class= {self.role_class}," \
-               f"game_emaki= {self.game_emaki}," \
-               f"super_ghost_king= {self.super_ghost_king}"
+               f"role_class= {self.role_class}"
 
     def __init__(self, game_account: () = None, **kwargs):
         if game_account is None:
@@ -40,8 +36,6 @@ class GameAccount(Base):
             self.role_region = kwargs.get('role_region')
             self.role_name = kwargs.get('role_name')
             self.role_class = kwargs.get('role_class')
-            self.game_emaki = kwargs.get('game_emaki')
-            self.super_ghost_king = kwargs.get('super_ghost_king')
         else:
             super().__init__(**kwargs)
             self.id = game_account.id
@@ -51,8 +45,6 @@ class GameAccount(Base):
             self.role_region = game_account.role_region
             self.role_name = game_account.role_name
             self.role_class = game_account.role_class
-            self.game_emaki = game_account.game_emaki
-            self.super_ghost_king = game_account.super_ghost_king
 
 
 class GameDevices(Base):
@@ -115,6 +107,55 @@ class GameGod(Base):
             self.god_name = game_god.god_name
             self.god_type = game_god.god_type
             self.god_sort = game_god.god_sort
+
+
+class GameJob(Base):
+    __tablename__ = "game_job"
+
+    id = Column(String(40), primary_key=True, info='任务标识')
+    account_id = Column(String(40), info='账号ID')
+    job_num = Column(Integer, info='任务序号')
+    week = Column(String(20), info='星期')
+    start_hour = Column(Integer, info='开始时间')
+    end_hour = Column(Integer, info='结束时间')
+    projects_num = Column(Integer, info='项目组编号')
+    project_name = Column(String(20), info='项目名称')
+    emaki_ind = Column(Integer, info='绘卷标志')
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}:" \
+               f"id= {self.id}," \
+               f"account_id= {self.account_id}," \
+               f"job_num= {self.job_num}," \
+               f"week= {self.week}," \
+               f"start_hour= {self.start_hour}," \
+               f"end_hour= {self.end_hour}," \
+               f"projects_num= {self.projects_num}," \
+               f"project_name= {self.project_name}," \
+               f"emaki_ind= {self.emaki_ind}"
+
+    def __init__(self, game_job: () = None, **kwargs):
+        if game_job is None:
+            self.id = kwargs.get('id')
+            self.account_id = kwargs.get('account_id')
+            self.job_num = kwargs.get('job_num')
+            self.week = kwargs.get('week')
+            self.start_hour = kwargs.get('start_hour')
+            self.end_hour = kwargs.get('end_hour')
+            self.projects_num = kwargs.get('projects_num')
+            self.project_name = kwargs.get('project_name')
+            self.emaki_ind = kwargs.get('emaki_ind')
+        else:
+            super().__init__(**kwargs)
+            self.id = game_job.id
+            self.account_id = game_job.account_id
+            self.job_num = game_job.job_num
+            self.week = game_job.week
+            self.start_hour = game_job.start_hour
+            self.end_hour = game_job.end_hour
+            self.projects_num = game_job.projects_num
+            self.project_name = game_job.project_name
+            self.emaki_ind = game_job.emaki_ind
 
 
 class GameProject(Base):

@@ -3,7 +3,7 @@ import re
 
 from sqlalchemy import create_engine, MetaData
 
-from src.utils.utils_path import get_database_url
+from src.utils.utils_path import UtilsPath
 
 
 def create_models():
@@ -18,7 +18,7 @@ def create_models():
     # 第三部分 __init__
     ""
     config = configparser.ConfigParser()
-    url = get_database_url()
+    url = UtilsPath.get_database_url()
     config.read(url, encoding="utf-8")
     # 创建数据库连接
     engine = create_engine(url)
@@ -44,7 +44,7 @@ def create_models():
             column_type = mysql_type_to_python_type(column.type.__class__.__name__)
             # 字段小数位数
             # 字段主键
-            column_PK = column.primary_key
+            column_pk = column.primary_key
             # 字段注释
             column_comment = column.comment
             column_file = column_name + "=Column(" + column_type
@@ -52,7 +52,7 @@ def create_models():
                 # 字段长度
                 column_type_length = format(column.type.length)
                 column_file = column_file + "(" + column_type_length + ")"
-            if column_PK:
+            if column_pk:
                 column_file = column_file + ",primary_key=True"
             column_file = column_file + ",info='" + column_comment + "')"
             model_file2 = model_file2 + "    " + column_file + "\n\r"
@@ -78,7 +78,7 @@ def create_models():
             column1 = table.columns[i]
             # 字段名称
             column_name1 = column1.name
-            column_file2 = "\t\t\tself." + column_name1 + "= kwargs.get('" + column_name1+"')"
+            column_file2 = "\t\t\tself." + column_name1 + "= kwargs.get('" + column_name1 + "')"
             model_file2 = model_file2 + column_file2 + "\n\r"
         model_file2 = model_file2 + "\t\telse:\n\r"
         model_file2 = model_file2 + "\t\t\tsuper().__init__(**kwargs)\n\r"
