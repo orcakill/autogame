@@ -7,9 +7,8 @@ import os
 import sys
 import time
 
-from src.utils.utils_mail import UtilsMail
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from src.utils.utils_mail import UtilsMail
 from src.dao.mapper_extend import MapperExtend
 from utils.my_logger import my_logger as logger
 

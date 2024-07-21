@@ -14,14 +14,16 @@ class ImplOcr:
         screen = AirtestService.snapshot()
         try:
             if screen is not None:
-                logger.debug("检查文字坐标")
+                logger.debug("检查文字坐标:{}", word)
                 pos = OcrService.ocr_paddle(screen, word)
                 if pos:
-                    logger.debug("点击文字坐标")
+                    logger.debug("点击文字坐标:{}", word)
                     AirtestService.touch_coordinate(pos)
+                    return True
                 else:
-                    logger.debug("未识别到文字坐标")
+                    logger.debug("未识别到文字坐标:{}", word)
             else:
                 logger.debug("未截取到图片")
         except Exception as e:
             logger.error("异常{}", e)
+        return False

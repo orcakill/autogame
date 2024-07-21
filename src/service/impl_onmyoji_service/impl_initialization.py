@@ -99,8 +99,12 @@ def initialization(game_task: [], login_type: int = 0):
                 logger.debug("点击切换")
                 is_switch = ImageService.touch(Onmyoji.login_QHFWQ)
                 if not is_switch:
-                    logger.debug("未识别切换，启用ocr识别点击")
-                    ImageService.ocr_touch("切换")
+                    logger.debug("未识别切换，启用ocr识别点击切换")
+                    for i_switch in range(3):
+                        logger.debug("第{}次识别切换",i_switch)
+                        is_switch = ImageService.ocr_touch("切换")
+                        if is_switch:
+                            break
                 logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
                 pos_tcs = ImageService.exists(Onmyoji.login_TYCS, wait=2)
                 pos_jsx = ImageService.exists(Onmyoji.login_ZXJS, wait=2)

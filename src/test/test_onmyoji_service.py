@@ -44,7 +44,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project('2', "4", "登录")
+        TestOnmyojiService.test_project('4', "4", "登录")
 
     def test_daily_rewards(self):
         """
