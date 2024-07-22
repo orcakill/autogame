@@ -6,7 +6,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameProjectLog, GameAccount, GameProject, GameDevices, GameProjectsRelation
+from src.model.models import GameProjectLog, GameAccount, GameProject, GameDevice, GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
@@ -17,7 +17,7 @@ from src.utils.utils_time import UtilsTime
 def daily_rewards(game_task: []):
     game_account = GameAccount(game_task[2])
     game_project = GameProject(game_task[3])
-    game_devices = GameDevices(game_task[4])
+    game_devices = GameDevice(game_task[4])
     # 开始时间
     time_start = time.time()
     # 账号信息
@@ -164,7 +164,7 @@ def soul_arrange(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     for i in range(2):
         ComplexService.refuse_reward()
         logger.debug("点击式神录")

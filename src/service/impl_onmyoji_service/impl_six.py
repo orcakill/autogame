@@ -11,7 +11,7 @@ from tornado import concurrent
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
-from src.model.models import GameAccount, GameProject, GameDevices, GameProjectsRelation, GameProjectLog
+from src.model.models import GameAccount, GameProject, GameDevice, GameProjectsRelation, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
@@ -25,7 +25,7 @@ def sea_moon(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     #  战斗次数
     fight_times = game_projects_relation.project_num_times
     if fight_times is None:

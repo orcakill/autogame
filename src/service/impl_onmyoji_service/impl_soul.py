@@ -7,7 +7,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
-from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameDevices, GameProjectLog
+from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameDevice, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
@@ -30,7 +30,7 @@ def soul_fight(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 项目名称
     project_name = game_project.project_name
     # 项目战斗次数
@@ -171,7 +171,7 @@ def soul_fight_fire(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
     # 战斗胜利次数
@@ -274,7 +274,7 @@ def soul_fight_sun(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
     if not fight_time or fight_time is None:
@@ -389,7 +389,7 @@ def soul_fight_sea(game_task: [], fight: int = 0):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     today = datetime.date.today()
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times

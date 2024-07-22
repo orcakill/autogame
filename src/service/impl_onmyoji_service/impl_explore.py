@@ -6,7 +6,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameProjectsRelation, GameAccount, GameDevices, GameProject, GameProjectLog
+from src.model.models import GameProjectsRelation, GameAccount, GameDevice, GameProject, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
@@ -29,7 +29,7 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 开始时间
     time_start = time.time()
     # 战斗胜利次数

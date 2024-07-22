@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine, or_, desc
 from sqlalchemy.orm import sessionmaker
 
-from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount, GameProjectLog, GameRunLog
+from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount, GameProjectLog
 from src.utils.utils_path import UtilsPath
 
 url = UtilsPath.get_database_url()
@@ -53,11 +53,11 @@ class MapperExtend:
         return game_projects
 
     @staticmethod
-    def select_region_over(day: str, game_id: str):
+    def select_region_over(day: str, account_id: str):
         """
         根据日期和用户获取当日阴阳寮突破的状态
+        :param account_id:
         :param day: 日期
-        :param game_id: 用户ID
         :return: True 未攻破  False 已攻破100%
         """
         session_maker = sessionmaker(bind=engine)
@@ -70,7 +70,7 @@ class MapperExtend:
         start_datetime = datetime.combine(date.date(), time)
         end_datetime = start_datetime + timedelta(days=1)
         game_project_log = (session.query(GameProjectLog)
-                            .filter(GameProjectLog.role_id == game_id,
+                            .filter(GameProjectLog.account_id == account_id,
                                     GameProjectLog.result == "阴阳寮突破突破进度100%",
                                     GameProjectLog.create_time >= start_datetime,
                                     GameProjectLog.create_time <= end_datetime)
@@ -82,14 +82,14 @@ class MapperExtend:
             return True
 
     @staticmethod
-    def select_game_run_log(run_name: str):
+    def select_game_project_log_last(device_id: str):
         session_maker = sessionmaker(bind=engine)
         session = session_maker()
-        game_run_log = (session.query(GameRunLog)
-                        .filter(GameRunLog.run_name == run_name)
-                        .order_by(desc(GameRunLog.run_date)).first())
+        game_project_log = (session.query(GameProjectLog)
+                            .filter(GameProjectLog.device_id == device_id)
+                            .order_by(desc(GameProjectLog.create_time)).first())
         session.close()
-        if game_run_log:
-            return game_run_log.run_date
+        if game_project_log:
+            return game_project_log.create_time
         else:
             return None

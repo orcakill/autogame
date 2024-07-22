@@ -8,7 +8,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProjectsRelation, GameProjects, GameProject, GameDevices, GameProjectLog
+from src.model.models import GameAccount, GameProjectsRelation, GameProjects, GameProject, GameDevice, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_awakening, impl_initialization
@@ -35,7 +35,7 @@ def friends_fight(game_task: []):
     game_projects_relation = GameProjectsRelation(game_task[1])
     game_account = GameAccount(game_task[2])
     game_project = GameProject(game_task[3])
-    game_devices = GameDevices(game_task[4])
+    game_devices = GameDevice(game_task[4])
     logger.debug(game_account.role_name)
     logger.debug("好友协战")
     for i_cooperative_warfare in range(2):
@@ -263,7 +263,7 @@ def friends_manage(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     logger.debug(game_account.role_name)
     logger.debug("进入好友界面")
     is_friends = ImageService.touch(Onmyoji.friends_HYTB)

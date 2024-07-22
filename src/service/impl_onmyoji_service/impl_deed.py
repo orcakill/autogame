@@ -8,7 +8,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
-from src.model.models import GameAccount, GameDevices, GameProject, GameProjectLog, GameProjectsRelation
+from src.model.models import GameAccount, GameDevice, GameProject, GameProjectLog, GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
@@ -26,7 +26,7 @@ def deed_spirit(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 契灵图标可点击，默认不可点击
     is_deed = False
     for i_come in range(2):

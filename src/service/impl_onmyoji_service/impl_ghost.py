@@ -7,7 +7,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProject, GameDevices, GameProjectLog, GameProjectsRelation
+from src.model.models import GameAccount, GameProject, GameDevice, GameProjectLog, GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
@@ -20,7 +20,7 @@ def ghost_king(game_task: []):
     now = datetime.datetime.now()
     game_account = GameAccount(game_task[2])
     game_project = GameProject(game_task[3])
-    game_devices = GameDevices(game_task[4])
+    game_devices = GameDevice(game_task[4])
     logger.debug(game_account.role_name)
     current_hour = now.hour
     if 6 <= current_hour <= 24:
@@ -129,7 +129,7 @@ def encounter_demons(game_task: []):
     time_start = time.time()
     game_account = GameAccount(game_task[2])
     game_project = GameProject(game_task[3])
-    game_devices = GameDevices(game_task[4])
+    game_devices = GameDevice(game_task[4])
     logger.debug(game_account.role_name)
     now = datetime.datetime.now()
     current_hour = now.hour
@@ -253,7 +253,7 @@ def realm_fight(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 获取当前日期
     today = datetime.date.today()
     # 获取本日是周几（周一为0，周日为6）

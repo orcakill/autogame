@@ -8,7 +8,7 @@ import time
 from src.dao.mapper import Mapper
 from src.dao.mapper_extend import MapperExtend
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProject, GameProjectLog, GameDevices, GameProjectsRelation
+from src.model.models import GameAccount, GameProject, GameProjectLog, GameDevice, GameProjectsRelation
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -28,7 +28,7 @@ def initialization(game_task: [], login_type: int = 0):
     time_start = time.time()
     # 项目信息
     (game_projects_relation, game_account, game_devices) = (
-        GameProjectsRelation(game_task[1]), GameAccount(game_task[2]), GameDevices(game_task[4]))
+        GameProjectsRelation(game_task[1]), GameAccount(game_task[2]), GameDevice(game_task[4]))
     # 登录，每次重置项目信息为登录
     game_project = GameProject(MapperExtend.select_game_project("", "1")[0])
     # 服务器信息

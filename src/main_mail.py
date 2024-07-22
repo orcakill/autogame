@@ -20,12 +20,12 @@ if __name__ == '__main__':
         current_hour = current_time.hour
         current_minute = current_time.minute
         logger.debug("当前{}", current_time)
-        if current_hour in [8, 14, 20]:
+        if current_hour in [8, 14, 18, 23]:
             logger.debug("运行检查")
             time.sleep(60 * 10)
-            # 获取大号脚本最后一次的日期
-            run_date1 = MapperExtend.select_game_run_log("大号脚本")
-            run_date2 = MapperExtend.select_game_run_log("小号脚本")
+            # 获取脚本最后一次的日期
+            run_date1 = MapperExtend.select_game_project_log_last("6565a1c2-47f5-11ef-ac7d-fa163e9ff72f")
+            run_date2 = MapperExtend.select_game_project_log_last("822aeaf9-47f5-11ef-ac7d-fa163e9ff72f")
             # 获取当前时间和脚本运行记录的差，如果大于6小时则发送邮件
             if run_date1:
                 date1_hour = run_date1.hour

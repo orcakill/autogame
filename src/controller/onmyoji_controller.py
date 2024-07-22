@@ -17,7 +17,8 @@ from src.utils.utils_time import UtilsTime
 
 class OnmyojiController:
     @staticmethod
-    def create_execute_tasks(game_device_id: str, game_id: str, projects_num: str = None, project_name: str = None,
+    def create_execute_tasks(game_device_num: str, game_account_nums: str, projects_num: str = None,
+                             project_name: str = None,
                              project_num: str = None, game_round: str = 1, relation_num: str = 1,
                              project_num_times: {} = None, start_hour: int = 0, end_hour: int = 23):
         game_tasks = []
@@ -29,27 +30,27 @@ class OnmyojiController:
                 game_projects_relation = GameProjectsRelation(game_task[1])
                 game_account = GameAccount(game_task[2])
                 game_project = GameProject(game_task[3])
-                game_device = GameDevices(Mapper.select_game_devices(game_device_id))
+                game_device = GameDevice(Mapper.select_game_device(game_device_num))
                 game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
                 game_tasks.append(game_task)
         else:
-            game_tasks = OnmyojiController.create_tasks(game_device_id, game_id, project_num, project_name,
+            game_tasks = OnmyojiController.create_tasks(game_device_num, game_account_nums, project_num, project_name,
                                                         project_num_times)
         # 执行任务
         OnmyojiController.execute_tasks(game_tasks, game_round, relation_num, start_hour, end_hour)
 
     @staticmethod
-    def create_tasks(game_device_id: str, game_ids: str, project_num: str, project_name: str,
+    def create_tasks(game_device_num: str, game_account_nums: str, project_num: str, project_name: str,
                      project_num_times: {} = None):
         # 初始化任务信息
         task = []
-        game_ids_list = []
+        game_account_nums_list = []
         project_num_list = []
         num = 0
         # 设备信息
-        game_device = GameDevices(Mapper.select_game_devices(game_device_id))
-        if game_ids is not None:
-            game_ids_list = game_ids.split(',')
+        game_device = GameDevice(Mapper.select_game_device(game_device_num=game_device_num))
+        if game_account_nums is not None:
+            game_account_nums_list = game_account_nums.split(',')
         if project_num:
             project_num_list = project_num.split(',')
         elif not project_num and project_name:
@@ -57,11 +58,11 @@ class OnmyojiController:
             for i_num in range(len(project_name_list)):
                 project_number = GameProject(MapperExtend.select_game_project("", "", project_name_list[i_num])[0])
                 project_num_list.append(project_number.project_num)
-        for i in range(len(game_ids_list)):
-            game_id = game_ids_list[i]
+        for i in range(len(game_account_nums_list)):
+            game_account_num = game_account_nums_list[i]
             game_projects = GameProjects()
             game_projects_relation = GameProjectsRelation()
-            game_account = GameAccount(Mapper.select_game_account(game_id))
+            game_account = GameAccount(Mapper.select_game_account(game_account_num=game_account_num))
             for j in range(len(project_num_list)):
                 game_project = GameProject(MapperExtend.select_game_project("", project_num_list[j])[0])
                 game_projects_relation.relation_num = num + 1
@@ -69,7 +70,7 @@ class OnmyojiController:
                     game_projects_relation.project_num_times = project_num_times[game_project.project_name]
                 game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
                 day = UtilsTime.get_day_str()
-                region_over = MapperExtend.select_region_over(day, game_id)
+                region_over = MapperExtend.select_region_over(day, game_account_num)
                 if not region_over and game_project.project_name == "阴阳寮突破":
                     logger.info("{}：{},阴阳寮突破进度100%,跳过创建该任务", day, game_account.role_name)
                     continue
@@ -107,7 +108,7 @@ class OnmyojiController:
                         game_projects_relation = GameProjectsRelation(game_task[1])
                         game_account = GameAccount(game_task[2])
                         game_project = GameProject(game_task[3])
-                        game_device = GameDevices(game_task[4])
+                        game_device = GameDevice(game_task[4])
                         # 获取当前时间
                         current_time1 = datetime.datetime.now()
                         # 获取当前时间的小时数
@@ -124,7 +125,7 @@ class OnmyojiController:
                                             game_account.role_name)
                                 continue
                             logger.debug("当前状态初始化")
-                            ComplexService.auto_setup(game_device.id)
+                            ComplexService.auto_setup(game_device.device_num)
                             is_initialization = OnmyojiService.initialization(game_task)
                             if not is_initialization:
                                 # 如果是云手机，重启云手机，重新授权，重新初始化（待定）
@@ -209,8 +210,3 @@ class OnmyojiController:
         except Exception as e:
             UtilsMail.send_email("阴阳师脚本", "异常", e)
             logger.exception(e)
-
-    @staticmethod
-    def run_log(run_name: str):
-        game_run_log = GameRunLog(run_date=datetime.datetime.now(), run_name=run_name, run_state=1)
-        Mapper.save_game_run_log(game_run_log)

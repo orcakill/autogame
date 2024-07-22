@@ -9,7 +9,7 @@ from src.utils.utils_path import UtilsPath
 def create_models():
     # 第一部分
     model_file1 = "# coding: utf-8\n\r" \
-                  "from sqlalchemy import BigInteger, Column, DateTime, Integer, String\n\r" \
+                  "from sqlalchemy import BigInteger, Column, DateTime, Integer, String, Date\n\r" \
                   "from sqlalchemy.ext.declarative import declarative_base\n\r\n\r" \
                   "Base = declarative_base()\n\r" \
                   "metadata = Base.metadata\n\r\n\r"
@@ -103,7 +103,7 @@ def mysql_type_to_python_type(mysql_type):
     elif mysql_type == 'TEXT':
         python_type = 'String'
     elif mysql_type == 'DATE':
-        python_type = 'datetime.date'
+        python_type = 'Date'
     elif mysql_type == 'DATETIME':
         python_type = 'DateTime'
     elif mysql_type == 'BOOLEAN':

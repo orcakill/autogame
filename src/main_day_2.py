@@ -42,7 +42,6 @@ if __name__ == '__main__':
                 logger.info("周三维护中")
             else:
                 start_hour, end_hour = 0, 23
-                OnmyojiController.run_log("小号脚本")
                 logger.info("0-23,小号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="式神寄养",
                                                        start_hour=start_hour, end_hour=end_hour)

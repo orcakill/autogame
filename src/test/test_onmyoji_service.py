@@ -6,7 +6,7 @@ from unittest import TestCase
 
 from src.controller.onmyoji_controller import OnmyojiController
 from src.dao.mapper_extend import MapperExtend
-from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameProjects, GameDevices
+from src.model.models import GameProjectsRelation, GameProject, GameAccount, GameProjects, GameDevice
 from src.service.complex_service import ComplexService
 from src.service.onmyoji_service import OnmyojiService
 from src.service.windows_service import WindowsService
@@ -266,7 +266,7 @@ class TestOnmyojiService(TestCase):
             game_projects, game_projects_relation = GameProjects(game_task[0]), GameProjectsRelation(game_task[1])
             game_account = GameAccount(game_task[2])
             game_project = GameProject(game_task[3])
-            game_device = GameDevices(game_task[4])
+            game_device = GameDevice(game_task[4])
             game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
             logger.debug("当前状态初始化:{}", game_account.role_name)
             # 连接设备

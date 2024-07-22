@@ -6,7 +6,7 @@
 import time
 
 from src.dao.mapper import Mapper
-from src.model.models import GameProjectsRelation, GameProjectLog, GameAccount, GameProject, GameDevices
+from src.model.models import GameProjectsRelation, GameProjectLog, GameAccount, GameProject, GameDevice
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -52,7 +52,7 @@ def super_ghost(game_task: []):
     # 项目信息
     game_projects_relation, game_account, game_project, game_devices = (
         GameProjectsRelation(game_task[1]), GameAccount(game_task[2]), GameProject(game_task[3]),
-        GameDevices(game_task[4]))
+        GameDevice(game_task[4]))
     # 战斗次数
     fight_time = game_projects_relation.project_num_times or 200
     # 难度列表

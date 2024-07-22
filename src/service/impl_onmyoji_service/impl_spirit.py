@@ -7,7 +7,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
-from src.model.models import GameProjectsRelation, GameProjectLog, GameAccount, GameDevices, GameProject
+from src.model.models import GameProjectsRelation, GameProjectLog, GameAccount, GameDevice, GameProject
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
@@ -28,7 +28,7 @@ def spirit_fight(game_task: []):
     num_fail = 0
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 项目战斗次数
     if game_projects_relation.project_num_times:
         fight_time = game_projects_relation.project_num_times

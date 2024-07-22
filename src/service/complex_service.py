@@ -39,25 +39,25 @@ class ComplexService:
         serialno = None
         connect_info = None
         WindowsService.delete_folder_file(UtilsPath.get_log_image_path(), 2)
-        if game_device == "0":
+        if game_device == "0" or game_device == 0:
             serialno = "127.0.0.1:50000"
             connect_info = serialno
             logger.debug("检查是否启动云手机-001")
             WindowsService.start_exe("YsConsole", "云帅云手机")
-        if game_device == "1":
+        if game_device == "1" or game_device == 1:
             logger.debug("检查是否启动夜神模拟器")
             WindowsService.start_exe("Nox", "夜神模拟器")
             serialno = "127.0.0.1:62001"
             connect_info = serialno
-        if game_device == "2":
+        if game_device == "2" or game_device == 2:
             logger.debug("检查是否启动荣耀平板9")
             serialno = "A2CDUN4312H00817"
             connect_info = serialno
-        if game_device == "3":
+        if game_device == "3" or game_device == 3:
             logger.debug("检查是否启动小米13")
             serialno = "8ce78c9f"
             connect_info = serialno
-        if game_device == "4":
+        if game_device == "4" or game_device == 4:
             logger.debug("检查是否启动云手机-002")
             WindowsService.start_exe("YsConsole", "云帅云手机")
             serialno = "127.0.0.1:50001"

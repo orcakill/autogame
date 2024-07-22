@@ -1,10 +1,10 @@
 import datetime
 from uuid import uuid4
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import sessionmaker
 
-from src.model.models import GameAccount, GameProjectLog, GameDevices, GameRunLog
+from src.model.models import GameAccount, GameProjectLog, GameDevice
 from src.service.windows_service import WindowsService
 from src.utils.utils_path import UtilsPath
 
@@ -14,10 +14,15 @@ engine = create_engine(url, echo=False, pool_pre_ping=True, pool_recycle=1800)  
 
 class Mapper:
     @staticmethod
-    def select_game_account(game_account_id: str):
+    def select_game_account(game_account_id: str = "", game_account_num: str = ""):
         session = sessionmaker(bind=engine)
         session1 = session()
-        game_account = session1.get(GameAccount, game_account_id)
+        game_account = (session1.query(GameAccount)
+                        .filter(or_(GameAccount.id == game_account_id, game_account_id == ""),
+                                or_(GameAccount.account_num == game_account_num, game_account_num == "")
+                                )
+                        .order_by(GameAccount.account_num)
+                        .first())
         session1.close()
         return game_account
 
@@ -36,21 +41,13 @@ class Mapper:
         session1.close()
 
     @staticmethod
-    def select_game_devices(game_devices_id: str):
+    def select_game_device(game_device_id: str = "", game_device_num: str = ""):
         session = sessionmaker(bind=engine)
         session1 = session()
-        game_devices = session1.get(GameDevices, game_devices_id)
+        game_device = (session1.query(GameDevice)
+                       .filter(or_(GameDevice.id == game_device_id, game_device_id == ""),
+                               or_(GameDevice.device_num == game_device_num, game_device_num == "")
+                               )
+                       .first())
         session1.close()
-        return game_devices
-
-    @staticmethod
-    def save_game_run_log(game_run_log: GameRunLog):
-        # 保存 game_run_log
-        game_run_log1 = GameRunLog(game_run_log)
-        session = sessionmaker(bind=engine)
-        session1 = session()
-        if game_run_log1.id is None:
-            game_run_log1.id = uuid4()
-        session1.add(game_run_log1)
-        session1.commit()
-        session1.close()
+        return game_device

@@ -8,7 +8,7 @@ import time
 
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
-from src.model.models import GameAccount, GameProjectsRelation, GameDevices, GameProject, GameProjectLog
+from src.model.models import GameAccount, GameProjectsRelation, GameDevice, GameProject, GameProjectLog
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
@@ -32,7 +32,7 @@ def region_border(game_task: []):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 结界突破战斗用时
     time_fight_list = []
     for i in range(3):
@@ -165,7 +165,7 @@ def border_fight(game_task: [], fight_times: int = 40):
     # 项目信息
     (game_projects_relation, game_account,
      game_project, game_devices) = (GameProjectsRelation(game_task[1]), GameAccount(game_task[2]),
-                                    GameProject(game_task[3]), GameDevices(game_task[4]))
+                                    GameProject(game_task[3]), GameDevice(game_task[4]))
     # 战斗胜利次数
     num_win = 0
     # 战斗失败次数
