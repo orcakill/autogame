@@ -30,7 +30,7 @@ class OnmyojiController:
                 game_projects_relation = GameProjectsRelation(game_task[1])
                 game_account = GameAccount(game_task[2])
                 game_project = GameProject(game_task[3])
-                game_device = GameDevice(Mapper.select_game_device(game_device_num))
+                game_device = GameDevice(Mapper.select_game_device(game_device_num=game_device_num))
                 game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
                 game_tasks.append(game_task)
         else:

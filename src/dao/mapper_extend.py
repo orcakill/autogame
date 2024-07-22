@@ -18,7 +18,7 @@ class MapperExtend:
         task = session.query(GameProjects, GameProjectsRelation, GameAccount, GameProject) \
             .join(GameProjectsRelation, GameProjects.id == GameProjectsRelation.projects_id) \
             .join(GameProject, GameProjectsRelation.project_id == GameProject.id) \
-            .join(GameAccount, GameAccount.id == GameProjectsRelation.user_id) \
+            .join(GameAccount, GameAccount.id == GameProjectsRelation.account_id) \
             .filter(or_(GameProjects.id == object_id, object_id == ""),
                     or_(GameProjects.projects_num == object_projects_num, object_projects_num == "")) \
             .order_by(GameProjects.id, GameProjectsRelation.relation_num) \
