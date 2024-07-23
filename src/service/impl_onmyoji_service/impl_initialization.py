@@ -34,7 +34,7 @@ def initialization(game_task: [], login_type: int = 0):
     # 服务器信息
     server = str(os.path.join(Onmyoji.login_FWQ, game_account.role_region))
     # 账号首页信息
-    account_index = str(os.path.join(Onmyoji.user_SYTX, game_account.id))
+    account_index = str(os.path.join(Onmyoji.user_SYTX, str(game_account.account_num)))
     # 重新登录
     str_login = ''
     # 判断是否是待登录账号首页
@@ -101,7 +101,7 @@ def initialization(game_task: [], login_type: int = 0):
                 if not is_switch:
                     logger.debug("未识别切换，启用ocr识别点击切换")
                     for i_switch in range(3):
-                        logger.debug("第{}次识别切换",i_switch)
+                        logger.debug("第{}次识别切换",i_switch+1)
                         is_switch = ImageService.ocr_touch("切换")
                         if is_switch:
                             break

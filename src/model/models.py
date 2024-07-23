@@ -126,10 +126,10 @@ class GameJob(Base):
     week = Column(String(20), info='星期')
     start_hour = Column(Integer, info='开始时间')
     end_hour = Column(Integer, info='结束时间')
-    projects_num = Column(Integer, info='项目组编号')
-    project_name = Column(String(20), info='项目名称')
-    emaki_ind = Column(Integer, info='绘卷标志')
+    projects_id = Column(String(40), info='项目组编号')
+    project_id = Column(String(40), info='项目名称')
     timeout_hour = Column(Integer, info='超时')
+    active_ind = Column(Integer, info='有效标志')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
@@ -139,10 +139,10 @@ class GameJob(Base):
                f"week= {self.week}," \
                f"start_hour= {self.start_hour}," \
                f"end_hour= {self.end_hour}," \
-               f"projects_num= {self.projects_num}," \
-               f"project_name= {self.project_name}," \
-               f"emaki_ind= {self.emaki_ind}," \
-               f"timeout_hour= {self.timeout_hour}"
+               f"projects_id= {self.projects_id}," \
+               f"project_id= {self.project_id}," \
+               f"timeout_hour= {self.timeout_hour}," \
+               f"active_ind= {self.active_ind}"
 
     def __init__(self, game_job: () = None, **kwargs):
         if game_job is None:
@@ -152,10 +152,10 @@ class GameJob(Base):
             self.week = kwargs.get('week')
             self.start_hour = kwargs.get('start_hour')
             self.end_hour = kwargs.get('end_hour')
-            self.projects_num = kwargs.get('projects_num')
-            self.project_name = kwargs.get('project_name')
-            self.emaki_ind = kwargs.get('emaki_ind')
+            self.projects_id = kwargs.get('projects_id')
+            self.project_id = kwargs.get('project_id')
             self.timeout_hour = kwargs.get('timeout_hour')
+            self.active_ind = kwargs.get('active_ind')
         else:
             super().__init__(**kwargs)
             self.id = game_job.id
@@ -164,10 +164,10 @@ class GameJob(Base):
             self.week = game_job.week
             self.start_hour = game_job.start_hour
             self.end_hour = game_job.end_hour
-            self.projects_num = game_job.projects_num
-            self.project_name = game_job.project_name
-            self.emaki_ind = game_job.emaki_ind
+            self.projects_id = game_job.projects_id
+            self.project_id = game_job.project_id
             self.timeout_hour = game_job.timeout_hour
+            self.active_ind = game_job.active_ind
 
 
 class GameJobLog(Base):

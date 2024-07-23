@@ -105,4 +105,9 @@ class OcrService:
                             break
                         else:
                             logger.debug("文字坐标计算有误")
+        if pos == "":
+            logger.debug("未识别到切换，遍历输出识别的文字信息")
+            for field in result:
+                for index, value in enumerate(field):
+                    logger.debug("{}:{}", index, value)
         return pos
