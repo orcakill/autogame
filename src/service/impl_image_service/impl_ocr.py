@@ -9,19 +9,19 @@ from src.utils.my_logger import logger
 
 class ImplOcr:
     @staticmethod
-    def ocr_touch(word):
+    def ocr_touch(words):
         logger.debug("获取当前页面截图")
         screen = AirtestService.snapshot()
         try:
             if screen is not None:
-                logger.debug("检查文字坐标:{}", word)
-                pos = OcrService.ocr_paddle(screen, word)
+                logger.debug("检查文字坐标:{}", words)
+                pos = OcrService.ocr_paddle(screen, words)
                 if pos:
-                    logger.debug("点击文字坐标:{}", word)
+                    logger.debug("点击文字坐标:{}", words)
                     AirtestService.touch_coordinate(pos)
                     return True
                 else:
-                    logger.debug("未识别到文字坐标:{}", word)
+                    logger.debug("未识别到文字坐标:{}", words)
             else:
                 logger.debug("未截取到图片")
         except Exception as e:

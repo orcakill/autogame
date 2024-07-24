@@ -75,11 +75,11 @@ class OcrService:
         return text
 
     @staticmethod
-    def ocr_paddle(img, word):
+    def ocr_paddle(img, words):
         """
         根据图片识别文字
         :param img: 图片   路径或ndarray
-        :param word: 文字
+        :param words: 文字数组
         :return: 文字坐标
         """
         pos = ""
@@ -90,21 +90,24 @@ class OcrService:
                 for index, value in enumerate(field):
                     text = field[index][1][0]
                     similarity = field[index][1][1]
-                    if word in text and similarity >= 0.9:
-                        box = field[index][0]
-                        x1 = int(box[0][0])
-                        y1 = int(box[0][1])
-                        x2 = int(box[2][0])
-                        y2 = int(box[2][1])
-                        # image_ndarray = cv2.imread(img)
-                        # ImageService.draw_rectangle(image_ndarray ,x1,y1,x2,y2)
-                        x = (x1 + x2) / 2
-                        y = (y1 + y2) / 2
-                        if x and y:
-                            pos = (x, y)
-                            break
-                        else:
-                            logger.debug("文字坐标计算有误")
+                    for word in words:
+                        if word in text and similarity >= 0.9:
+                            box = field[index][0]
+                            x1 = int(box[0][0])
+                            y1 = int(box[0][1])
+                            x2 = int(box[2][0])
+                            y2 = int(box[2][1])
+                            # image_ndarray = cv2.imread(img)
+                            # ImageService.draw_rectangle(image_ndarray ,x1,y1,x2,y2)
+                            x = (x1 + x2) / 2
+                            y = (y1 + y2) / 2
+                            if x and y:
+                                pos = (x, y)
+                                logger.debug("文字坐标识别成功：{}", word)
+                                break
+                            else:
+                                logger.debug("文字坐标计算有误")
+
         if pos == "":
             logger.debug("未识别到切换，遍历输出识别的文字信息")
             for field in result:
