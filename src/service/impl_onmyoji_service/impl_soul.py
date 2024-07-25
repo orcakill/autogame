@@ -145,7 +145,7 @@ def soul_fight(game_task: []):
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     # 记录项目执行结果
-    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+    game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='八岐大蛇战斗完成', cost_time=int(time_all),
                                       fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
                                       fight_fail=num_fail,
@@ -248,7 +248,7 @@ def soul_fight_fire(game_task: []):
         logger.debug("业原火-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     # 记录项目执行结果
-    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+    game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='业原火完成', cost_time=int(time_all),
                                       fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
                                       fight_fail=num_fail,
@@ -361,7 +361,7 @@ def soul_fight_sun(game_task: []):
         logger.debug("日轮之陨-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     # 记录项目执行结果
-    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+    game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='日轮之陨完成', cost_time=int(time_all),
                                       fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
                                       fight_fail=num_fail,
@@ -472,7 +472,7 @@ def soul_fight_sea(game_task: [], fight: int = 0):
         logger.debug("永生之海-计算平均战斗用时")
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     # 记录项目执行结果
-    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+    game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='永生之海战斗完成', cost_time=int(time_all),
                                       fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
                                       fight_fail=num_fail,

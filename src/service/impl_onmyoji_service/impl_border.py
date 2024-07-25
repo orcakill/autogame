@@ -136,7 +136,7 @@ def region_border(game_task: []):
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     # 记录项目执行结果
-    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+    game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result="阴阳寮突破", cost_time=int(time_all),
                                       fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
                                       fight_fail=num_fail, fight_avg=time_fight_avg)
@@ -308,7 +308,7 @@ def border_fight(game_task: [], fight_times: int = 40):
     if len_time_fight_list > 0:
         time_fight_avg = round(sum(time_fight_list) / len(time_fight_list), 3)
     # 记录项目执行结果
-    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+    game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result=game_project.project_name, cost_time=int(time_all),
                                       fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
                                       fight_fail=num_false, fight_avg=time_fight_avg)

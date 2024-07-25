@@ -162,7 +162,7 @@ def super_ghost(game_task: []):
     # 总用时
     time_all = time_end - time_start
     # 记录项目执行结果
-    game_project_log = GameProjectLog(project_id=game_project.id, role_id=game_account.id, devices_id=game_devices.id,
+    game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='活动-超鬼王完成', cost_time=int(time_all))
     Mapper.save_game_project_log(game_project_log)
     logger.debug("本轮活动-超鬼王十总用时{}", UtilsTime.convert_seconds(time_all))
