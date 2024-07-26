@@ -20,7 +20,7 @@ if __name__ == '__main__':
     # 账号：大号
     game_account_large = '1'
     # 特殊模式处理 ，绘卷
-    is_mode = "绘卷"
+    is_mode = ""
     # 0-5
     task_list1 = []
     # 6-11
@@ -57,7 +57,6 @@ if __name__ == '__main__':
                 logger.info("0-23,大号，式神寄养")
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name="式神寄养",
                                                        start_hour=start_hour, end_hour=end_hour)
-
         else:
             logger.info("不满足偶数点前20分钟的条件")
         # 如果当前时间大于等于0点并且小于8点
