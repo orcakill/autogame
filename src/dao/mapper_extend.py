@@ -3,7 +3,8 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine, or_, desc
 from sqlalchemy.orm import sessionmaker
 
-from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount, GameProjectLog
+from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount, GameProjectLog, GameJob, \
+    GameDevice, GameAccounts, GameAccountsRelation
 from src.utils.utils_path import UtilsPath
 
 url = UtilsPath.get_database_url()
@@ -91,5 +92,23 @@ class MapperExtend:
         session.close()
         if game_project_log:
             return game_project_log.create_time
+        else:
+            return None
+
+    @staticmethod
+    def select_game_job_all(device_id: str):
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
+        game_job_all = (session.query(GameJob, GameDevice, GameAccounts, GameAccountsRelation, GameAccount)
+                        .join(GameDevice, GameJob.device_id == GameDevice.id)
+                        .join(GameAccounts, GameJob.account_ids == GameAccounts.id)
+                        .join(GameAccountsRelation, GameAccounts.id == GameAccountsRelation.account_id)
+                        .join(GameAccount, GameAccountsRelation.account_id == GameAccount.account_id)
+                        .filter(or_(GameJob.device_id == device_id, device_id == ""))
+                        .order_by(GameJob.device_id, GameJob.job_num, GameAccountsRelation.relation_num)
+                        .all())
+        session.close()
+        if game_job_all:
+            return game_job_all
         else:
             return None

@@ -9,7 +9,7 @@ from src.utils.utils_path import UtilsPath
 def create_models():
     # 第一部分
     model_file1 = "# coding: utf-8\n\r" \
-                  "from sqlalchemy import BigInteger, Column, DateTime, Integer, String, Date\n\r" \
+                  "from sqlalchemy import BigInteger, Column, DateTime, Integer, String, Date,DECIMAL\n\r" \
                   "from sqlalchemy.ext.declarative import declarative_base\n\r\n\r" \
                   "Base = declarative_base()\n\r" \
                   "metadata = Base.metadata\n\r\n\r"
@@ -52,6 +52,16 @@ def create_models():
                 # 字段长度
                 column_type_length = format(column.type.length)
                 column_file = column_file + "(" + column_type_length + ")"
+            if column_type == "DECIMAL":
+                # 字段长度
+                if format(column.type.precision):
+                    column_type_precision = format(column.type.precision)
+                    column_file = column_file + "(" + column_type_precision
+                # 小数位数
+                if format(column.type.scale):
+                    column_type_scale = format(column.type.scale)
+                    column_file = column_file + "," + column_type_scale
+                column_file = column_file + ")"
             if column_pk:
                 column_file = column_file + ",primary_key=True"
             column_file = column_file + ",info='" + column_comment + "')"
@@ -93,7 +103,7 @@ def create_models():
 
 
 def mysql_type_to_python_type(mysql_type):
-    python_type = None
+    python_type = mysql_type
     if mysql_type == 'VARCHAR':
         python_type = 'String'
     elif mysql_type == 'INT':

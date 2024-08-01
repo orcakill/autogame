@@ -51,3 +51,15 @@ class Mapper:
                        .first())
         session1.close()
         return game_device
+
+    @staticmethod
+    def select_game_job_log_all(game_device_id: str = "", game_device_num: str = ""):
+        session = sessionmaker(bind=engine)
+        session1 = session()
+        game_device = (session1.query(GameDevice)
+                       .filter(or_(GameDevice.id == game_device_id, game_device_id == ""),
+                               or_(GameDevice.device_num == game_device_num, game_device_num == "")
+                               )
+                       .first())
+        session1.close()
+        return game_device

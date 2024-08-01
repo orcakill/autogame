@@ -1,5 +1,6 @@
 # coding: utf-8
-from sqlalchemy import BigInteger, Column, DateTime, Integer, String, Date
+# coding: utf-8
+from sqlalchemy import BigInteger, Column, DateTime, Integer, String, Date, DECIMAL
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -17,6 +18,8 @@ class GameAccount(Base):
     role_region = Column(String(40), info='角色服务器')
     role_name = Column(String(40), info='角色名称')
     role_class = Column(String(40), info='角色等级')
+    game_package = Column(Integer, info='游戏包名')
+    game_acivity = Column(Integer, info='游戏活动名')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
@@ -27,7 +30,9 @@ class GameAccount(Base):
                f"account_password= {self.account_password}," \
                f"role_region= {self.role_region}," \
                f"role_name= {self.role_name}," \
-               f"role_class= {self.role_class}"
+               f"role_class= {self.role_class}," \
+               f"game_package= {self.game_package}," \
+               f"game_acivity= {self.game_acivity}"
 
     def __init__(self, game_account: () = None, **kwargs):
         if game_account is None:
@@ -39,6 +44,8 @@ class GameAccount(Base):
             self.role_region = kwargs.get('role_region')
             self.role_name = kwargs.get('role_name')
             self.role_class = kwargs.get('role_class')
+            self.game_package = kwargs.get('game_package')
+            self.game_acivity = kwargs.get('game_acivity')
         else:
             super().__init__(**kwargs)
             self.id = game_account.id
@@ -49,6 +56,62 @@ class GameAccount(Base):
             self.role_region = game_account.role_region
             self.role_name = game_account.role_name
             self.role_class = game_account.role_class
+            self.game_package = game_account.game_package
+            self.game_acivity = game_account.game_acivity
+
+
+class GameAccounts(Base):
+    __tablename__ = "game_accounts"
+
+    id = Column(String(40), primary_key=True, info='账号组标识')
+    accounts_num = Column(Integer, info='账号组序号')
+    accounts_name = Column(String(40), info='账号组名称')
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}:" \
+               f"id= {self.id}," \
+               f"accounts_num= {self.accounts_num}," \
+               f"accounts_name= {self.accounts_name}"
+
+    def __init__(self, game_accounts: () = None, **kwargs):
+        if game_accounts is None:
+            self.id = kwargs.get('id')
+            self.accounts_num = kwargs.get('accounts_num')
+            self.accounts_name = kwargs.get('accounts_name')
+        else:
+            super().__init__(**kwargs)
+            self.id = game_accounts.id
+            self.accounts_num = game_accounts.accounts_num
+            self.accounts_name = game_accounts.accounts_name
+
+
+class GameAccountsRelation(Base):
+    __tablename__ = "game_accounts_relation"
+
+    id = Column(String(40), primary_key=True, info='账号组关系标识')
+    relation_num = Column(Integer, info='账号组关系序号')
+    acounts_id = Column(String(40), info='账号组标识')
+    account_id = Column(String(40), info='账号标识')
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}:" \
+               f"id= {self.id}," \
+               f"relation_num= {self.relation_num}," \
+               f"acounts_id= {self.acounts_id}," \
+               f"account_id= {self.account_id}"
+
+    def __init__(self, game_accounts_relation: () = None, **kwargs):
+        if game_accounts_relation is None:
+            self.id = kwargs.get('id')
+            self.relation_num = kwargs.get('relation_num')
+            self.acounts_id = kwargs.get('acounts_id')
+            self.account_id = kwargs.get('account_id')
+        else:
+            super().__init__(**kwargs)
+            self.id = game_accounts_relation.id
+            self.relation_num = game_accounts_relation.relation_num
+            self.acounts_id = game_accounts_relation.acounts_id
+            self.account_id = game_accounts_relation.account_id
 
 
 class GameDevice(Base):
@@ -121,20 +184,23 @@ class GameJob(Base):
     __tablename__ = "game_job"
 
     id = Column(String(40), primary_key=True, info='任务标识')
-    account_id = Column(String(40), info='账号ID')
+    device_id = Column(String(40), info='设备标识')
+    account_ids = Column(String(40), info='账号标识组')
     job_num = Column(Integer, info='任务序号')
     week = Column(String(20), info='星期')
     start_hour = Column(Integer, info='开始时间')
     end_hour = Column(Integer, info='结束时间')
-    projects_id = Column(String(40), info='项目组编号')
-    project_id = Column(String(40), info='项目名称')
-    timeout_hour = Column(Integer, info='超时')
+    projects_id = Column(String(40), info='项目组标识')
+    project_id = Column(String(40), info='项目标识')
+    timeout_hour = Column(DECIMAL(2, 1), info='超时')
+    fight_times = Column(Integer, info='战斗次数')
     active_ind = Column(Integer, info='有效标志')
 
     def __repr__(self):
         return f"{self.__class__.__name__}:" \
                f"id= {self.id}," \
-               f"account_id= {self.account_id}," \
+               f"device_id= {self.device_id}," \
+               f"account_ids= {self.account_ids}," \
                f"job_num= {self.job_num}," \
                f"week= {self.week}," \
                f"start_hour= {self.start_hour}," \
@@ -142,12 +208,14 @@ class GameJob(Base):
                f"projects_id= {self.projects_id}," \
                f"project_id= {self.project_id}," \
                f"timeout_hour= {self.timeout_hour}," \
+               f"fight_times= {self.fight_times}," \
                f"active_ind= {self.active_ind}"
 
     def __init__(self, game_job: () = None, **kwargs):
         if game_job is None:
             self.id = kwargs.get('id')
-            self.account_id = kwargs.get('account_id')
+            self.device_id = kwargs.get('device_id')
+            self.account_ids = kwargs.get('account_ids')
             self.job_num = kwargs.get('job_num')
             self.week = kwargs.get('week')
             self.start_hour = kwargs.get('start_hour')
@@ -155,11 +223,13 @@ class GameJob(Base):
             self.projects_id = kwargs.get('projects_id')
             self.project_id = kwargs.get('project_id')
             self.timeout_hour = kwargs.get('timeout_hour')
+            self.fight_times = kwargs.get('fight_times')
             self.active_ind = kwargs.get('active_ind')
         else:
             super().__init__(**kwargs)
             self.id = game_job.id
-            self.account_id = game_job.account_id
+            self.device_id = game_job.device_id
+            self.account_ids = game_job.account_ids
             self.job_num = game_job.job_num
             self.week = game_job.week
             self.start_hour = game_job.start_hour
@@ -167,6 +237,7 @@ class GameJob(Base):
             self.projects_id = game_job.projects_id
             self.project_id = game_job.project_id
             self.timeout_hour = game_job.timeout_hour
+            self.fight_times = game_job.fight_times
             self.active_ind = game_job.active_ind
 
 
