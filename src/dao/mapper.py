@@ -4,7 +4,7 @@ from uuid import uuid4
 from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import sessionmaker
 
-from src.model.models import GameAccount, GameProjectLog, GameDevice
+from src.model.models import GameAccount, GameProjectLog, GameDevice, GameJobLog
 from src.service.windows_service import WindowsService
 from src.utils.utils_path import UtilsPath
 
@@ -53,13 +53,13 @@ class Mapper:
         return game_device
 
     @staticmethod
-    def select_game_job_log_all(game_device_id: str = "", game_device_num: str = ""):
-        session = sessionmaker(bind=engine)
-        session1 = session()
-        game_device = (session1.query(GameDevice)
-                       .filter(or_(GameDevice.id == game_device_id, game_device_id == ""),
-                               or_(GameDevice.device_num == game_device_num, game_device_num == "")
-                               )
-                       .first())
-        session1.close()
-        return game_device
+    def save_game_job_log(game_job_log: GameJobLog):
+        # 保存
+        game_job_log1 = GameJobLog(game_job_log)
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
+        if game_job_log1.id is None:
+            game_job_log1.id = uuid4()
+        session.add(game_job_log1)
+        session.commit()
+        session.close()

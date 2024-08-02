@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, or_, desc
 from sqlalchemy.orm import sessionmaker
 
 from src.model.models import GameProjects, GameProjectsRelation, GameProject, GameAccount, GameProjectLog, GameJob, \
-    GameDevice, GameAccounts, GameAccountsRelation
+    GameDevice, GameAccounts, GameAccountsRelation, GameJobLog
 from src.utils.utils_path import UtilsPath
 
 url = UtilsPath.get_database_url()
@@ -112,3 +112,18 @@ class MapperExtend:
             return game_job_all
         else:
             return None
+
+    @staticmethod
+    def select_game_job_log_all(game_job_log_id: str = "", game_job_day: str = ""):
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
+        # 将字符串转换为日期类型
+        date = datetime.strptime(game_job_day,'%Y-%m-%d')
+        game_job_log_all = (session.query(GameJob, GameJobLog)
+                            .join(GameJobLog, GameJob.id == GameJobLog.job_id)
+                            .filter(or_(GameJob.id == GameJob.id, game_job_log_id == ""),
+                                    or_(GameJobLog.job_date == date, game_job_day == "")
+                                    )
+                            .all)
+        session.close()
+        return game_job_log_all
