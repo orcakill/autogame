@@ -54,6 +54,11 @@ class Mapper:
 
     @staticmethod
     def save_game_job_log(game_job_log: GameJobLog):
+        """
+        作业保存
+        :param game_job_log: 作业对象
+        :return:
+        """
         # 保存
         game_job_log1 = GameJobLog(game_job_log)
         session_maker = sessionmaker(bind=engine)
