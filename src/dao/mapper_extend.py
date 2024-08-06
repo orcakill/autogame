@@ -114,15 +114,16 @@ class MapperExtend:
             return None
 
     @staticmethod
-    def select_game_job_log_all(game_job_log_id: str = "", game_job_day: str = ""):
+    def select_game_job_log_all(game_job_log_id: str = "", game_job_device_id: str = "", game_job_day: str = ""):
         session_maker = sessionmaker(bind=engine)
         session = session_maker()
         # 将字符串转换为日期类型
-        date = datetime.strptime(game_job_day,'%Y-%m-%d')
+        date = datetime.strptime(game_job_day, '%Y-%m-%d')
         game_job_log_all = (session.query(GameJob, GameJobLog)
                             .join(GameJobLog, GameJob.id == GameJobLog.job_id)
                             .filter(or_(GameJob.id == GameJob.id, game_job_log_id == ""),
-                                    or_(GameJobLog.job_date == date, game_job_day == "")
+                                    or_(GameJobLog.job_date == date, game_job_day == ""),
+                                    or_(GameJob.device_id == game_job_device_id, game_job_device_id == ""),
                                     )
                             .all)
         session.close()
