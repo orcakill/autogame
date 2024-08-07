@@ -119,8 +119,11 @@ class MapperExtend:
         session = session_maker()
         # 将字符串转换为日期类型
         date = datetime.strptime(game_job_day, '%Y-%m-%d')
-        game_job_log_all = (session.query(GameJob, GameJobLog)
-                            .join(GameJobLog, GameJob.id == GameJobLog.job_id)
+        game_job_log_all = (session.query(GameJobLog, GameJob)
+                            .join(GameJobLog, GameJobLog.job_id==GameJob.id)
+                            .join(GameDevice, GameJob.device_id == GameDevice.id)
+                            .join(GameAccounts, GameJob.account_ids == GameAccounts.id)
+                            .join(GameProjects,GameProjects.id==GameJob.projects_id)
                             .filter(or_(GameJob.id == GameJob.id, game_job_log_id == ""),
                                     or_(GameJobLog.job_date == date, game_job_day == ""),
                                     or_(GameJob.device_id == game_job_device_id, game_job_device_id == ""),
