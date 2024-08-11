@@ -31,8 +31,8 @@ if __name__ == '__main__':
         # 获取当日作业记录，无当日作业记录则插入作业记录
         game_job_log_list1 = MapperExtend.select_game_job_log_all(game_job_device_id=game_device,
                                                                   game_job_day=today_str)
-        game_job_log_list2=[]
-        if game_job_log_list1 is None or len(game_job_log_list1) == 0:
+        game_job_log_list2 = []
+        if len(game_job_log_list1) == 0:
             logger.debug("创建当日作业")
             game_job_list = MapperExtend.select_game_job_all(device_id=game_device)
             for i in game_job_list:
@@ -45,7 +45,9 @@ if __name__ == '__main__':
             logger.debug("重新获取当日作业")
             game_job_log_list2 = MapperExtend.select_game_job_log_all(game_job_device_id=game_device,
                                                                       game_job_day=today_str)
-        game_job_log_list=game_job_log_list1+game_job_log_list2
+        game_job_log_list = game_job_log_list1 + game_job_log_list2
         if game_job_log_list:
             logger.debug("当前作业列表")
-
+            for game_job_log in game_job_log_list:
+                logger.debug(game_job_log)
+        break

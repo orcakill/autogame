@@ -8,7 +8,7 @@ from src.model.models import GameProjects, GameProjectsRelation, GameProject, Ga
 from src.utils.utils_path import UtilsPath
 
 url = UtilsPath.get_database_url()
-engine = create_engine(url, echo=False, pool_pre_ping=True, pool_recycle=1800)  # 实例化数据库连接
+engine = create_engine(url, echo=True, pool_pre_ping=True, pool_recycle=1800)  # 实例化数据库连接
 
 
 class MapperExtend:
@@ -102,8 +102,8 @@ class MapperExtend:
         game_job_all = (session.query(GameJob, GameDevice, GameAccounts, GameAccountsRelation, GameAccount)
                         .join(GameDevice, GameJob.device_id == GameDevice.id)
                         .join(GameAccounts, GameJob.account_ids == GameAccounts.id)
-                        .join(GameAccountsRelation, GameAccounts.id == GameAccountsRelation.account_id)
-                        .join(GameAccount, GameAccountsRelation.account_id == GameAccount.account_id)
+                        .join(GameAccountsRelation, GameAccounts.id == GameAccountsRelation.acounts_id)
+                        .join(GameAccount, GameAccountsRelation.account_id == GameAccount.id)
                         .filter(or_(GameJob.device_id == device_id, device_id == ""))
                         .order_by(GameJob.device_id, GameJob.job_num, GameAccountsRelation.relation_num)
                         .all())
@@ -119,15 +119,17 @@ class MapperExtend:
         session = session_maker()
         # 将字符串转换为日期类型
         date = datetime.strptime(game_job_day, '%Y-%m-%d')
-        game_job_log_all = (session.query(GameJobLog, GameJob)
-                            .join(GameJobLog, GameJobLog.job_id==GameJob.id)
+        game_job_log_all = (session.query(GameJobLog, GameJob, GameDevice, GameAccounts, GameProjects, GameProject)
+                            .join(GameJob, GameJobLog.job_id == GameJob.id)
                             .join(GameDevice, GameJob.device_id == GameDevice.id)
                             .join(GameAccounts, GameJob.account_ids == GameAccounts.id)
-                            .join(GameProjects,GameProjects.id==GameJob.projects_id)
+                            .outerjoin(GameProjects, GameJob.projects_id == GameProjects.id)
+                            .outerjoin(GameProject, GameJob.projects_id == GameProject.id)
                             .filter(or_(GameJob.id == GameJob.id, game_job_log_id == ""),
                                     or_(GameJobLog.job_date == date, game_job_day == ""),
                                     or_(GameJob.device_id == game_job_device_id, game_job_device_id == ""),
                                     )
-                            .all)
+                            .all())
+        print(str(game_job_log_all))
         session.close()
         return game_job_log_all
