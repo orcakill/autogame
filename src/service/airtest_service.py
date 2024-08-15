@@ -94,18 +94,17 @@ class AirtestService:
         这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
         """
-
         screen = ""
-        if print_image:
-            img_path = UtilsPath.get_print_image_path(name)
-            screen = snapshot(img_path, quality=99)
-        else:
-            try:
+        try:
+            if print_image:
+                img_path = UtilsPath.get_print_image_path(name)
+                screen = snapshot(img_path, quality=99)
+            else:
                 screen = G.DEVICE.snapshot(quality=99)
                 # img_path = UtilsPath.get_print_image_path(name)
                 # aircv.imwrite(img_path, screen, 99, 1200)
-            except Exception as e:
-                logger.debug("截图异常:{}", e)
+        except Exception as e:
+            logger.debug("截图异常:{}", e)
         return screen
 
     @staticmethod
@@ -136,7 +135,7 @@ class AirtestService:
         if screen == '':
             screen = AirtestService.snapshot(name="截图")
         rgb_image = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
-        cv2.circle(rgb_image,(x, y), 5, (255, 0, 0), -1)
+        cv2.circle(rgb_image, (x, y), 5, (255, 0, 0), -1)
         # 保存图片到本地磁盘
         img_path = UtilsPath.get_print_image_path()
         imageio.imsave(img_path, rgb_image)
