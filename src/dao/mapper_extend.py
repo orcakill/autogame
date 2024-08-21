@@ -8,7 +8,7 @@ from src.model.models import GameProjects, GameProjectsRelation, GameProject, Ga
 from src.utils.utils_path import UtilsPath
 
 url = UtilsPath.get_database_url()
-engine = create_engine(url, echo=True, pool_pre_ping=True, pool_recycle=1800)  # 实例化数据库连接
+engine = create_engine(url, echo=False, pool_pre_ping=True, pool_recycle=1800)  # 实例化数据库连接
 
 
 class MapperExtend:

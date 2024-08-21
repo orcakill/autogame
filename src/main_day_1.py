@@ -150,7 +150,7 @@ if __name__ == '__main__':
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, projects_num="4",
                                                        start_hour=start_hour, end_hour=end_hour)
         # 如果当前时间大于等于17点,小于24点
-        elif 17 <= current_hour <= 23:
+        elif 17 <= current_hour < 23:
             # 17点-19点 大号-式神寄养，逢魔之时
             # 19点-23点 大号，周一到周四，狩猎战，道馆突破
             #          大号，周五到周日，狭间暗域，首领退治
@@ -167,17 +167,10 @@ if __name__ == '__main__':
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list4[2] = True
                 continue
+        elif current_hour>=23:
+            logger.debug("结束当日任务")
+            break
         # 等待5分钟
         logger.debug("等待5分钟")
         time.sleep(60 * 5)
-        # 重新获取当前日期
-        today1 = datetime.date.today()
-        logger.debug("云手机001,日期对比 {}:{}", today, today1)
-        if today != today1:
-            today = today1
-            logger.info("云手机001,已过一天，重置变量")
-            for i in range(10):
-                task_list1[i] = False
-                task_list2[i] = False
-                task_list3[i] = False
-                task_list4[i] = False
+

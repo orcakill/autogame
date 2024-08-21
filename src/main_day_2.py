@@ -88,7 +88,7 @@ if __name__ == '__main__':
                 task_list1[1] = True
                 continue
         # 如果当前时间大于等于17点,小于等于23点
-        elif 17 <= current_hour <= 23:
+        elif 17 <= current_hour < 23:
             start_hour, end_hour = 17, 23
             if current_hour <= 22 and not task_list4[1]:
                 logger.info("17-24,小号，逢魔之时")
@@ -108,16 +108,8 @@ if __name__ == '__main__':
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list4[3] = True
                 continue
+        elif current_hour>=23:
+            logger.debug("结束当日任务")
+            break
         # 等待5分钟
         logger.debug("等待5分钟")
-        # 重新获取当前日期
-        today1 = datetime.date.today()
-        logger.debug("云手机002,日期对比 {}:{}", today, today1)
-        if today != today1:
-            today = today1
-            logger.info("云手机002,已过一天，重置变量")
-            for i in range(10):
-                task_list1[i] = False
-                task_list2[i] = False
-                task_list3[i] = False
-                task_list4[i] = False
