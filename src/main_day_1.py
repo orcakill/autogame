@@ -42,7 +42,7 @@ if __name__ == '__main__':
     while True:
         # 获取当前时间
         current_time1 = datetime.datetime.now()
-        # 获取当前时间的小时数
+        # 获取当前时间的小时数·
         current_hour = current_time1.hour
         # 获取当前时间的分钟
         current_minute = current_time1.minute
