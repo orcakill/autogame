@@ -1,6 +1,8 @@
 import os
 import sys
 
+from src.utils.utils_mail import UtilsMail
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.service.complex_service import ComplexService
@@ -8,7 +10,6 @@ from src.controller.onmyoji_controller import OnmyojiController
 from src.dao.mapper_extend import MapperExtend
 from src.model.models import GameProjects, GameProject
 from src.service.windows_service import WindowsService
-from src.utils import utils_mail
 from src.utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
@@ -51,4 +52,4 @@ if __name__ == '__main__':
                                                relation_num=game_relation_num)
     if game_is_email == '1':
         logger.info("发送邮件")
-        utils_mail.send_email("阴阳师脚本", "结束", "项目组执行结束")
+        UtilsMail.send_email("阴阳师脚本", "结束", "项目组执行结束")
