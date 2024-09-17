@@ -1,7 +1,7 @@
 import os
 import sys
 
-from src.utils.utils_mail import UtilsMail
+
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -11,6 +11,7 @@ from src.dao.mapper_extend import MapperExtend
 from src.model.models import GameProjects, GameProject
 from src.service.windows_service import WindowsService
 from src.utils.my_logger import my_logger as logger
+from src.utils.utils_mail import UtilsMail
 
 if __name__ == '__main__':
     WindowsService.limit_cpu_percentage(30)
