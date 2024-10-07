@@ -93,7 +93,7 @@ def initialization(game_task: [], login_type: int = 0):
                 account = str(os.path.join(Onmyoji.user_XZZH, game_account.account_name))
                 is_account = ImageService.touch(account, wait=4)
                 logger.debug("登录")
-                ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4,rgb=True)
+                ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4, rgb=True)
                 logger.debug("接受协议")
                 ImageService.touch(Onmyoji.login_JSXY, wait=3)
                 logger.debug("点击切换")
@@ -101,8 +101,9 @@ def initialization(game_task: [], login_type: int = 0):
                 if not is_switch:
                     logger.debug("未识别切换，启用ocr识别点击切换")
                     for i_switch in range(3):
-                        logger.debug("第{}次识别切换",i_switch+1)
-                        is_switch = ImageService.ocr_touch(["切换","缥缈之旅","相伴相随","桃映春馨","两情相悦","遥远之忆","抢先体验服"])
+                        logger.debug("第{}次识别切换", i_switch + 1)
+                        is_switch = ImageService.ocr_touch(
+                            ["切换", "缥缈之旅", "相伴相随", "桃映春馨", "两情相悦", "遥远之忆", "抢先体验服"])
                         if is_switch:
                             break
                 logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
@@ -204,13 +205,19 @@ def return_home(game_task: []):
     #        其它，不在账号首页
     ComplexService.refuse_reward()
     logger.debug("返回首页-检查首页账号")
-    account_index = str(os.path.join(Onmyoji.user_SYTX, game_account.id))
+    account_index = str(os.path.join(Onmyoji.user_SYTX, str(game_account.account_num)))
     is_index = ImageService.exists(account_index)
     logger.debug("返回首页-检查探索")
     is_explore = ImageService.exists(Onmyoji.home_TS)
     logger.debug("返回首页-检查町中")
     is_courtyard = ImageService.exists(Onmyoji.home_DZ)
     if not is_index or not is_explore or not is_courtyard:
+        if not is_index:
+            logger.debug("首页账号{}未识别成功", account_index)
+        if not is_explore:
+            logger.debug("首页探索{}未识别成功", Onmyoji.home_TS)
+        if not is_courtyard:
+            logger.debug("首页町中{}未识别成功", Onmyoji.home_DZ)
         ImageService.snapshot(game_account.role_name + '_' + game_project.project_name + "_非首页", True)
         logger.info("不在账号首页，重新快速登录 {}:{}", game_account.role_name, game_project.project_name)
         initialization(game_task, 1)

@@ -2,6 +2,7 @@
 # @Author: orcakill
 # @File: impl_exists.py
 # @Description: 图像识别接口，实现类
+import random
 import time
 
 from src.model.enum import Cvstrategy
@@ -57,6 +58,12 @@ class ImplExistsTouch:
                 for template in template_list:
                     pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
                     if pos:
+                        # 制作误差
+                        random_range1 = random.randint(-15, 15)
+                        random_range2 = random.randint(random_range1, 15)
+                        random_num1 = random.randint(random_range1, random_range2)
+                        random_num2 = random.randint(random_range1, random_range2)
+                        pos = (pos[0] + random_num1, pos[1] + random_num2)
                         # 截图打印
                         # AirtestService.draw_point("", pos[0], pos[1])
                         if is_click:

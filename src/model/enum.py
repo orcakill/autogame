@@ -195,6 +195,7 @@ class Onmyoji:
     reward_YXQBLQ = r"奖励\邮箱全部领取"
     reward_QD = r"奖励\确定"
     reward_QDXZR = r"奖励\签到小纸人"
+    reward_JSQDXZR = r"奖励\金色签到小纸人"
     reward_TCTZ = r"奖励\退出挑战"
     reward_TLXZR = r"奖励\体力小纸人"
     reward_YHJXJCXZR = r"奖励\御魂觉醒加成小纸人"

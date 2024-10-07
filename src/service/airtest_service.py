@@ -23,7 +23,7 @@ from src.utils.my_logger import my_logger as logger
 from src.utils.utils_path import UtilsPath
 from src.utils.utils_time import UtilsTime
 
-# 控制airtest的日志输出
+# 控制airtest的日志输出0
 log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
 
@@ -154,32 +154,6 @@ class AirtestService:
         Settings.FIND_TIMEOUT_TMP = timeout
         try:
             return exists(template)
-        except Exception as e:
-            if is_throw:
-                logger.error("异常：{}", e)
-            else:
-                pass
-
-    @staticmethod
-    def touch(template: Template, cvstrategy: [], timeout: float, is_throw: bool, times: int,
-              duration: float):
-        """
-        判断图片是否存在
-        :param times: 点击次数
-        :param duration: 按住时间
-        :param template: 图片类
-        :param cvstrategy: 图像识别算法
-        :param timeout: 超时时间
-        :param is_throw: 是否显示异常
-        :return: bool
-        """
-        Settings.CVSTRATEGY = cvstrategy
-        Settings.FIND_TIMEOUT = timeout
-        try:
-            if touch(template, times=times, duration=duration):
-                return True
-            else:
-                return False
         except Exception as e:
             if is_throw:
                 logger.error("异常：{}", e)

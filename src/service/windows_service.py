@@ -53,7 +53,7 @@ class WindowsService:
         shortcut = shell.CreateShortCut(shortcut_path)
         file_path = shortcut.Targetpath
         # 使用subprocess模块运行程序，并创建新的控制台窗口
-        subprocess.Popen(file_path, creationflags=subprocess.CREATE_NEW_CONSOLE,start_new_session=True)
+        subprocess.Popen(file_path, creationflags=subprocess.CREATE_NEW_CONSOLE, start_new_session=True)
 
     @staticmethod
     def check_process_running(process_name):
@@ -116,9 +116,10 @@ class WindowsService:
         """
         # 获取当前时间
         now = time.time()
-
         # 遍历文件夹中的所有文件
         for filename in os.listdir(folder_path):
+            if filename == '.md':
+                continue
             file_path = os.path.join(folder_path, filename)
             # 获取文件的创建时间
             create_time = os.path.getctime(file_path)
