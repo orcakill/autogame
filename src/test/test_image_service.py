@@ -20,10 +20,10 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("0")
+        ComplexService.auto_setup("4")
         logger.debug("开始")
         now = time.time()
-        result=ImageService.exists(Onmyoji.home_TS)
+        result=ImageService.touch(Onmyoji.home_TS)
         logger.debug(result)
         logger.debug("结束")
         now1 = time.time()

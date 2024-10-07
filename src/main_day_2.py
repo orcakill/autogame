@@ -7,10 +7,12 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from src.service.windows_service import WindowsService
 from src.controller.onmyoji_controller import OnmyojiController
-from utils.my_logger import my_logger as logger
+from src.utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
+    WindowsService.limit_cpu_percentage(30)
     # 云手机002
     game_device = "4"
     # 0-5,6-11,12-16,17-23
@@ -108,7 +110,7 @@ if __name__ == '__main__':
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list4[3] = True
                 continue
-        elif current_hour>=23:
+        elif current_hour >= 23:
             logger.debug("结束当日任务")
             break
         # 等待5分钟

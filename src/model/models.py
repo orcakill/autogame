@@ -1,5 +1,4 @@
 # coding: utf-8
-# coding: utf-8
 from sqlalchemy import BigInteger, Column, DateTime, Integer, String, Date, DECIMAL
 from sqlalchemy.ext.declarative import declarative_base
 

@@ -90,58 +90,28 @@ def daily_rewards(game_task: []):
         ImageService.touch(Onmyoji.comm_FH_ZSJLDBKBSXYH)
     else:
         ComplexService.refuse_reward()
-    logger.debug("4.首页小纸人奖励")
-    logger.debug("判断是否有签到小纸人")
-    is_sign_in = ImageService.exists(Onmyoji.reward_QDXZR, timeouts=2)
-    if is_sign_in:
-        logger.debug("有签到小纸人")
-        ImageService.touch_coordinate(is_sign_in)
-        logger.debug("点击每日一签")
-        ImageService.touch(Onmyoji.reward_MRYQ)
-        logger.debug("点击退出挑战")
-        ImageService.touch(Onmyoji.reward_TCTZ, wait=5)
-        logger.debug("返回首页")
-        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-    else:
-        ComplexService.refuse_reward()
-    logger.debug("判断是否有体力小纸人")
-    is_strength = ImageService.exists(Onmyoji.reward_TLXZR, timeouts=2, wait=3)
-    if is_strength:
-        logger.debug("有体力小纸人")
-        ImageService.touch_coordinate(is_strength)
-        logger.debug("获得体力奖励，退出")
-        is_reward = ImageService.exists(Onmyoji.reward_HDJL, wait=3)
-        if is_reward:
-            ImageService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
-        logger.debug("点击可能存在的返回")
-        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-    else:
-        ComplexService.refuse_reward()
-    logger.debug("判断是否有勾玉小纸人")
-    is_jade = ImageService.exists(Onmyoji.reward_GYXZR, timeouts=2, wait=3)
-    if is_jade:
-        logger.debug("有勾玉小纸人")
-        ImageService.touch_coordinate(is_jade)
-        logger.debug("获取勾玉奖励")
-        is_reward = ImageService.exists(Onmyoji.reward_HDJL, wait=3)
-        if is_reward:
-            logger.debug("有勾玉奖励")
-            ImageService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
-        logger.debug("检查返回")
-        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-    else:
-        ComplexService.refuse_reward()
-    logger.debug("判断是否有御魂觉醒加成小纸人")
-    is_soul_addition = ImageService.exists(Onmyoji.reward_YHJXJCXZR, timeouts=2, wait=3)
-    if is_soul_addition:
-        logger.debug("有御魂觉醒加成小纸人")
-        ImageService.touch_coordinate(is_soul_addition)
-        logger.debug("获得奖励，退出")
-        is_reward = ImageService.exists(Onmyoji.reward_HDJL, wait=3)
-        if is_reward:
-            ImageService.touch_coordinate((1 / 2 * is_reward[0], 1 / 2 * is_reward[1]))
-        logger.debug("检查返回")
-        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+    logger.debug("4.首页小纸人奖励,签到小纸人，金色签到小纸人，御魂觉醒加成小纸人，体力小纸人，勾玉小纸人")
+    image_list = [Onmyoji.reward_QDXZR, Onmyoji.reward_JSQDXZR, Onmyoji.reward_TLXZR, Onmyoji.reward_GYXZR,
+                  Onmyoji.reward_YHJXJCXZR]
+    for i_image_list in range(len(image_list)):
+        image_list_i = image_list[i_image_list]
+        logger.debug("判断是否有{}", image_list_i)
+        is_sign_in = ImageService.exists(image_list_i, timeouts=2)
+        if is_sign_in:
+            logger.debug("有{}", image_list_i)
+            ImageService.touch_coordinate(is_sign_in)
+            if image_list_i == Onmyoji.reward_QDXZR:
+                logger.debug("每日签到，点击每日一签")
+                ImageService.touch(Onmyoji.reward_MRYQ)
+                logger.debug("点击退出挑战")
+                ImageService.touch(Onmyoji.reward_TCTZ, wait=5)
+            else:
+                logger.debug("获得奖励")
+                ComplexService.get_reward(Onmyoji.reward_HDJL)
+            logger.debug("返回首页")
+            ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+        else:
+            ComplexService.refuse_reward()
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
     time_all = time.time() - time_start
@@ -176,7 +146,7 @@ def soul_arrange(game_task: []):
             logger.debug("获取分辨率{}", resolution)
             ImageService.touch_coordinate((coordinate_GL[0], 0.5 * resolution[1]), wait=3)
         logger.debug("点击右侧御魂")
-        ImageService.touch(Onmyoji.arrange_YCYH,wait=3)
+        ImageService.touch(Onmyoji.arrange_YCYH, wait=3)
         logger.debug("点击更换")
         ImageService.touch(Onmyoji.arrange_GH)
         logger.debug("点击知道了")

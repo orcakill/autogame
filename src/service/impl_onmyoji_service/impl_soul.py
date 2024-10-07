@@ -36,7 +36,7 @@ def soul_fight(game_task: []):
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
     if fight_time is None:
-        fight_time = 40
+        fight_time = 9
     # 层数-默认八岐大蛇 魂十一
     fight_layer = Onmyoji.soul_BQ_HELEVEN
     # 滑动方向,默认向下滑动
@@ -394,7 +394,7 @@ def soul_fight_sea(game_task: [], fight: int = 0):
     # 项目战斗次数
     fight_time = game_projects_relation.project_num_times
     if not fight_time or fight_time is None:
-        fight_time = 50
+        fight_time = 30
     # 获取本日是周几（周一为0，周日为6）
     weekday = today.weekday() + 1
     if weekday == 5 or fight == 1:

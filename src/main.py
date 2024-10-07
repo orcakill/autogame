@@ -18,7 +18,7 @@ if __name__ == '__main__':
     game_id = ''
     project_num = ''
     logger.info("脚本启动")
-    logger.info("设备: 0 云手机001 1 夜神模拟器 2荣耀平板 3小米手机")
+    logger.info("设备: 0 云手机001 1 夜神模拟器 2荣耀平板 3小米手机 4 云手机002")
     projects = MapperExtend.select_game_projects("", "")
     project = MapperExtend.select_game_project("", "")
     logger.info("可执行项目组:")

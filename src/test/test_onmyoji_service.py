@@ -51,14 +51,14 @@ class TestOnmyojiService(TestCase):
         项目2 每日奖励
         :return:
         """
-        TestOnmyojiService.test_project('3', '3', "每日奖励")
+        TestOnmyojiService.test_project('1', '0', "每日奖励")
 
     def test_encounter_demons(self):
         """
         项目3 逢魔之时
         :return:
         """
-        TestOnmyojiService.test_project('2,3,4,5', '2', "逢魔之时")
+        TestOnmyojiService.test_project('1', '0', "逢魔之时")
 
     def test_ghost_king(self):
         """

@@ -1,6 +1,6 @@
 @echo off
 cd %~dp0
 call venv\Scripts\activate
-python src\main.py
+python src\main_day.py /file log\bat\main_day_1_%date:~0,4%%date:~5,2%%date:~8,2%.log
 pause
 
