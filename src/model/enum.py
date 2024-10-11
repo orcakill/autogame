@@ -85,6 +85,8 @@ class Onmyoji:
     comm_SL = r"通用\失联"
     comm_QD = r"通用\确定"
     comm_QTSBDL = r"通用\其它设备登录"
+    comm_LTJM = r"通用\聊天界面"
+    comm_TCLT = r"通用\退出聊天"
 
     demon_FMCSL = r"町中\逢魔之时\逢魔次数零"
     demon_FMLD = r"町中\逢魔之时\逢魔蓝点"

@@ -67,6 +67,8 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
         logger.debug("判断是否是章节首页")
         is_home = ImageService.exists(chapter_home)
         if not is_home:
+            logger.debug("拒接协战")
+            ComplexService.refuse_reward()
             ComplexService.refuse_reward()
             logger.debug("探索界面-判断是否是探索界面")
             is_explore = ImageService.exists(Onmyoji.soul_BQ_YHTB)
@@ -130,7 +132,7 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                 if not is_boss:
                     logger.debug("没有首领，点击小怪")
                     for i_little_monster in range(2):
-                        is_little_monster = ImageService.touch(Onmyoji.explore_XGZD)
+                        is_little_monster = ImageService.touch(Onmyoji.explore_XGZD,deviation=0)
                         if is_little_monster:
                             break
                         else:

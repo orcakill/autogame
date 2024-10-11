@@ -363,11 +363,15 @@ class ComplexService:
         拒接悬赏
         :return:
         """
-        is_reward = ImageService.touch(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default, timeouts=timeouts)
+        is_reward = ImageService.exists(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default, timeouts=timeouts,
+                                        is_click=True,rgb=True)
         if is_reward:
             logger.debug("拒接悬赏")
-            return True
-        return False
+        is_chat = ImageService.exists(Onmyoji.comm_LTJM, cvstrategy=Cvstrategy.default, timeouts=timeouts)
+        if is_chat:
+            logger.debug("退出聊天")
+            ImageService.touch_coordinate((3 / 2 * is_chat[0], 3 / 2 * is_chat[1]))
+        return True
 
     @staticmethod
     def refuse_cache(timeouts: float = 3):

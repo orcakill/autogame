@@ -178,118 +178,112 @@ def border_fight(game_task: [], fight_times: int = 40):
     time_fight_list = []
     # 默认锁定阵容
     is_unlock = False
-    is_border_home = False
-    for i in range(3):
-        logger.debug(game_account.role_name)
-        logger.debug("进入探索")
-        ImageService.touch(Onmyoji.home_TS)
-        logger.debug("进入结界突破")
-        ImageService.touch(Onmyoji.border_JJTPTB)
+    for i in range(fight_times):
+        logger.debug("检查结界首页")
         is_border_home = ImageService.exists(Onmyoji.border_JJSY)
-        if is_border_home:
-            logger.debug("进入结界首页")
+        if not is_border_home:
+            logger.debug(game_account.role_name)
+            logger.debug("进入探索")
+            ImageService.touch(Onmyoji.home_TS)
+            logger.debug("进入结界突破")
+            ImageService.touch(Onmyoji.border_JJTPTB)
+        is_border_home = ImageService.exists(Onmyoji.border_JJSY)
+        if not is_border_home:
             break
-        else:
-            ComplexService.refuse_reward()
-    if is_border_home:
-        logger.debug("结界首页")
-        for i in range(fight_times):
-            time_fight_start = time.time()
-            logger.debug("结界突破{}次", i + 1)
-            if time.time() - time_start_border > 40 * 60:
-                logger.debug("战斗时间超40分钟，强制结束")
+        time_fight_start = time.time()
+        logger.debug("结界突破{}次", i + 1)
+        if time.time() - time_start_border > 40 * 60:
+            logger.debug("战斗时间超40分钟，强制结束")
+            break
+        if i == 0:
+            logger.debug("第一次战斗，获取当前结界挑战劵数")
+            num_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
+            if num_securities == "0":
+                logger.debug("无结界挑战劵")
                 break
-            if i == 0:
-                logger.debug("第一次战斗，获取当前结界挑战劵数")
-                num_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
-                if num_securities == "0":
-                    logger.debug("无结界挑战劵")
-                    break
-            if num_false % 3 == 0 and num_false > 0:
-                logger.debug("战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
-                is_fail = ImageService.exists(Onmyoji.border_ZBBZ, timeouts=3)
-                if is_fail:
-                    logger.debug("判断是否有刷新")
-                    is_rush = ImageService.exists(Onmyoji.border_SX)
-                    if is_rush:
-                        logger.debug("有战败标志，战斗失败累计{}次，3的倍数，点击刷新", num_false)
-                        ImageService.touch(Onmyoji.border_SX, wait=2)
-                        logger.debug("点击刷新确定")
-                        ImageService.touch(Onmyoji.border_SXQD, wait=2)
-            # 保级，打9退4
-            logger.debug("统计攻破次数")
-            num_break = ImageService.find_all_num(Onmyoji.border_GP)
-            logger.debug("当前攻破数{}", num_break)
-            if num_break and num_break == 8:
-                logger.debug("保级")
-                logger.debug("保级前获取当前结界挑战劵数")
-                num_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
-                if num_securities == "0":
-                    logger.debug("无结界挑战劵，退出循环")
-                    break
-                else:
-                    logger.debug("有结界挑战劵，保级")
-                    retreat_class(0)
-            if is_unlock:
-                logger.debug("锁定阵容")
-                ImageService.touch(Onmyoji.border_SDZR)
-            logger.debug("点击个人结界")
+        if num_false % 3 == 0 and num_false > 0:
+            logger.debug("战斗失败累计{}次，3的倍数,判断是否有战败标志", num_false)
+            is_fail = ImageService.exists(Onmyoji.border_ZBBZ, timeouts=3)
+            if is_fail:
+                logger.debug("判断是否有刷新")
+                is_rush = ImageService.exists(Onmyoji.border_SX)
+                if is_rush:
+                    logger.debug("有战败标志，战斗失败累计{}次，3的倍数，点击刷新", num_false)
+                    ImageService.touch(Onmyoji.border_SX, wait=2)
+                    logger.debug("点击刷新确定")
+                    ImageService.touch(Onmyoji.border_SXQD, wait=2)
+        # 保级，打9退4
+        logger.debug("统计攻破次数")
+        num_break = ImageService.find_all_num(Onmyoji.border_GP)
+        logger.debug("当前攻破数{}", num_break)
+        if num_break and num_break == 8:
+            logger.debug("保级")
+            logger.debug("保级前获取当前结界挑战劵数")
+            num_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
+            if num_securities == "0":
+                logger.debug("无结界挑战劵，退出循环")
+                break
+            else:
+                logger.debug("有结界挑战劵，保级")
+                retreat_class(0)
+        if is_unlock:
+            logger.debug("锁定阵容")
+            ImageService.touch(Onmyoji.border_SDZR)
+        logger.debug("点击个人结界")
+        ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
+        logger.debug("点击进攻")
+        ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=2)
+        logger.debug("检查自动战斗")
+        is_auto = ImageService.exists(Onmyoji.region_ZD, timeouts=10)
+        if not is_auto:
+            logger.debug("拒接悬赏")
+            ComplexService.refuse_reward()
+            logger.debug("点击可能存在的退出挑战")
+            ImageService.touch(Onmyoji.border_TCTZ)
+            logger.debug("再次点击个人结界")
             ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
-            logger.debug("点击进攻")
+            logger.debug("再次点击进攻")
             ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=2)
-            logger.debug("检查自动战斗")
+            logger.debug("再次检查自动战斗")
             is_auto = ImageService.exists(Onmyoji.region_ZD, timeouts=10)
-            if not is_auto:
-                logger.debug("拒接悬赏")
-                ComplexService.refuse_reward()
-                logger.debug("点击可能存在的退出挑战")
-                ImageService.touch(Onmyoji.border_TCTZ)
-                logger.debug("再次点击个人结界")
-                ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
-                logger.debug("再次点击进攻")
-                ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=2)
-                logger.debug("再次检查自动战斗")
-                is_auto = ImageService.exists(Onmyoji.region_ZD, timeouts=10)
-                logger.debug("可能已无结界挑战劵,点击消耗")
-                ImageService.touch(Onmyoji.border_XH)
-                logger.debug("判断是否存在结界挑战劵0/30")
-                is_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
-                if is_securities == "0":
-                    logger.debug("无结界挑战劵，跳出循环")
-                    break
-            if is_auto:
-                logger.debug("点击准备")
-                is_unlock = ImageService.touch(Onmyoji.border_ZB, wait=10)
-                logger.debug("等待战斗结果")
-                is_result = ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB, Onmyoji.border_ZCTZ,
-                                                     Onmyoji.border_TCTZ, Onmyoji.border_GRJJ, Onmyoji.border_JG, 300,
-                                                     1)
-                logger.debug("再点击一次退出挑战")
-                ImageService.touch(Onmyoji.border_TCTZ, wait=3)
-                if is_result in [Onmyoji.border_ZDSL, Onmyoji.border_TCTZ]:
-                    num_win = num_win + 1
-                elif is_result in [Onmyoji.border_ZCTZ, Onmyoji.border_ZDSB]:
-                    num_false = num_false + 1
-                elif is_result in [Onmyoji.border_GRJJ, Onmyoji.border_JG]:
-                    logger.debug("判断是否仍有进攻")
-                    is_attack1 = ImageService.exists(Onmyoji.border_JG, wait=5, timeouts=2, is_click=True)
-                    if is_attack1:
-                        logger.debug("可能已无结界挑战劵,点击消耗退出")
-                        ImageService.touch(Onmyoji.border_XH)
-                        logger.debug("判断是否存在结界挑战劵0/30")
-                        is_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
-                        if is_securities == "0":
-                            logger.debug("无结界挑战劵，跳出循环")
-                            break
-                elif is_result in [Onmyoji.comm_SL]:
-                    logger.debug("失联掉线")
-                    break
-                time_fight_end = time.time()
-                time_fight = time_fight_end - time_fight_start
-                logger.debug("本次结界突破战斗结束，用时{}秒", round(time_fight, 3))
-                time_fight_list.append(time_fight)
-    else:
-        logger.debug("未进入结界首页")
+            logger.debug("可能已无结界挑战劵,点击消耗")
+            ImageService.touch(Onmyoji.border_XH)
+            logger.debug("判断是否存在结界挑战劵0/30")
+            is_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
+            if is_securities == "0":
+                logger.debug("无结界挑战劵，跳出循环")
+                break
+        if is_auto:
+            logger.debug("点击准备")
+            is_unlock = ImageService.touch(Onmyoji.border_ZB, wait=10)
+            logger.debug("等待战斗结果")
+            is_result = ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB, Onmyoji.border_ZCTZ,
+                                                 Onmyoji.border_TCTZ, Onmyoji.border_GRJJ, Onmyoji.border_JG, 300,
+                                                 1)
+            logger.debug("再点击一次退出挑战")
+            ImageService.touch(Onmyoji.border_TCTZ, wait=3)
+            if is_result in [Onmyoji.border_ZDSL, Onmyoji.border_TCTZ]:
+                num_win = num_win + 1
+            elif is_result in [Onmyoji.border_ZCTZ, Onmyoji.border_ZDSB]:
+                num_false = num_false + 1
+            elif is_result in [Onmyoji.border_GRJJ, Onmyoji.border_JG]:
+                logger.debug("判断是否仍有进攻")
+                is_attack1 = ImageService.exists(Onmyoji.border_JG, wait=5, timeouts=2, is_click=True)
+                if is_attack1:
+                    logger.debug("可能已无结界挑战劵,点击消耗退出")
+                    ImageService.touch(Onmyoji.border_XH)
+                    logger.debug("判断是否存在结界挑战劵0/30")
+                    is_securities = OcrService.get_word(Onmyoji.border_JJTZJQY)
+                    if is_securities == "0":
+                        logger.debug("无结界挑战劵，跳出循环")
+                        break
+            elif is_result in [Onmyoji.comm_SL]:
+                logger.debug("失联掉线")
+                break
+            time_fight_end = time.time()
+            time_fight = time_fight_end - time_fight_start
+            logger.debug("本次结界突破战斗结束，用时{}秒", round(time_fight, 3))
+            time_fight_list.append(time_fight)
     logger.debug("返回探索界面")
     ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
     logger.debug("返回首页")

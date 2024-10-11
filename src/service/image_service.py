@@ -49,13 +49,13 @@ class ImageService:
     @staticmethod
     def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
               threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
-              rgb: bool = False):
+              rgb: bool = False, deviation: float = 1):
         """
         根据文件夹名获取图片进行图像识别，点击图片
         """
         return ImplExistsTouch.exists(folder_path=folder_path, cvstrategy=cvstrategy, timeout=timeout,
                                       timeouts=timeouts, threshold=threshold, wait=wait, interval=interval,
-                                      is_throw=is_throw, is_click=True, rgb=rgb)
+                                      is_throw=is_throw, is_click=True, rgb=rgb,deviation=deviation)
 
     @staticmethod
     def snapshot(name: str = None, print_image: bool = False):
