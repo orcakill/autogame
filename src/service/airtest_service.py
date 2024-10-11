@@ -7,6 +7,7 @@
 import logging
 import random
 import subprocess
+from os import times
 
 import cv2
 import imageio
@@ -124,16 +125,17 @@ class AirtestService:
         imageio.imsave(img_path, screen)
 
     @staticmethod
-    def draw_point(screen, x, y):
+    def draw_point(screen, x, y,name:str="识别截图"):
         """
         画图，根据指定范围的坐标在原图上画框
+        :param name:
         :param screen:
         :param x:
         :param y:
         :return:
         """
         if screen == '':
-            screen = AirtestService.snapshot(name="截图")
+            screen = AirtestService.snapshot(name=name)
         rgb_image = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
         cv2.circle(rgb_image, (x, y), 5, (255, 0, 0), -1)
         # 保存图片到本地磁盘
@@ -154,6 +156,29 @@ class AirtestService:
         Settings.FIND_TIMEOUT_TMP = timeout
         try:
             return exists(template)
+        except Exception as e:
+            if is_throw:
+                logger.error("异常：{}", e)
+            else:
+                pass
+
+    @staticmethod
+    def touch(template: Template, cvstrategy: [], timeout: float, is_throw: bool,click_times: int,duration: float):
+        """
+        判断图片是否存在并返回坐标
+        :param click_times:
+        :param duration:
+        :param template: 图片类
+        :param cvstrategy: 图像识别算法
+        :param timeout: 超时时间
+        :param is_throw: 是否显示异常
+        :return: bool
+        """
+        Settings.CVSTRATEGY = cvstrategy
+        Settings.FIND_TIMEOUT_TMP = timeout
+        try:
+            if touch(template,times=click_times, duration=duration):
+                return True
         except Exception as e:
             if is_throw:
                 logger.error("异常：{}", e)

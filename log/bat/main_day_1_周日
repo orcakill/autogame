@@ -1,0 +1,6 @@
+2024-09-29 01:45:21.487 | MainProcess | MainThread | main_day_1.<module>:38 | INFO: 云手机001,开始
+2024-09-29 01:45:21.488 | MainProcess | MainThread | main_day_1.<module>:61 | INFO: 不满足偶数点前20分钟的条件
+2024-09-29 01:45:21.489 | MainProcess | MainThread | main_day_1.<module>:73 | INFO: 0-5,大号，大号全流程任务
+2024-09-29 01:45:23.093 | MainProcess | MainThread | onmyoji_controller.execute_tasks:100 | INFO: 任务开始
+2024-09-29 01:45:23.093 | MainProcess | MainThread | onmyoji_controller.execute_tasks:103 | INFO: 第1轮
+2024-09-29 01:45:23.093 | MainProcess | MainThread | onmyoji_controller.execute_tasks:118 | INFO: 1,登录:逆戟之刃
