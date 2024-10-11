@@ -23,7 +23,7 @@ class TestImageService(TestCase):
         ComplexService.auto_setup("2")
         logger.debug("开始")
         now = time.time()
-        result=ImageService.touch(Onmyoji.explore_XGZD)
+        result=ImageService.exists(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default,is_click=True,rgb=True)
         logger.debug(result)
         logger.debug("结束")
         now1 = time.time()

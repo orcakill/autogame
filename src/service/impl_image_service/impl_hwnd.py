@@ -265,10 +265,13 @@ class ImplHwnd:
         # 根据父句柄获取子句柄
         for parent_window_hwnd in all_window_hwnd:
             win32gui.EnumChildWindows(parent_window_hwnd, enum_windows_proc, all_window_hwnd)
-
+        class_name1 = ""
         for window_hwnd in all_window_hwnd:
             title1 = win32gui.GetWindowText(window_hwnd)
-            class_name1 = win32gui.GetClassName(window_hwnd)
+            try:
+                class_name1 = win32gui.GetClassName(window_hwnd)
+            except Exception as e:
+                logger.debug("class_name获取异常{}", e)
             _, pid = win32process.GetWindowThreadProcessId(window_hwnd)
             process_name1 = psutil.Process(pid).name()
             if process_name is None and title is None and class_name is None and hwnd is None:
