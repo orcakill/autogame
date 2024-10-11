@@ -59,8 +59,9 @@ class ImplExistsTouch:
             while time.time() - time_start < timeouts:
                 for template in template_list:
                     if deviation == 0 and is_click:
-                        AirtestService.touch(template, cvstrategy, timeout, is_throw, click_times=TIMES,
-                                             duration=DURATION)
+                        return AirtestService.touch(template, cvstrategy, timeout, is_throw, click_times=TIMES,
+                                                    duration=DURATION)
+
                     else:
                         pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
                         if pos:

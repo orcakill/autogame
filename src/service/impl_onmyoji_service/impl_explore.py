@@ -69,7 +69,6 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
         if not is_home:
             logger.debug("拒接协战")
             ComplexService.refuse_reward()
-            ComplexService.refuse_reward()
             logger.debug("探索界面-判断是否是探索界面")
             is_explore = ImageService.exists(Onmyoji.soul_BQ_YHTB)
             if is_explore:
@@ -86,26 +85,28 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                 else:
                     logger.debug("选择普通")
                     ImageService.touch(Onmyoji.explore_ZJNDPT)
-            logger.debug("首页-判断是否有探索")
-            is_explore = ImageService.exists(Onmyoji.home_TS)
-            if is_explore:
-                logger.debug("点击探索")
-                ImageService.touch(Onmyoji.home_TS)
-                logger.debug("选择章节")
-                if chapter == 28:
-                    is_select_chapter = select_chapter()
-                    if not is_select_chapter:
-                        logger.debug("切换文字识别")
-                        ImageService.ocr_touch("第二十八章")
-                else:
-                    ImageService.touch(chapter_layers)
-                logger.debug("选择困难")
-                ImageService.touch(Onmyoji.explore_ZJNDKN)
+            logger.debug("首页-探索")
+            ImageService.exists(Onmyoji.home_TS)
+            logger.debug("点击探索")
+            ImageService.touch(Onmyoji.home_TS)
+            logger.debug("选择章节")
+            if chapter == 28:
+                is_select_chapter = select_chapter()
+                if not is_select_chapter:
+                    logger.debug("切换文字识别")
+                    ImageService.ocr_touch("第二十八章")
+            else:
+                ImageService.touch(chapter_layers)
+            logger.debug("选择困难")
+            ImageService.touch(Onmyoji.explore_ZJNDKN)
         if not is_home:
             logger.debug("重新检查章节首页")
             is_home = ImageService.exists(chapter_home)
         if not is_home:
             logger.debug("不在章节首页，进入下一次章节探索")
+            logger.debug("返回首页")
+            ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
         else:
             logger.debug("进入章节探索战斗")
             ImageService.touch(Onmyoji.explore_ZJTS, timeouts=10)
@@ -131,31 +132,27 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                     is_rotation = ImageService.touch(Onmyoji.explore_ZDLH)
                 if not is_boss:
                     logger.debug("没有首领，点击小怪")
-                    for i_little_monster in range(2):
-                        is_little_monster = ImageService.touch(Onmyoji.explore_XGZD,deviation=0)
-                        if is_little_monster:
-                            break
-                        else:
-                            logger.debug("没有小怪,右移")
-                            ImageService.swipe((0.9 * resolution[0], 0.5 * resolution[1]),
-                                               (0.1 * resolution[0], 0.5 * resolution[1]))
-                            logger.debug("点击中心位置")
-                            ImageService.touch_coordinate((0.5 * resolution[0], 0.6 * resolution[1]))
-                            logger.debug("进入下一轮循环")
-                            continue
+                    is_little_monster = ImageService.touch(Onmyoji.explore_XGZD, deviation=0)
+                    if not is_little_monster:
+                        logger.debug("没有小怪，拒接悬赏")
+                        ComplexService.refuse_reward()
+                        logger.debug("没有小怪，点击可能的准备")
+                        is_lock = ImageService.touch(Onmyoji.explore_ZB)
+                        if is_lock:
+                            logger.debug("点击准备完成，未自动轮换")
+                            is_rotation = False
+                        logger.debug("没有小怪，点击可能的退出挑战")
+                        ImageService.touch(Onmyoji.explore_TCTZ)
+                        logger.debug("没有小怪,右移")
+                        ImageService.swipe((0.9 * resolution[0], 0.5 * resolution[1]),
+                                           (0.1 * resolution[0], 0.5 * resolution[1]))
+                        logger.debug("没有小怪，点击中心位置")
+                        ImageService.touch_coordinate((0.5 * resolution[0], 0.6 * resolution[1]))
+                        logger.debug("进入下一轮循环")
+                        continue
                 is_auto = ImageService.exists(Onmyoji.explore_ZD)
                 if not is_auto:
-                    logger.debug("拒接悬赏")
-                    ComplexService.refuse_reward()
-                    logger.debug("点击可能的准备")
-                    is_lock = ImageService.touch(Onmyoji.explore_ZB)
-                    if is_lock:
-                        logger.debug("点击准备完成，未自动轮换")
-                        is_rotation = False
-                    logger.debug("点击可能的退出挑战")
-                    ImageService.touch(Onmyoji.explore_TCTZ)
-                    logger.debug("判断是否存在")
-                    logger.debug("跳过本次战斗")
+                    logger.debug("进入下一轮循环")
                     continue
                 if is_auto:
                     logger.debug("等待战斗结果")
@@ -174,6 +171,9 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                     break
             logger.debug("判断是否有式神录")
             is_reward = ImageService.exists(Onmyoji.explore_SSL, wait=5)
+            if not is_reward:
+                logger.debug("点击可能存在的退出挑战")
+                ImageService.touch(Onmyoji.explore_TCTZ)
             logger.debug("判断章节")
             is_layers = ImageService.exists(chapter_layers)
             if is_reward and not is_layers:
@@ -181,8 +181,6 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                 ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
                 logger.debug("确认")
                 ImageService.touch(Onmyoji.explore_QR)
-            else:
-                logger.debug("无式神录")
             time_round_end = time.time()
             time_round_fight = time_round_end - time_round_start
             logger.debug("本次章节探索结束，用时{}秒", round(time_round_fight, 3))
