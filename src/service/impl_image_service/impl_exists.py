@@ -36,9 +36,10 @@ class ImplExistsTouch:
     @staticmethod
     def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
                threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
-               is_click: bool = False, rgb: bool = False, deviation: float = 1):
+               is_click: bool = False, rgb: bool = False, deviation: float = 1,duration:float=DURATION):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
+        :param duration: 长按
         :param deviation: 制作误差
         :param folder_path: 图片文件夹路径
         :param cvstrategy: 图像识别算法
@@ -60,7 +61,7 @@ class ImplExistsTouch:
                 for template in template_list:
                     if deviation == 0 and is_click:
                         return AirtestService.touch(template, cvstrategy, timeout, is_throw, click_times=TIMES,
-                                                    duration=DURATION)
+                                                    duration=duration)
 
                     else:
                         pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
