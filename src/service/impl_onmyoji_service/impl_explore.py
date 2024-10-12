@@ -85,6 +85,8 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
                 else:
                     logger.debug("选择普通")
                     ImageService.touch(Onmyoji.explore_ZJNDPT)
+            logger.debug("确认")
+            ImageService.touch(Onmyoji.explore_QR)
             logger.debug("首页-探索")
             ImageService.exists(Onmyoji.home_TS)
             logger.debug("点击探索")
