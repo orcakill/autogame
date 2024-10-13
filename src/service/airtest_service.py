@@ -125,7 +125,7 @@ class AirtestService:
         imageio.imsave(img_path, screen)
 
     @staticmethod
-    def draw_point(screen, x, y,name:str="识别截图"):
+    def draw_point(screen, x, y, name: str = "识别截图"):
         """
         画图，根据指定范围的坐标在原图上画框
         :param name:
@@ -163,9 +163,11 @@ class AirtestService:
                 pass
 
     @staticmethod
-    def touch(template: Template, cvstrategy: [], timeout: float, is_throw: bool,click_times: int,duration: float):
+    def touch(folder_path: str, template: Template, cvstrategy: [], timeout: float, is_throw: bool, click_times: int,
+              duration: float):
         """
         判断图片是否存在并返回坐标
+        :param folder_path:
         :param click_times:
         :param duration:
         :param template: 图片类
@@ -177,7 +179,8 @@ class AirtestService:
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT_TMP = timeout
         try:
-            if touch(template,times=click_times, duration=duration):
+            if touch(template, times=click_times, duration=duration):
+                logger.debug("图像识别点击成功{}", folder_path)
                 return True
         except Exception as e:
             if is_throw:

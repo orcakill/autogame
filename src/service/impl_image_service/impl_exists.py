@@ -60,7 +60,7 @@ class ImplExistsTouch:
             while time.time() - time_start < timeouts:
                 for template in template_list:
                     if deviation == 0 and is_click:
-                        return AirtestService.touch(template, cvstrategy, timeout, is_throw, click_times=TIMES,
+                        return AirtestService.touch(folder_path,template, cvstrategy, timeout, is_throw, click_times=TIMES,
                                                     duration=duration)
 
                     else:
