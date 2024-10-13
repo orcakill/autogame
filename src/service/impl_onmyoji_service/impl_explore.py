@@ -169,6 +169,8 @@ def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
             if not is_reward:
                 logger.debug("点击可能存在的退出挑战")
                 ImageService.touch(Onmyoji.explore_TCTZ)
+                logger.debug("重新判断是否有式神录")
+                is_reward = ImageService.exists(Onmyoji.explore_SSL, wait=5)
             logger.debug("判断章节")
             is_layers = ImageService.exists(chapter_layers)
             if is_reward and not is_layers:
