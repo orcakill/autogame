@@ -15,7 +15,6 @@ from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.impl_onmyoji_service import impl_initialization
 from src.service.ocr_service import OcrService
-
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
@@ -37,10 +36,7 @@ def foster_care(game_task: []):
     # 是否点击式神育成
     is_growing = False
     logger.debug("式神寄养")
-    for i_time in range(2):
-        if time.time() - time_start > 20 * 60:
-            logger.debug("寄养执行时间超20分钟")
-            break
+    for i_time in range(3):
         for i_growing in range(3):
             logger.debug("点击阴阳寮图标")
             ImageService.touch(Onmyoji.foster_YYLTB)
@@ -63,7 +59,7 @@ def foster_care(game_task: []):
             if is_foster and faster_place:
                 logger.debug("最优结界卡,进入好友结界")
                 faster_name = game_account.role_name + faster_place.replace("阴阳寮\\式神寄养\\结界卡\\", '_')
-                # 截图
+                # 截图打印
                 ImageService.snapshot(faster_name, True)
                 logger.debug("进入好友结界")
                 ImageService.touch(Onmyoji.foster_JRJJ)

@@ -14,7 +14,7 @@ from src.dao.mapper_extend import MapperExtend
 from src.utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
-    WindowsService.limit_cpu_percentage(30)
+    WindowsService.limit_cpu_percentage(10)
     while True:
         # 获取当前时间
         current_time = datetime.datetime.now()
