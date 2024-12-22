@@ -363,11 +363,10 @@ class ComplexService:
         拒接悬赏
         :return:
         """
-        is_reward = ImageService.exists(Onmyoji.comm_FH_XSFYHSCH, cvstrategy=Cvstrategy.default, timeouts=timeouts,
-                                        is_click=True,rgb=True)
+        is_reward = ImageService.exists(Onmyoji.comm_FH_XSFYHSCH, timeouts=timeouts,is_click=True,rgb=True)
         if is_reward:
             logger.debug("拒接悬赏")
-        is_chat = ImageService.exists(Onmyoji.comm_LTJM, cvstrategy=Cvstrategy.default, timeouts=timeouts)
+        is_chat = ImageService.exists(Onmyoji.comm_LTJM,timeouts=timeouts)
         if is_chat:
             logger.debug("退出聊天")
             ImageService.touch_coordinate((3 / 2 * is_chat[0], 3 / 2 * is_chat[1]))

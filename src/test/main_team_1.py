@@ -10,7 +10,7 @@ from src.model.enum import Onmyoji
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.service.windows_service import WindowsService
-from utils.my_logger import my_logger as logger
+from src.utils.my_logger import my_logger as logger
 
 
 def soul_captain(game_devices: str):

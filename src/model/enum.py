@@ -267,6 +267,12 @@ class Onmyoji:
     soul_YYH_SDZR = r"探索\御魂\业原火\锁定阵容"
     soul_YYH_YHTB = r"探索\御魂\业原火\御魂图标"
 
+    trials_arts_TZ = r"探索\英杰试炼\鬼兵演武\挑战"
+    trials_arts_ZDSL = r"探索\英杰试炼\鬼兵演武\战斗胜利"
+    trials_arts_ZDSB = r"探索\英杰试炼\鬼兵演武\战斗失败"
+    trials_arts_ZCTZ = r"探索\英杰试炼\鬼兵演武\战斗失败"
+    trials_arts_TCTZ = r"探索\英杰试炼\鬼兵演武\退出挑战"
+
     soul_RLZY_SC = r"探索\御魂\日轮之陨\三层"
     soul_RLZY_ZCTZ = r"探索\御魂\日轮之陨\再次挑战"
     soul_RLZY_ZB = r"探索\御魂\日轮之陨\准备"
