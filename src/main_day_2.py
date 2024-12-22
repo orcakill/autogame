@@ -5,6 +5,7 @@
 import datetime
 import os
 import sys
+import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.service.windows_service import WindowsService
@@ -115,3 +116,4 @@ if __name__ == '__main__':
             break
         # 等待5分钟
         logger.debug("等待5分钟")
+        time.sleep(60 * 5)

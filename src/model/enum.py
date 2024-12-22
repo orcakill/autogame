@@ -172,6 +172,7 @@ class Onmyoji:
     call_ZCZH = r"召唤\再次召唤"
 
     login_CY = r"登录\常用"
+    login_YCDL = r"登录\异常常用"
     login_DLAN = r"登录\登录按钮"
     login_XZQY = r"登录\选择区域"
     login_FWQ = r"登录\服务器"
