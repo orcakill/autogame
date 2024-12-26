@@ -7,7 +7,6 @@
 import logging
 import random
 import subprocess
-from os import times
 
 import cv2
 import imageio
@@ -155,12 +154,78 @@ class AirtestService:
         Settings.CVSTRATEGY = cvstrategy
         Settings.FIND_TIMEOUT_TMP = timeout
         try:
-            return exists(template)
+            try:
+                pos = AirtestService.loop_find(template, timeout=ST.FIND_TIMEOUT_TMP, random_area=0.5)
+            except TargetNotFoundError:
+                return False
+            else:
+                return pos
         except Exception as e:
             if is_throw:
                 logger.error("异常：{}", e)
             else:
                 pass
+
+    @staticmethod
+    def loop_find(template: Template, timeout=ST.FIND_TIMEOUT, threshold=None, interval=0.5, intervalfunc=None,
+                  random_area=0.0):
+        """
+        判断模板图片在设备上是否存在，如果存在返回坐标
+
+        :param template: 图片类
+        :param timeout:  超时时间
+        :param threshold: 相似度
+        :param interval:  识别间隔
+        :param intervalfunc:
+        :param random_area: 随机区域，默认0，取中心点，大于零小于等于1则区域内随机
+        :return:
+        """
+        G.LOGGING.info("Try finding: %s", template)
+        start_time = time.time()
+        while True:
+            screen = G.DEVICE.snapshot(filename=None, quality=ST.SNAPSHOT_QUALITY)
+
+            if screen is None:
+                G.LOGGING.warning("Screen is None, may be locked")
+            else:
+                if threshold:
+                    template.threshold = threshold
+                if 0 < random_area <= 1:
+                    # 获取区域信息
+                    match_rectangle = template._cv_match(screen).get("rectangle")
+                    # 区域坐标
+                    x1, y1 = match_rectangle[0]
+                    x2, y2 = match_rectangle[1]
+                    x3, y3 = match_rectangle[2]
+                    x4, y4 = match_rectangle[3]
+                    # 计算长方形的宽度和高度
+                    width = max(x1, x2, x3, x4) - min(x1, x2, x3, x4)
+                    height = max(y1, y2, y3, y4) - min(y1, y2, y3, y4)
+                    # 处理随机区域
+                    if random_area < 1:
+                        x1, y1 = x1 + random_area * width / 2, y1 + random_area * height / 2
+                        x2, y2 = x2 + random_area * width / 2, y2 - random_area * height / 2
+                        x3, y3 = x3 - random_area * width / 2, y3 - random_area * height / 2
+                        x4, y4 = x4 - random_area * width / 2, y4 + random_area * height / 2
+                    random_x = int(random.uniform(min(x1, x2, x3, x4), max(x1, x2, x3, x4)))
+                    random_y = int(random.uniform(min(y1, y2, y3, y4), max(y1, y2, y3, y4)))
+                    match_pos = (random_x, random_y)
+                else:
+                    # 其他情况，取中心点
+                    match_pos = template.match_in(screen)
+                if match_pos:
+                    try_log_screen(screen)
+                    return match_pos
+
+            if intervalfunc is not None:
+                intervalfunc()
+
+            # 超时则raise，未超时则进行下次循环:
+            if (time.time() - start_time) > timeout:
+                try_log_screen(screen)
+                raise TargetNotFoundError('Picture %s not found in screen' % template)
+            else:
+                time.sleep(interval)
 
     @staticmethod
     def touch(folder_path: str, template: Template, cvstrategy: [], timeout: float, is_throw: bool, click_times: int,
@@ -295,27 +360,6 @@ class AirtestService:
         Settings.FIND_TIMEOUT = timeout
         try:
             result = find_all(template)
-            return result
-        except Exception as e:
-            if is_throw:
-                logger.error("异常：{}", e)
-            else:
-                pass
-
-    @staticmethod
-    def loop_find(template: Template, cvstrategy: [], timeout: float, is_throw: bool):
-        """
-        多图查找
-        :param template: 图片类
-        :param cvstrategy: 图像识别算法
-        :param timeout: 超时时间
-        :param is_throw: 是否显示异常
-        :return:
-        """
-        Settings.CVSTRATEGY = cvstrategy
-        Settings.FIND_TIMEOUT = timeout
-        try:
-            result = loop_find(template)
             return result
         except Exception as e:
             if is_throw:
