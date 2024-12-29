@@ -89,7 +89,7 @@ class ComplexService:
         if is_state == "device":
             logger.debug("设备已就绪")
         logger.debug("准备连接设备")
-        if game_device in ['2']:
+        if game_device in ['0','2','4']:
             logger.debug("注册scrcpy windows截图")
             logger.debug("检查windows是否开启scrcpy")
             is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
