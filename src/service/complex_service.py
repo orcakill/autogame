@@ -89,7 +89,8 @@ class ComplexService:
         if is_state == "device":
             logger.debug("设备已就绪")
         logger.debug("准备连接设备")
-        if game_device in ['0','2','4']:
+        logger.debug("game_device,{}", game_device)
+        if game_device in ['0', '1', '2', '3', '4', 0, 1, 2, 3, 4]:
             logger.debug("注册scrcpy windows截图")
             logger.debug("检查windows是否开启scrcpy")
             is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
@@ -363,10 +364,10 @@ class ComplexService:
         拒接悬赏
         :return:
         """
-        is_reward = ImageService.exists(Onmyoji.comm_FH_XSFYHSCH, timeouts=timeouts,is_click=True,rgb=True)
+        is_reward = ImageService.exists(Onmyoji.comm_FH_XSFYHSCH, timeouts=timeouts, is_click=True, rgb=True)
         if is_reward:
             logger.debug("拒接悬赏")
-        is_chat = ImageService.exists(Onmyoji.comm_LTJM,timeouts=timeouts)
+        is_chat = ImageService.exists(Onmyoji.comm_LTJM, timeouts=timeouts)
         if is_chat:
             logger.debug("退出聊天")
             ImageService.touch_coordinate((3 / 2 * is_chat[0], 3 / 2 * is_chat[1]))
