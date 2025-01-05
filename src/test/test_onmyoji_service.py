@@ -93,7 +93,7 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project('1', '0', "个人突破")
+        TestOnmyojiService.test_project('1', '2', "个人突破")
 
     def test_border_fight1(self):
         """
