@@ -171,9 +171,9 @@ def soul_arrange(game_task: []):
         ImageService.touch(Onmyoji.arrange_YCFN)
         logger.debug("点击左上角已弃置")
         ImageService.touch(Onmyoji.arrange_ZSJYQZ)
-        for i_offering in range(5):
+        for i_offering in range(10):
             logger.debug("奉纳{}次，长按弃置标志", i_offering + 1)
-            ImageService.touch(Onmyoji.arrange_QZBZ, cvstrategy=Cvstrategy.default, deviation=0, duration=2)
+            ImageService.touch(Onmyoji.arrange_QZBZ,duration=2)
             logger.debug("判断是否弃置满额，200个")
             is_full_amount = ImageService.touch(Onmyoji.arrange_QZME)
             if is_full_amount:

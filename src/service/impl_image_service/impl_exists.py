@@ -23,7 +23,7 @@ REC_ROUND = 1
 # 图片等待识别时间(秒）·
 WAIT = 2
 # 图片识别间隔(秒）·
-INTERVAL = 1
+INTERVAL = 0.01
 # 点击次数
 TIMES = 1
 # 按住时间
@@ -78,7 +78,7 @@ class ImplExistsTouch:
                             if is_click:
                                 time.sleep(interval)
                                 logger.debug("图像识别点击成功:{}", folder_path)
-                                AirtestService.touch_coordinate(pos, duration=DURATION, wait_time=WAIT)
+                                AirtestService.touch_coordinate(pos, duration=duration, wait_time=wait)
                                 return True
                             if not is_click:
                                 if is_throw:
