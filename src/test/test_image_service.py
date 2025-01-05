@@ -20,10 +20,11 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("4")
         logger.debug("开始")
         now = time.time()
-        ComplexService.refuse_reward()
+        r=ImageService.touch(Onmyoji.arrange_QZBZ,duration=2)
+        logger.debug(r)
         logger.debug("结束")
         now1 = time.time()
         print(UtilsTime.convert_seconds(now1 - now))
