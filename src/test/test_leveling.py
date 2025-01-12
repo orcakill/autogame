@@ -47,7 +47,6 @@ class TestLeveling(TestCase):
             time.sleep(3)
 
     def test_explore(self):
-        WindowsService.limit_cpu_percentage(30)
         ImageService.auto_setup("2")
         # 战斗胜利次数
         num_win = 0
@@ -109,8 +108,22 @@ class TestLeveling(TestCase):
 
     def test_call(self):
         WindowsService.limit_cpu_percentage(30)
-        ImageService.auto_setup("1")
+        ComplexService.auto_setup("2")
         logger.debug("开始")
-        for i in range(1000):
-            logger.debug("{}次点击", i + 1)
-            ImageService.touch(Onmyoji.call_ZCZH, timeouts=5, wait=5)
+        for i in range(10):
+            logger.debug("{}轮", i + 1)
+            ComplexService.refuse_reward()
+            logger.debug("召唤")
+            ImageService.touch(Onmyoji.call_ZH)
+            logger.debug("普通召唤")
+            ImageService.touch(Onmyoji.call_PTZH)
+            for j in range(10):
+                logger.debug("{}轮{}次", i + 1, j + 1)
+                ComplexService.refuse_reward()
+                logger.debug("再次召唤")
+                logger.debug("{}次点击", i + 1)
+                ImageService.touch(Onmyoji.call_ZCZH, timeouts=5, wait=5)
+            logger.debug("确定")
+            ImageService.touch(Onmyoji.call_QT)
+            logger.debug("左上角棕底黄框返回")
+            ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)

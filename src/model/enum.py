@@ -169,7 +169,11 @@ class Onmyoji:
     home_HCGD = r"首页\缓存过多"
     home_QD = r"首页\确定"
 
-    call_ZCZH = r"召唤\再次召唤"
+    call_ZH = r"召唤\召唤"
+    call_PTZH = r"召唤\普通召唤\普通召唤"
+    call_ZCZH = r"召唤\普通召唤\再次召唤"
+    call_QT = r"召唤\普通召唤\确定"
+
 
     login_CY = r"登录\常用"
     login_YCDL = r"登录\异常常用"

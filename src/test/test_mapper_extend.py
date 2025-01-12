@@ -29,3 +29,8 @@ class TestModelsExtend(TestCase):
         # 查询测试
         task = MapperExtend.select_game_run_log("小号脚本")
         logger.info(task)
+
+    def test_select_foster_carer(self):
+        # 查询测试
+        task = MapperExtend.select_foster_carer("2",3)
+        logger.info(task)

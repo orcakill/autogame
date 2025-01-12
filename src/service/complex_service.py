@@ -118,9 +118,13 @@ class ComplexService:
             logger.debug("连接设备")
             AirtestService.auto_setup(connect_info)
         logger.debug("检查截图方法")
-        AirtestService.check_method(serialno)
-        logger.debug("检查当前默认截图方法")
+        best_method=AirtestService.check_method(serialno)
+        logger.debug("检查默认截图方法")
         AirtestService.get_cap_method(serialno)
+        logger.debug("以最快截图方法重新连接")
+        connect_info = connect_info+'?cap_method='+best_method
+        AirtestService.auto_setup(connect_info)
+
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,

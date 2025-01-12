@@ -149,7 +149,11 @@ def encounter_demons(game_task: []):
             for i_present in range(2):
                 ImageService.touch(Onmyoji.demon_XSFM, wait=3)
                 ImageService.touch(Onmyoji.demon_XSFM, wait=3)
+                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
+                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
                 ImageService.touch(Onmyoji.demon_QD, wait=3)
+                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
+                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
                 ImageService.touch(Onmyoji.demon_XSFM, wait=3)
                 ImageService.touch(Onmyoji.demon_XSFM, wait=3)
                 logger.debug("重新判断是否已领取现世奖励")

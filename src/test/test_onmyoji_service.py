@@ -37,7 +37,7 @@ class TestOnmyojiService(TestCase):
         4 云手机-002
         :return:
         """
-        TestOnmyojiService.test_project('1', "0", "登录")
+        TestOnmyojiService.test_project('1', "2", "登录")
 
     def test_initialization1(self):
         """
@@ -58,7 +58,7 @@ class TestOnmyojiService(TestCase):
         项目3 逢魔之时
         :return:
         """
-        TestOnmyojiService.test_project('1', '0', "逢魔之时")
+        TestOnmyojiService.test_project('1', '2', "逢魔之时")
 
     def test_ghost_king(self):
         """
@@ -170,7 +170,7 @@ class TestOnmyojiService(TestCase):
         项目19 斗技   
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "斗技", fight_times=100)
+        TestOnmyojiService.test_project('1', '2', "斗技", fight_times=20)
 
     def test_soul_arrange(self):
 
