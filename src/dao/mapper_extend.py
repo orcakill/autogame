@@ -133,3 +133,29 @@ class MapperExtend:
         print(str(game_job_log_all))
         session.close()
         return game_job_log_all
+
+    @staticmethod
+    def select_foster_carer(account_name: str, over_time: int):
+        """
+        根据日期和用户获取当日阴阳寮突破的状态
+        :param over_time:
+        :param account_name:
+        :return: True
+        """
+        session_maker = sessionmaker(bind=engine)
+        session = session_maker()
+        # 获取当前时间
+        current_time = datetime.now()
+        # 减去3小时
+        new_time = current_time - timedelta(hours=over_time)
+        game_project_log = (session.query(GameProjectLog)
+                            .join(GameAccount, GameProjectLog.account_id == GameAccount.id)
+                            .filter(GameAccount.account_name == account_name,
+                                    GameProjectLog.result == "已寄养",
+                                    GameProjectLog.create_time >= new_time)
+                            .all())
+        session.close()
+        if len(game_project_log) > 0:
+            return True
+        else:
+            return False

@@ -30,12 +30,7 @@ class TestImageService(TestCase):
         print(UtilsTime.convert_seconds(now1 - now))
 
     def test_exists_coordinate(self):
-        ComplexService.auto_setup("0")
-        now = datetime.datetime.now()
-        ComplexService.fight_end(Onmyoji.border_ZDSL, Onmyoji.border_ZDSB,
-                                 Onmyoji.border_ZCTZ, Onmyoji.home_TS, Onmyoji.border_GRJJ, None, 60, 1)
-        now1 = datetime.datetime.now()
-        print(now1 - now)
+        ComplexService.auto_setup("4")
 
     def test_touch(self):
         ComplexService.auto_setup("1")
