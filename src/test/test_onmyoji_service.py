@@ -65,7 +65,7 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project('4,5', '1', "地域鬼王")
+        TestOnmyojiService.test_project('1', '2', "地域鬼王")
 
     def test_foster_care(self):
         """
@@ -79,7 +79,7 @@ class TestOnmyojiService(TestCase):
         项目6 阴阳寮管理
         :return:
         """
-        TestOnmyojiService.test_project('2,3,4,5', '1', "阴阳寮管理")
+        TestOnmyojiService.test_project('1', '2', "阴阳寮管理")
 
     def test_region_border(self):
         """
