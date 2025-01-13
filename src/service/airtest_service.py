@@ -20,6 +20,7 @@ from airtest.core.helper import G
 from airtest.core.settings import Settings
 
 from src.utils.my_logger import my_logger as logger
+from src.utils.utils_mail import UtilsMail
 from src.utils.utils_path import UtilsPath
 from src.utils.utils_time import UtilsTime
 
@@ -85,6 +86,8 @@ class AirtestService:
                         best_time = best_time1
                         best_method = name
             logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(best_time1))
+            if best_time >= 5:
+                UtilsMail.send_email("阴阳师脚本", "图像单次识别超5秒", serialno)
         logger.debug("最快的截图方法{}", best_method)
         return best_method
 

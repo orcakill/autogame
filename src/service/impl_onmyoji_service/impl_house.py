@@ -432,6 +432,10 @@ def shack_house(game_task: []):
         ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
         logger.debug("确认返回首页")
         impl_initialization.return_home(game_task)
+    logger.debug("返回到首页")
+    ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+    logger.debug("确认返回首页")
+    impl_initialization.return_home(game_task)
     logger.debug("4.体力食盒和经验酒壶")
     is_border = ImageService.touch(Onmyoji.shack_YYLTB)
     if is_border:
@@ -458,8 +462,8 @@ def shack_house(game_task: []):
             ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH, rgb=True)
     logger.debug("5.结界卡奖励领取")
     is_card_rewards = ImageService.touch(Onmyoji.shack_JJKJLLQ)
-    if is_card_rewards:
-        logger.debug("获得奖励")
+    if is_card_rewards and game_account.account_name not in [1, '1']:
+        logger.debug("小号获得奖励")
         ComplexService.get_reward(Onmyoji.shack_HDJL)
     logger.debug("6.寄养奖励领取")
     is_faster_rewards = ImageService.touch(Onmyoji.shack_JYJLLQ)
@@ -467,7 +471,7 @@ def shack_house(game_task: []):
         logger.debug("获得奖励")
         ComplexService.get_reward(Onmyoji.shack_HDJL)
     logger.debug("7.结界卡放置")
-    is_border_card = ImageService.touch(Onmyoji.shack_JJK)
+    is_border_card = ImageService.touch(Onmyoji.shack_JJK, timeouts=10)
     if is_border_card:
         logger.debug("判断是否无结界卡")
         is_border_card = ImageService.touch(Onmyoji.shack_JJKDQ)
@@ -526,13 +530,13 @@ def shack_house(game_task: []):
             ImageService.touch(Onmyoji.shack_ZXQB)
             logger.debug("点击左下的素材")
             ImageService.touch(Onmyoji.shack_NK)
-            logger.debug("判断有无1级N卡，无N卡则放弃")
-            is_growing = ImageService.exists(Onmyoji.shack_YJNK)
+            logger.debug("判断有无红蛋，无红蛋则放弃")
+            is_growing = ImageService.exists(Onmyoji.shack_HD)
             if is_growing:
-                logger.debug("点击1级N卡，6次")
+                logger.debug("点击红蛋，6次")
                 for i_growing in range(8):
                     logger.debug("点击1级素材")
-                    ImageService.touch(Onmyoji.shack_YJNK)
+                    ImageService.touch(Onmyoji.shack_HD)
                     if i_growing > 5:
                         logger.debug("判断是否还有放入式神")
                         is_insert = ImageService.exists(Onmyoji.shack_FRSS)
@@ -540,7 +544,7 @@ def shack_house(game_task: []):
                             logger.debug("已全部寄养")
                             break
             else:
-                logger.debug("没找1级N卡")
+                logger.debug("没找红蛋")
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)

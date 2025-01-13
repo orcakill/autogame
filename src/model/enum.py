@@ -174,7 +174,6 @@ class Onmyoji:
     call_ZCZH = r"召唤\普通召唤\再次召唤"
     call_QT = r"召唤\普通召唤\确定"
 
-
     login_CY = r"登录\常用"
     login_YCDL = r"登录\异常常用"
     login_DLAN = r"登录\登录按钮"
@@ -412,6 +411,8 @@ class Onmyoji:
     shack_ZXSC = r"阴阳寮\寮管理\左下素材"
     shack_SCSC = r"阴阳寮\寮管理\素材素材"
     shack_NK = r"阴阳寮\寮管理\N卡"
+    shack_XZSC = r"阴阳寮\寮管理\选择素材"
+    shack_HD = r"阴阳寮\寮管理\红蛋"
     shack_YJNK = r"阴阳寮\寮管理\一级N卡"
     shack_TQJY = r"阴阳寮\寮管理\提取经验"
 
