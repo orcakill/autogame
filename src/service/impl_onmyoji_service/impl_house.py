@@ -426,6 +426,8 @@ def shack_house(game_task: []):
                     logger.debug("全部坐标获取失败，尝试返回首页")
                     ComplexService.get_reward(is_fire)
                     ImageService.touch_coordinate((10, 10))
+                    logger.debug("返回到寮首页")
+                    ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
         logger.debug("返回到寮首页")
         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
         logger.debug("返回到首页")
@@ -485,6 +487,8 @@ def shack_house(game_task: []):
             if is_place:
                 logger.debug("激活")
                 ImageService.touch(Onmyoji.shack_JH)
+                logger.debug("确定")
+                ImageService.touch(Onmyoji.shack_JHQD)
                 logger.debug("返回")
                 ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
             else:
@@ -529,20 +533,14 @@ def shack_house(game_task: []):
             logger.debug("点击左下的全部")
             ImageService.touch(Onmyoji.shack_ZXQB)
             logger.debug("点击左下的素材")
-            ImageService.touch(Onmyoji.shack_NK)
+            ImageService.touch(Onmyoji.shack_XZSC)
             logger.debug("判断有无红蛋，无红蛋则放弃")
             is_growing = ImageService.exists(Onmyoji.shack_HD)
             if is_growing:
                 logger.debug("点击红蛋，6次")
                 for i_growing in range(8):
                     logger.debug("点击1级素材")
-                    ImageService.touch(Onmyoji.shack_HD)
-                    if i_growing > 5:
-                        logger.debug("判断是否还有放入式神")
-                        is_insert = ImageService.exists(Onmyoji.shack_FRSS)
-                        if not is_insert:
-                            logger.debug("已全部寄养")
-                            break
+                    ImageService.touch_coordinate(is_growing)
             else:
                 logger.debug("没找红蛋")
     logger.debug("返回首页")
