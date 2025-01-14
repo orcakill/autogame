@@ -387,6 +387,7 @@ class Onmyoji:
     shack_TJCL = r"阴阳寮\寮管理\提交材料"
     shack_XJJX = r"阴阳寮\寮管理\星级降序"
     shack_JH = r"阴阳寮\寮管理\激活"
+    shack_JHQD = r"阴阳寮\寮管理\激活确定"
     shack_JJK = r"阴阳寮\寮管理\结界卡"
     shack_JJKQBXL = r"阴阳寮\寮管理\结界卡全部下拉"
     shack_JJKJLLQ = r"阴阳寮\寮管理\结界卡奖励领取"
