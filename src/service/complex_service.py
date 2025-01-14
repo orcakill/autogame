@@ -88,43 +88,45 @@ class ComplexService:
             is_state = WindowsService.get_device_status_by_ip(serialno)
         if is_state == "device":
             logger.debug("设备已就绪")
-        logger.debug("准备连接设备")
-        if game_device in ['2', 2]:
-            logger.debug("注册scrcpy windows截图")
-            logger.debug("检查windows是否开启scrcpy")
-            is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
-            if is_scrcpy:
-                logger.debug("已开启scrcpy")
+        logger.debug("检查是否已连接")
+        screen = AirtestService.snapshot()
+        if screen is None:
+            logger.debug("未连接设备，开始连接")
+            if game_device in ['2', 2]:
+                logger.debug("注册scrcpy windows截图")
+                logger.debug("检查windows是否开启scrcpy")
+                is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
+                if is_scrcpy:
+                    logger.debug("已开启scrcpy")
+                else:
+                    logger.debug("开启scrcpy")
+                    str_f = ' -f'
+                    str_device = ' -s ' + serialno
+                    str_title = '  --window-title ' + serialno
+                    str_border = ' --window-borderless'
+                    str_control = ' --no-control'
+                    str_size = ' --max-fps 30'
+                    str_bt = " -b 8M"
+                    str_audio = " --no-audio"
+                    str_buffer = " --display-buffer=10"
+                    str_cmd = 'scrcpy' + str_device + str_f + str_audio + str_control + str_border + str_title + str_size + str_bt + str_buffer
+                    logger.debug("执行命令{}", str_cmd)
+                    subprocess.Popen(str_cmd, shell=True, start_new_session=True)  # 打开scrcpy
+                    time.sleep(5)
+                logger.debug("注册scrcpy截图")
+                ScreenProxy.register_method("SCRCPYCAP", ScrcpyCap)
+                logger.debug("连接设备")
+                AirtestService.auto_setup(serialno)
             else:
-                logger.debug("开启scrcpy")
-                str_f = ' -f'
-                str_device = ' -s ' + serialno
-                str_title = '  --window-title ' + serialno
-                str_border = ' --window-borderless'
-                str_control = ' --no-control'
-                str_size = ' --max-fps 30'
-                str_bt = " -b 8M"
-                str_audio = " --no-audio"
-                str_buffer = " --display-buffer=10"
-                str_cmd = 'scrcpy' + str_device + str_f + str_audio + str_control + str_border + str_title + str_size + str_bt + str_buffer
-                logger.debug("执行命令{}", str_cmd)
-                subprocess.Popen(str_cmd, shell=True, start_new_session=True)  # 打开scrcpy
-                time.sleep(5)
-            logger.debug("注册scrcpy截图")
-            ScreenProxy.register_method("SCRCPYCAP", ScrcpyCap)
-            logger.debug("连接设备")
-            AirtestService.auto_setup(serialno)
-        else:
-            logger.debug("连接设备")
+                logger.debug("连接设备")
+                AirtestService.auto_setup(connect_info)
+            logger.debug("检查截图方法")
+            best_method = AirtestService.check_method(serialno)
+            logger.debug("以最快截图方法重新连接")
+            connect_info = connect_info + '?cap_method=' + best_method
             AirtestService.auto_setup(connect_info)
-        logger.debug("检查截图方法")
-        best_method=AirtestService.check_method(serialno)
-        logger.debug("检查默认截图方法")
-        AirtestService.get_cap_method(serialno)
-        logger.debug("以最快截图方法重新连接")
-        connect_info = connect_info+'?cap_method='+best_method
-        AirtestService.auto_setup(connect_info)
-
+        else:
+            logger.debug("已连接设备")
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,

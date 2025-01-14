@@ -11,6 +11,7 @@ import subprocess
 import cv2
 import imageio
 import numpy as np
+import psutil
 from airtest import aircv
 from airtest.aircv import cv2_2_pil
 from airtest.core.android import Android
@@ -18,6 +19,7 @@ from airtest.core.android.cap_methods.screen_proxy import ScreenProxy
 from airtest.core.api import *
 from airtest.core.helper import G
 from airtest.core.settings import Settings
+from exceptiongroup import catch
 
 from src.utils.my_logger import my_logger as logger
 from src.utils.utils_mail import UtilsMail
@@ -54,41 +56,56 @@ class AirtestService:
     @staticmethod
     def get_cap_method(serialno):
         dev = Android(serialno=serialno)
-        screen_proxy = ScreenProxy.auto_setup(dev.adb, rotation_watcher=dev.rotation_watcher)
-        all_methods = screen_proxy.SCREEN_METHODS
-        methods_class = screen_proxy.screen_method
-        for index, (key, value) in enumerate(all_methods.items(), start=1):
-            if isinstance(methods_class, value):
-                logger.debug(key)
-                return key
+        try:
+            screen_proxy = ScreenProxy.auto_setup(dev.adb, rotation_watcher=dev.rotation_watcher)
+            all_methods = screen_proxy.SCREEN_METHODS
+            methods_class = screen_proxy.screen_method
+            for index, (key, value) in enumerate(all_methods.items(), start=1):
+                if isinstance(methods_class, value):
+                    logger.debug(key)
+                    return key
+        except Exception as e:
+            logger.exception("获取截图方法异常:{}", e)
         return None
 
     @staticmethod
     def check_method(serialno):
         dev = Android(serialno=serialno)
-        screen_proxy = ScreenProxy.auto_setup(dev.adb, rotation_watcher=dev.rotation_watcher)
-        all_methods = screen_proxy.SCREEN_METHODS
-        # 从self.SCREEN_METHODS中，逆序取出可用的方法
         best_method = None
-        best_time = None
-        for name, screen_class in reversed(all_methods.items()):
-            screen = screen_class(dev.adb, rotation_watcher=dev.rotation_watcher)
-            now1 = time.time()
-            result = screen_proxy.check_frame(screen)
-            now2 = time.time()
-            best_time1 = now2 - now1
-            if result:
-                if best_time1:
-                    if best_time is None:
-                        best_time = best_time1
-                        best_method = name
-                    elif best_time1 < best_time:
-                        best_time = best_time1
-                        best_method = name
-            logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(best_time1))
-            if best_time >= 5:
-                UtilsMail.send_email("阴阳师脚本", "图像单次识别超5秒", serialno)
-        logger.debug("最快的截图方法{}", best_method)
+        try:
+            screen_proxy = ScreenProxy.auto_setup(dev.adb, rotation_watcher=dev.rotation_watcher)
+            all_methods = screen_proxy.SCREEN_METHODS
+            # 从self.SCREEN_METHODS中，逆序取出可用的方法
+            best_time = None
+            for name, screen_class in reversed(all_methods.items()):
+                screen = screen_class(dev.adb, rotation_watcher=dev.rotation_watcher)
+                now1 = time.time()
+                result = screen_proxy.check_frame(screen)
+                now2 = time.time()
+                best_time1 = now2 - now1
+                if result:
+                    if best_time1:
+                        if best_time is None:
+                            best_time = best_time1
+                            best_method = name
+                        elif best_time1 < best_time:
+                            best_time = best_time1
+                            best_method = name
+                logger.debug("{}:{}:{}", name, result, UtilsTime.convert_seconds(best_time1))
+            if best_time:
+                if best_time > 10:
+                    UtilsMail.send_email("阴阳师脚本", "图像单次识别超10秒", serialno + best_time)
+            logger.debug("最快的截图方法{}", best_method)
+            # 获取当前进程的 pid
+            pid = psutil.Process(os.getpid())
+            # 获取 CPU 占用百分比
+            cpu_percent = pid.cpu_percent(interval=1)
+            # 获取内存占用百分比
+            memory_percent = pid.memory_percent()
+            logger.debug("CPU占用百分比：{}%", cpu_percent)
+            logger.debug("内存占用百分比：{}%", memory_percent)
+        except Exception as e:
+            logger.exception("获取截图方法异常:{}", e)
         return best_method
 
     @staticmethod
@@ -97,7 +114,7 @@ class AirtestService:
         这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
         """
-        screen = ""
+        screen = None
         try:
             if print_image:
                 img_path = UtilsPath.get_print_image_path(name)
