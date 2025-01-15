@@ -9,6 +9,7 @@ from src.dao.mapper import Mapper
 from src.dao.mapper_extend import MapperExtend
 from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameAccount, GameProject, GameProjectLog, GameDevice, GameProjectsRelation
+from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
 from src.utils.my_logger import logger
@@ -82,7 +83,7 @@ def initialization(game_task: [], login_type: int = 0):
                 logger.debug("点击可能存在的登录")
                 ImageService.touch(Onmyoji.login_DLAN, wait=3, rgb=True)
                 logger.debug("检查可能存在的其他账号登录")
-                is_exception=ImageService.exists(Onmyoji.login_YCDL)
+                is_exception = ImageService.exists(Onmyoji.login_YCDL)
                 if is_exception:
                     logger.debug("点击异常登录界面的退出")
                     ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)
@@ -128,10 +129,11 @@ def initialization(game_task: [], login_type: int = 0):
                     if is_login:
                         break
                 if i_account + 1 == 5:
+                    send_screenshot = AirtestService.snapshot()
                     send_text = "账号：" + game_account.account_name + "\n\r账号选择：" + str(
                         is_account) + "\n\r服务器选择：" + str(is_server)
                     logger.debug("第五次尝试登录失败,邮件发送")
-                    UtilsMail.send_email("阴阳师脚本", "登录失败5次", send_text)
+                    UtilsMail.send_email("阴阳师脚本", "登录失败5次", send_text, [send_screenshot])
         else:
             logger.debug("开始游戏")
             ImageService.touch(Onmyoji.login_KSYX, wait=5)
