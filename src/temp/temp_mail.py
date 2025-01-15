@@ -1,7 +1,3 @@
-# @Time: 2023年10月23日 15:12
-# @Author: orcakill
-# @File: UtilsMail.py
-# @Description: 邮件发送
 import smtplib
 from email.header import Header
 from email.mime.text import MIMEText
