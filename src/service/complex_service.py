@@ -127,6 +127,8 @@ class ComplexService:
             AirtestService.auto_setup(connect_info)
         else:
             logger.debug("已连接设备")
+            logger.debug("检查截图方法")
+            AirtestService.check_method(serialno)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,
