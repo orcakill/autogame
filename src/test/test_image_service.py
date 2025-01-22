@@ -23,9 +23,7 @@ class TestImageService(TestCase):
         ComplexService.auto_setup("2")
         logger.debug("开始")
         now = time.time()
-        logger.debug("任务滚轮坐标")
-        is_place = ImageService.touch(Onmyoji.shack_TG)
-        logger.debug(is_place)
+        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
         now1 = time.time()
         print(UtilsTime.convert_seconds(now1 - now))
 

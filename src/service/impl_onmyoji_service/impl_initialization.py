@@ -87,6 +87,8 @@ def initialization(game_task: [], login_type: int = 0):
                 if is_exception:
                     logger.debug("点击异常登录界面的退出")
                     ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)
+                logger.debug("点击可能存在选服指引")
+                ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
                 logger.debug("点击可能存在选择区域")
                 ComplexService.get_reward(Onmyoji.login_XZQY)
                 logger.debug("用户中心")
