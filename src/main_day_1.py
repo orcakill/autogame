@@ -136,24 +136,24 @@ if __name__ == '__main__':
         # 如果当前时间大于等于12点,小于17点
         elif 12 <= current_hour <= 16:
             start_hour, end_hour = 12, 16
+            day = UtilsTime.get_day_str()
+            region_over = MapperExtend.select_region_over(day, game_account_large)
+            if not region_over:
+                logger.debug("阴阳寮突破进度100%，不再突破，改为斗技")
+                task_list3[1] = True
+                continue
             if not task_list3[1]:
-                day = UtilsTime.get_day_str()
-                region_over = MapperExtend.select_region_over(day, game_account_large)
-                if not region_over:
-                    logger.debug("阴阳寮突破进度100%")
-                    task_list3[1] = True
-                    continue
                 logger.info("12-17,大号阴阳寮突破循环")
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name="阴阳寮突破",
                                                        start_hour=start_hour, end_hour=end_hour)
-            if not task_list3[2]:
+            if task_list3[1] and not task_list3[2]:
                 logger.info("12-16,大号，斗技1")
                 project_num_times = {'斗技': 5}
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name='斗技',
                                                        project_num_times=project_num_times,
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list3[2] = True
-            if not task_list3[3]:
+            if task_list3[1] and task_list3[3]:
                 logger.info("12-16,大号，斗技2")
                 project_num_times = {'斗技': 5}
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name='斗技',

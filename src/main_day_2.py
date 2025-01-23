@@ -102,7 +102,7 @@ if __name__ == '__main__':
             if 19 <= current_hour <= 20 and weekday in [5, 6, 7] and not task_list4[2]:
                 logger.info("17-24,小号，阴界之门")
                 OnmyojiController.create_execute_tasks(game_device, game_id_small, project_name="阴界之门",
-                                                       start_hour=start_hour, end_hour=end_hour)
+                                                       start_hour=start_hour,end_hour=end_hour)
                 task_list4[2] = True
                 continue
             if 19 <= current_hour <= 21 and not task_list4[3]:
