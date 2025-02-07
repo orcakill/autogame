@@ -194,6 +194,7 @@ class Onmyoji:
     login_JSXY = r"登录\接受协议"
     login_YYSTB = r"登录\阴阳师图标"
     login_CXDKYY = r"登录\重新打开应用"
+    login_TYBDL = r"登录\同意并登录"
 
     reward_GYXZR = r"奖励\勾玉小纸人"
     reward_HDJL = r"奖励\获得奖励"

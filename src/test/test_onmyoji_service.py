@@ -44,7 +44,7 @@ class TestOnmyojiService(TestCase):
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project('2,3,4,5', "4", "登录")
+        TestOnmyojiService.test_project('5', "4", "登录")
 
     def test_daily_rewards(self):
         """
@@ -58,7 +58,7 @@ class TestOnmyojiService(TestCase):
         项目3 逢魔之时
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "逢魔之时")
+        TestOnmyojiService.test_project('4', '4', "逢魔之时")
 
     def test_ghost_king(self):
         """
@@ -93,7 +93,7 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "个人突破")
+        TestOnmyojiService.test_project('1', '0', "个人突破")
 
     def test_border_fight1(self):
         """

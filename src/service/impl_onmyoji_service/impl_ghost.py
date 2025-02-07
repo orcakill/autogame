@@ -146,16 +146,9 @@ def encounter_demons(game_task: []):
         is_get_reward = ImageService.exists(Onmyoji.demon_FMLD, wait=5)
         if is_get_reward:
             logger.debug("未点击现时逢魔，开始点击")
-            for i_present in range(2):
-                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
-                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
-                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
+            for i_present in range(4):
                 ImageService.touch(Onmyoji.demon_XSFM, wait=3)
                 ImageService.touch(Onmyoji.demon_QD, wait=3)
-                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
-                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
-                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
-                ImageService.touch(Onmyoji.demon_XSFM, wait=3)
                 logger.debug("重新判断是否已领取现世奖励")
                 is_get_reward = ImageService.exists(Onmyoji.demon_FMLD, wait=1)
                 if not is_get_reward:
@@ -186,10 +179,11 @@ def encounter_demons(game_task: []):
                     logger.debug("连点8次")
                     for i_click in range(8):
                         ImageService.touch_coordinate(is_fight, wait=1)
-                        if i_click > 3 and i_click % 2 == 0:
+                        if i_click > 6:
+                            logger.debug("点击可能存在的不再提醒")
+                            ImageService.touch(Onmyoji.demon_BZTS, rgb=True)
                             logger.debug("点击可能存在的挑战确定")
-                            ImageService.touch(Onmyoji.demon_BZTS)
-                            ImageService.touch(Onmyoji.demon_TZQD)
+                            ImageService.touch(Onmyoji.demon_TZQD, rgb=True)
                 logger.debug("判断是否有一天一层")
                 is_one = ImageService.exists(Onmyoji.demon_YTYC, wait=0)
                 if is_one:

@@ -20,12 +20,14 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("0")
         logger.debug("开始")
         now = time.time()
-        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+        r = ImageService.touch(Onmyoji.border_GRJJ,cvstrategy=Cvstrategy.default)
+        logger.debug(r)
         now1 = time.time()
-        print(UtilsTime.convert_seconds(now1 - now))
+        logger.debug("结束")
+        logger.debug(UtilsTime.convert_seconds(now1 - now))
 
     def test_exists_coordinate(self):
         ComplexService.auto_setup("4")
