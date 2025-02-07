@@ -232,7 +232,7 @@ def border_fight(game_task: [], fight_times: int = 40):
         logger.debug("点击个人结界")
         ImageService.touch(Onmyoji.border_GRJJ, cvstrategy=Cvstrategy.default, wait=2)
         logger.debug("点击进攻")
-        ImageService.touch(Onmyoji.border_JG, cvstrategy=Cvstrategy.default, wait=2)
+        ImageService.touch(Onmyoji.border_JG, wait=2)
         logger.debug("检查自动战斗")
         is_auto = ImageService.exists(Onmyoji.region_ZD, timeouts=10)
         if not is_auto:
