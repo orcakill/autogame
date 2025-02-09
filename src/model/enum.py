@@ -691,4 +691,4 @@ class WinClassName:
 class Cvstrategy:
     # 图像识别类型
     sift = ["sift"]
-    default = ["sift", "brisk"]
+    default = ["mstpl", "tpl", "sift", "brisk"]
