@@ -167,7 +167,7 @@ if __name__ == '__main__':
                                                        start_hour=start_hour, end_hour=end_hour)
         # 如果当前时间大于等于17点,小于24点
         elif 17 <= current_hour < 23:
-            # 17点-19点 大号-式神寄养，逢魔之时
+            # 17点-19点 大号-  式神寄养，逢魔之时
             # 19点-23点 大号，周一到周四，狩猎战，道馆突破
             #          大号，周五到周日，狭间暗域，首领退治
             start_hour, end_hour = 17, 23
