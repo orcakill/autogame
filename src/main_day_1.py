@@ -165,39 +165,39 @@ if __name__ == '__main__':
                 logger.info("12-17,大号，绘卷项目组")
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, projects_num="4",
                                                        start_hour=start_hour, end_hour=end_hour)
-        # 如果当前时间大于等于17点,小于24点
-        elif 17 <= current_hour < 23:
+        # 如果当前时间大于等于17点,小于20点
+        elif 17 <= current_hour < 20:
             # 17点-19点 大号-  式神寄养，逢魔之时
             # 19点-23点 大号，周一到周四，狩猎战，道馆突破
             #          大号，周五到周日，狭间暗域，首领退治
-            start_hour, end_hour = 17, 23
+            start_hour, end_hour = 17, 20
             if not task_list4[1]:
-                logger.info("17-24,17点，大号，逢魔之时")
+                logger.info("17-20,17点，大号，逢魔之时")
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name="逢魔之时",
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list4[1] = True
                 continue
             if current_hour == 20 and weekday in [5, 6, 7] and not task_list4[2]:
-                logger.info("17-24,大号，阴界之门")
+                logger.info("17-20,大号，阴界之门")
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name="阴界之门",
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list4[2] = True
                 continue
             if not task_list3[3]:
-                logger.info("17-24,大号，斗技3")
+                logger.info("17-20,大号，斗技3")
                 project_num_times = {'斗技': 5}
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name='斗技',
                                                        project_num_times=project_num_times,
                                                        start_hour=start_hour, end_hour=end_hour)
             if not task_list3[4]:
-                logger.info("17-24,大号，斗技4")
+                logger.info("17-20,大号，斗技4")
                 project_num_times = {'斗技': 5}
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name='斗技',
                                                        project_num_times=project_num_times,
                                                        start_hour=start_hour, end_hour=end_hour)
-        elif current_hour >= 23:
+        elif current_hour >= 20:
             logger.debug("结束当日任务")
-            break
+            sys.exit()
         # 等待5分钟
         logger.debug("等待5分钟")
         time.sleep(60 * 5)
