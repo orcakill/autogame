@@ -7,7 +7,6 @@ import os
 import cv2
 import numpy as np
 
-from src.model.enum import Onmyoji
 from src.utils.my_logger import my_logger as logger
 from src.utils.utils_path import UtilsPath
 
