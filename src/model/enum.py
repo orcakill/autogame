@@ -239,6 +239,7 @@ class Onmyoji:
     soul_BQ_SDZR = r"探索\御魂\八岐大蛇\锁定阵容"
     soul_BQ_TCTZ = r"探索\御魂\八岐大蛇\退出挑战"
     soul_BQ_TZ = r"探索\御魂\八岐大蛇\挑战"
+    soul_BQ_TZLS = r"探索\御魂\八岐大蛇\挑战临时"
     soul_BQ_ZDTZ = r"探索\御魂\八岐大蛇\组队挑战"
     soul_BQ_WS = r"探索\御魂\八岐大蛇\喂食"
     soul_BQ_WSXSJ = r"探索\御魂\八岐大蛇\喂食小三角"
@@ -277,6 +278,12 @@ class Onmyoji:
     trials_arts_ZDSB = r"探索\英杰试炼\鬼兵演武\战斗失败"
     trials_arts_ZCTZ = r"探索\英杰试炼\鬼兵演武\战斗失败"
     trials_arts_TCTZ = r"探索\英杰试炼\鬼兵演武\退出挑战"
+
+    temp_super_ZHGW = r"活动\20250304\召唤鬼王"
+    temp_super_TZ = r"活动\20250304\挑战"
+    temp_super_ZB = r"活动\20250304\准备                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
+    temp_super_ZDSL = r"活动\20250304\战斗胜利"
+
 
     soul_RLZY_SC = r"探索\御魂\日轮之陨\三层"
     soul_RLZY_ZCTZ = r"探索\御魂\日轮之陨\再次挑战"
