@@ -91,7 +91,7 @@ class OcrService:
                     text = field[index][1][0]
                     similarity = field[index][1][1]
                     for word in words:
-                        if word in text and similarity >= 0.9:
+                        if word in text and similarity >= 0.8:
                             box = field[index][0]
                             x1 = int(box[0][0])
                             y1 = int(box[0][1])

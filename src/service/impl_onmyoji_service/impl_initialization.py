@@ -96,9 +96,16 @@ def initialization(game_task: [], login_type: int = 0):
                 ImageService.exists(Onmyoji.login_TYBDL)
                 logger.debug("点击可能存在的右上角白底黑色叉号")
                 ImageService.exists(Onmyoji.comm_FH_YSJBDHSCH)
-
                 logger.debug("用户中心")
-                ImageService.touch(Onmyoji.login_YHZX, wait=2)
+                is_YHZX = ImageService.touch(Onmyoji.login_YHZX, wait=2)
+                if not is_YHZX:
+                    logger.debug("未识别用户中心，启用ocr识别点击用户中心")
+                    for i_switch in range(3):
+                        logger.debug("第{}次识别用户中心", i_switch + 1)
+                        is_switch = ImageService.ocr_touch(
+                            ["用户中心"])
+                        if is_switch:
+                            break
                 logger.debug("切换账号")
                 ImageService.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("常用")
