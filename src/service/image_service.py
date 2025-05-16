@@ -79,7 +79,7 @@ class ImageService:
         return AirtestService.check_method(device)
 
     @staticmethod
-    def touch_coordinate(v: [], wait: float = WAIT, duration: float = DURATION):
+    def touch_coordinate(v: (), wait: float = WAIT, duration: float = DURATION):
         """
         点击坐标
         """
@@ -271,7 +271,6 @@ class ImageService:
         在图上画框，确定识别准确率
         """
         return AirtestService.draw_rectangle(screen, x1, y1, x2, y2)
-
     @staticmethod
     def ocr_touch(word):
         """

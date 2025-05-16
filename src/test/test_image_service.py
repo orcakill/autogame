@@ -160,7 +160,7 @@ class TestImageService(TestCase):
         serialno = "8ce78c9f"
         # serialno = "A2CDUN4312H00817"
         logger.debug("开始")
-        AirtestService.adb_restart_app("com.netease.onmyoji", serialno)
+        AirtestService.adb_restart_app("com.netease.onmyoji")
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
