@@ -76,6 +76,9 @@ if __name__ == '__main__':
             #             周一，月之海2次
             start_hour, end_hour = 0, 5
             if not task_list1[1]:
+                logger.info("0-5,小号，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, game_account_small, project_name="式神寄养",
+                                                       start_hour=start_hour, end_hour=end_hour)
                 logger.info("0-5,小号，好友协战")
                 OnmyojiController.create_execute_tasks(game_device, game_account_small, project_name="好友协战",
                                                        start_hour=start_hour, end_hour=end_hour)
@@ -87,7 +90,7 @@ if __name__ == '__main__':
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list1[2] = True
                 continue
-            if not task_list1[2]:
+            if not task_list1[3]:
                 logger.info("0-5,大号，个人突破")
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name="个人突破",
                                                        start_hour=start_hour, end_hour=end_hour)
@@ -105,7 +108,7 @@ if __name__ == '__main__':
                     logger.info("0-5,周五，大号，永生之海")
                     OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name="永生之海",
                                                            start_hour=start_hour, end_hour=end_hour)
-                task_list1[2] = True
+                task_list1[3] = True
                 continue
             if is_mode == "绘卷":
                 logger.debug("开绘卷")
@@ -191,18 +194,13 @@ if __name__ == '__main__':
                                                        start_hour=start_hour, end_hour=end_hour)
                 task_list4[2] = True
                 continue
-            if not task_list3[3]:
-                logger.info("17-20,大号，斗技3")
-                project_num_times = {'斗技': 5}
-                OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name='斗技',
-                                                       project_num_times=project_num_times,
+            if not task_list4[3]:
+                logger.info("0-5,小号，全流程任务")
+                OnmyojiController.create_execute_tasks(game_device, game_account_small, projects_num="2",
                                                        start_hour=start_hour, end_hour=end_hour)
-            if not task_list3[4]:
-                logger.info("17-20,大号，斗技4")
-                project_num_times = {'斗技': 5}
-                OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name='斗技',
-                                                       project_num_times=project_num_times,
-                                                       start_hour=start_hour, end_hour=end_hour)
+                task_list4[3] = True
+                continue
+
         elif current_hour >= 23:
             logger.debug("结束当日任务")
             sys.exit()
