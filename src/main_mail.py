@@ -37,13 +37,6 @@ if __name__ == '__main__':
                         UtilsMail.send_email("大号脚本运行情况", "运行异常", "未运行")
                     else:
                         logger.debug("大号脚本正常运行")
-                if run_date2:
-                    date2_hour = run_date2.hour
-                    if current_hour - date2_hour >= 3:
-                        logger.debug("小号脚本运行异常，发送邮件")
-                        UtilsMail.send_email("小号脚本运行情况", "运行异常", "未运行")
-                    else:
-                        logger.debug("小号脚本正常运行")
         except Exception as e:
             logger.exception(e)
         logger.debug("等待1小时")
