@@ -182,25 +182,4 @@ class OcrService:
                         result_xy.append([rec_texts[i], (int(x_center), int(y_center))])
         return result_xy
 
-    @staticmethod
-    def ocr_paddle_xs(results, exclude_name, heroes_list):
-        """
-        筛选关联结果
-        :param results: OCR识别结果
-        :param exclude_name: 需要排除的英雄名
-        :param heroes_list: 英雄列表
-        :return: 筛选后的结果 [[英雄名, 关联数据], ...]
-        """
-        filtered_results = []
-        # 遍历所有英雄
-        for hero in heroes_list:
-            # 跳过排除的英雄
-            if hero == exclude_name:
-                continue
 
-            # 遍历识别结果
-            for i in range(len(results) - 1):  # 防止越界
-                # 检查英雄名是否在结果中
-                if hero in results[i][0]:
-                    filtered_results.append([hero, results[i + 1][0]])
-        return filtered_results
