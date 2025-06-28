@@ -142,44 +142,19 @@ class OcrService:
                 # 遍历每个识别到的文字
                 for i in range(len(rec_texts)):
                     # 与目标文字列表比对
-                    for word in words:
-                        if rec_texts[i] == word and rec_scores[i] >= 0.9:
+                    if words:
+                        if rec_texts[i] in words and rec_scores[i] >= 0.9:
                             # 计算中心坐标
                             poly = rec_polys[i]
                             x_center = (poly[0][0] + poly[2][0]) / 2
                             y_center = (poly[0][1] + poly[2][1]) / 2
-                            result_xy.append([word, (int(x_center), int(y_center))])
+                            result_xy.append([rec_texts[i], (int(x_center), int(y_center))])
+                    else:
+                        if rec_scores[i] >= 0.9:
+                            # 计算中心坐标
+                            poly = rec_polys[i]
+                            x_center = (poly[0][0] + poly[2][0]) / 2
+                            y_center = (poly[0][1] + poly[2][1]) / 2
+                            result_xy.append([rec_texts[i], (int(x_center), int(y_center))])
         return result_xy
-
-    @staticmethod
-    def ocr_paddle_all(img):
-        """
-        识别图片中的所有文字
-        :param img: 图片路径或numpy数组
-        :return: 包含所有文字及其坐标的列表 [[文字, (x,y)], ...]
-        """
-        result_xy = []
-        # 初始化OCR引擎
-        ocr = PaddleOCR(lang="ch", device='cpu')
-
-        # 执行OCR识别
-        ocr_result = ocr.predict(img)
-
-        if ocr_result:
-            # 解析识别结果
-            for line in ocr_result:
-                rec_texts = line['rec_texts']
-                rec_scores = line['rec_scores']
-                rec_polys = line['rec_polys']
-
-                # 过滤低置信度结果
-                for i in range(len(rec_texts)):
-                    if rec_scores[i] >= 0.9:
-                        # 计算中心坐标
-                        poly = rec_polys[i]
-                        x_center = (poly[0][0] + poly[2][0]) / 2
-                        y_center = (poly[0][1] + poly[2][1]) / 2
-                        result_xy.append([rec_texts[i], (int(x_center), int(y_center))])
-        return result_xy
-
 

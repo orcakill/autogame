@@ -27,3 +27,18 @@ class ImplOcr:
         except Exception as e:
             logger.error("异常{}", e)
         return False
+
+    @staticmethod
+    def ocr_list(words):
+        result = []
+        logger.debug("获取当前页面截图")
+        screen = AirtestService.snapshot()
+        try:
+            if screen is not None:
+                logger.debug("检查文字坐标:{}", words)
+                result = OcrService.ocr_paddle_list(screen, words)
+            else:
+                logger.debug("未截取到图片")
+        except Exception as e:
+            logger.error("异常{}", e)
+        return result
