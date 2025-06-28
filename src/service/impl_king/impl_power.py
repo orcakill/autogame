@@ -10,6 +10,7 @@ import requests
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.impl_image_service.impl_ocr import ImplOcr
 from src.service.ocr_service import OcrService
 
 
@@ -71,22 +72,16 @@ if __name__ == '__main__':
     # 监测结果
     check_result = {}
     while not is_connect_flag:
-        # 获取当前设备英雄列表,进行屏幕截图
-        screen = AirtestService.snapshot()
-        # 基于屏幕截图和英雄名称获取列表坐标
-        heros_axis_list = OcrService.ocr_paddle_list(screen, kings_heroes)
-        # 点击第一个英雄坐标
-        ImageService.touch_coordinate(heros_axis_list[0])
-        # 点击克制
-        screen1 = AirtestService.snapshot()
-        restraint_coordinate = OcrService.ocr_paddle(screen1, '克制')
-        ImageService.touch_coordinate(heros_axis_list[restraint_coordinate])
-        # 获取克制关系
-        # 数据加工，组织成 对抗路  东皇太一  克制  姬小满   5.68
+        # 获取当前设备英雄列表
+        heros_axis_list = ImplOcr.ocr_list(kings_heroes)
+        # 输出第一个英雄坐标
+        print(heros_axis_list[0][1])
+        axis = ImageService.exists(folder_path='活动/20250628/测试', threshold=0.5)
+        print(axis)
         # 点击被克制
         # 获取被克制关系
         # 点击返回英雄列表，进入下一个英雄
         # 列表英雄循环完成，点击下滑
         # 识别到屋更多内容，结束循环
         # 将克制关系和被克制关系处理到excel中
-        a = 1
+        is_connect_flag = True
