@@ -9,13 +9,13 @@ from src.utils.my_logger import logger
 
 class ImplOcr:
     @staticmethod
-    def ocr_touch(words):
+    def ocr_touch(words, exclude_words=None):
         logger.debug("获取当前页面截图")
         screen = AirtestService.snapshot()
         try:
             if screen is not None:
-                logger.debug("检查文字坐标:{}", words)
-                pos = OcrService.ocr_paddle(screen, words)
+                logger.debug("检查文字坐标:{}", str(words))
+                pos = OcrService.ocr_paddle(screen, words, exclude_words)
                 if pos:
                     logger.debug("点击文字坐标:{}", words)
                     AirtestService.touch_coordinate(pos)
@@ -29,16 +29,20 @@ class ImplOcr:
         return False
 
     @staticmethod
-    def ocr_list(words):
+    def ocr_list(words,lang='ch'):
         result = []
         logger.debug("获取当前页面截图")
         screen = AirtestService.snapshot()
         try:
             if screen is not None:
-                logger.debug("检查文字坐标:{}", words)
-                result = OcrService.ocr_paddle_list(screen, words)
+                logger.debug("检查文字坐标:{}", str(words))
+                result = OcrService.ocr_paddle_list(screen, words,lang)
             else:
                 logger.debug("未截取到图片")
         except Exception as e:
             logger.error("异常{}", e)
         return result
+
+
+if __name__ == '__main__':
+    ImplOcr.ocr_list([],'en')

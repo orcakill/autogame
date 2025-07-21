@@ -284,3 +284,10 @@ class ImageService:
         获取安卓设备分辨率
         """
         return AirtestService.get_adb_resolution(device_address)
+
+    @staticmethod
+    def keyevent_back():
+        """
+        获取安卓设备分辨率
+        """
+        return AirtestService.keyevent_back()

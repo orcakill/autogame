@@ -19,6 +19,9 @@ log_ppocr = logging.getLogger("ppocr")
 log_ppocr.setLevel(logging.CRITICAL)
 os.environ['GLOG_minloglevel'] = '3'
 
+ocr_ch = PaddleOCR(lang="ch", device='cpu')
+ocr_en = PaddleOCR(lang="en", device='cpu')
+
 
 class OcrService:
     @staticmethod
@@ -77,29 +80,28 @@ class OcrService:
         return text
 
     @staticmethod
-    def ocr_paddle(img, words):
+    def ocr_paddle(img, words, exclude_words):
         """
         根据图片识别文字
+        :param exclude_words: 排除文字
         :param img: 图片   路径或ndarray
         :param words: 文字数组
         :return: 文字坐标
         """
         pos = ""
-        # 初始化OCR引擎
-        ocr = PaddleOCR(lang="ch", device='cpu')  # 使用中文模型，CPU模式
 
         # 执行OCR识别
-        ocr_result = ocr.predict(img)
+        ocr_result = ocr_ch.predict(img)
 
         if ocr_result:
-            rec_texts = ocr_result['rec_texts']  # 识别到的文字
-            rec_scores = ocr_result['rec_scores']  # 置信度得分
-            rec_polys = ocr_result['rec_polys']  # 文字位置坐标
+            for line in ocr_result:
+                rec_texts = line['rec_texts']  # 识别到的文字
+                rec_scores = line['rec_scores']  # 置信度得分
+                rec_polys = line['rec_polys']  # 文字位置坐标
 
-            # 遍历每个识别到的文字
-            for i in range(len(rec_texts)):
-                for word in words:
-                    if rec_texts[i] == word and rec_scores[i] >= 0.9:
+                # 遍历每个识别到的文字
+                for i in range(len(rec_texts)):
+                    if rec_texts[i] in words and rec_texts[i] not in exclude_words and rec_scores[i] >= 0.9:
                         # 计算中心坐标
                         poly = rec_polys[i]
                         x_center = (poly[0][0] + poly[2][0]) / 2
@@ -118,20 +120,20 @@ class OcrService:
         return pos
 
     @staticmethod
-    def ocr_paddle_list(img, words):
+    def ocr_paddle_list(img, words, lang='ch'):
         """
         基于PaddleOCR的指定文字识别
+        :param lang:
         :param img: 图片路径或numpy数组
         :param words: 需要匹配的文字列表
         :return: 包含匹配文字及其坐标的列表 [[文字, (x,y)], ...]
         """
         result_xy = []
-        # 初始化OCR引擎
-        ocr = PaddleOCR(lang="ch", device='cpu')  # 使用中文模型，CPU模式
 
         # 执行OCR识别
-        ocr_result = ocr.predict(img)
-
+        ocr_result = ocr_ch.predict(img)
+        if lang == 'en':
+            ocr_result = ocr_en.predict(img)
         if ocr_result:
             # 解析识别结果
             for line in ocr_result:
@@ -157,4 +159,3 @@ class OcrService:
                             y_center = (poly[0][1] + poly[2][1]) / 2
                             result_xy.append([rec_texts[i], (int(x_center), int(y_center))])
         return result_xy
-
