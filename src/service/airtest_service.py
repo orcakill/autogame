@@ -473,3 +473,12 @@ class AirtestService:
         else:
             # 可能需要更复杂的判断逻辑或者无法确定
             return False
+
+
+    @staticmethod
+    def keyevent_back():
+        """
+        按返回键
+        :return:
+        """
+        keyevent("BACK")

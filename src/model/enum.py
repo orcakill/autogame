@@ -82,6 +82,7 @@ class Onmyoji:
     comm_FH_YSJGGCH = r"通用\返回\右上角公告叉号"
     comm_FH_ZJZDHKHSXYH = r"通用\返回\中间棕底黄框黄色小于号"
     comm_FH_YSJBDHSCH = r"通用\返回\右上角白底黑色叉号"
+    comm_FH_ZSJZDBSXYH = r"通用\返回\左上角棕底白色小于号"
     comm_SL = r"通用\失联"
     comm_QD = r"通用\确定"
     comm_QTSBDL = r"通用\其它设备登录"

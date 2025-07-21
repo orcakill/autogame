@@ -20,7 +20,7 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("0")
+        ComplexService.auto_setup("2")
         logger.debug("开始")
         now = time.time()
         r = ImageService.touch(Onmyoji.border_GRJJ,cvstrategy=Cvstrategy.default)
@@ -31,6 +31,10 @@ class TestImageService(TestCase):
 
     def test_exists_coordinate(self):
         ComplexService.auto_setup("4")
+
+    def test_key_back(self):
+        ComplexService.auto_setup("1")
+        ImageService.keyevent_back()
 
     def test_touch(self):
         ComplexService.auto_setup("1")
