@@ -20,11 +20,10 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("0")
         logger.debug("开始")
         now = time.time()
-        r = ImageService.touch(Onmyoji.border_GRJJ,cvstrategy=Cvstrategy.default)
-        logger.debug(r)
+        ImageService.ocr_touch(["切换", "缥缈之旅","网易一缥缈之旅切换","相伴相随", "桃映春馨", "两情相悦", "遥远之忆", "抢先体验服"])
         now1 = time.time()
         logger.debug("结束")
         logger.debug(UtilsTime.convert_seconds(now1 - now))
