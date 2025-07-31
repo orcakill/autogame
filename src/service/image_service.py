@@ -272,11 +272,11 @@ class ImageService:
         """
         return AirtestService.draw_rectangle(screen, x1, y1, x2, y2)
     @staticmethod
-    def ocr_touch(word):
+    def ocr_touch(word,exclude_words=None,similarly=0.9):
         """
         在图上画框，确定识别准确率
         """
-        return ImplOcr.ocr_touch(word)
+        return ImplOcr.ocr_touch(word,exclude_words,similarly)
 
     @staticmethod
     def get_adb_resolution(device_address):
