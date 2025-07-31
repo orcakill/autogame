@@ -80,9 +80,10 @@ class OcrService:
         return text
 
     @staticmethod
-    def ocr_paddle(img, words, exclude_words):
+    def ocr_paddle(img, words, exclude_words=None, similarly=0.9):
         """
         根据图片识别文字
+        :param similarly:0.9
         :param exclude_words: 排除文字
         :param img: 图片   路径或ndarray
         :param words: 文字数组
@@ -100,24 +101,30 @@ class OcrService:
                 rec_polys = line['rec_polys']  # 文字位置坐标
 
                 # 遍历每个识别到的文字
-                for i in range(len(rec_texts)):
-                    if rec_texts[i] in words and rec_texts[i] not in exclude_words and rec_scores[i] >= 0.9:
-                        # 计算中心坐标
+                for i in range(0, len(rec_texts)):
+                    text = rec_texts[i]
+                    score = rec_scores[i]
+                    # 统一条件判断
+                    condition_met = (
+                            text in words and
+                            score >= 0.9 and
+                            (not exclude_words or text not in exclude_words)
+                    )
+
+                    if condition_met:
                         poly = rec_polys[i]
                         x_center = (poly[0][0] + poly[2][0]) / 2
                         y_center = (poly[0][1] + poly[2][1]) / 2
                         if x_center > 0 and y_center > 0:
-                            pos = (int(x_center), int(y_center))
-                            return pos
-
-        if pos == "":
-            logger.debug("未识别，遍历输出识别的文字信息")
-            for line in ocr_result:
-                rec_texts = line['rec_texts']  # 识别到的文字
-                # 遍历每个识别到的文字
-                for i in range(len(rec_texts)):
-                    logger.debug("{}:{}", rec_texts[i])
-        return pos
+                            return (int(x_center), int(y_center))
+        logger.debug("未识别，遍历输出识别的文字信息")
+        for line in ocr_result:
+            rec_texts = line['rec_texts']  # 识别到的文字
+            rec_scores = line['rec_scores']
+            # 遍历每个识别到的文字
+            for i in range(len(rec_texts)):
+                logger.debug("{}:{}", rec_texts[i], rec_scores[i])
+        return None
 
     @staticmethod
     def ocr_paddle_list(img, words, lang='ch'):
@@ -142,7 +149,7 @@ class OcrService:
                 rec_polys = line['rec_polys']  # 文字位置坐标
 
                 # 遍历每个识别到的文字
-                for i in range(len(rec_texts)):
+                for i in range(0, len(rec_texts)):
                     # 与目标文字列表比对
                     if words:
                         if rec_texts[i] in words and rec_scores[i] >= 0.9:

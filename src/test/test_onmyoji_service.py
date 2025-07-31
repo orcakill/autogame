@@ -25,7 +25,7 @@ class TestOnmyojiService(TestCase):
         4 云手机-002
         :return:
         """
-        TestOnmyojiService.test_all_project("1,2,3,4,5", "3")
+        TestOnmyojiService.test_all_project("1", "0")
 
     def test_initialization(self):
         """

@@ -124,7 +124,10 @@ def initialization(game_task: [], login_type: int = 0):
                     for i_switch in range(3):
                         logger.debug("第{}次识别切换", i_switch + 1)
                         is_switch = ImageService.ocr_touch(
-                            ["切换", "缥缈之旅", "相伴相随", "桃映春馨", "两情相悦", "遥远之忆", "抢先体验服"])
+                            ["切换", "缥缈之旅", "相伴相随", "桃映春馨", "两情相悦", "遥远之忆", "抢先体验服",
+                                   "网易一缥缈之旅切换","网易一相伴相随切换","网易一桃映春馨切换","网易一两情相悦切换",
+                                    "网易一遥远之忆切换"
+                                   ],similarly=0.8)
                         if is_switch:
                             break
                 logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
