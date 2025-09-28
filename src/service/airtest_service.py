@@ -19,7 +19,6 @@ from airtest.core.android.cap_methods.screen_proxy import ScreenProxy
 from airtest.core.api import *
 from airtest.core.helper import G
 from airtest.core.settings import Settings
-from exceptiongroup import catch
 
 from src.utils.my_logger import my_logger as logger
 from src.utils.utils_mail import UtilsMail

@@ -13,14 +13,29 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.impl_image_service.impl_match import ImplMatch
 from src.utils.my_logger import logger
+from src.utils.utils_path import UtilsPath
 
 # 控制paddleocr的日志输出
 log_ppocr = logging.getLogger("ppocr")
 log_ppocr.setLevel(logging.CRITICAL)
 os.environ['GLOG_minloglevel'] = '3'
 
-ocr_ch = PaddleOCR(lang="ch", device='cpu')
-ocr_en = PaddleOCR(lang="en", device='cpu')
+# 指定模型下载路径（项目根目录下的resource/static/paddleocr）
+# 修正路径获取方式
+# 修改后的模型路径配置
+
+
+ocr_ch = PaddleOCR(
+    lang="ch",
+    device='cpu',
+    use_angle_cls=False
+)
+
+ocr_en = PaddleOCR(
+    lang="en",
+    device='cpu',
+    use_angle_cls=False
+)
 
 
 class OcrService:

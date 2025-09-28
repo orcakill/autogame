@@ -9,7 +9,7 @@ from src.service.impl_onmyoji_service import impl_initialization, impl_soul, imp
 class OnmyojiService:
 
     @staticmethod
-    def initialization(game_task: []):
+    def initialization(game_task: list):
         """
         项目1 当前状态初始化
         :param game_task: 项目信息
@@ -206,7 +206,7 @@ class OnmyojiService:
         impl_six.sea_moon(game_task)
 
     @staticmethod
-    def current_activity(game_task: []):
+    def current_activity(game_task: list):
         """
         当前活动1
         超鬼王 impl_super.super_ghost(game_task)

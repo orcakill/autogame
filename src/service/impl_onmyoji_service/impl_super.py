@@ -13,7 +13,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def super_ghost(game_task: []):
+def super_ghost(game_task: list):
     """
         超鬼王，自动打难超鬼王以下
         :param game_task:  任务信息

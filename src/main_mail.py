@@ -11,7 +11,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.service.windows_service import WindowsService
 from src.utils.utils_mail import UtilsMail
 from src.dao.mapper_extend import MapperExtend
-from src.utils.my_logger import my_logger as logger
 
 if __name__ == '__main__':
     WindowsService.limit_cpu_percentage(10)
@@ -21,10 +20,10 @@ if __name__ == '__main__':
         # 获取当前时间的小时数
         current_hour = current_time.hour
         current_minute = current_time.minute
-        logger.debug("当前{}", current_time)
+        print("当前{}", current_time)
         try:
-            if current_hour in [8, 14, 18, 23]:
-                logger.debug("运行检查")
+            if current_hour in [0, 8, 14, 18]:
+                print("运行检查")
                 time.sleep(60 * 10)
                 # 获取脚本最后一次的日期
                 run_date1 = MapperExtend.select_game_project_log_last("6565a1c2-47f5-11ef-ac7d-fa163e9ff72f")
@@ -33,11 +32,11 @@ if __name__ == '__main__':
                 if run_date1:
                     date1_hour = run_date1.hour
                     if current_hour - date1_hour >= 3:
-                        logger.debug("大号脚本运行异常，发送邮件")
+                        print("大号脚本运行异常，发送邮件")
                         UtilsMail.send_email("大号脚本运行情况", "运行异常", "未运行")
                     else:
-                        logger.debug("大号脚本正常运行")
+                        print("大号脚本正常运行")
         except Exception as e:
-            logger.exception(e)
-        logger.debug("等待1小时")
+            print(e)
+        print("等待1小时")
         time.sleep(60 * (60 - current_minute))
