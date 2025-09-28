@@ -9,6 +9,7 @@ logger.remove()  # 移除默认的日志记录器
 # 设置主日志文件目录,所有日志都会记录在此文件夹中
 my_log_file_path = UtilsPath.get_project_path_log()
 
+
 class MyLogger:
     def __init__(self, log_file_path=my_log_file_path):
         self.logger = logger
@@ -29,17 +30,25 @@ class MyLogger:
                    "<level>{message}</level>",
         )
 
-        # 输出到文件的格式，按日期分割日志文件，并设置日志文件名
+        # 信息日志配置（添加进程标识）
         self.logger.add(
-            os.path.join(log_file_path, "info/{time:YYYY-MM-DD_HH-mm-ss}.log"),
+            os.path.join(log_file_path, f"info/{{time:YYYY-MM-DD}}/{{time:HH-mm-ss}}_p{os.getpid()}.log"),
             level='INFO',
-            format='{time:YYYY-MM-DD HH:mm:ss.SSS} - '
-                   "{process.name} | "
-                   "{thread.name} | "
-                   '{module}.{function}:{line} - {level} - {message}',
+            format='{time:YYYY-MM-DD HH:mm:ss.SSS} - process:{process} | thread:{thread} | {module}.{function}:{line} - {level} - {message}',
             retention="48h",
+            enqueue=True,
+            rotation="500 MB"
+        )
+
+        # 新增错误日志单独存储
+        self.logger.add(
+            os.path.join(log_file_path, f"error/{{time:YYYY-MM-DD}}/{{time:HH-mm-ss}}_p{os.getpid()}.log"),
+            level='ERROR',
+            format='{time:YYYY-MM-DD HH:mm:ss.SSS} - process:{process} | thread:{thread} | {module}.{function}:{line} - {level} - {message}',
+            retention="7 days",
             enqueue=True
         )
+
     def get_logger(self):
         return self.logger
 

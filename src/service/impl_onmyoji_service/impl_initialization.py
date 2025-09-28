@@ -17,10 +17,9 @@ from src.utils.utils_mail import UtilsMail
 from src.utils.utils_time import UtilsTime
 
 
-def initialization(game_task: [], login_type: int = 0):
+def initialization(game_task: list, login_type: int = 0):
     """
     项目1 当前状态初始化
-    :param device_name: 设备信息
     :param login_type: 登录类型 默认 0 按账号登录 1 快速登录
     :param game_task: 任务信息
     :return:
@@ -220,7 +219,7 @@ def initialization(game_task: [], login_type: int = 0):
         return False
 
 
-def return_home(game_task: []):
+def return_home(game_task: list):
     game_account = GameAccount(game_task[2])
 
     game_project = GameProject(game_task[3])

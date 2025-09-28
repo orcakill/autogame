@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/det/ch/ch_PP-OCRv4_det_infer/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/det/ch/ch_PP-OCRv4_det_infer/inference.pdiparams.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/det/ch/ch_PP-OCRv4_det_infer/inference.pdmodel" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/layout/picodet_lcnet_x1_0_fgd_layout_cdla_infer/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/layout/picodet_lcnet_x1_0_fgd_layout_cdla_infer/inference.pdiparams.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/layout/picodet_lcnet_x1_0_fgd_layout_cdla_infer/inference.pdmodel" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/rec/ch/ch_PP-OCRv4_rec_infer/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/rec/ch/ch_PP-OCRv4_rec_infer/inference.pdiparams.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/rec/ch/ch_PP-OCRv4_rec_infer/inference.pdmodel" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/table/ch_ppstructure_mobile_v2.0_SLANet_infer/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/table/ch_ppstructure_mobile_v2.0_SLANet_infer/inference.pdiparams.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/table/ch_ppstructure_mobile_v2.0_SLANet_infer/inference.pdmodel" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x0_25_textline_ori/inference.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x0_25_textline_ori/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x0_25_textline_ori/inference.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x1_0_doc_ori/inference.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x1_0_doc_ori/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x1_0_doc_ori/inference.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_det/inference.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_det/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_det/inference.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_rec/inference.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_rec/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_rec/inference.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/UVDoc/inference.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/UVDoc/inference.pdiparams" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/UVDoc/inference.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main_mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main_mail.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/airtest_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/airtest_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_super.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_super.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/ocr_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/ocr_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/onmyoji_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test_ocr_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_ocr_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/my_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/my_logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/utils_mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils_mail.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/utils_path.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils_path.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="v1.0.0" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;orcakill&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/orcakill/autogame.git&quot;,
+    &quot;accountId&quot;: &quot;bf809f1b-737d-4f1a-b6db-6e884d398c1e&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2m0PwJOl6e5vBuTQYTYHmBmu1DA" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试.executor&quot;: &quot;Run&quot;,
+    &quot;Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试.executor&quot;: &quot;Run&quot;,
+    &quot;Python 测试.test_image_service.TestImageService.test_key_back 的 Python 测试.executor&quot;: &quot;Run&quot;,
+    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor&quot;: &quot;Run&quot;,
+    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor&quot;: &quot;Run&quot;,
+    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor&quot;: &quot;Run&quot;,
+    &quot;Python.arrange.executor&quot;: &quot;Run&quot;,
+    &quot;Python.impl_power.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.temp_mail.executor&quot;: &quot;Run&quot;,
+    &quot;Python.temp_screenshot_efficiency.executor&quot;: &quot;Run&quot;,
+    &quot;Python.utils_point.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/project/autogame/src/resources/static/paddlex&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\project\autogame\src\resources\static\paddlex" />
+      <recent name="D:\project\autogame\src\resources\static\paddleocr" />
+      <recent name="D:\project\autogame\src" />
+      <recent name="D:\project\autogame\src\resources" />
+      <recent name="D:\project\autogame" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试">
+    <configuration name="arrange" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/utils" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/utils/arrange.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;src.test.test_ocr_service.TestOcrService.test_ocr&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_image_service.TestImageService.test_exists 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_image_service.TestImageService.test_exists&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_onmyoji_service.TestOnmyojiService.test_all&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_onmyoji_service.TestOnmyojiService.test_initialization&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试" />
+        <item itemvalue="Python.arrange" />
+        <item itemvalue="Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
+        <item itemvalue="Python 测试.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" />
+        <item itemvalue="Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-b3d66beaba9a-c6efb3732140-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26199.168" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="" />
+      <created>1726210757936</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1726210757936</updated>
+      <workItem from="1726210758969" duration="4751000" />
+      <workItem from="1726273411932" duration="2706000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix(小号脚本大日志问题处理): 小号脚本大日志问题处理&#10;&#10;小号脚本大日志问题处理">
+      <option name="closed" value="true" />
+      <created>1734509591511</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1734509591511</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix(添加截图不为空，不重新连接的逻辑): 添加截图不为空，不重新连接的逻辑&#10;&#10;添加截图不为空，不重新连接的逻辑">
+      <option name="closed" value="true" />
+      <created>1736849044239</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1736849044239</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat(邮件添加图片): 邮件添加图片&#10;&#10;邮件添加图片">
+      <option name="closed" value="true" />
+      <created>1736938244852</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1736938244852</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix(斗技调整): 斗技调整&#10;&#10;斗技调整">
+      <option name="closed" value="true" />
+      <created>1737612917635</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1737612917635</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <option name="closed" value="true" />
+      <created>1739147284574</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1739147284574</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <option name="closed" value="true" />
+      <created>1739957885914</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1739957885914</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <option name="closed" value="true" />
+      <created>1740116522662</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740116522662</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <option name="closed" value="true" />
+      <created>1741160258386</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1741160258386</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <option name="closed" value="true" />
+      <created>1747383294059</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1747383294059</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <option name="closed" value="true" />
+      <created>1753958607054</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1753958607054</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <option name="closed" value="true" />
+      <created>1753958612580</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1753958612580</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix(小号脚本大日志问题处理): 小号脚本大日志问题处理&#10;&#10;小号脚本大日志问题处理" />
+    <MESSAGE value="fix(添加截图不为空，不重新连接的逻辑): 添加截图不为空，不重新连接的逻辑&#10;&#10;添加截图不为空，不重新连接的逻辑" />
+    <MESSAGE value="feat(邮件添加图片): 邮件添加图片&#10;&#10;邮件添加图片" />
+    <MESSAGE value="fix(斗技调整): 斗技调整&#10;&#10;斗技调整" />
+    <MESSAGE value="fix(测试提交): 测试提交&#10;&#10;测试提交" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix(测试提交): 测试提交&#10;&#10;测试提交" />
+  </component>
+</project>
