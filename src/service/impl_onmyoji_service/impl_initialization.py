@@ -125,7 +125,8 @@ def initialization(game_task: list, login_type: int = 0):
                         is_switch = ImageService.ocr_touch(
                             ["切换", "缥缈之旅", "相伴相随", "桃映春馨", "两情相悦", "遥远之忆", "抢先体验服",
                                    "网易一缥缈之旅切换","网易一相伴相随切换","网易一桃映春馨切换","网易一两情相悦切换",
-                                    "网易一遥远之忆切换"
+                                    "网易一遥远之忆切换","缥缈之旅切换","相伴相随切换","桃映春馨切换","两情相悦切换",
+                                    "遥远之忆切换",
                                    ],similarly=0.8)
                         if is_switch:
                             break
