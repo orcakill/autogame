@@ -5,48 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/det/ch/ch_PP-OCRv4_det_infer/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/det/ch/ch_PP-OCRv4_det_infer/inference.pdiparams.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/det/ch/ch_PP-OCRv4_det_infer/inference.pdmodel" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/layout/picodet_lcnet_x1_0_fgd_layout_cdla_infer/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/layout/picodet_lcnet_x1_0_fgd_layout_cdla_infer/inference.pdiparams.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/layout/picodet_lcnet_x1_0_fgd_layout_cdla_infer/inference.pdmodel" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/rec/ch/ch_PP-OCRv4_rec_infer/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/rec/ch/ch_PP-OCRv4_rec_infer/inference.pdiparams.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/rec/ch/ch_PP-OCRv4_rec_infer/inference.pdmodel" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/table/ch_ppstructure_mobile_v2.0_SLANet_infer/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/table/ch_ppstructure_mobile_v2.0_SLANet_infer/inference.pdiparams.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddleocr/whl/table/ch_ppstructure_mobile_v2.0_SLANet_infer/inference.pdmodel" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x0_25_textline_ori/inference.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x0_25_textline_ori/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x0_25_textline_ori/inference.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x1_0_doc_ori/inference.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x1_0_doc_ori/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-LCNet_x1_0_doc_ori/inference.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_det/inference.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_det/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_det/inference.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_rec/inference.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_rec/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/PP-OCRv5_mobile_rec/inference.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/UVDoc/inference.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/UVDoc/inference.pdiparams" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/paddlex/official_models/UVDoc/inference.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main_mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main_mail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/airtest_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/airtest_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_super.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_super.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/ocr_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/ocr_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/onmyoji_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/test_ocr_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_ocr_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/my_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/my_logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/utils_mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils_mail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/utils_path.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils_path.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
