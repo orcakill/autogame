@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
-      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/temp/temp_scrcpy_no_total.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +62,7 @@
     &quot;Python.arrange.executor&quot;: &quot;Run&quot;,
     &quot;Python.impl_power.executor&quot;: &quot;Debug&quot;,
     &quot;Python.temp_mail.executor&quot;: &quot;Run&quot;,
+    &quot;Python.temp_scrcpy_no_total.executor&quot;: &quot;Run&quot;,
     &quot;Python.temp_screenshot_efficiency.executor&quot;: &quot;Run&quot;,
     &quot;Python.utils_point.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -86,7 +87,7 @@
       <recent name="D:\project\autogame" />
     </key>
   </component>
-  <component name="RunManager" selected="Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试">
+  <component name="RunManager" selected="Python.temp_scrcpy_no_total">
     <configuration name="arrange" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -109,6 +110,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="temp_scrcpy_no_total" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/temp" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/temp/temp_scrcpy_no_total.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -121,21 +144,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;src.test.test_ocr_service.TestOcrService.test_ocr&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test_image_service.TestImageService.test_exists 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="autogame" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_image_service.TestImageService.test_exists&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -171,18 +179,18 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.temp_scrcpy_no_total" />
         <item itemvalue="Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试" />
         <item itemvalue="Python.arrange" />
         <item itemvalue="Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
         <item itemvalue="Python 测试.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" />
-        <item itemvalue="Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-b3d66beaba9a-c6efb3732140-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26199.168" />
+        <option value="bundled-python-sdk-164cda30dcd9-0af03a5fa574-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26830.99" />
       </set>
     </attachedChunks>
   </component>
