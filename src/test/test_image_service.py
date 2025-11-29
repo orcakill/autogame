@@ -7,7 +7,7 @@ import datetime
 import time
 from unittest import TestCase
 
-from src.model.enum import Onmyoji, Cvstrategy
+from src.model.enum import Onmyoji, Cvstrategy, Switch
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
@@ -23,7 +23,7 @@ class TestImageService(TestCase):
         ComplexService.auto_setup("0")
         logger.debug("开始")
         now = time.time()
-        ImageService.ocr_touch(["切换", "缥缈之旅","网易一缥缈之旅切换","相伴相随", "桃映春馨", "两情相悦", "遥远之忆", "抢先体验服"])
+        ImageService.ocr_touch(Switch.switch)
         now1 = time.time()
         logger.debug("结束")
         logger.debug(UtilsTime.convert_seconds(now1 - now))

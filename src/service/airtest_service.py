@@ -137,10 +137,12 @@ class AirtestService:
         :param y2:
         :return:
         """
-        cv2.rectangle(screen, (x1, y1), (x2, y2), (0, 0, 255), 2)
+        x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+        rgb_image = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
+        cv2.rectangle(rgb_image , (x1, y1), (x2, y2), (255, 0, 0), 2)
         # 保存图片到本地磁盘
         img_path = UtilsPath.get_print_image_path()
-        imageio.imsave(img_path, screen)
+        imageio.imsave(img_path, rgb_image)
 
     @staticmethod
     def draw_point(screen, x, y, name: str = "识别截图"):
@@ -161,7 +163,7 @@ class AirtestService:
         imageio.imsave(img_path, rgb_image)
 
     @staticmethod
-    def exists(template: Template, cvstrategy: [], timeout: float, is_throw: bool):
+    def exists(template: Template, cvstrategy: list, timeout: float, is_throw: bool):
         """
         判断图片是否存在并返回坐标
         :param template: 图片类
@@ -247,7 +249,7 @@ class AirtestService:
                 time.sleep(interval)
 
     @staticmethod
-    def touch(folder_path: str, template: Template, cvstrategy: [], timeout: float, is_throw: bool, click_times: int,
+    def touch(folder_path: str, template: Template, cvstrategy: list, timeout: float, is_throw: bool, click_times: int,
               duration: float):
         """
         判断图片是否存在并返回坐标
@@ -273,7 +275,7 @@ class AirtestService:
                 pass
 
     @staticmethod
-    def touch_coordinate(v: [], duration: float = DURATION, wait_time: float = WAIT):
+    def touch_coordinate(v, duration: float = DURATION, wait_time: float = WAIT):
         """
         点击坐标
         :param duration: 按住时间
@@ -319,7 +321,7 @@ class AirtestService:
         time.sleep(2)
 
     @staticmethod
-    def swipe(v1: [], v2: [], duration):
+    def swipe(v1, v2, duration):
         """
         滑动
         :param duration: 间隔
@@ -366,7 +368,7 @@ class AirtestService:
         return cv2_2_pil(local)
 
     @staticmethod
-    def find_all(template: Template, cvstrategy: [], timeout: float, is_throw: bool):
+    def find_all(template: Template, cvstrategy: list, timeout: float, is_throw: bool):
         """
         多图查找
         :param template: 图片类
@@ -387,12 +389,12 @@ class AirtestService:
                 pass
 
     @staticmethod
-    def cv_match(template: Template, screen, cvstrategy: []):
+    def cv_match(template: Template, screen, cvstrategy: list):
         Settings.CVSTRATEGY = cvstrategy
         return template._cv_match(screen)
 
     @staticmethod
-    def match_in(template: Template, screen, cvstrategy: [], timeout: float, is_throw: bool):
+    def match_in(template: Template, screen, cvstrategy: list, timeout: float, is_throw: bool):
         """
         判断图片是否存在并返回坐标
         :param screen:   局部截图
@@ -458,6 +460,7 @@ class AirtestService:
         resolution_tuple = tuple(map(int, resolution_tuple.split('x')))
         if resolution_tuple:
             return resolution_tuple
+        return None
 
     @staticmethod
     def get_color_format(arr):
