@@ -42,7 +42,3 @@ class ImplOcr:
         except Exception as e:
             logger.error("异常{}", e)
         return result
-
-
-if __name__ == '__main__':
-    ImplOcr.ocr_list([],'en')
