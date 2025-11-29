@@ -163,3 +163,5 @@ cython_debug/
 *.properties
 *.ini
 *.rar
+.idea/
+idea/

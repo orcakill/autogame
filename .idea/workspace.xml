@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交" />
+    <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,34 +51,34 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_image_service.TestImageService.test_key_back 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python.arrange.executor&quot;: &quot;Run&quot;,
-    &quot;Python.impl_power.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.temp_mail.executor&quot;: &quot;Run&quot;,
-    &quot;Python.temp_scrcpy_no_total.executor&quot;: &quot;Run&quot;,
-    &quot;Python.temp_screenshot_efficiency.executor&quot;: &quot;Run&quot;,
-    &quot;Python.utils_point.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/project/autogame/src/resources/static/paddlex&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试.executor": "Run",
+    "Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试.executor": "Run",
+    "Python 测试.test_image_service.TestImageService.test_key_back 的 Python 测试.executor": "Run",
+    "Python 测试.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor": "Run",
+    "Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor": "Run",
+    "Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor": "Run",
+    "Python.arrange.executor": "Run",
+    "Python.impl_power.executor": "Debug",
+    "Python.temp_mail.executor": "Run",
+    "Python.temp_scrcpy_no_total.executor": "Run",
+    "Python.temp_screenshot_efficiency.executor": "Run",
+    "Python.utils_point.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/project/autogame/src/resources/static/paddlex",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\project\autogame\src\resources\static\paddlex" />
