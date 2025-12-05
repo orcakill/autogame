@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <change beforePath="$PROJECT_DIR$/log/image/2025-11-30_00-30-00_img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/image/2025-11-30_01-13-03_img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/image/2025-11-30_01-17-15_img.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/enum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/enum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/airtest_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/airtest_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_ocr.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_ocr.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/ocr_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/ocr_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/test_image_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_image_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +94,7 @@
       <recent name="D:\project\autogame" />
     </key>
   </component>
-  <component name="RunManager" selected="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试">
+  <component name="RunManager" selected="Python.arrange">
     <configuration name="arrange" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -187,11 +186,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
+        <item itemvalue="Python.arrange" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
         <item itemvalue="Python.temp_scrcpy_no_total" />
         <item itemvalue="Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试" />
-        <item itemvalue="Python.arrange" />
       </list>
     </recent_temporary>
   </component>
