@@ -79,7 +79,6 @@ def initialization(game_task: list, login_type: int = 0):
         if login_type == 0:
             for i_account in range(5):
                 logger.debug("第{}次切换账号", i_account + 1)
-
                 logger.debug("点击可能存在的登录")
                 ImageService.touch(Onmyoji.login_DLAN, wait=3, rgb=True)
                 logger.debug("检查可能存在的其他账号登录")
@@ -113,7 +112,9 @@ def initialization(game_task: list, login_type: int = 0):
                 account = str(os.path.join(Onmyoji.user_XZZH, game_account.account_name))
                 is_account = ImageService.touch(account, wait=4)
                 logger.debug("登录")
-                is_login_ocr = ImageService.ocr_touch(["登录"], ['其他'])
+                is_login_ocr = False
+                for i_login_ocr in range(5):
+                    is_login_ocr = ImageService.ocr_touch(["登录"], ['其他'])
                 if not is_login_ocr:
                     logger.debug("图片识别登录")
                     ImageService.touch(Onmyoji.login_DLAN, wait=4, rgb=True)
@@ -125,8 +126,8 @@ def initialization(game_task: list, login_type: int = 0):
                     logger.debug("未识别切换，启用ocr识别点击切换")
                     for i_switch in range(3):
                         logger.debug("第{}次识别切换", i_switch + 1)
-                        is_switch = ImageService.ocr_touch(Switch.switch
-                                                           , similarly=0.8)
+                        is_switch = ImageService.ocr_touch(Switch.switch,
+                                                           similarly=0.8)
                         if is_switch:
                             break
                 logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
