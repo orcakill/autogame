@@ -5,9 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
-      <change beforePath="$PROJECT_DIR$/log/image/2025-11-30_00-30-00_img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2025-11-30_01-13-03_img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2025-11-30_01-17-15_img.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/enum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/enum.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
     </list>
@@ -74,6 +71,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/project/autogame/src/resources/static/paddlex&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -108,6 +106,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/utils/arrange.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -130,6 +130,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/temp/temp_scrcpy_no_total.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -149,6 +151,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;src.test.test_image_service.TestImageService.test_exists&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
@@ -164,6 +168,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;src.test.test_ocr_service.TestOcrService.test_ocr&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
@@ -179,6 +185,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;src.test.test_onmyoji_service.TestOnmyojiService.test_all&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
@@ -197,7 +205,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-a101402ee41c-968fe969f28a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.28238.29" />
+        <option value="bundled-python-sdk-0978a7220b69-9867c7d4c0a4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.28294.336" />
       </set>
     </attachedChunks>
   </component>
@@ -211,6 +219,7 @@
       <updated>1726210757936</updated>
       <workItem from="1726210758969" duration="4751000" />
       <workItem from="1726273411932" duration="2706000" />
+      <workItem from="1765810361742" duration="427000" />
     </task>
     <task id="LOCAL-00001" summary="fix(小号脚本大日志问题处理): 小号脚本大日志问题处理&#10;&#10;小号脚本大日志问题处理">
       <option name="closed" value="true" />
