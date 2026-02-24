@@ -17,6 +17,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_path import UtilsPath
 
 
+
 class ComplexService:
 
     @staticmethod
@@ -120,11 +121,12 @@ class ComplexService:
             else:
                 logger.debug("连接设备")
                 AirtestService.auto_setup(connect_info)
-            logger.debug("检查截图方法")
-            best_method = AirtestService.check_method(serialno)
-            logger.debug("以最快截图方法重新连接")
-            connect_info = connect_info + '?cap_method=' + best_method
-            AirtestService.auto_setup(connect_info)
+            logger.debug("检查截图方法效率")
+            best_method = AirtestService.check_method(  serialno)
+            if best_method != "" and 1==2 :
+                logger.debug("以最快截图方法重新连接")
+                connect_info = connect_info + '?cap_method=' + best_method
+                AirtestService.auto_setup(connect_info)
         else:
             logger.debug("已连接设备")
             logger.debug("检查截图方法")

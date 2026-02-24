@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交" />
+    <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <change beforePath="$PROJECT_DIR$/src/model/enum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/enum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/complex_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/complex_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_friends.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_friends.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/ocr_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/ocr_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test_image_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_image_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,9 +61,13 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_image_service.TestImageService.test_exists_coordinate 的 Python 测试.executor": "Run",
     "Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试.executor": "Run",
     "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_fight 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_manage 的 Python 测试.executor": "Run",
     "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor": "Run",
     "Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试.executor": "Run",
     "Python 测试.test_image_service.TestImageService.test_key_back 的 Python 测试.executor": "Run",
     "Python 测试.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor": "Run",
@@ -77,7 +90,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -115,30 +128,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="temp_scrcpy_no_total" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="autogame" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/temp" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/temp/temp_scrcpy_no_total.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="src.test.test_image_service.TestImageService.test_exists 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -156,7 +145,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_friends_fight 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -166,10 +155,25 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="RUN_TOOL" value="" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;src.test.test_onmyoji_service.TestOnmyojiService.test_all&quot;" />
+      <option name="_new_target" value="&quot;src.test.test_onmyoji_service.TestOnmyojiService.test_friends_fight&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_friends_manage 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;src.test.test_onmyoji_service.TestOnmyojiService.test_friends_manage&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -192,17 +196,17 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.arrange" />
-        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
-        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
-        <item itemvalue="Python.temp_scrcpy_no_total" />
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_fight 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_manage 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-ca5e2b39c7df-6e1f45a539f7-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.29346.308" />
+        <option value="bundled-python-sdk-2653e85de345-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.31033.139" />
       </set>
     </attachedChunks>
   </component>
