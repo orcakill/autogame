@@ -109,33 +109,10 @@ class OcrService:
             if isinstance(img, str):
                 img = cv2.imread(img)
 
-            # 保存原始图像用于后续绘制矩形
-            original_img = img.copy()
-
-            # 图像预处理：灰度化、二值化、降噪
-            if len(img.shape) == 3:
-                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            else:
-                gray = img
-
-            # 二值化处理
-            _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-            # 降噪
-            kernel = np.ones((2, 2), np.uint8)
-            processed_img = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
-
-            # 修复：确保图像是三通道的RGB格式
-            if len(processed_img.shape) == 2:  # 如果是灰度图
-                processed_img = cv2.cvtColor(processed_img, cv2.COLOR_GRAY2BGR)
-            elif processed_img.shape[2] == 1:  # 如果是单通道
-                processed_img = cv2.cvtColor(processed_img, cv2.COLOR_GRAY2BGR)
-
-            # 确保图像数据类型是uint8
-            processed_img = processed_img.astype(np.uint8)
-
             # 使用预处理后的图像进行OCR
-            ocr_result = ocr_ch.predict(processed_img)
+            ocr_result = ocr_ch.predict(img)
+
+            # AirtestService.draw_point(img,0,0)
 
             if ocr_result:
                 for line in ocr_result:
@@ -172,8 +149,8 @@ class OcrService:
                             x_center = (poly[0][0] + poly[2][0]) / 2
                             y_center = (poly[0][1] + poly[2][1]) / 2
                             if x_center > 0 and y_center > 0:
-                                # logger.debug("识别到{}，置信度{}，坐标{}", text, score, (int(x_center), int(y_center)))
-                                # AirtestService.draw_rectangle(original_img, int(x_center - 20), int(y_center - 20),
+                                logger.debug("识别到{}，置信度{}，坐标{}", text, score, (int(x_center), int(y_center)))
+                                # AirtestService.draw_rectangle(img, int(x_center - 20), int(y_center - 20),
                                 #                               int(x_center + 20), int(y_center + 20))
                                 return int(x_center), int(y_center)
                 logger.debug("未识别，遍历输出识别的文字信息")

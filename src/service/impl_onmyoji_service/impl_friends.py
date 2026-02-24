@@ -257,7 +257,7 @@ def friends_fight(game_task: []):
                  len_time_fight_list, num_win, num_fail)
 
 
-def friends_manage(game_task: []):
+def friends_manage(game_task: list):
     # 开始时间
     time_start = time.time()
     # 项目信息
@@ -322,7 +322,7 @@ def friends_manage(game_task: []):
                     logger.debug("无添加按钮")
                     break
     logger.debug("返回首页")
-    ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
+    ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH,wait=3)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
     time_all = time.time() - time_start

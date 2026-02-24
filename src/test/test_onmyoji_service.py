@@ -34,10 +34,10 @@ class TestOnmyojiService(TestCase):
         1 夜神模拟器
         2 平板
         3 手机
-        4 云手机-002
+        4 云手机-0021
         :return:
         """
-        TestOnmyojiService.test_project('1', "0", "登录")
+        TestOnmyojiService.test_project('4,5', "0", "登录")
 
     def test_initialization1(self):
         """
@@ -107,14 +107,14 @@ class TestOnmyojiService(TestCase):
         项目9 好友管理
         :return:
         """
-        TestOnmyojiService.test_project('2,3,4,5', '0', "好友管理")
+        TestOnmyojiService.test_project('2', '0', "好友管理")
 
     def test_friends_fight(self):
         """
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project('2,3,4,5', '4', "好友协战")
+        TestOnmyojiService.test_project('2', '0', "好友协战")
 
     def test_awakening(self):
         """

@@ -64,6 +64,21 @@ class ImplExistsTouch:
                                                     duration=duration)
 
                     else:
+                        # # 获取设备信息
+                        # from airtest.core.helper import G
+                        # display_info = G.DEVICE.display_info
+                        #
+                        # # 判断屏幕方向并获取正确的横屏宽高
+                        # # orientation: 1代表竖屏, 2代表横屏 (具体值可能因设备而异)
+                        # if display_info['orientation'] in [1, 3]:  # 如果当前是竖屏模式
+                        #     height = display_info['width']  # 注意：宽高互换
+                        #     width = display_info['height']
+                        #     print("当前为竖屏模式")
+                        # else:  # 如果当前是横屏模式 (orientation 为 2 或 0)
+                        #     height = display_info['height']
+                        #     width = display_info['width']
+                        #     print("当前为横屏模式")
+
                         pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
                         if pos:
                             # 制作误差

@@ -4,6 +4,7 @@
 # @Description : 图像识别测试类
 
 import datetime
+import os
 import time
 from unittest import TestCase
 
@@ -23,13 +24,27 @@ class TestImageService(TestCase):
         ComplexService.auto_setup("0")
         logger.debug("开始")
         now = time.time()
-        ImageService.ocr_touch(Switch.switch)
+        is_login_ocr = ImageService.exists(Onmyoji.login_DLAN, wait=4)
+        if is_login_ocr:
+            for i_login_ocr in range(5):
+                ImageService.ocr_touch(["登录"], ['其他'])
+                is_login_ocr = ImageService.exists(Onmyoji.login_DLAN, wait=4)
+                if not is_login_ocr:
+                    break
         now1 = time.time()
         logger.debug("结束")
         logger.debug(UtilsTime.convert_seconds(now1 - now))
 
     def test_exists_coordinate(self):
-        ComplexService.auto_setup("4")
+        ImageService.touch(Onmyoji.login_YHZX, timeouts=10)
+        ComplexService.auto_setup("0")
+        logger.debug("开始")
+        now = time.time()
+        is_1= ImageService.touch(Onmyoji.login_YHZX, timeouts=10)
+        logger.debug(is_1)
+        now1 = time.time()
+        logger.debug("结束")
+        logger.debug(UtilsTime.convert_seconds(now1 - now))
 
     def test_key_back(self):
         ComplexService.auto_setup("1")

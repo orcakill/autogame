@@ -88,36 +88,30 @@ def initialization(game_task: list, login_type: int = 0):
                     ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)
                 logger.debug("点击可能存在选服指引")
                 ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-                logger.debug("点击可能存在选择区域")
-                ComplexService.get_reward(Onmyoji.login_XZQY)
+                logger.debug("点击左上角，防止有开场动画")
+                ImageService.touch_coordinate((10, 10))
                 logger.debug("点击可能存在同意并登录")
                 ImageService.exists(Onmyoji.login_TYBDL)
                 logger.debug("点击可能存在的右上角白底黑色叉号")
                 ImageService.exists(Onmyoji.comm_FH_YSJBDHSCH)
                 logger.debug("用户中心")
-                is_YHZX = ImageService.touch(Onmyoji.login_YHZX, wait=2)
-                if not is_YHZX:
-                    logger.debug("未识别用户中心，启用ocr识别点击用户中心")
-                    for i_switch in range(3):
-                        logger.debug("第{}次识别用户中心", i_switch + 1)
-                        is_switch = ImageService.ocr_touch(
-                            ["用户中心"])
-                        if is_switch:
-                            break
+                ImageService.touch(Onmyoji.login_YHZX,timeouts=10)
                 logger.debug("切换账号")
                 ImageService.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("常用")
                 ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
                 logger.debug("选择账号")
                 account = str(os.path.join(Onmyoji.user_XZZH, game_account.account_name))
+                logger.debug("选择账号拼接:{}", account)
                 is_account = ImageService.touch(account, wait=4)
-                logger.debug("登录")
-                is_login_ocr = False
-                for i_login_ocr in range(5):
-                    is_login_ocr = ImageService.ocr_touch(["登录"], ['其他'])
-                if not is_login_ocr:
-                    logger.debug("图片识别登录")
-                    ImageService.touch(Onmyoji.login_DLAN, wait=4, rgb=True)
+                logger.debug("登录,不能包括其他账号,开启ORC识别文字登录")
+                is_login_ocr = ImageService.exists(Onmyoji.login_DLAN, wait=4, rgb=True)
+                if is_login_ocr:
+                    for i_login_ocr in range(5):
+                        ImageService.ocr_touch(["登录"], ['其他'])
+                        is_login_ocr = ImageService.exists(Onmyoji.login_DLAN, wait=4, rgb=True)
+                        if not is_login_ocr:
+                            break
                 logger.debug("接受协议")
                 ImageService.touch(Onmyoji.login_JSXY, wait=3)
                 logger.debug("点击切换")
@@ -210,13 +204,13 @@ def initialization(game_task: list, login_type: int = 0):
         game_project_log.result = game_project_log.result + ",快速登录"
     if is_index:
         game_project_log.result = game_project_log.result + ",成功"
-        logger.debug("初始化当前状态成功:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
+        logger.info("初始化当前状态成功:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
         Mapper.save_game_project_log(game_project_log)
         return True
     else:
         game_project_log.result = game_project_log.result + ",失败"
         Mapper.save_game_project_log(game_project_log)
-        logger.debug("初始化当前状态失败:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
+        logger.info("初始化当前状态失败:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
         return False
 
 
@@ -228,7 +222,11 @@ def return_home(game_task: list):
     logger.debug("返回首页-拒接协战")
     # 当前状态 账号首页 1，2,3，4，5
     #        其它，不在账号首页
+    # 拒绝协战
     ComplexService.refuse_reward()
+    # 首页返回
+    logger.debug("首页返回")
+    ImageService.exists(Onmyoji.comm_FH_SYFH)
     logger.debug("返回首页-检查首页账号")
     account_index = str(os.path.join(Onmyoji.user_SYTX, str(game_account.account_num)))
     is_index = ImageService.exists(account_index)
