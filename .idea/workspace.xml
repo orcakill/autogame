@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <change beforePath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/enum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/enum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/complex_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/complex_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_friends.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_friends.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/ocr_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/ocr_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/test_image_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_image_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" afterDir="false" />
@@ -103,7 +101,7 @@
       <recent name="D:\project\autogame" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.arrange">
+  <component name="RunManager" selected="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试">
     <configuration name="arrange" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -195,11 +193,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.arrange" />
         <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
+        <item itemvalue="Python.arrange" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_fight 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_manage 的 Python 测试" />
-        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
       </list>
     </recent_temporary>
   </component>
