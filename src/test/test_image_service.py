@@ -24,12 +24,14 @@ class TestImageService(TestCase):
         ComplexService.auto_setup("0")
         logger.debug("开始")
         now = time.time()
-        is_login_ocr = ImageService.exists(Onmyoji.login_DLAN, wait=4)
-        if is_login_ocr:
-            for i_login_ocr in range(5):
-                ImageService.ocr_touch(["登录"], ['其他'])
-                is_login_ocr = ImageService.exists(Onmyoji.login_DLAN, wait=4)
-                if not is_login_ocr:
+        is_switch = ImageService.touch(Onmyoji.login_QHFWQ)
+        if not is_switch:
+            logger.debug("未识别切换，启用ocr识别点击切换")
+            for i_switch in range(3):
+                logger.debug("第{}次识别切换", i_switch + 1)
+                is_switch = ImageService.ocr_touch(Switch.switch,
+                                                   similarly=0.8)
+                if is_switch:
                     break
         now1 = time.time()
         logger.debug("结束")
