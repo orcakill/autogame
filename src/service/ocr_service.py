@@ -146,13 +146,8 @@ class OcrService:
                         )
 
                         if condition_met:
-                            x_center = (poly[0][0] + poly[2][0]) / 2
-                            y_center = (poly[0][1] + poly[2][1]) / 2
-                            if x_center > 0 and y_center > 0:
-                                logger.debug("识别到{}，置信度{}，坐标{}", text, score, (int(x_center), int(y_center)))
-                                AirtestService.draw_rectangle(img, int(x_center - 20), int(y_center - 20),
-                                                              int(x_center + 20), int(y_center + 20))
-                                return int(x_center), int(y_center)
+                            logger.debug("识别到{}，置信度{}，坐标{}", text, score, poly)
+                            return poly
                 logger.debug("未识别，遍历输出识别的文字信息")
                 for line in ocr_result:
                     rec_texts = line.get('rec_texts', [])

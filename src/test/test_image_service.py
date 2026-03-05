@@ -12,6 +12,7 @@ from src.model.enum import Onmyoji, Cvstrategy, Switch
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.impl_onmyoji_service.impl_initialization import switch
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
@@ -24,15 +25,8 @@ class TestImageService(TestCase):
         ComplexService.auto_setup("0")
         logger.debug("开始")
         now = time.time()
-        is_switch = ImageService.touch(Onmyoji.login_QHFWQ)
-        if not is_switch:
-            logger.debug("未识别切换，启用ocr识别点击切换")
-            for i_switch in range(3):
-                logger.debug("第{}次识别切换", i_switch + 1)
-                is_switch = ImageService.ocr_touch(Switch.switch,
-                                                   similarly=0.8)
-                if is_switch:
-                    break
+        is_switch = ImageService.ocr_touch(["登录"], ['其他'])
+        logger.debug(is_switch)
         now1 = time.time()
         logger.debug("结束")
         logger.debug(UtilsTime.convert_seconds(now1 - now))
