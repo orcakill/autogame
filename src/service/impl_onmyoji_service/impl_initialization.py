@@ -115,15 +115,7 @@ def initialization(game_task: list, login_type: int = 0):
                 logger.debug("接受协议")
                 ImageService.touch(Onmyoji.login_JSXY, wait=3)
                 logger.debug("点击切换")
-                is_switch = ImageService.touch(Onmyoji.login_QHFWQ)
-                if not is_switch:
-                    logger.debug("未识别切换，启用ocr识别点击切换")
-                    for i_switch in range(3):
-                        logger.debug("第{}次识别切换", i_switch + 1)
-                        is_switch = ImageService.ocr_touch(Switch.switch,
-                                                           similarly=0.8)
-                        if is_switch:
-                            break
+                switch()
                 logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
                 pos_tcs = ImageService.exists(Onmyoji.login_TYCS, wait=2)
                 pos_jsx = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
@@ -248,3 +240,23 @@ def return_home(game_task: list):
         logger.debug("有探索，有账号，在首页")
         return True
     return False
+
+def switch():
+    logger.debug("切换服务器，图片识别")
+    is_switch = ImageService.touch(Onmyoji.login_QHFWQ)
+    if is_switch:
+        return True
+    logger.debug("切换服务器，图片文字ocr识别")
+    is_switch = ImageService.ocr_touch(Switch.switch,similarly=0.8)
+    if is_switch:
+        return True
+    logger.debug("切换服务器，基于分辨率强制坐标")
+    is_start=ImageService.exists(Onmyoji.login_KSYX, wait=2)
+    ratio_x, ratio_y = AirtestService.resolution_ratio()
+    if is_start:
+        if ratio_x==1280 and ratio_y==720:
+            logger.debug("强制坐标")
+            ImageService.touch_coordinate((640, 520))
+            return True
+    return False
+

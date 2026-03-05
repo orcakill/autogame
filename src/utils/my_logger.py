@@ -40,6 +40,16 @@ class MyLogger:
             rotation="500 MB"
         )
 
+        # 信息日志配置（添加进程标识）
+        self.logger.add(
+            os.path.join(log_file_path, f"debug/{{time:YYYY-MM-DD}}/{{time:HH-mm-ss}}_p{os.getpid()}.log"),
+            level='DEBUG',
+            format='{time:YYYY-MM-DD HH:mm:ss.SSS} - process:{process} | thread:{thread} | {module}.{function}:{line} - {level} - {message}',
+            retention="48h",
+            enqueue=True,
+            rotation="500 MB"
+        )
+
         # 新增错误日志单独存储
         self.logger.add(
             os.path.join(log_file_path, f"error/{{time:YYYY-MM-DD}}/{{time:HH-mm-ss}}_p{os.getpid()}.log"),

@@ -154,7 +154,7 @@ class AirtestService:
         :param y:
         :return:
         """
-        if screen == '':
+        if screen=='':
             screen = AirtestService.snapshot(name=name)
         rgb_image = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
         cv2.circle(rgb_image, (x, y), 5, (255, 0, 0), -1)
@@ -335,16 +335,18 @@ class AirtestService:
             return False
 
     @staticmethod
-    def crop_image(x1, y1, x2, y2):
+    def crop_image(x1, y1, x2, y2,screen):
         """
         局部截图
+        :param screen:
         :param x1: x1
         :param y1: y1
         :param x2: x2
         :param y2: y2
         :return:
         """
-        screen = G.DEVICE.snapshot()
+        if screen is None:
+            screen = G.DEVICE.snapshot()
         # 局部截图
         local_screen = aircv.crop_image(screen, (x1, y1, x2, y2))
         return local_screen
