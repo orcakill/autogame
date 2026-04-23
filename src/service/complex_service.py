@@ -63,6 +63,11 @@ class ComplexService:
             WindowsService.start_exe("YsConsole", "云帅云手机")
             serialno = "127.0.0.1:50001"
             connect_info = serialno
+        if game_device == "5" or game_device == 5:
+            logger.debug("检查是否启动MuMu模拟器")
+            WindowsService.start_exe("MuMuNxMain", "#0 MuMu安卓设备")
+            serialno = "emulator-5554"
+            connect_info = serialno
         logger.debug("检查设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(serialno)
         while is_state != "device":
@@ -122,7 +127,7 @@ class ComplexService:
                 logger.debug("连接设备")
                 AirtestService.auto_setup(connect_info)
             logger.debug("检查截图方法效率")
-            best_method = AirtestService.check_method(  serialno)
+            best_method = AirtestService.check_method(serialno)
             if best_method != "" and 1==2 :
                 logger.debug("以最快截图方法重新连接")
                 connect_info = connect_info + '?cap_method=' + best_method

@@ -23,6 +23,7 @@ class TestOnmyojiService(TestCase):
         2 平板
         3 手机
         4 云手机-002
+        5 MuMu模拟器
         :return:
         """
         TestOnmyojiService.test_all_project("1", "0")
@@ -37,14 +38,14 @@ class TestOnmyojiService(TestCase):
         4 云手机-0021
         :return:
         """
-        TestOnmyojiService.test_project('2', "0", "登录")
+        TestOnmyojiService.test_project('1', "5", "登录")
 
     def test_initialization1(self):
         """
         项目一：登录
         :return:
         """
-        TestOnmyojiService.test_project('2', "4", "登录")
+        TestOnmyojiService.test_project('2', "5", "登录")
 
     def test_daily_rewards(self):
         """
