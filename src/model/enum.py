@@ -322,6 +322,7 @@ class Onmyoji:
     store_SDTB = r"商店\商店图标"
     store_TJ = r"商店\推荐"
     user_SYTX = r"用户\首页头像"
+    user_DLTX = r"用户\登录头像"
     user_XZZH = r"用户\选择账号"
 
     foster_SSYC = r"阴阳寮\式神寄养\式神育成"

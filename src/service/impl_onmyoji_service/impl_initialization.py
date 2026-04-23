@@ -37,112 +37,261 @@ def initialization(game_task: list, login_type: int = 0):
     account_index = str(os.path.join(Onmyoji.user_SYTX, str(game_account.account_num)))
     # 重新登录
     str_login = ''
-    # 判断是否是待登录账号首页
-    logger.debug("初始化-判断当前状态")
-    # 当前状态 账号首页 1，2,3，4
-    #        其它，不在账号首页
-    logger.debug("首页账号")
-    is_index = ImageService.exists(account_index)
-    logger.debug("首页探索")
-    is_explore = ImageService.exists(Onmyoji.home_TS, rgb=True)
-    logger.debug("首页町中")
-    is_courtyard = ImageService.exists(Onmyoji.home_DZ)
-    if not is_index or not is_explore or not is_courtyard:
-        logger.debug("不在账号首页")
+
+    # 判断是否在账号首页
+    if not is_on_account_homepage(account_index):
         str_login = '重新登录'
-        # 不在账号首页的其它，重启app，根据账号选择用户、服务器、开始游戏
-        logger.debug("启动阴阳师app")
-        ImageService.restart_app("com.netease.onmyoji")
-        logger.debug("判断是否存在适龄提示")
-        is_age_appropriate_reminder = ImageService.exists(Onmyoji.login_SLTS, timeouts=30)
-        # 不存在适龄提示
-        if not is_age_appropriate_reminder:
-            logger.debug("不存在适龄提示")
-            for i_ageAppropriateReminder in range(5):
-                logger.debug("点击可能存在的重新打开应用")
-                ImageService.touch(Onmyoji.login_CXDKYY)
-                logger.debug("点击左上角，防止有开场动画")
-                ImageService.touch_coordinate((10, 10))
-                logger.debug("接受协议")
-                ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
-                logger.debug("点击公告返回")
-                ImageService.touch(Onmyoji.comm_FH_YSJGGCH)
-                logger.debug("接受协议")
-                ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
-                logger.debug("重新判断适龄提示")
-                is_age_appropriate_reminder = ImageService.exists(Onmyoji.login_SLTS)
-                if is_age_appropriate_reminder:
-                    break
-                logger.debug("等待10秒")
-                time.sleep(10)
-        logger.debug("登录账号")
-        if login_type == 0:
-            for i_account in range(5):
-                logger.debug("第{}次切换账号", i_account + 1)
-                logger.debug("点击可能存在的登录")
-                ImageService.touch(Onmyoji.login_DLAN, wait=3, rgb=True)
-                logger.debug("检查可能存在的其他账号登录")
-                is_exception = ImageService.exists(Onmyoji.login_YCDL)
-                if is_exception:
-                    logger.debug("点击异常登录界面的退出")
-                    ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)
-                logger.debug("点击可能存在选服指引")
-                ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-                logger.debug("点击左上角，防止有开场动画")
-                ImageService.touch_coordinate((10, 10))
-                logger.debug("点击可能存在同意并登录")
-                ImageService.exists(Onmyoji.login_TYBDL)
-                logger.debug("点击可能存在的右上角白底黑色叉号")
-                ImageService.exists(Onmyoji.comm_FH_YSJBDHSCH)
-                logger.debug("用户中心")
-                ImageService.touch(Onmyoji.login_YHZX,timeouts=10)
-                logger.debug("切换账号")
-                ImageService.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2)
-                logger.debug("常用")
-                ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2)
-                logger.debug("选择账号")
-                account = str(os.path.join(Onmyoji.user_XZZH, game_account.account_name))
-                logger.debug("选择账号拼接:{}", account)
-                is_account = ImageService.touch(account, wait=4)
-                logger.debug("登录,不能包括其他账号,开启ORC识别文字登录")
+        # 重启app并处理登录流程
+        if not restart_app_and_login(game_account, server, login_type):
+            # 登录失败处理
+            game_project_log = create_project_log(game_project, game_account, game_devices, time_start,
+                                                  f"当前状态初始化,{str_login},失败")
+            Mapper.save_game_project_log(game_project_log)
+            return False
+
+    # 处理底部菜单
+    if not ensure_bottom_menu_open():
+        # 底部菜单处理失败
+        game_project_log = create_project_log(game_project, game_account, game_devices, time_start,
+                                              f"当前状态初始化,{str_login},失败")
+        Mapper.save_game_project_log(game_project_log)
+        return False
+
+    # 验证是否在账号首页
+    is_index = ImageService.exists(account_index)
+    time_end = time.time()
+    time_all = time_end - time_start
+
+    # 记录执行结果
+    result = f"当前状态初始化,{str_login}"
+    if login_type == 1:
+        result += ",快速登录"
+    if is_index:
+        result += ",成功"
+        logger.info("初始化当前状态成功:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
+    else:
+        result += ",失败"
+        logger.info("初始化当前状态失败:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
+
+    game_project_log = create_project_log(game_project, game_account, game_devices, time_start, result)
+    Mapper.save_game_project_log(game_project_log)
+    return is_index
+
+
+def is_on_account_homepage(account_index):
+    """检查是否在账号首页"""
+    logger.debug("初始化-判断当前状态")
+    is_index = ImageService.exists(account_index)
+    is_explore = ImageService.exists(Onmyoji.home_TS, rgb=True)
+    is_courtyard = ImageService.exists(Onmyoji.home_DZ)
+    return is_index and is_explore and is_courtyard
+
+
+def restart_app_and_login(game_account, server, login_type):
+    """重启应用并登录"""
+    logger.debug("启动阴阳师app")
+    ImageService.restart_app("com.netease.onmyoji")
+
+    # 处理适龄提示
+    handle_age_verification()
+
+    # 根据登录类型处理登录
+    if login_type == 0:
+        return login_with_account(game_account, server)
+    else:
+        return quick_login()
+
+
+def handle_age_verification():
+    """处理适龄提示"""
+    logger.debug("判断是否存在适龄提示")
+    is_age_appropriate_reminder = ImageService.exists(Onmyoji.login_SLTS, timeouts=30)
+
+    # 不存在适龄提示，尝试处理其他弹窗
+    if not is_age_appropriate_reminder:
+        logger.debug("不存在适龄提示")
+        for i_ageAppropriateReminder in range(5):
+            logger.debug("点击可能存在的重新打开应用")
+            ImageService.touch(Onmyoji.login_CXDKYY)
+            logger.debug("点击左上角，防止有开场动画")
+            ImageService.touch_coordinate((10, 10))
+            logger.debug("接受协议")
+            ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
+            logger.debug("点击公告返回")
+            ImageService.touch(Onmyoji.comm_FH_YSJGGCH)
+            logger.debug("接受协议")
+            ImageService.touch(Onmyoji.login_JSXY, timeouts=1)
+            logger.debug("重新判断适龄提示")
+            is_age_appropriate_reminder = ImageService.exists(Onmyoji.login_SLTS)
+            if is_age_appropriate_reminder:
+                break
+            logger.debug("等待10秒")
+            time.sleep(10)
+
+
+def login_with_account(game_account, server):
+    """使用账号登录"""
+    # 账号登录信息
+    account_login = str(os.path.join(Onmyoji.user_DLTX, str(game_account.account_num)))
+
+    # 步骤执行状态记录
+    step_status = {}
+    failure_screenshots = []
+
+    def log_step(step_name, status):
+        """记录步骤执行状态"""
+        status_symbol = "✓" if status else "✗"
+        logger.info(f"[{status_symbol}] {step_name}: {status}")
+        step_status[step_name] = status
+        return status
+
+    def analyze_login_failure(step_status):
+        """分析登录失败的主要原因"""
+        failure_reasons = []
+
+        if not step_status.get("点击用户中心", False):
+            failure_reasons.append("无法进入用户中心")
+
+        if not step_status.get("切换账号", False):
+            failure_reasons.append("无法切换账号")
+
+        if not step_status.get("选择具体账号", False):
+            failure_reasons.append("无法选择账号")
+
+        if not step_status.get("选择服务器", False):
+            failure_reasons.append("无法选择服务器")
+
+        if not step_status.get("开始游戏", False):
+            failure_reasons.append("无法开始游戏")
+
+        if not failure_reasons:
+            failure_reasons.append("未知原因")
+
+        return failure_reasons
+
+    for i_account in range(5):
+        logger.debug("第{}次切换账号", i_account + 1)
+
+        # 1. 点击可能存在的登录
+        log_step("点击登录按钮", ImageService.touch(Onmyoji.login_DLAN, wait=3, rgb=True))
+        if not step_status.get("点击登录按钮", False):
+            failure_screenshots.append(AirtestService.snapshot())
+
+        # 2. 检查可能存在的其他账号登录
+        is_exception = ImageService.exists(Onmyoji.login_YCDL)
+        if is_exception:
+            log_step("处理异常登录", ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH))
+            if not step_status.get("处理异常登录", False):
+                failure_screenshots.append(AirtestService.snapshot())
+
+        # 3. 点击可能存在选服指引
+        ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+
+        # 4. 点击左上角，防止有开场动画
+        ImageService.touch_coordinate((10, 10))
+
+        # 5. 点击可能存在同意并登录
+        ImageService.touch(Onmyoji.login_TYBDL)
+
+        # 6. 点击可能存在的右上角白底黑色叉号
+        ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)
+
+        # 7. 用户中心
+        log_step("点击用户中心", ImageService.touch(Onmyoji.login_YHZX, timeouts=10))
+        if not step_status.get("点击用户中心", False):
+            failure_screenshots.append(AirtestService.snapshot())
+
+        # 8. 切换账号
+        log_step("切换账号", ImageService.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2))
+        if not step_status.get("切换账号", False):
+            failure_screenshots.append(AirtestService.snapshot())
+
+        # 9. 常用
+        log_step("选择常用账号", ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2))
+        if not step_status.get("选择常用账号", False):
+            failure_screenshots.append(AirtestService.snapshot())
+
+        # 10. 选择账号
+        account = str(os.path.join(Onmyoji.user_XZZH, game_account.account_name))
+        logger.debug("选择账号拼接:{}", account)
+        log_step("选择具体账号", ImageService.touch(account, wait=4))
+        if not step_status.get("选择具体账号", False):
+            failure_screenshots.append(AirtestService.snapshot())
+
+        # 11. 登录,不能包括其他账号,开启ORC识别文字登录
+        is_login_ocr = ImageService.touch(Onmyoji.login_DLAN, wait=4)
+        if not is_login_ocr:
+            for i_login_ocr in range(5):
+                log_step("OCR识别登录", ImageService.ocr_touch(["登录"], ['其他']))
+                if not step_status.get("OCR识别登录", False):
+                    failure_screenshots.append(AirtestService.snapshot())
                 is_login_ocr = ImageService.exists(Onmyoji.login_DLAN, wait=4, rgb=True)
-                if is_login_ocr:
-                    for i_login_ocr in range(5):
-                        ImageService.ocr_touch(["登录"], ['其他'])
-                        is_login_ocr = ImageService.exists(Onmyoji.login_DLAN, wait=4, rgb=True)
-                        if not is_login_ocr:
-                            break
-                logger.debug("接受协议")
-                ImageService.touch(Onmyoji.login_JSXY, wait=3)
-                logger.debug("点击切换")
-                switch()
-                logger.debug("点击小三角,获 取特邀测试和注销角色坐标")
-                pos_tcs = ImageService.exists(Onmyoji.login_TYCS, wait=2)
-                pos_jsx = ImageService.exists(Onmyoji.login_ZXJS, wait=2)
-                if pos_tcs and pos_jsx:
-                    logger.debug("有小三角")
-                    ImageService.touch_coordinate((pos_tcs[0], pos_jsx[1]))
-                else:
-                    logger.debug("特邀测试{}，注销角色{}", pos_tcs, pos_jsx)
-                logger.debug("选择服务器:{}", game_account.role_region)
-                is_server = ImageService.touch(server, wait=2)
-                logger.debug("账号选择：{},服务器选择：{}", is_account, is_server)
-                if is_account and is_server:
-                    logger.debug("开始游戏")
-                    is_login = ImageService.touch(Onmyoji.login_KSYX, wait=2)
-                    if is_login:
-                        break
-                if i_account + 1 == 5:
-                    send_screenshot = AirtestService.snapshot()
-                    send_text = "账号：" + game_account.account_name + "\n\r账号选择：" + str(
-                        is_account) + "\n\r服务器选择：" + str(is_server)
-                    logger.debug("第五次尝试登录失败,邮件发送")
-                    UtilsMail.send_email("阴阳师脚本", "登录失败5次", send_text, [send_screenshot])
-        else:
-            logger.debug("开始游戏")
-            ImageService.touch(Onmyoji.login_KSYX, wait=5)
-        time.sleep(15)
-    logger.debug("{}首页,判断底部菜单", game_account.role_name)
+                if not is_login_ocr:
+                    break
+
+        # 12. 接受协议
+        log_step("接受协议", ImageService.touch(Onmyoji.login_JSXY, wait=3))
+        if not step_status.get("接受协议", False):
+            failure_screenshots.append(AirtestService.snapshot())
+
+        # 13. 点击切换
+        logger.debug("点击切换")
+        log_step("切换服务器", switch())
+        if not step_status.get("切换服务器", False):
+            failure_screenshots.append(AirtestService.snapshot())
+
+        # 14. 选择服务器
+        logger.debug("选择服务器，直接点击角色名称:{}", game_account.role_region)
+        log_step("选择服务器", ImageService.touch(account_login, wait=2))
+        if not step_status.get("选择服务器", False):
+            failure_screenshots.append(AirtestService.snapshot())
+
+        # 15. 开始游戏
+        if step_status.get("选择服务器", False):
+            log_step("开始游戏", ImageService.touch(Onmyoji.login_KSYX, wait=2))
+            if step_status.get("开始游戏", False):
+                time.sleep(15)
+                return True
+            else:
+                failure_screenshots.append(AirtestService.snapshot())
+
+        # 第五次尝试失败，发送详细邮件
+        if i_account + 1 == 5:
+            # 最终截图
+            final_screenshot = AirtestService.snapshot()
+            failure_screenshots.append(final_screenshot)
+
+            # 分析失败原因
+            failure_reasons = analyze_login_failure(step_status)
+
+            # 生成详细的步骤执行状态报告
+            step_report = "登录步骤执行状态:\n"
+            for step, status in step_status.items():
+                step_report += f"  - {step}: {status}\n"
+
+            failure_reason_str = "失败原因分析:\n"
+            for reason in failure_reasons:
+                failure_reason_str += f"  - {reason}\n"
+
+            send_text = "账号：" + game_account.account_name + "\n\r\n\r" + step_report + "\n\r" + failure_reason_str
+
+            logger.debug("第五次尝试登录失败,邮件发送")
+            # 限制截图数量，避免邮件过大
+            UtilsMail.send_email("阴阳师脚本", "登录失败5次", send_text, failure_screenshots[:5])
+
+    return False
+
+
+def quick_login():
+    """快速登录"""
+    logger.debug("开始游戏")
+    is_login = ImageService.touch(Onmyoji.login_KSYX, wait=5)
+    time.sleep(15)
+    return is_login
+
+
+def ensure_bottom_menu_open():
+    """确保底部菜单打开"""
     is_open_bottom = ImageService.exists(Onmyoji.home_DBCDDK)
     if not is_open_bottom:
         for i_openBottom in range(4):
@@ -178,85 +327,68 @@ def initialization(game_task: list, login_type: int = 0):
                 logger.debug("底部菜单已打开")
                 break
     time.sleep(5)
-    logger.debug("重新判断是否在账号首页")
-    is_index = ImageService.exists(account_index)
-    # 结束时间
+    return is_open_bottom
+
+
+def create_project_log(game_project, game_account, game_devices, time_start, result):
+    """创建项目日志"""
     time_end = time.time()
-    # 总用时
     time_all = time_end - time_start
     if time_all >= 60 * 5:
         logger.info("当前状态初始化，用时超5分钟，实际用时{}", UtilsTime.convert_seconds(time_all))
-        # 超5分钟，判定为初始化失败，云手机重启设备，重新授权ADB，
-    # 记录项目执行结果
-    game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
-                                      result='当前状态初始化', cost_time=int(time_all))
-    if str_login != '':
-        game_project_log.result = game_project_log.result + "," + str_login
-    if login_type == 1:
-        game_project_log.result = game_project_log.result + ",快速登录"
-    if is_index:
-        game_project_log.result = game_project_log.result + ",成功"
-        logger.info("初始化当前状态成功:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
-        Mapper.save_game_project_log(game_project_log)
-        return True
-    else:
-        game_project_log.result = game_project_log.result + ",失败"
-        Mapper.save_game_project_log(game_project_log)
-        logger.info("初始化当前状态失败:{}，用时{}", game_account.role_name, UtilsTime.convert_seconds(time_all))
-        return False
+    return GameProjectLog(
+        project_id=game_project.id,
+        account_id=game_account.id,
+        device_id=game_devices.id,
+        result=result,
+        cost_time=int(time_all)
+    )
 
-
-def return_home(game_task: list):
-    game_account = GameAccount(game_task[2])
-
-    game_project = GameProject(game_task[3])
-    # 判断是否是待登录账号首页
-    logger.debug("返回首页-拒接协战")
-    # 当前状态 账号首页 1，2,3，4，5
-    #        其它，不在账号首页
-    # 拒绝协战
-    ComplexService.refuse_reward()
-    # 首页返回
-    logger.debug("首页返回")
-    ImageService.exists(Onmyoji.comm_FH_SYFH)
-    logger.debug("返回首页-检查首页账号")
-    account_index = str(os.path.join(Onmyoji.user_SYTX, str(game_account.account_num)))
-    is_index = ImageService.exists(account_index)
-    logger.debug("返回首页-检查探索")
-    is_explore = ImageService.exists(Onmyoji.home_TS)
-    logger.debug("返回首页-检查町中")
-    is_courtyard = ImageService.exists(Onmyoji.home_DZ)
-    if not is_index or not is_explore or not is_courtyard:
-        if not is_index:
-            logger.debug("首页账号{}未识别成功", account_index)
-        if not is_explore:
-            logger.debug("首页探索{}未识别成功", Onmyoji.home_TS)
-        if not is_courtyard:
-            logger.debug("首页町中{}未识别成功", Onmyoji.home_DZ)
-        ImageService.snapshot(game_account.role_name + '_' + game_project.project_name + "_非首页", True)
-        logger.info("不在账号首页，重新快速登录 {}:{}", game_account.role_name, game_project.project_name)
-        initialization(game_task, 1)
-    else:
-        logger.debug("有探索，有账号，在首页")
-        return True
-    return False
 
 def switch():
+    """切换服务器"""
     logger.debug("切换服务器，图片识别")
-    is_switch = ImageService.touch(Onmyoji.login_QHFWQ)
-    if is_switch:
-        return True
+    # 尝试通过图片识别切换
+    if ImageService.touch(Onmyoji.login_QHFWQ):
+        if not ImageService.touch(Onmyoji.login_QHFWQ):
+            return True
+
+    # 尝试通过OCR识别切换
     logger.debug("切换服务器，图片文字ocr识别")
-    is_switch = ImageService.ocr_touch(Switch.switch,similarly=0.8)
-    if is_switch:
+    if ImageService.ocr_touch(Switch.switch, similarly=0.8):
         return True
+
+    # 尝试基于分辨率强制坐标
     logger.debug("切换服务器，基于分辨率强制坐标")
-    is_start=ImageService.exists(Onmyoji.login_KSYX, wait=2)
-    ratio_x, ratio_y = AirtestService.resolution_ratio()
+    is_start = ImageService.exists(Onmyoji.login_KSYX, wait=2)
     if is_start:
-        if ratio_x==1280 and ratio_y==720:
+        ratio_x, ratio_y = AirtestService.resolution_ratio()
+        if ratio_x == 1280 and ratio_y == 720:
             logger.debug("强制坐标")
             ImageService.touch_coordinate((640, 520))
             return True
+
     return False
 
+
+def return_home(game_task: list):
+    """返回游戏首页"""
+    game_account = GameAccount(game_task[2])
+    game_project = GameProject(game_task[3])
+
+    # 拒绝协战
+    logger.debug("返回首页-拒接协战")
+    ComplexService.refuse_reward()
+
+    # 首页返回
+    logger.debug("首页返回")
+    ImageService.exists(Onmyoji.comm_FH_SYFH)
+
+    # 检查是否在首页
+    if not is_on_account_homepage(str(os.path.join(Onmyoji.user_SYTX, str(game_account.account_num)))):
+        logger.debug("不在账号首页，重新快速登录 {}:{}", game_account.role_name, game_project.project_name)
+        ImageService.snapshot(game_account.role_name + '_' + game_project.project_name + "_非首页", True)
+        return initialization(game_task, 1)
+    else:
+        logger.debug("有探索，有账号，在首页")
+        return True

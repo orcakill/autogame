@@ -5,8 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <change afterPath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/登录头像/2/屏幕截图 2023-07-05 172217.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/登录头像/2/屏幕截图 2024-07-12 082755.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/登录头像/3/屏幕截图 2023-09-26 222939.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/登录头像/4/屏幕截图 2023-08-01 162608.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/登录头像/5/屏幕截图 2023-08-01 165155.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/登录头像/6/屏幕截图 2023-10-01 003642.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/static/scrcpy/srcpy.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/enum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/enum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/选择账号/2/屏幕截图 2023-10-02 011110.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/选择账号/2/屏幕截图 2023-10-02 141920.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/选择账号/2/屏幕截图 2023-10-02 141920.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/选择账号/2/屏幕截图 2024-06-20 144804.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/static/onmyoji/用户/选择账号/2/屏幕截图 2026-02-19 025216.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/complex_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/complex_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,12 +48,12 @@
     &quot;assignee&quot;: &quot;orcakill&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/orcakill/autogame.git",
-    "accountId": "a704046e-9f72-4bab-b272-fa5b83f4abd5"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/orcakill/autogame.git&quot;,
+    &quot;accountId&quot;: &quot;a704046e-9f72-4bab-b272-fa5b83f4abd5&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -52,54 +66,54 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.src.test.test_image_service.TestImageService.test_exists_coordinate 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_fight 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_manage 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_image_service.TestImageService.test_key_back 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor&quot;: &quot;Run&quot;,
-    &quot;Python.arrange.executor&quot;: &quot;Run&quot;,
-    &quot;Python.impl_power.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.temp_mail.executor&quot;: &quot;Run&quot;,
-    &quot;Python.temp_scrcpy_no_total.executor&quot;: &quot;Run&quot;,
-    &quot;Python.temp_screenshot_efficiency.executor&quot;: &quot;Run&quot;,
-    &quot;Python.utils_point.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/project/autogame/src/resources/static/paddlex&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_image_service.TestImageService.test_exists_coordinate 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_ocr_service.TestOcrService.test_ocr 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_fight 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_manage 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor": "Run",
+    "Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试.executor": "Run",
+    "Python 测试.test_image_service.TestImageService.test_key_back 的 Python 测试.executor": "Run",
+    "Python 测试.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试.executor": "Run",
+    "Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor": "Run",
+    "Python 测试.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor": "Run",
+    "Python.arrange.executor": "Run",
+    "Python.impl_power.executor": "Debug",
+    "Python.temp_mail.executor": "Run",
+    "Python.temp_scrcpy_no_total.executor": "Run",
+    "Python.temp_screenshot_efficiency.executor": "Run",
+    "Python.utils_point.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/project/autogame/src/resources/static/onmyoji/用户/登录头像",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\project\autogame\src\resources\static\onmyoji\用户\登录头像" />
       <recent name="D:\project\autogame\src\resources\static\paddlex" />
       <recent name="D:\project\autogame\src\resources\static\paddleocr" />
       <recent name="D:\project\autogame\src" />
       <recent name="D:\project\autogame\src\resources" />
-      <recent name="D:\project\autogame" />
     </key>
   </component>
-  <component name="RunManager" selected="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试">
+  <component name="RunManager" selected="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试">
     <configuration name="arrange" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -123,24 +137,6 @@
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="src.test.test_image_service.TestImageService.test_exists 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="autogame" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="RUN_TOOL" value="" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;src.test.test_image_service.TestImageService.test_exists&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
@@ -194,13 +190,30 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" />
         <item itemvalue="Python.arrange" />
-        <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
       </list>
     </recent_temporary>
   </component>
