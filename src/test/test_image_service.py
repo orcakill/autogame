@@ -22,10 +22,10 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("0")
+        ComplexService.auto_setup("5")
         logger.debug("开始")
         now = time.time()
-        is_switch = ImageService.ocr_touch(["登录"], ['其他'])
+        is_switch = ImageService.touch(Onmyoji.login_YHZX, deviation=0.1,timeouts=20,is_throw=True)
         logger.debug(is_switch)
         now1 = time.time()
         logger.debug("结束")

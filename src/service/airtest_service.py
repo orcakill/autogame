@@ -40,8 +40,22 @@ DURATION = 0.1
 class AirtestService:
     @staticmethod
     def auto_setup(connect_name: str):
-        devices = "Android://127.0.0.1:5037/" + connect_name
+        devices = f"Android://127.0.0.1:5037/{connect_name}?ori_method=ADBORI"
         auto_setup(__file__, logdir=False, devices=[devices])
+        from airtest.core.helper import G
+        display_info = G.DEVICE.display_info
+        height1, width1 = AirtestService.resolution_ratio()
+        # 判断屏幕方向并获取正确的横屏宽高
+        # orientation: 1代表竖屏, 2代表横屏 (具体值可能因设备而异)
+        if display_info['orientation'] in [1, 3]:  # 如果当前是竖屏模式
+            height = display_info['width']  # 注意：宽高互换
+            width = display_info['height']
+            logger.debug("当前设备为竖屏模式")
+            if height == width1 and width == height1:
+                logger.debug("当前设备和实际界面不一致，实际为横屏")
+            else:
+                logger.debug("当前设备和实际界面一致，实际为竖屏")
+
 
     @staticmethod
     def auto_setup_windows(hwnd: str = None, title: str = None):
