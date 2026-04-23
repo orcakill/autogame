@@ -89,11 +89,14 @@ def is_on_account_homepage(account_index):
 
 def restart_app_and_login(game_account, server, login_type):
     """重启应用并登录"""
-    logger.debug("启动阴阳师app")
-    ImageService.restart_app("com.netease.onmyoji")
-
-    # 处理适龄提示
-    handle_age_verification()
+    logger.debug("判断是否存在适龄提示")
+    is_age_appropriate_reminder = ImageService.exists(Onmyoji.login_SLTS, timeouts=30)
+    if not is_age_appropriate_reminder:
+        logger.debug("不存在适龄提示，重启应用")
+        logger.debug("启动阴阳师app")
+        ImageService.restart_app("com.netease.onmyoji")
+        # 处理适龄提示
+        handle_age_verification()
 
     # 根据登录类型处理登录
     if login_type == 0:
@@ -145,80 +148,87 @@ def login_with_account(game_account, server):
         step_status[step_name] = status
         return status
 
-    def analyze_login_failure(step_status):
+    def analyze_login_failure(step_status_out):
         """分析登录失败的主要原因"""
-        failure_reasons = []
+        failure_reasons_out = []
 
-        if not step_status.get("点击用户中心", False):
-            failure_reasons.append("无法进入用户中心")
+        if not step_status_out.get("点击用户中心", False):
+            failure_reasons_out.append("无法进入用户中心")
 
-        if not step_status.get("切换账号", False):
-            failure_reasons.append("无法切换账号")
+        if not step_status_out.get("切换账号", False):
+            failure_reasons_out.append("无法切换账号")
 
-        if not step_status.get("选择具体账号", False):
-            failure_reasons.append("无法选择账号")
+        if not step_status_out.get("选择具体账号", False):
+            failure_reasons_out.append("无法选择账号")
 
-        if not step_status.get("选择服务器", False):
-            failure_reasons.append("无法选择服务器")
+        if not step_status_out.get("选择服务器", False):
+            failure_reasons_out.append("无法选择服务器")
 
-        if not step_status.get("开始游戏", False):
-            failure_reasons.append("无法开始游戏")
+        if not step_status_out.get("开始游戏", False):
+            failure_reasons_out.append("无法开始游戏")
 
-        if not failure_reasons:
-            failure_reasons.append("未知原因")
+        if not failure_reasons_out:
+            failure_reasons_out.append("未知原因")
 
-        return failure_reasons
+        return failure_reasons_out
 
     for i_account in range(5):
         logger.debug("第{}次切换账号", i_account + 1)
-
+        # 可能存在的流程不算到登录流程中
         # 1. 点击可能存在的登录
-        log_step("点击登录按钮", ImageService.touch(Onmyoji.login_DLAN, wait=3, rgb=True))
-        if not step_status.get("点击登录按钮", False):
-            failure_screenshots.append(AirtestService.snapshot())
+        logger.debug("点击可能存在的登录")
+        ImageService.touch(Onmyoji.login_DLAN, wait=3, rgb=True)
 
+        logger.debug("检查可能存在的其他账号登录")
         # 2. 检查可能存在的其他账号登录
         is_exception = ImageService.exists(Onmyoji.login_YCDL)
         if is_exception:
-            log_step("处理异常登录", ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH))
-            if not step_status.get("处理异常登录", False):
-                failure_screenshots.append(AirtestService.snapshot())
+            ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)
 
+        logger.debug("点击可能存在选服指引")
         # 3. 点击可能存在选服指引
         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
 
-        # 4. 点击左上角，防止有开场动画
+        # 4. 点击可能存在开场动画，点击左上角，防止有开场动画
+        logger.debug("点击左上角，防止有开场动画")
         ImageService.touch_coordinate((10, 10))
 
         # 5. 点击可能存在同意并登录
+        logger.debug("点击可能存在同意并登录")
         ImageService.touch(Onmyoji.login_TYBDL)
 
         # 6. 点击可能存在的右上角白底黑色叉号
+        logger.debug("点击可能存在的右上角白底黑色叉号")
         ImageService.touch(Onmyoji.comm_FH_YSJBDHSCH)
 
-        # 7. 用户中心
-        log_step("点击用户中心", ImageService.touch(Onmyoji.login_YHZX, timeouts=10))
+        # 7. 必点，用户中心
+        logger.debug("点击用户中心")
+        log_step("点击用户中心", ImageService.touch(Onmyoji.login_YHZX, timeouts=10,deviation=0))
         if not step_status.get("点击用户中心", False):
             failure_screenshots.append(AirtestService.snapshot())
 
-        # 8. 切换账号
+        # 8. 必点，切换账号
+        logger.debug("点击切换账号")
         log_step("切换账号", ImageService.touch(Onmyoji.login_QHZH, cvstrategy=Cvstrategy.default, wait=2))
         if not step_status.get("切换账号", False):
             failure_screenshots.append(AirtestService.snapshot())
 
-        # 9. 常用
+        # 9. 必点，常用
+        logger.debug("点击常用账号")
         log_step("选择常用账号", ImageService.touch(Onmyoji.login_CY, cvstrategy=Cvstrategy.default, wait=2))
         if not step_status.get("选择常用账号", False):
             failure_screenshots.append(AirtestService.snapshot())
 
-        # 10. 选择账号
+        # 10. 必点，选择账号
+        logger.debug("点击选择账号")
         account = str(os.path.join(Onmyoji.user_XZZH, game_account.account_name))
         logger.debug("选择账号拼接:{}", account)
         log_step("选择具体账号", ImageService.touch(account, wait=4))
         if not step_status.get("选择具体账号", False):
             failure_screenshots.append(AirtestService.snapshot())
 
-        # 11. 登录,不能包括其他账号,开启ORC识别文字登录
+        # 11. 必点，登录,不能包括其他账号,开启ORC识别文字登录
+        logger.debug("点击登录")
         is_login_ocr = ImageService.touch(Onmyoji.login_DLAN, wait=4)
         if not is_login_ocr:
             for i_login_ocr in range(5):
@@ -229,10 +239,9 @@ def login_with_account(game_account, server):
                 if not is_login_ocr:
                     break
 
-        # 12. 接受协议
-        log_step("接受协议", ImageService.touch(Onmyoji.login_JSXY, wait=3))
-        if not step_status.get("接受协议", False):
-            failure_screenshots.append(AirtestService.snapshot())
+        # 12. 可能存在，接受协议
+        logger.debug("点击可能存在的接受协议")
+        ImageService.touch(Onmyoji.login_JSXY, wait=3)
 
         # 13. 点击切换
         logger.debug("点击切换")
@@ -241,13 +250,14 @@ def login_with_account(game_account, server):
             failure_screenshots.append(AirtestService.snapshot())
 
         # 14. 选择服务器
-        logger.debug("选择服务器，直接点击角色名称:{}", game_account.role_region)
-        log_step("选择服务器", ImageService.touch(account_login, wait=2))
-        if not step_status.get("选择服务器", False):
+        logger.debug("选择角色，直接点击角色名称:{}", game_account.role_region)
+        log_step("选择角色", ImageService.touch(account_login, wait=2))
+        if not step_status.get("选择角色", False):
             failure_screenshots.append(AirtestService.snapshot())
 
         # 15. 开始游戏
-        if step_status.get("选择服务器", False):
+        logger.debug("点击开始游戏")
+        if step_status.get("选择角色", False):
             log_step("开始游戏", ImageService.touch(Onmyoji.login_KSYX, wait=2))
             if step_status.get("开始游戏", False):
                 time.sleep(15)
