@@ -80,7 +80,7 @@ class ImplExistsTouch:
                         #     print("当前为横屏模式")
 
                         pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
-                        print(template.filename)
+                        # print(template.filename)
                         if pos:
                             # 制作误差
                             random_range1 = random.randint(-15, 15)
@@ -89,7 +89,7 @@ class ImplExistsTouch:
                             random_num2 = random.randint(random_range1, random_range2) * deviation
                             pos = (int(pos[0] + random_num1), int(pos[1] + random_num2))
                             # 截图打印
-                            AirtestService.draw_point("", pos[0], pos[1],name=template.filename)
+                            # AirtestService.draw_point("", pos[0], pos[1],name=template.filename)
                             if is_click:
                                 time.sleep(interval)
                                 logger.debug("图像识别点击成功:{}", folder_path)

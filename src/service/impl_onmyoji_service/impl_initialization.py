@@ -250,7 +250,8 @@ def login_with_account(game_account, server):
             failure_screenshots.append(AirtestService.snapshot())
 
         # 14. 选择服务器
-        logger.debug("选择角色，直接点击角色名称:{}", game_account.role_region)
+        account_login = str(os.path.join(Onmyoji.user_DLTX, game_account.account_name))
+        logger.debug("选择角色，直接点击角色名称:{}", account_login)
         log_step("选择角色", ImageService.touch(account_login, wait=2))
         if not step_status.get("选择角色", False):
             failure_screenshots.append(AirtestService.snapshot())

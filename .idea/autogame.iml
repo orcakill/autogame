@@ -4,6 +4,10 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/.codeartsdoer" />
+      <excludeFolder url="file://$MODULE_DIR$/.codeartsdoer/agents" />
+      <excludeFolder url="file://$MODULE_DIR$/.codeartsdoer/complex_code_task" />
+      <excludeFolder url="file://$MODULE_DIR$/.codeartsdoer/skills" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (autogame)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
