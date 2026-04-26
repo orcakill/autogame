@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/autogame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/autogame.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-24_02-46-44_img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-24_03-05-32_img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-24_03-06-47_img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-24_03-15-51_img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/airtest_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/airtest_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/complex_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/complex_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test_image_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_image_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +38,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/orcakill/autogame.git&quot;,
-    &quot;accountId&quot;: &quot;a704046e-9f72-4bab-b272-fa5b83f4abd5&quot;
+    &quot;accountId&quot;: &quot;bf809f1b-737d-4f1a-b6db-6e884d398c1e&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -110,30 +101,22 @@
       <recent name="D:\project\autogame\src\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试">
-    <configuration name="arrange" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试">
+    <configuration name="src.test.test_image_service.TestImageService.test_exists 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/utils" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
       <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/utils/arrange.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;src.test.test_image_service.TestImageService.test_exists&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
@@ -206,11 +189,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_all 的 Python 测试" />
-        <item itemvalue="Python.arrange" />
       </list>
     </recent_temporary>
   </component>

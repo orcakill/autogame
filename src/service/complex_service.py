@@ -67,7 +67,7 @@ class ComplexService:
             logger.debug("检查是否启动MuMu模拟器")
             WindowsService.start_exe("MuMuNxMain", "#0 MuMu安卓设备")
             serialno = "emulator-5554"
-            connect_info = serialno+"?cap_method=JAVACAP"
+            connect_info = serialno
         logger.debug("检查设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(serialno)
         while is_state != "device":
