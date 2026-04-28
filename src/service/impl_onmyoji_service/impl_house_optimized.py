@@ -168,13 +168,9 @@ class ImplHouseOptimized:
         # 检查左侧结界卡
         target_cards = [
             Onmyoji.foster_ZCJJK_LXTG,  # 六星太鼓
-            Onmyoji.foster_ZCJJK_LXDY,  # 六星斗鱼
             Onmyoji.foster_ZCJJK_WXTG,  # 五星太鼓
-            Onmyoji.foster_ZCJJK_WXDY,  # 五星斗鱼
-            Onmyoji.foster_ZCJJK_SXTG,  # 四星太鼓
-            Onmyoji.foster_ZCJJK_SXTG1, # 四星太鼓1
-            Onmyoji.foster_ZCJJK_SXDY,  # 四星斗鱼
-            Onmyoji.foster_ZCJJK_SXDY1  # 四星斗鱼1
+            Onmyoji.foster_ZCJJK_SXTG1,  # 四星太鼓
+            Onmyoji.foster_ZCJJK_SXTG1  # 三星太鼓1
         ]
         
         for target_card in target_cards:

@@ -20,6 +20,15 @@ def daily_rewards(game_task: []):
     game_devices = GameDevice(game_task[4])
     # 开始时间
     time_start = time.time()
+    logger.debug("0.一键完成")
+    ImageService.touch(Onmyoji.reward_all_YJWCRK)
+    ImageService.touch(Onmyoji.reward_all_YJWCAS)
+    ImageService.touch(Onmyoji.reward_all_YJWCAS)
+    ImageService.touch(Onmyoji.reward_all_YJWCLS)
+    ImageService.touch(Onmyoji.reward_all_YJWCLS)
+    ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+    ImageService.touch(Onmyoji.comm_FH_SYFH)
+    ImageService.touch(Onmyoji.comm_FH_SYFH)
     # 账号信息
     logger.debug("1.邮箱奖励")
     is_mail = ImageService.exists(Onmyoji.reward_YX)

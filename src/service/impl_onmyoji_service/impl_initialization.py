@@ -134,9 +134,6 @@ def handle_age_verification():
 
 def login_with_account(game_account, server):
     """使用账号登录"""
-    # 账号登录信息
-    account_login = str(os.path.join(Onmyoji.user_DLTX, str(game_account.account_num)))
-
     # 步骤执行状态记录
     step_status = {}
     failure_screenshots = []
@@ -250,7 +247,7 @@ def login_with_account(game_account, server):
             failure_screenshots.append(AirtestService.snapshot())
 
         # 14. 选择服务器
-        account_login = str(os.path.join(Onmyoji.user_DLTX, game_account.account_name))
+        account_login = str(os.path.join(Onmyoji.user_DLTX, str(game_account.account_num)))
         logger.debug("选择角色，直接点击角色名称:{}", account_login)
         log_step("选择角色", ImageService.touch(account_login, wait=2))
         if not step_status.get("选择角色", False):
