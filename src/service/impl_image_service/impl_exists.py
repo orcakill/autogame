@@ -36,7 +36,7 @@ class ImplExistsTouch:
     @staticmethod
     def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
                threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
-               is_click: bool = False, rgb: bool = False, deviation: float = 1,duration:float=DURATION):
+               is_click: bool = False, rgb: bool = False, deviation: float = 1, duration: float = DURATION):
         """
         根据文件夹名获取图片进行图像识别，判断图片是否存在
         :param duration: 长按
@@ -53,15 +53,18 @@ class ImplExistsTouch:
         :param is_throw: 是否显示异常
         :return:
         """
-        try:
-            time.sleep(wait)
-            template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
-            time_start = time.time()
-            while time.time() - time_start < timeouts:
-                for template in template_list:
+        time.sleep(wait)
+        template_list = AirtestService.get_template_list(folder_path, rgb, threshold)
+        time_start = time.time()
+        while time.time() - time_start < timeouts:
+            for template in template_list:
+                try:
                     if deviation == 0 and is_click:
-                        return AirtestService.touch(folder_path,template, cvstrategy, timeout, is_throw, click_times=TIMES,
-                                                    duration=duration)
+                        result = AirtestService.touch(folder_path, template, cvstrategy, timeout, is_throw,
+                                                     click_times=TIMES, duration=duration)
+                        if result:
+                            return result
+                        continue  # 单张图片识别失败，继续下一张
 
                     else:
                         # # 获取设备信息
@@ -89,7 +92,7 @@ class ImplExistsTouch:
                             random_num2 = random.randint(random_range1, random_range2) * deviation
                             pos = (int(pos[0] + random_num1), int(pos[1] + random_num2))
                             # 截图打印
-                            # AirtestService.draw_point("", pos[0], pos[1],name=template.filename)
+                            # AirtestService.draw_point("", pos[0], pos[1], name=template.filename)
                             if is_click:
                                 time.sleep(interval)
                                 logger.debug("图像识别点击成功:{}", folder_path)
@@ -101,11 +104,11 @@ class ImplExistsTouch:
                                 else:
                                     logger.debug("图像识别成功:{}", folder_path)
                                 return pos
+                except Exception as e:
+                    if is_throw:
+                        logger.debug("单张图片识别异常，继续下一张: {}", e)
+                    else:
+                        pass
+                    continue  # 单张图片识别异常，跳过继续下一张
 
-            return False
-        except Exception as e:
-            if is_throw:
-                logger.exception("异常：{}", e)
-            else:
-                pass
         return False

@@ -211,8 +211,12 @@ class Onmyoji:
     reward_YX = r"奖励\邮箱"
     reward_HHZTB = r"奖励\花合战图标"
     reward_YCRW = r"奖励\右侧任务"
-    reward_DJKB = r"奖励\点击空白"
+    reward_DJKB = r"奖励\点击空白处"
     reward_HHZQBLQ = r"奖励\花合战全部领取"
+
+    reward_all_YJWCRK= r"奖励\一键完成\一键完成入口"
+    reward_all_YJWCAS = r"奖励\一键完成\一键完成暗色"
+    reward_all_YJWCLS = r"奖励\一键完成\一键完成亮色"
 
     souL_BQ_JSTXXH = r"探索\御魂\八岐大蛇\角色头像小号"
     soul_BQ_BD = r"探索\御魂\八岐大蛇\白蛋"
