@@ -160,7 +160,7 @@ class AirtestService:
         imageio.imsave(img_path, rgb_image)
 
     @staticmethod
-    def draw_point(screen, x, y, name: str = "识别截图"):
+    def draw_point(screen, x: int=0, y: int=0, name: str = "识别截图"):
         """
         画图，根据指定范围的坐标在原图上画框
         :param name:
@@ -175,6 +175,9 @@ class AirtestService:
         cv2.circle(rgb_image, (x, y), 5, (255, 0, 0), -1)
         # 保存图片到本地磁盘
         img_path = UtilsPath.get_print_image_path()
+        # 确保路径存在
+        if not os.path.exists(img_path):
+            os.makedirs(img_path)
         imageio.imsave(img_path, rgb_image)
 
     @staticmethod

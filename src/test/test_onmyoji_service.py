@@ -66,14 +66,14 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "地域鬼王")
+        TestOnmyojiService.test_project('1', '5', "地域鬼王")
 
     def test_foster_care(self):
         """
         项目5 式神寄养
         :return:；
         """
-        TestOnmyojiService.test_project('1', '5', "式神寄养")
+        TestOnmyojiService.test_project('1 ', '5', "式神寄养")
 
     def test_shack_house(self):
         """
