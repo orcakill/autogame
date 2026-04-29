@@ -5,15 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
-      <change afterPath="$PROJECT_DIR$/src/resources/static/onmyoji/登录/异常常用/.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/enum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/enum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/bat/main_day_1_周日" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/debug/.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/error/.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/image/.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/image/2026-04-28_23-47-46_img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/image/2026-04-29_03-04-31_逆戟之刃_每日奖励_非首页.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/image/2026-04-29_03-09-22_逆戟之刃_每日奖励_非首页.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/image/2026-04-29_03-41-31_逆戟之刃_每日奖励_非首页.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/image/2026-04-29_03-46-30_逆戟之刃_每日奖励_非首页.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/airtest_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/airtest_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_house_optimized.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_house_optimized.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_initialization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_reward.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_reward.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/test_image_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_image_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/utils_path.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils_path.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,12 +48,12 @@
     &quot;assignee&quot;: &quot;orcakill&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/orcakill/autogame.git",
-    "accountId": "a704046e-9f72-4bab-b272-fa5b83f4abd5"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/orcakill/autogame.git&quot;,
+    &quot;accountId&quot;: &quot;a704046e-9f72-4bab-b272-fa5b83f4abd5&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -70,6 +77,7 @@
     "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试.executor": "Run",
     "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_fight 的 Python 测试.executor": "Run",
     "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_friends_manage 的 Python 测试.executor": "Run",
+    "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_ghost_king 的 Python 测试.executor": "Run",
     "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试.executor": "Run",
     "Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试.executor": "Run",
     "Python 测试.test_image_service.TestImageService.test_exists 的 Python 测试.executor": "Run",
@@ -108,7 +116,7 @@
       <recent name="D:\project\autogame\src\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试">
+  <component name="RunManager" selected="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_ghost_king 的 Python 测试">
     <configuration name="src.test.test_image_service.TestImageService.test_exists 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -160,6 +168,23 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_ghost_king 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="autogame" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;src.test.test_onmyoji_service.TestOnmyojiService.test_ghost_king&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -177,30 +202,13 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="autogame" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="DEBUG_JUST_MY_CODE" value="false" />
-      <option name="RUN_TOOL" value="" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_ghost_king 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_daily_rewards 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
-        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization1 的 Python 测试" />
       </list>
     </recent_temporary>
   </component>

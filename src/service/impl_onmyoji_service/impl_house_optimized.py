@@ -170,7 +170,7 @@ class ImplHouseOptimized:
             Onmyoji.foster_ZCJJK_LXTG,  # 六星太鼓
             Onmyoji.foster_ZCJJK_WXTG,  # 五星太鼓
             Onmyoji.foster_ZCJJK_SXTG1,  # 四星太鼓
-            Onmyoji.foster_ZCJJK_SXTG1  # 三星太鼓1
+            Onmyoji.foster_ZCJJK_SXTG  # 三星太鼓1
         ]
         
         for target_card in target_cards:
@@ -226,13 +226,9 @@ class ImplHouseOptimized:
         # 定义优先级顺序
         priority_order = [
             Onmyoji.foster_JJK_LXTG,  # 六星太鼓（最高）
-            Onmyoji.foster_JJK_LXDY,  # 六星斗鱼
             Onmyoji.foster_JJK_WXTG,  # 五星太鼓
-            Onmyoji.foster_JJK_WXDY,  # 五星斗鱼
-            Onmyoji.foster_JJK_SXTG,  # 四星太鼓
-            Onmyoji.foster_JJK_SXTG1, # 四星太鼓1
-            Onmyoji.foster_JJK_SXDY,  # 四星斗鱼
-            Onmyoji.foster_JJK_SXDY1  # 四星斗鱼1（最低）
+            Onmyoji.foster_JJK_SXTG1,  # 四星太鼓
+            Onmyoji.foster_JJK_SXTG   # 三星太鼓
         ]
         
         # 合并所有结界卡

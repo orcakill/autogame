@@ -22,7 +22,7 @@ class UtilsPath:
         :return: 日志根路径
         """
         path = UtilsPath.get_project_path()
-        return os.path.join(path, "log")
+        return os.path.join(path, "logs")
 
     @staticmethod
     def get_database_url():
