@@ -5,22 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/bat/main_day_1_周日" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/debug/.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/error/.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-28_23-47-46_img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-29_03-04-31_逆戟之刃_每日奖励_非首页.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-29_03-09-22_逆戟之刃_每日奖励_非首页.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-29_03-41-31_逆戟之刃_每日奖励_非首页.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/image/2026-04-29_03-46-30_逆戟之刃_每日奖励_非首页.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/airtest_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/airtest_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_house_optimized.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_house_optimized.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/utils_path.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils_path.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/my_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/my_logger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -319,7 +306,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753958612580</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="fix(测试提交): 测试提交&#10;&#10;测试提交">
+      <option name="closed" value="true" />
+      <created>1777460495733</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1777460495733</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
