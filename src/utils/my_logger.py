@@ -17,6 +17,9 @@ class MyLogger:
         self.configure_logger(log_file_path)
 
     def configure_logger(self, log_file_path):
+        # 确保日志文件夹存在
+        self._ensure_log_directory(log_file_path)
+
         # 添加控制台输出的格式
         self.logger.add(
             sys.stdout,
@@ -58,6 +61,20 @@ class MyLogger:
             retention="7 days",
             enqueue=True
         )
+
+    def _ensure_log_directory(self, log_file_path):
+        """
+        确保日志输出文件夹存在，如果不存在则创建
+        :param log_file_path: 日志根目录
+        """
+        # 需要创建的日志子文件夹
+        sub_dirs = ['info', 'debug', 'error','bat','image']
+
+        for sub_dir in sub_dirs:
+            dir_path = os.path.join(log_file_path, sub_dir)
+            if not os.path.exists(dir_path):
+                os.makedirs(dir_path, exist_ok=True)
+                print(f"创建日志文件夹: {dir_path}")
 
     def get_logger(self):
         return self.logger
