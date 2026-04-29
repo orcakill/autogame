@@ -19,7 +19,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def sea_moon(game_task: []):
+def sea_moon(game_task: list):
     # 开始时间
     time_start = time.time()
     # 项目信息

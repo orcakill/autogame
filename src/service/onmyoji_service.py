@@ -18,7 +18,7 @@ class OnmyojiService:
         return impl_initialization.initialization(game_task)
 
     @staticmethod
-    def soul_fight(game_task: []):
+    def soul_fight(game_task: list):
         """
         御魂战斗  八岐大蛇
         魂一  第一次战斗检查协战，有协战上协战，没协战直接退出到首页，不开加成
@@ -30,7 +30,7 @@ class OnmyojiService:
         impl_soul.soul_fight(game_task)
 
     @staticmethod
-    def border_fight(game_task: [], fight_times: int = 40):
+    def border_fight(game_task: list, fight_times: int = 40):
         """
         结界突破 border
         :param fight_times: 默认战斗次数40
@@ -40,7 +40,7 @@ class OnmyojiService:
         impl_border.border_fight(game_task, fight_times)
 
     @staticmethod
-    def awakening(game_task: [], awakening_type: int = 0):
+    def awakening(game_task: list, awakening_type: int = 0):
         """
             觉醒十 风、火、水、雷（默认雷）  开加成，选觉醒阵容
             :param awakening_type: 默认类型
@@ -50,7 +50,7 @@ class OnmyojiService:
         impl_awakening.awakening(game_task, awakening_type)
 
     @staticmethod
-    def daily_rewards(game_task: []):
+    def daily_rewards(game_task: list):
         """
         每日奖励
         :param game_task: 项目信息
@@ -59,7 +59,7 @@ class OnmyojiService:
         impl_reward.daily_rewards(game_task)
 
     @staticmethod
-    def encounter_demons(game_task: []):
+    def encounter_demons(game_task: list):
         """
         逢魔之时
         :param game_task: 项目信息
@@ -68,7 +68,7 @@ class OnmyojiService:
         impl_ghost.encounter_demons(game_task)
 
     @staticmethod
-    def ghost_king(game_task: []):
+    def ghost_king(game_task: list):
         """
         地域鬼王
         :param game_task:项目信息
@@ -77,7 +77,7 @@ class OnmyojiService:
         impl_ghost.ghost_king(game_task)
 
     @staticmethod
-    def friends_manage(game_task: []):
+    def friends_manage(game_task: list):
         """
         好友管理
         :param game_task:项目信息
@@ -86,7 +86,7 @@ class OnmyojiService:
         impl_friends.friends_manage(game_task)
 
     @staticmethod
-    def friends_fight(game_task: []):
+    def friends_fight(game_task: list):
         """
         好友协战
         :param game_task:项目信息
@@ -95,7 +95,7 @@ class OnmyojiService:
         impl_friends.friends_fight(game_task)
 
     @staticmethod
-    def foster_care(game_task: []):
+    def foster_care(game_task: list):
         """
         式神寄养
         :param game_task:项目信息
@@ -104,7 +104,7 @@ class OnmyojiService:
         impl_house.foster_care(game_task)
 
     @staticmethod
-    def region_border(game_task: []):
+    def region_border(game_task: list):
         """
         阴阳寮突破
         :param game_task: 项目信息
@@ -113,7 +113,7 @@ class OnmyojiService:
         impl_border.region_border(game_task)
 
     @staticmethod
-    def shack_house(game_task: []):
+    def shack_house(game_task: list):
         """
         阴阳寮管理
         :param game_task: 项目信息
@@ -122,7 +122,7 @@ class OnmyojiService:
         impl_house.shack_house(game_task)
 
     @staticmethod
-    def soul_fight_fire(game_task: []):
+    def soul_fight_fire(game_task: list):
         """
         业原火 三层
         :param game_task: 项目信息
@@ -131,7 +131,7 @@ class OnmyojiService:
         impl_soul.soul_fight_fire(game_task)
 
     @staticmethod
-    def soul_fight_sun(game_task: []):
+    def soul_fight_sun(game_task: list):
         """
         日轮之陨 三层
         :param game_task: 项目信息
@@ -140,7 +140,7 @@ class OnmyojiService:
         impl_soul.soul_fight_sun(game_task)
 
     @staticmethod
-    def soul_fight_sea(game_task: [], fight: int = 0):
+    def soul_fight_sea(game_task: list, fight: int = 0):
         """
         永生之海 四层
         :param fight:战斗开关，0 为根据掉落御魂时间来  1强制战斗
@@ -150,7 +150,7 @@ class OnmyojiService:
         impl_soul.soul_fight_sea(game_task, fight=fight)
 
     @staticmethod
-    def pvp(game_task: []):
+    def pvp(game_task: list):
         """
         斗技 名士以下
         :param game_task: 项目信息
@@ -159,7 +159,7 @@ class OnmyojiService:
         impl_pvp.pvp(game_task)
 
     @staticmethod
-    def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
+    def explore_chapters(game_task: list, chapter: int = 28, difficulty: int = 1):
         """
         章节探索
         :param difficulty: 难度
@@ -170,7 +170,7 @@ class OnmyojiService:
         impl_explore.explore_chapters(game_task, chapter, difficulty)
 
     @staticmethod
-    def spirit_fight(game_task: []):
+    def spirit_fight(game_task: list):
         """
         御灵战斗
         :param game_task: 项目信息
@@ -179,7 +179,7 @@ class OnmyojiService:
         impl_spirit.spirit_fight(game_task)
 
     @staticmethod
-    def soul_arrange(game_task: []):
+    def soul_arrange(game_task: list):
         """
         御魂整理
         :param game_task: 项目信息
@@ -188,7 +188,7 @@ class OnmyojiService:
         impl_reward.soul_arrange(game_task)
 
     @staticmethod
-    def deed_spirit(game_task: []):
+    def deed_spirit(game_task: list):
         """
         契灵
         :param game_task: 项目信息
@@ -197,7 +197,7 @@ class OnmyojiService:
         impl_deed.deed_spirit(game_task)
 
     @staticmethod
-    def six_moon(game_task: []):
+    def six_moon(game_task: list):
         """
         六道之门
         :param game_task: 项目信息

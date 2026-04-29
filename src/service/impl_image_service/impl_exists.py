@@ -4,9 +4,8 @@
 # @Description: 图像识别接口，实现类
 import random
 import time
-from os import times
 
-from src.model.enum import Cvstrategy, Onmyoji
+from src.model.enum import Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.utils.my_logger import my_logger as logger
 
@@ -34,7 +33,7 @@ THROW = False
 
 class ImplExistsTouch:
     @staticmethod
-    def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
+    def exists(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
                threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
                is_click: bool = False, rgb: bool = False, deviation: float = 1, duration: float = DURATION):
         """
@@ -63,25 +62,11 @@ class ImplExistsTouch:
                         result = AirtestService.touch(folder_path, template, cvstrategy, timeout, is_throw,
                                                      click_times=TIMES, duration=duration)
                         if result:
+                            AirtestService.draw_point("", 0, 0, name=folder_path+"_零误差")
                             return result
                         continue  # 单张图片识别失败，继续下一张
 
                     else:
-                        # # 获取设备信息
-                        # from airtest.core.helper import G
-                        # display_info = G.DEVICE.display_info
-                        #
-                        # # 判断屏幕方向并获取正确的横屏宽高
-                        # # orientation: 1代表竖屏, 2代表横屏 (具体值可能因设备而异)
-                        # if display_info['orientation'] in [1, 3]:  # 如果当前是竖屏模式
-                        #     height = display_info['width']  # 注意：宽高互换
-                        #     width = display_info['height']
-                        #     print("当前为竖屏模式")
-                        # else:  # 如果当前是横屏模式 (orientation 为 2 或 0)
-                        #     height = display_info['height']
-                        #     width = display_info['width']
-                        #     print("当前为横屏模式")
-
                         pos = AirtestService.exists(template, cvstrategy, timeout, is_throw)
                         # print(template.filename)
                         if pos:
@@ -92,7 +77,7 @@ class ImplExistsTouch:
                             random_num2 = random.randint(random_range1, random_range2) * deviation
                             pos = (int(pos[0] + random_num1), int(pos[1] + random_num2))
                             # 截图打印
-                            AirtestService.draw_point("", pos[0], pos[1], name=template.filename)
+                            AirtestService.draw_point("", pos[0], pos[1], name=folder_path)
                             if is_click:
                                 time.sleep(interval)
                                 logger.debug("图像识别点击成功:{}", folder_path)
@@ -107,8 +92,6 @@ class ImplExistsTouch:
                 except Exception as e:
                     if is_throw:
                         logger.debug("单张图片识别异常，继续下一张: {}", e)
-                    else:
-                        pass
                     continue  # 单张图片识别异常，跳过继续下一张
-
+        AirtestService.draw_point("", 0, 0, name=folder_path + "_未识别")
         return False

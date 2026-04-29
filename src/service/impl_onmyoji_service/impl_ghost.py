@@ -14,7 +14,7 @@ from src.service.impl_onmyoji_service import impl_initialization
 from src.utils.my_logger import logger
 
 
-def ghost_king(game_task: []):
+def ghost_king(game_task: list):
     # 开始时间
     time_start = time.time()
     now = datetime.datetime.now()
@@ -119,7 +119,7 @@ def ghost_king(game_task: []):
     logger.debug("地域鬼王,用时{}秒", round(time_all))
 
 
-def encounter_demons(game_task: []):
+def encounter_demons(game_task: list):
     """
     逢魔之时
     :param game_task: 任务信息

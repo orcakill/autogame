@@ -15,7 +15,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def explore_chapters(game_task: [], chapter: int = 28, difficulty: int = 1):
+def explore_chapters(game_task: list, chapter: int = 28, difficulty: int = 1):
     """
     章节探索
     默认选择28章困难

@@ -34,7 +34,7 @@ THROW = False
 
 class ImplMatch:
     @staticmethod
-    def cv_match(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: int = TIMEOUTS,
+    def cv_match(folder_path: str, cvstrategy: list = CVSTRATEGY, timeouts: int = TIMEOUTS,
                  threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
                  rgb: bool = False, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
         """
@@ -72,7 +72,7 @@ class ImplMatch:
         return None
 
     @staticmethod
-    def match_in(folder_path1: str, folder_path2: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+    def match_in(folder_path1: str, folder_path2: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT,
                  timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
                  is_throw: bool = THROW, rgb: bool = False):
         """

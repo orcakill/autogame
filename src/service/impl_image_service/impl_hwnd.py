@@ -47,7 +47,7 @@ THROW = False
 
 class ImplHwnd:
     @staticmethod
-    def exists_windows(hwnd, folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: float = TIMEOUTS,
+    def exists_windows(hwnd, folder_path: str, cvstrategy: list = CVSTRATEGY, timeouts: float = TIMEOUTS,
                        threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL,
                        is_throw: bool = THROW, is_click: bool = False, rgb: bool = False, x1: float = 0, x2: float = 1,
                        y1: float = 0, y2: float = 1):
@@ -176,10 +176,13 @@ class ImplHwnd:
                         # 保存图片到磁盘
                         imageio.imsave("D://screenshot_" + name + "_裁剪后.png", cropped_image)
                         return cropped_image
+                return None
             else:
                 logger.debug("句柄宽高获取异常")
+                return None
         else:
             logger.debug("未找到窗口句柄")
+            return None
 
     @staticmethod
     def find_resolution_hwnd(hwnd: int):
@@ -288,6 +291,7 @@ class ImplHwnd:
         # 判断窗口类名是否和指定的类名相同，如果相同则返回该窗口句柄，否则返回空值
         if window_class == class_name:
             return hwnd
+        return None
 
     @staticmethod
     # 遍历窗口句柄的所有子窗口

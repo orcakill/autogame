@@ -4,15 +4,13 @@
 # @Description : 图像识别测试类
 
 import datetime
-import os
 import time
 from unittest import TestCase
 
-from src.model.enum import Onmyoji, Cvstrategy, Switch
+from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
-from src.service.impl_onmyoji_service.impl_initialization import switch
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
@@ -25,7 +23,7 @@ class TestImageService(TestCase):
         ComplexService.auto_setup("5")
         logger.debug("开始")
         now = time.time()
-        is_switch=ImageService.touch(Onmyoji.login_YHZX, timeouts=10,deviation=0.1,is_throw=True)
+        is_switch=ImageService.touch(Onmyoji.login_YHZX, timeouts=10,deviation=0,is_throw=True)
         logger.debug(is_switch)
         now1 = time.time()
         logger.debug("结束")
@@ -171,7 +169,7 @@ class TestImageService(TestCase):
     def test_app(self):
         now = datetime.datetime.now()
         # 测试代码
-        serialno = "8ce78c9f"
+        # serialno = "8ce78c9f"
         # serialno = "A2CDUN4312H00817"
         logger.debug("开始")
         AirtestService.adb_restart_app("com.netease.onmyoji")

@@ -5,9 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f68addfe-d6ab-4b06-82eb-8c34b5bdc8e1" name="更改" comment="fix(测试提交): 测试提交&#10;&#10;测试提交">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/airtest_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/airtest_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/my_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/my_logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/complex_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/complex_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/image_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/image_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_exists.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_find_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_find_all.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_hwnd.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_hwnd.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_image_service/impl_match.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_image_service/impl_match.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_awakening.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_awakening.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_border.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_border.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_deed.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_deed.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_explore.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_explore.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_friends.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_friends.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_ghost.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_ghost.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_house.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_house.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_reward.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_reward.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_six.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_six.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_soul.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_soul.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_spirit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl_onmyoji_service/impl_spirit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/onmyoji_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test_image_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_image_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test_onmyoji_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +53,12 @@
     &quot;assignee&quot;: &quot;orcakill&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/orcakill/autogame.git&quot;,
-    &quot;accountId&quot;: &quot;a704046e-9f72-4bab-b272-fa5b83f4abd5&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/orcakill/autogame.git",
+    "accountId": "bf809f1b-737d-4f1a-b6db-6e884d398c1e"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -50,7 +68,6 @@
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
@@ -90,7 +107,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "editor.preferences.tabs",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -103,7 +120,7 @@
       <recent name="D:\project\autogame\src\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_ghost_king 的 Python 测试">
+  <component name="RunManager" selected="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_daily_rewards 的 Python 测试">
     <configuration name="src.test.test_image_service.TestImageService.test_exists 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="autogame" />
       <option name="ENV_FILES" value="" />
@@ -191,18 +208,18 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_daily_rewards 的 Python 测试" />
+        <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_ghost_king 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_foster_care 的 Python 测试" />
-        <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_daily_rewards 的 Python 测试" />
         <item itemvalue="Python 测试.src.test.test_onmyoji_service.TestOnmyojiService.test_initialization 的 Python 测试" />
-        <item itemvalue="Python 测试.src.test.test_image_service.TestImageService.test_exists 的 Python 测试" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-b63d5a1f7c97-b61e75351b1f-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.22158.340" />
+        <option value="bundled-python-sdk-024ed6589d45-c2ffad84badb-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.23567.174" />
       </set>
     </attachedChunks>
   </component>

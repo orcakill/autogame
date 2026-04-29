@@ -32,7 +32,7 @@ THROW = False
 
 class ImplFindAll:
     @staticmethod
-    def find_all(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
+    def find_all(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
                  threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
                  rgb: bool = False):
         """
@@ -66,7 +66,7 @@ class ImplFindAll:
         return None
 
     @staticmethod
-    def find_all_num(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
+    def find_all_num(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
                      threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
                      rgb: bool = False):
         """
@@ -100,7 +100,7 @@ class ImplFindAll:
         return 0
 
     @staticmethod
-    def find_all_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+    def find_all_coordinate(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT,
                             timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
                             is_throw: bool = THROW, rgb: bool = False):
         """
@@ -134,7 +134,7 @@ class ImplFindAll:
         return None
 
     @staticmethod
-    def touch_all_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+    def touch_all_coordinate(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT,
                              timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
                              is_throw: bool = THROW, rgb: bool = False, rank: int = 1):
         """

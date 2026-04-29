@@ -17,7 +17,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def region_border(game_task: []):
+def region_border(game_task: list):
     """
     阴阳寮突破
     :param game_task: 任务信息
@@ -155,7 +155,7 @@ def region_border(game_task: []):
     Mapper.save_game_project_log(game_project_log)
 
 
-def border_fight(game_task: [], fight_times: int = 40):
+def border_fight(game_task: list, fight_times: int = 40):
     """
     结界突破 border
     :param fight_times: 默认战斗次数
