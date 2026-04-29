@@ -36,7 +36,7 @@ THROW = False
 class ImageService:
 
     @staticmethod
-    def exists(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
+    def exists(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
                threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
                is_click: bool = False, rgb: bool = False):
         """
@@ -47,7 +47,7 @@ class ImageService:
                                       is_throw=is_throw, is_click=is_click, rgb=rgb)
 
     @staticmethod
-    def touch(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
+    def touch(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: float = TIMEOUTS,
               threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL, is_throw: bool = THROW,
               rgb: bool = False, deviation: float = 1,duration:float=DURATION):
         """
@@ -58,7 +58,7 @@ class ImageService:
                                       is_throw=is_throw, is_click=True, rgb=rgb,deviation=deviation,duration=duration)
 
     @staticmethod
-    def snapshot(name: str = None, print_image: bool = False):
+    def snapshot(name: str = '', print_image: bool = False):
         """
         设备截图
         """
@@ -79,7 +79,7 @@ class ImageService:
         return AirtestService.check_method(device)
 
     @staticmethod
-    def touch_coordinate(v: (), wait: float = WAIT, duration: float = DURATION):
+    def touch_coordinate(v, wait: float = WAIT, duration: float = DURATION):
         """
         点击坐标
         """
@@ -100,7 +100,7 @@ class ImageService:
         AirtestService.adb_stop_app(app)
 
     @staticmethod
-    def swipe(v1: [], v2: [], duration: float = 0.5):
+    def swipe(v1: tuple, v2: tuple, duration: float = 0.5):
         """
         滑动
         """
@@ -128,7 +128,7 @@ class ImageService:
         return AirtestService.cv2_2_pil(local)
 
     @staticmethod
-    def find_all(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
+    def find_all(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
                  threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
                  rgb: bool = False):
         """
@@ -138,7 +138,7 @@ class ImageService:
                                     threshold=threshold, wait=wait, is_throw=is_throw, rgb=rgb)
 
     @staticmethod
-    def find_all_num(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
+    def find_all_num(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT, timeouts: int = TIMEOUTS,
                      threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
                      rgb: bool = False):
         """
@@ -148,7 +148,7 @@ class ImageService:
                                         timeouts=timeouts, threshold=threshold, wait=wait, is_throw=is_throw, rgb=rgb)
 
     @staticmethod
-    def find_all_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+    def find_all_coordinate(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT,
                             timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
                             is_throw: bool = THROW, rgb: bool = False):
         """
@@ -159,7 +159,7 @@ class ImageService:
                                                rgb=rgb)
 
     @staticmethod
-    def cv_match(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: int = TIMEOUTS,
+    def cv_match(folder_path: str, cvstrategy: list = CVSTRATEGY, timeouts: int = TIMEOUTS,
                  threshold: float = THRESHOLD, wait: float = WAIT, is_throw: bool = THROW,
                  rgb: bool = False, x1: float = 0, x2: float = 1, y1: float = 0, y2: float = 1):
         """
@@ -170,7 +170,7 @@ class ImageService:
                                   y2=y2)
 
     @staticmethod
-    def match_in(folder_path1: str, folder_path2: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+    def match_in(folder_path1: str, folder_path2: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT,
                  timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
                  is_throw: bool = THROW, rgb: bool = False):
         """
@@ -188,7 +188,7 @@ class ImageService:
         AirtestService.text(word)
 
     @staticmethod
-    def touch_all_coordinate(folder_path: str, cvstrategy: [] = CVSTRATEGY, timeout: float = TIMEOUT,
+    def touch_all_coordinate(folder_path: str, cvstrategy: list = CVSTRATEGY, timeout: float = TIMEOUT,
                              timeouts: int = TIMEOUTS, threshold: float = THRESHOLD, wait: float = WAIT,
                              is_throw: bool = THROW, rgb: bool = False, rank: int = 1):
         """
@@ -199,7 +199,7 @@ class ImageService:
                                                 is_throw=is_throw, rgb=rgb, rank=rank)
 
     @staticmethod
-    def exists_windows(hwnd, folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: float = TIMEOUTS,
+    def exists_windows(hwnd, folder_path: str, cvstrategy: list = CVSTRATEGY, timeouts: float = TIMEOUTS,
                        threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL,
                        is_throw: bool = THROW, is_click: bool = False, rgb: bool = False, x1: float = 0, x2: float = 1,
                        y1: float = 0, y2: float = 1):
@@ -211,7 +211,7 @@ class ImageService:
                                        is_click=is_click, rgb=rgb, x1=x1, x2=x2, y1=y1, y2=y2)
 
     @staticmethod
-    def touch_windows(hwnd, folder_path: str, cvstrategy: [] = CVSTRATEGY, timeouts: float = TIMEOUTS,
+    def touch_windows(hwnd, folder_path: str, cvstrategy: list = CVSTRATEGY, timeouts: float = TIMEOUTS,
                       threshold: float = THRESHOLD, wait: float = WAIT, interval: float = INTERVAL,
                       is_throw: bool = THROW, is_click: bool = True, rgb: bool = False, x1: float = 0, x2: float = 1,
                       y1: float = 0, y2: float = 1):
@@ -249,7 +249,7 @@ class ImageService:
         """
         windows  设备截图，根据截图比例确定位置
         """
-        return ImplHwnd.windows_screenshot(hwnd, name, print_image, x1, x2, y1, y2)
+        return ImplHwnd.windows_screenshot(hwnd, name, print_image, False,x1, x2, y1, y2)
 
     @staticmethod
     def get_child_windows(parent_window_hwnd):

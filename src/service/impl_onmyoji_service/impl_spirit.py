@@ -14,7 +14,7 @@ from src.service.impl_onmyoji_service import impl_initialization
 from src.utils.my_logger import logger
 
 
-def spirit_fight(game_task: []):
+def spirit_fight(game_task: list):
     """
     御灵 三层 根据星期判断类型 周一无 周二神龙 周三白藏主 周四黑豹 周五孔雀 周六周日黑豹
     :param game_task: 任务信息

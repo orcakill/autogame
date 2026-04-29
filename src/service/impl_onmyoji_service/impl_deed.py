@@ -17,7 +17,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def deed_spirit(game_task: []):
+def deed_spirit(game_task: list):
     """
     契灵，默认镇墓兽，使用
     :return:

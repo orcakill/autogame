@@ -15,7 +15,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def awakening(game_task: [], awakening_type: int = 0):
+def awakening(game_task: list, awakening_type: int = 0):
     """
         觉醒十 风、火、水、雷（默认雷）  开加成，选觉醒阵容
         :param awakening_type: 默认类型

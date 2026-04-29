@@ -42,20 +42,20 @@ class AirtestService:
     def auto_setup(connect_name: str):
         devices = f"Android://127.0.0.1:5037/{connect_name}"
         auto_setup(__file__, logdir=False, devices=[devices])
-        from airtest.core.helper import G
-        display_info = G.DEVICE.display_info
-        height1, width1 = AirtestService.resolution_ratio()
-        # 判断屏幕方向并获取正确的横屏宽高
-        # orientation: 1代表竖屏, 2代表横屏 (具体值可能因设备而异)
-        logger.debug("当前设备方向:{}", display_info['orientation'])
-        if display_info['orientation'] in [1, 3]:  # 如果当前是竖屏模式
-            height = display_info['width']  # 注意：宽高互换
-            width = display_info['height']
-            logger.debug("当前设备为竖屏模式")
-            if height == width1 and width == height1:
-                logger.debug("当前设备和实际界面不一致，实际为横屏")
-            else:
-                logger.debug("当前设备和实际界面一致，实际为竖屏")
+        # from airtest.core.helper import G
+        # display_info = G.DEVICE.display_info
+        # height1, width1 = AirtestService.resolution_ratio()
+        # # 判断屏幕方向并获取正确的横屏宽高
+        # # orientation: 1代表竖屏, 2代表横屏 (具体值可能因设备而异)
+        # # logger.debug("当前设备方向:{}", display_info['orientation'])
+        # # if display_info['orientation'] in [1, 3]:  # 如果当前是竖屏模式
+        # #     height = display_info['width']  # 注意：宽高互换
+        # #     width = display_info['height']
+        # #     logger.debug("当前设备为竖屏模式")
+        # #     if height == width1 and width == height1:
+        # #         logger.debug("当前设备和实际界面不一致，实际为横屏")
+        # #     else:
+        # #         logger.debug("当前设备和实际界面一致，实际为竖屏")
 
 
     @staticmethod
@@ -123,7 +123,7 @@ class AirtestService:
         return best_method
 
     @staticmethod
-    def snapshot(name: str = None, print_image: bool = False):
+    def snapshot(name: str = '', print_image: bool = False):
         """
         这个函数是用来实时截图的。它调用了G.DEVICE的snapshot()方法来获取截图，并将结果以数组的形式返回。
         :return: 数组
@@ -144,38 +144,61 @@ class AirtestService:
     @staticmethod
     def draw_rectangle(screen, x1, y1, x2, y2):
         """
-        画图，根据指定范围的坐标在原图上画框
-        :param screen:
-        :param x1:
-        :param y1:
-        :param x2:
-        :param y2:
-        :return:
+        在图像上绘制矩形框
+
+        参数:
+            screen: 输入图像（numpy数组，RGB格式）
+            x1: 矩形左上角x坐标
+            y1: 矩形左上角y坐标
+            x2: 矩形右下角x坐标
+            y2: 矩形右下角y坐标
+
+        返回:
+            无返回值，直接保存绘制后的图像到本地
         """
         x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-        rgb_image = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
-        cv2.rectangle(rgb_image , (x1, y1), (x2, y2), (255, 0, 0), 2)
+        rgb_image: np.ndarray  = np.asarray(cv2.cvtColor(screen, cv2.COLOR_RGB2BGR))
+        cv2.rectangle(rgb_image, [x1, y1], [x2, y2], [255.0, 0.0, 0.0], 2)
         # 保存图片到本地磁盘
-        img_path = UtilsPath.get_print_image_path()
-        imageio.imsave(img_path, rgb_image)
+        img_path: str = UtilsPath.get_print_image_path()
+        imageio.imsave(img_path, np.asarray(rgb_image))
 
     @staticmethod
-    def draw_point(screen, x: int=0, y: int=0, name: str = "识别截图"):
+    def draw_point(screen=None, x: int = 0, y: int = 0, name: str = "识别截图", print_image: bool = True):
         """
-        画图，根据指定范围的坐标在原图上画框
-        :param name:
-        :param screen:
-        :param x:
-        :param y:
-        :return:
+        在图像上绘制点标记
+
+        参数:
+            screen: 输入图像（numpy数组，RGB格式），默认为None
+            x: 点的x坐标，默认为0
+            y: 点的y坐标，默认为0
+            name: 截图名称，默认为"识别截图"
+            print_image: 是否打印图像，默认为False
+
+        返回:
+            无返回值，直接保存绘制后的图像到本地
         """
-        if screen=='':
-            screen = AirtestService.snapshot(name=name)
-        rgb_image = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
-        cv2.circle(rgb_image, (x, y), 5, (255, 0, 0), -1)
-        # 保存图片到本地磁盘
-        img_path = UtilsPath.get_print_image_path()
-        imageio.imsave(img_path, rgb_image)
+        # 开启截图模式
+        if print_image:
+            name=name.replace("\\", "_")
+            # 确保 screen 是有效的图像数据
+            if screen is None or screen == '':
+                screen = AirtestService.snapshot(name=name)
+
+            # 使用 assert 强制类型检查器确认 screen 不为 None
+            assert screen is not None, "screen cannot be None"
+
+            # 明确标注 screen 类型
+            screen_array: np.ndarray = np.asarray(screen)
+            rgb_image: np.ndarray = cv2.cvtColor(screen_array, cv2.COLOR_RGB2BGR)
+
+            logger.debug("x:{} y:{}", x, y)
+            cv2.circle(rgb_image, (x, y), 5, (255, 0, 0), -1)
+
+            # 保存图片到本地磁盘
+            img_path: str = UtilsPath.get_print_image_path(name)
+            logger.debug("img_path:{}", img_path)
+            imageio.imsave(img_path, rgb_image)
 
 
     @staticmethod
@@ -351,7 +374,7 @@ class AirtestService:
             return False
 
     @staticmethod
-    def crop_image(x1, y1, x2, y2,screen):
+    def crop_image(x1, y1, x2, y2, screen=None):
         """
         局部截图
         :param screen:
@@ -482,9 +505,19 @@ class AirtestService:
 
     @staticmethod
     def get_color_format(arr):
-        r_mean = np.mean(arr[:, :, 0])
-        g_mean = np.mean(arr[:, :, 1])
-        b_mean = np.mean(arr[:, :, 2])
+        """
+        判断图像数组的颜色格式（RGB或BGR）
+
+        参数:
+            arr: 输入图像数组（numpy数组）
+
+        返回:
+            str: 'RGB' 或 'BGR'，无法确定时返回 False
+        """
+        # 将 np.mean() 结果显式转换为 float 类型，消除类型歧义
+        r_mean: float = float(np.mean(arr[:, :, 0]))
+        g_mean: float = float(np.mean(arr[:, :, 1]))
+        b_mean: float = float(np.mean(arr[:, :, 2]))
 
         if r_mean > g_mean and r_mean > b_mean:
             return 'RGB'

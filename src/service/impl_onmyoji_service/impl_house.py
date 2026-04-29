@@ -20,7 +20,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def foster_care(game_task: []):
+def foster_care(game_task: list):
     """
     式神寄养
     :param game_task:
@@ -336,7 +336,7 @@ def get_card_left_type(target_card: str):
     return None
 
 
-def shack_house(game_task: []):
+def shack_house(game_task: list):
     """
     寮管理
     1.寮资金纸人

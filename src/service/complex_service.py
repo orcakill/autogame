@@ -37,8 +37,8 @@ class ComplexService:
         :param game_device: 设备号
         :return:
         """
-        serialno = None
-        connect_info = None
+        serialno = ''
+        connect_info = ''
         WindowsService.delete_folder_file(UtilsPath.get_log_image_path(), 2)
         if game_device == "0" or game_device == 0:
             serialno = "127.0.0.1:50000"

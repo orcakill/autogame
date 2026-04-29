@@ -17,7 +17,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def friends_fight(game_task: []):
+def friends_fight(game_task: list):
     """
     好友协战
     :param game_task: 任务信息

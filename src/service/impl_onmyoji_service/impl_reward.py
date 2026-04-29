@@ -14,7 +14,7 @@ from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
 
-def daily_rewards(game_task: []):
+def daily_rewards(game_task: list):
     game_account = GameAccount(game_task[2])
     game_project = GameProject(game_task[3])
     game_devices = GameDevice(game_task[4])
@@ -131,7 +131,7 @@ def daily_rewards(game_task: []):
     logger.debug("每日奖励,用时{}秒", round(time_all))
 
 
-def soul_arrange(game_task: []):
+def soul_arrange(game_task: list):
     """
     御魂整理
     :param game_task: 任务信息

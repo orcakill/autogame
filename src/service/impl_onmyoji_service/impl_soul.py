@@ -14,7 +14,7 @@ from src.service.impl_onmyoji_service import impl_initialization
 from src.utils.my_logger import logger
 
 
-def soul_fight(game_task: []):
+def soul_fight(game_task: list):
     """
     御魂战斗  八岐大蛇
     魂一   不御魂开加成
@@ -156,7 +156,7 @@ def soul_fight(game_task: []):
                  num_win, num_fail)
 
 
-def soul_fight_fire(game_task: []):
+def soul_fight_fire(game_task: list):
     """
     业原火
     :param game_task: 项目组信息
@@ -259,7 +259,7 @@ def soul_fight_fire(game_task: []):
                  num_win, num_fail)
 
 
-def soul_fight_sun(game_task: []):
+def soul_fight_sun(game_task: list):
     """
     日轮之陨
     :param game_task: 项目组信息
@@ -371,7 +371,7 @@ def soul_fight_sun(game_task: []):
                  round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
 
 
-def soul_fight_sea(game_task: [], fight: int = 0):
+def soul_fight_sea(game_task: list, fight: int = 0):
     """
     永生之海
     :param fight: 战斗开关，0 为根据掉落御魂时间来  1强制战斗
