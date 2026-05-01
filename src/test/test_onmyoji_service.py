@@ -52,7 +52,7 @@ class TestOnmyojiService(TestCase):
         项目2 每日奖励
         :return:
         """
-        TestOnmyojiService.test_project('1', '0', "每日奖励")
+        TestOnmyojiService.test_project('1', '5', "每日奖励")
 
     def test_encounter_demons(self):
         """

@@ -390,7 +390,7 @@ def return_home(game_task: list):
 
     # 首页返回
     logger.debug("首页返回")
-    ImageService.exists(Onmyoji.comm_FH_SYFH)
+    ImageService.touch(Onmyoji.comm_FH_SYFH)
 
     # 检查是否在首页
     if not is_on_account_homepage(str(os.path.join(Onmyoji.user_SYTX, str(game_account.account_num)))):
