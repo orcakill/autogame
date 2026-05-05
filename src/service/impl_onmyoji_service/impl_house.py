@@ -34,8 +34,8 @@ def foster_care(game_task: list):
                                     GameProject(game_task[3]), GameDevice(game_task[4]))
     # 寄养结果
     foster_result = None
-    # 是否点击式神育成
-    is_growing = False
+    # 是否无寄养标志
+    is_foster = False
     logger.debug("式神寄养")
     for i_time in range(3):
         for i_growing in range(3):
@@ -95,127 +95,12 @@ def foster_care(game_task: list):
     if foster_result:
         game_project_log.result = foster_result
         logger.debug("寄养用时{},寄养结果{}", UtilsTime.convert_seconds(time_all), foster_result)
-    elif not foster_result and is_growing:
+    elif not foster_result and not is_foster:
         game_project_log.result = '已寄养'
         logger.debug("已寄养，无需寄养,用时{}秒", UtilsTime.convert_seconds(time_all))
-    elif not is_growing:
-        game_project_log.result = '寄养异常，未进入式神育成'
-        logger.debug("寄养异常，未进入式神育成")
+    elif is_foster:
+        game_project_log.result = '寄养异常，未寄养成功'
     Mapper.save_game_project_log(game_project_log)
-
-
-# def get_optimal_card():
-#     """
-#     遍历寄养列表，计算出最优结界卡位置返回，六星太鼓直接寄养
-#     :return:
-#     """
-#     # 寄养检查轮次
-#     num_round = 1
-#     # 寄养开始时间
-#     time_start = time.time()
-#     # 结界卡，默认太鼓，六星太鼓
-#     target_left_card = Onmyoji.foster_ZCJJK_LXTG
-#     target_card = Onmyoji.foster_JJK_LXTG
-#     coordinate_friend = ()
-#     coordinate_region = ()
-#     # 寄养检查好友数
-#     num_friends = 0
-#     for i_type in range(7):
-#         logger.debug("寄养-第{}轮,初始化目标结界卡", i_type + 1)
-#         num_round = num_round + 1
-#         if time.time() - time_start > 60 * 60:
-#             logger.debug("轮次执行时间超60分钟")
-#             break
-#         if i_type == 0:
-#             target_left_card = Onmyoji.foster_ZCJJK_LXTG
-#             target_card = Onmyoji.foster_JJK_LXTG
-#         elif i_type == 1:
-#             target_left_card = Onmyoji.foster_ZCJJK_WXTG
-#             target_card = Onmyoji.foster_JJK_WXTG
-#         elif i_type == 2:
-#             target_left_card = Onmyoji.foster_ZCJJK_SXTG1
-#             target_card = Onmyoji.foster_JJK_SXTG1
-#         elif i_type == 3:
-#             target_left_card = Onmyoji.foster_ZCJJK_SXTG
-#             target_card = Onmyoji.foster_JJK_SXTG
-#         elif i_type == 4:
-#             target_left_card = Onmyoji.foster_ZCJJK_LXDY
-#             target_card = Onmyoji.foster_JJK_LXDY
-#         elif i_type == 5:
-#             target_left_card = Onmyoji.foster_ZCJJK_WXDY
-#             target_card = Onmyoji.foster_JJK_WXDY
-#         elif i_type == 6:
-#             target_left_card = Onmyoji.foster_ZCJJK_SXDY1
-#             target_card = Onmyoji.foster_JJK_SXDY1
-#         logger.debug("寄养-目标结界卡：{}", target_card)
-#         for i_sign in range(3):
-#             logger.debug("寄养--点击可寄养标志")
-#             ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10, wait=5)
-#             logger.debug("寄养-获取上方好友坐标")
-#             coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
-#             logger.debug("寄养-获取上方跨区坐标")
-#             coordinate_region = ImageService.exists(Onmyoji.foster_SFKQ)
-#             if coordinate_friend and coordinate_region:
-#                 logger.debug("找到上方好友和上方跨区")
-#                 break
-#             else:
-#                 logger.debug("退出好友寄养列表")
-#                 ComplexService.get_reward(Onmyoji.foster_SFHY)
-#         if coordinate_friend and coordinate_region:
-#             logger.debug("计算跨区到好友1的间距,好友1和2的间距")
-#             coordinate_difference = 0.8228571428571428 * (coordinate_region[0] - coordinate_friend[0])
-#             coordinate_difference1 = 0.8902849002849003 * (coordinate_region[0] - coordinate_friend[0])
-#             logger.debug("计算好友位置1、2、3、4")
-#             coordinate_friend1 = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
-#             coordinate_friend2 = (
-#                 coordinate_region[0], coordinate_region[1] + coordinate_difference + 1 * coordinate_difference1)
-#             coordinate_friend3 = (
-#                 coordinate_region[0], coordinate_region[1] + coordinate_difference + 2 * coordinate_difference1)
-#             coordinate_friend4 = (
-#                 coordinate_region[0], coordinate_region[1] + coordinate_difference + 3 * coordinate_difference1)
-#             for i_friends in range(10):
-#                 logger.debug("当前第{}轮第{}-{}个好友,目标{}", i_type + 1, i_friends * 4 + 1, i_friends * 4 + 4,
-#                              target_card)
-#                 if time.time() - time_start > 20 * 60:
-#                     logger.debug("单轮次好友检查执行时间超20分钟")
-#                     break
-#                 # 拒接协战
-#                 ComplexService.refuse_reward()
-#                 logger.debug("点击好友位置1、2、3、4")
-#                 ImageService.touch_coordinate(coordinate_friend1, wait=0.5)
-#                 ImageService.touch_coordinate(coordinate_friend2, wait=0.5)
-#                 ImageService.touch_coordinate(coordinate_friend3, wait=0.5)
-#                 ImageService.touch_coordinate(coordinate_friend4, wait=0.5)
-#                 logger.debug("判断左侧是否有目标结界卡，获取坐标")
-#                 is_left = get_card_left_type(target_left_card)
-#                 if is_left:
-#                     logger.debug("左侧对比结果,{}:{}", target_left_card, is_left[0])
-#                     if is_left[0] == target_left_card:
-#                         logger.debug("左侧有目标结界卡,点击左侧坐标{}", is_left[1])
-#                         ImageService.touch_coordinate(is_left[1])
-#                         logger.debug("判断当前结界卡星级和类型")
-#                         card_type = get_card_type_word(target_card, Onmyoji.foster_JJK_GYWZ, 0)
-#                         logger.debug(card_type)
-#                         if card_type == target_card:
-#                             logger.debug("目标结界,中断查找")
-#                             return target_card
-#                     if is_left[0] == Onmyoji.foster_JJK_WFZ:
-#                         logger.debug("未放置，中断查找,退出重新进入")
-#                         ComplexService.get_reward(Onmyoji.foster_SFHY)
-#                         break
-#                 else:
-#                     logger.debug("左侧结果为其它情况")
-#                 if i_friends == 9:
-#                     logger.debug("超出40个好友，不再滑动，中断查找,退出重新进入")
-#                     ComplexService.get_reward(Onmyoji.foster_SFHY)
-#                     break
-#                 logger.debug("向下滑动4位好友")
-#                 ComplexService.refuse_reward()
-#                 ImageService.swipe(coordinate_friend4, coordinate_friend1, 2)
-#                 num_friends = num_friends + 4
-#         else:
-#             logger.debug("未获取到上方好友和上方跨区")
-#     return None
 
 
 def get_card_type(target_type: str, not_placed: int = 0):

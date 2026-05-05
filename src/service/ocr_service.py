@@ -21,21 +21,39 @@ log_ppocr = logging.getLogger("ppocr")
 log_ppocr.setLevel(logging.CRITICAL)
 os.environ['GLOG_minloglevel'] = '3'
 
-ocr_ch = PaddleOCR(
-    lang="ch",
-    device='cpu',
-    use_angle_cls=True,  # 启用角度分类
-    text_det_thresh=0.3,  # 文本检测阈值（正确参数名）
-    text_det_box_thresh=0.5,  # 文本检测框阈值
-    text_det_unclip_ratio=1.6,  # 文本检测框扩展比例
-    text_rec_score_thresh=0.5  # 文本识别置信度阈值
-)
+# OCR实例缓存（单例模式）
+_ocr_ch = None
+_ocr_en = None
 
-ocr_en = PaddleOCR(
-    lang="en",
-    device='cpu',
-    use_angle_cls=False
-)
+
+def get_ocr_ch():
+    """获取中文OCR实例（单例）"""
+    global _ocr_ch
+    if _ocr_ch is None:
+        logger.debug("初始化中文OCR模型")
+        _ocr_ch = PaddleOCR(
+            lang="ch",
+            device='cpu',
+            use_angle_cls=True,  # 启用角度分类
+            text_det_thresh=0.3,  # 文本检测阈值（正确参数名）
+            text_det_box_thresh=0.5,  # 文本检测框阈值
+            text_det_unclip_ratio=1.6,  # 文本检测框扩展比例
+            text_rec_score_thresh=0.5  # 文本识别置信度阈值
+        )
+    return _ocr_ch
+
+
+def get_ocr_en():
+    """获取英文OCR实例（单例）"""
+    global _ocr_en
+    if _ocr_en is None:
+        logger.debug("初始化英文OCR模型")
+        _ocr_en = PaddleOCR(
+            lang="en",
+            device='cpu',
+            use_angle_cls=False
+        )
+    return _ocr_en
 
 
 class OcrService:
@@ -45,8 +63,8 @@ class OcrService:
         获取局部截图的文本或数字信息
 
         :param folder_path: 局部路径
-        :param lang: 语言类型 eng  英语 chi_sim 简体中文
-        :return:
+        :param lang: 语言类型 eng 英语 chi_sim 简体中文
+        :return: 识别到的文本
         """
         # 结界突破区域
         logger.debug("获取{}的位置", folder_path)
@@ -58,8 +76,6 @@ class OcrService:
             img = AirtestService.crop_image(pos1[0], pos1[1], pos2[0], pos2[1])
             # 图像文字识别
             pil_image = AirtestService.cv2_2_pil(img)
-            # pil_image.save("D:/a.png", quality=99, optimize=True)
-            # image = Image.open('D:/a.png')
             # 打开图像
             image = pil_image.convert('RGBA')
             # 使用 Tesseract 进行文字识别
@@ -82,13 +98,19 @@ class OcrService:
             else:
                 logger.debug("无{}", folder_path)
             return text
-            # 文字判断
         else:
             logger.debug("未找到{}", folder_path)
         return None
 
     @staticmethod
     def re_search(pattern: str, text: str):
+        """
+        正则表达式搜索
+
+        :param pattern: 正则表达式模式
+        :param text: 待搜索文本
+        :return: 匹配结果
+        """
         text = re.search(pattern, text)
         if text:
             text = text.group()
@@ -98,51 +120,44 @@ class OcrService:
     def ocr_paddle(img, words, exclude_words=None, similarly=0.9):
         """
         根据图片识别文字
-        :param similarly:0.9
-        :param exclude_words: 排除文字
-        :param img: 图片   路径或ndarray
+
+        :param img: 图片路径或ndarray
         :param words: 文字数组
-        :return: 文字坐标
+        :param exclude_words: 排除文字
+        :param similarly: 相似度阈值，默认0.9
+        :return: 文字坐标多边形
         """
-        # 如果是文件路径，读取图像
         try:
             if isinstance(img, str):
                 img = cv2.imread(img)
 
-            # 使用预处理后的图像进行OCR
-            ocr_result = ocr_ch.predict(img)
-
-            # AirtestService.draw_point(img,0,0)
+            # 使用单例OCR实例进行识别
+            ocr_result = get_ocr_ch().predict(img)
 
             if ocr_result:
                 for line in ocr_result:
-                    rec_texts = line.get('rec_texts', [])  # 识别到的文字
-                    rec_scores = line.get('rec_scores', [])  # 置信度得分
-                    rec_polys = line.get('rec_polys', [])  # 文字位置坐标
+                    rec_texts = line.get('rec_texts', [])
+                    rec_scores = line.get('rec_scores', [])
+                    rec_polys = line.get('rec_polys', [])
 
-                    # 遍历每个识别到的文字
-                    for i in range(0, len(rec_texts)):
+                    for i in range(len(rec_texts)):
                         text = rec_texts[i]
                         score = rec_scores[i] if i < len(rec_scores) else 0.0
 
-                        # 修复：添加多边形数据有效性检查
                         if i >= len(rec_polys):
                             continue
 
                         poly = rec_polys[i]
-                        # 修复：使用正确的方式检查numpy数组
                         if poly is None or len(poly) < 4:
                             continue
 
-                        # 检查多边形坐标点是否完整
                         if len(poly[0]) < 2 or len(poly[2]) < 2:
                             continue
 
-                        # 统一条件判断
                         condition_met = (
-                                text in words and
-                                score >= similarly and
-                                (not exclude_words or text not in exclude_words)
+                            text in words and
+                            score >= similarly and
+                            (not exclude_words or text not in exclude_words)
                         )
 
                         if condition_met:
@@ -164,78 +179,66 @@ class OcrService:
     def ocr_paddle_list(img, words, lang='ch'):
         """
         基于PaddleOCR的指定文字识别
-        :param lang:
+
         :param img: 图片路径或numpy数组
         :param words: 需要匹配的文字列表
+        :param lang: 语言类型，默认中文
         :return: 包含匹配文字及其坐标的列表 [[文字, [x,y]], ...]
         """
         result_xy = []
 
-        # 修复：确保图像是三通道的
         if isinstance(img, str):
             img = cv2.imread(img)
 
-        if len(img.shape) == 2:  # 如果是灰度图
+        if len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        elif img.shape[2] == 1:  # 如果是单通道
+        elif img.shape[2] == 1:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
-        # 确保图像数据类型是uint8
         img = img.astype(np.uint8)
 
-        # 执行OCR识别
-        ocr_result = ocr_ch.predict(img)
+        # 使用单例OCR实例进行识别
         if lang == 'en':
-            ocr_result = ocr_en.predict(img)
+            ocr_result = get_ocr_en().predict(img)
+        else:
+            ocr_result = get_ocr_ch().predict(img)
 
         if ocr_result:
-            # 解析识别结果
             for line in ocr_result:
-                # 使用安全字典访问
-                rec_texts = line.get('rec_texts', [])  # 识别到的文字
-                rec_scores = line.get('rec_scores', [])  # 置信度得分
-                rec_polys = line.get('rec_polys', [])  # 文字位置坐标
+                rec_texts = line.get('rec_texts', [])
+                rec_scores = line.get('rec_scores', [])
+                rec_polys = line.get('rec_polys', [])
 
-                # 检查数组长度是否匹配
                 min_length = min(len(rec_texts), len(rec_scores), len(rec_polys))
                 if min_length == 0:
                     continue
 
-                # 遍历每个识别到的文字
                 for i in range(min_length):
                     text = rec_texts[i]
                     score = rec_scores[i]
 
-                    # 检查多边形数据有效性
                     if i >= len(rec_polys):
                         continue
 
                     poly = rec_polys[i]
-                    # 修复：使用正确的方式检查numpy数组
                     if poly is None or len(poly) < 4:
                         continue
 
-                    # 检查多边形坐标点是否完整
                     if len(poly[0]) < 2 or len(poly[2]) < 2:
                         continue
 
-                    # 与目标文字列表比对
                     if words:
-                        if text in words and score >= 0.7:  # 降低置信度阈值以提高识别率
-                            # 计算中心坐标
+                        if text in words and score >= 0.7:
                             x_center = (poly[0][0] + poly[2][0]) / 2
                             y_center = (poly[0][1] + poly[2][1]) / 2
                             if x_center > 0 and y_center > 0:
-                                # 使用列表格式的坐标
                                 result_xy.append([text, [int(x_center), int(y_center)]])
                                 logger.debug("识别到{}，置信度{}，坐标{}", text, score, [int(x_center), int(y_center)])
                     else:
-                        if score >= 0.7:  # 降低置信度阈值以提高识别率
-                            # 计算中心坐标
+                        if score >= 0.7:
                             x_center = (poly[0][0] + poly[2][0]) / 2
                             y_center = (poly[0][1] + poly[2][1]) / 2
                             if x_center > 0 and y_center > 0:
-                                # 使用列表格式的坐标
                                 result_xy.append([text, [int(x_center), int(y_center)]])
                                 logger.debug("识别到{}，置信度{}，坐标{}", text, score, [int(x_center), int(y_center)])
 

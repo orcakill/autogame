@@ -38,7 +38,7 @@ class TestOnmyojiService(TestCase):
         4 云手机-0021
         :return:
         """
-        TestOnmyojiService.test_project('4', "5", "登录")
+        TestOnmyojiService.test_project('1', "0", "登录")
 
     def test_initialization1(self):
         """
@@ -66,14 +66,14 @@ class TestOnmyojiService(TestCase):
         项目4 地域鬼王
         :return:
         """
-        TestOnmyojiService.test_project('1', '5', "地域鬼王")
+        TestOnmyojiService.test_project('2', '0', "地域鬼王")
 
     def test_foster_care(self):
         """
         项目5 式神寄养
         :return:；
         """
-        TestOnmyojiService.test_project('1 ', '5', "式神寄养")
+        TestOnmyojiService.test_project('2', '0', "式神寄养")
 
     def test_shack_house(self):
         """

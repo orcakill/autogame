@@ -77,3 +77,11 @@ class UtilsPath:
     def get_log_image_path():
         path = os.path.join(UtilsPath.get_project_path_log(), "image")
         return path
+
+    @staticmethod
+    def get_print_image():
+        root_path = UtilsPath.get_project_path()
+        config_path = root_path + "src\\resources\\config.ini"
+        config = configparser.ConfigParser()
+        config.read(config_path, encoding="utf-8")
+        return config.get("airtest", "print_image")
