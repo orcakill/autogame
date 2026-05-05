@@ -68,6 +68,8 @@ def daily_rewards(game_task: list):
         ImageService.touch(Onmyoji.store_LBW)
         logger.debug("点击推荐")
         ImageService.touch(Onmyoji.store_TJ)
+        logger.debug("点击日常")
+        ImageService.touch(Onmyoji.store_TJ)
         logger.debug("判断是否有每日领取")
         is_day = ImageService.exists(Onmyoji.store_MRLQ, wait=2)
         if is_day:

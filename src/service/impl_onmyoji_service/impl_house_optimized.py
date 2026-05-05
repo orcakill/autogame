@@ -128,14 +128,14 @@ class ImplHouseOptimized:
             if card_info:
                 card_type, position = card_info
                 # 分类结界卡
-                if card_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_LXDY]:
+                if card_type in [Onmyoji.foster_ZCJJK_LXTG, Onmyoji.foster_ZCJJK_LXDY]:
                     card_statistics['six_star'].append((card_type, position))
                     card_statistics['all_cards'].append((card_type, position))
-                elif card_type in [Onmyoji.foster_JJK_WXTG, Onmyoji.foster_JJK_WXDY]:
+                elif card_type in [Onmyoji.foster_ZCJJK_WXTG, Onmyoji.foster_ZCJJK_WXDY]:
                     card_statistics['five_star'].append((card_type, position))
                     card_statistics['all_cards'].append((card_type, position))
-                elif card_type in [Onmyoji.foster_JJK_SXTG, Onmyoji.foster_JJK_SXTG1, 
-                                 Onmyoji.foster_JJK_SXDY, Onmyoji.foster_JJK_SXDY1]:
+                elif card_type in [Onmyoji.foster_ZCJJK_SXTG, Onmyoji.foster_ZCJJK_SXTG1,
+                                 Onmyoji.foster_ZCJJK_SXDY, Onmyoji.foster_ZCJJK_SXDY1]:
                     card_statistics['four_star'].append((card_type, position))
                     card_statistics['all_cards'].append((card_type, position))
             
@@ -144,12 +144,12 @@ class ImplHouseOptimized:
             if is_unplaced:
                 logger.debug("发现未放置结界卡，中断当前轮次")
                 ComplexService.get_reward(Onmyoji.foster_SFHY)
-                break
+                continue
             
             if i_friends == 9:
                 logger.debug("超出40个好友，停止统计")
                 ComplexService.get_reward(Onmyoji.foster_SFHY)
-                break
+                continue
             
             # 向下滑动
             logger.debug("向下滑动4位好友")

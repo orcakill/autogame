@@ -28,6 +28,11 @@ def ghost_king(game_task: list):
         ImageService.touch(Onmyoji.home_TS, wait=3)
         logger.debug("进入地域鬼王")
         ImageService.touch(Onmyoji.ghost_DYGWTB, wait=3)
+        logger.debug("判断是否存在收藏，存在筛选界面")
+        is_collection = ImageService.exists(Onmyoji.ghost_SC, wait=3)
+        if is_collection:
+            logger.debug("存在收藏，点击筛选取消收藏界面")
+            ImageService.touch(Onmyoji.ghost_SX, wait=3)
         logger.debug("点击今日挑战")
         ImageService.touch(Onmyoji.ghost_JRTZ, wait=6)
         logger.debug("判断是否有未挑战")

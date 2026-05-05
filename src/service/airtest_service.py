@@ -29,6 +29,7 @@ from src.utils.utils_time import UtilsTime
 log_airtest = logging.getLogger("airtest")
 log_airtest.setLevel(logging.CRITICAL)
 
+
 # 图片点击识别等待时间(秒）·
 WAIT = 0
 # 图像识别阈值
@@ -36,26 +37,17 @@ THRESHOLD = 0.7
 # 按住时间
 DURATION = 0.1
 
+PRINT_IMAGE = UtilsPath.get_print_image()
+
 
 class AirtestService:
     @staticmethod
     def auto_setup(connect_name: str):
         devices = f"Android://127.0.0.1:5037/{connect_name}"
         auto_setup(__file__, logdir=False, devices=[devices])
-        # from airtest.core.helper import G
-        # display_info = G.DEVICE.display_info
-        # height1, width1 = AirtestService.resolution_ratio()
-        # # 判断屏幕方向并获取正确的横屏宽高
-        # # orientation: 1代表竖屏, 2代表横屏 (具体值可能因设备而异)
-        # # logger.debug("当前设备方向:{}", display_info['orientation'])
-        # # if display_info['orientation'] in [1, 3]:  # 如果当前是竖屏模式
-        # #     height = display_info['width']  # 注意：宽高互换
-        # #     width = display_info['height']
-        # #     logger.debug("当前设备为竖屏模式")
-        # #     if height == width1 and width == height1:
-        # #         logger.debug("当前设备和实际界面不一致，实际为横屏")
-        # #     else:
-        # #         logger.debug("当前设备和实际界面一致，实际为竖屏")
+        logger.debug("检查连接方向")
+        width1,height1 = AirtestService.resolution_ratio()
+        logger.debug("设备连接方向，宽：{},高：{}", width1, height1)
 
 
     @staticmethod
@@ -164,7 +156,7 @@ class AirtestService:
         imageio.imsave(img_path, np.asarray(rgb_image))
 
     @staticmethod
-    def draw_point(screen=None, x: int = 0, y: int = 0, name: str = "识别截图", print_image: bool = True):
+    def draw_point(screen=None, x: int = 0, y: int = 0, name: str = "识别截图", print_image: bool = PRINT_IMAGE):
         """
         在图像上绘制点标记
 
@@ -192,12 +184,12 @@ class AirtestService:
             screen_array: np.ndarray = np.asarray(screen)
             rgb_image: np.ndarray = cv2.cvtColor(screen_array, cv2.COLOR_RGB2BGR)
 
-            logger.debug("x:{} y:{}", x, y)
+            # logger.debug("x:{} y:{}", x, y)
             cv2.circle(rgb_image, (x, y), 5, (255, 0, 0), -1)
 
             # 保存图片到本地磁盘
             img_path: str = UtilsPath.get_print_image_path(name)
-            logger.debug("img_path:{}", img_path)
+            # logger.debug("img_path:{}", img_path)
             imageio.imsave(img_path, rgb_image)
 
 
