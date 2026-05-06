@@ -134,7 +134,7 @@ class AirtestService:
         return screen
 
     @staticmethod
-    def draw_rectangle(screen, x1, y1, x2, y2):
+    def draw_rectangle(screen, x1, y1, x2, y2,print_image: bool = PRINT_IMAGE):
         """
         在图像上绘制矩形框
 
@@ -148,12 +148,13 @@ class AirtestService:
         返回:
             无返回值，直接保存绘制后的图像到本地
         """
-        x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-        rgb_image: np.ndarray  = np.asarray(cv2.cvtColor(screen, cv2.COLOR_RGB2BGR))
-        cv2.rectangle(rgb_image, [x1, y1], [x2, y2], [255.0, 0.0, 0.0], 2)
-        # 保存图片到本地磁盘
-        img_path: str = UtilsPath.get_print_image_path()
-        imageio.imsave(img_path, np.asarray(rgb_image))
+        if print_image:
+            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+            rgb_image: np.ndarray  = np.asarray(cv2.cvtColor(screen, cv2.COLOR_RGB2BGR))
+            cv2.rectangle(rgb_image, [x1, y1], [x2, y2], [255.0, 0.0, 0.0], 2)
+            # 保存图片到本地磁盘
+            img_path: str = UtilsPath.get_print_image_path()
+            imageio.imsave(img_path, np.asarray(rgb_image))
 
     @staticmethod
     def draw_point(screen=None, x: int = 0, y: int = 0, name: str = "识别截图", print_image: bool = PRINT_IMAGE):

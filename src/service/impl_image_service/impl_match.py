@@ -60,13 +60,20 @@ class ImplMatch:
             while time.time() - time_start < timeouts:
                 for template in template_list:
                     # 设备截图
-                    image1 = AirtestService.crop_image(x1 * resolution[0], y1 * resolution[1], x2 * resolution[0],
-                                                       y2 * resolution[1])
-                    return AirtestService.cv_match(template, image1, cvstrategy)
-            return None
+                    try:
+                        image1 = AirtestService.crop_image(x1 * resolution[0], y1 * resolution[1], x2 * resolution[0],
+                                                         y2 * resolution[1])
+                        result=AirtestService.cv_match(template, image1, cvstrategy)
+                        AirtestService.draw_point(image1, result['result'][0], result['result'][1])
+                        return result
+                    except Exception as e:
+                        if is_throw:
+                            logger.error("单张图片异常：{}", e)
+                        else:
+                            pass
         except Exception as e:
             if is_throw:
-                logger.error("异常：{}", e)
+                logger.error("单次图片识别异常：{}", e)
             else:
                 pass
         return None

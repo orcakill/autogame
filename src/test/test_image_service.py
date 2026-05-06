@@ -11,6 +11,8 @@ from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
 from src.service.image_service import ImageService
+from src.service.impl_onmyoji_service import impl_house
+from src.service.impl_onmyoji_service.impl_house import ImplHouseOptimized
 from src.utils.my_logger import logger
 from src.utils.utils_time import UtilsTime
 
@@ -20,10 +22,10 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("5")
+        ComplexService.auto_setup("2")
         logger.debug("开始")
         now = time.time()
-        is_switch=ImageService.touch(Onmyoji.login_YHZX, timeouts=10,deviation=0,is_throw=True)
+        is_switch=ImplHouseOptimized.check_current_card()
         logger.debug(is_switch)
         now1 = time.time()
         logger.debug("结束")

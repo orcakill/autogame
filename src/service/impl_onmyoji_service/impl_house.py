@@ -157,7 +157,7 @@ class ImplHouseOptimized:
                 ImageService.touch_coordinate(pos, wait=0.5)
 
             # 检查左侧结界卡
-            card_info = ImplHouseOptimized._check_current_card()
+            card_info = ImplHouseOptimized.check_current_card()
             if card_info:
                 card_type, position = card_info
                 star_level = ImplHouseOptimized.STAR_LEVEL.get(card_type, 0)
@@ -258,7 +258,7 @@ class ImplHouseOptimized:
             return None
 
     @staticmethod
-    def _check_current_card():
+    def check_current_card():
         """
         检查当前好友的结界卡类型
         :return: (card_type, position) 或 None
@@ -266,9 +266,9 @@ class ImplHouseOptimized:
         # 检查左侧结界卡
         target_cards = [
             Onmyoji.foster_ZCJJK_LXTG,  # 六星太鼓
-            Onmyoji.foster_ZCJJK_WXTG,  # 五星太鼓
+            Onmyoji.foster_ZCJJK_WXTG,   # 五星太鼓
             Onmyoji.foster_ZCJJK_SXTG1,  # 四星太鼓
-            Onmyoji.foster_ZCJJK_SXTG  # 三星太鼓1
+            Onmyoji.foster_ZCJJK_SXTG   # 三星太鼓1
         ]
 
         for target_card in target_cards:
