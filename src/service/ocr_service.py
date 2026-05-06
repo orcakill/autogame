@@ -8,7 +8,6 @@ import re
 
 import cv2
 import numpy as np
-import pytesseract
 from paddleocr import PaddleOCR
 
 from src.model.enum import Onmyoji, Cvstrategy
@@ -58,15 +57,14 @@ def get_ocr_en():
 
 class OcrService:
     @staticmethod
-    def get_word(folder_path: str, lang: str = 'eng'):
+    def get_word(folder_path: str, lang: str = 'chi_sim'):
         """
-        获取局部截图的文本或数字信息
+        获取局部截图的文本或数字信息（使用PaddleOCR）
 
         :param folder_path: 局部路径
         :param lang: 语言类型 eng 英语 chi_sim 简体中文
         :return: 识别到的文本
         """
-        # 结界突破区域
         logger.debug("获取{}的位置", folder_path)
         result = ImplMatch.cv_match(folder_path, cvstrategy=Cvstrategy.default)
         if result:
@@ -74,13 +72,21 @@ class OcrService:
             pos2 = result['rectangle'][2]
             # 截图
             img = AirtestService.crop_image(pos1[0], pos1[1], pos2[0], pos2[1])
-            # 图像文字识别
-            pil_image = AirtestService.cv2_2_pil(img)
-            # 打开图像
-            image = pil_image.convert('RGBA')
-            # 使用 Tesseract 进行文字识别
-            text = pytesseract.image_to_string(image, lang=lang)
-            if text and text is not None:
+            
+            # 使用PaddleOCR进行文字识别（替代Tesseract）
+            ocr_result = get_ocr_en().predict(img) if lang == 'eng' else get_ocr_ch().predict(img)
+            
+            text = ""
+            if ocr_result:
+                for line in ocr_result:
+                    rec_texts = line.get('rec_texts', [])
+                    rec_scores = line.get('rec_scores', [])
+                    for i in range(len(rec_texts)):
+                        if i < len(rec_scores) and rec_scores[i] >= 0.5:
+                            text += rec_texts[i]
+            
+            if text:
+                # 针对特定场景的文本处理
                 if folder_path == Onmyoji.border_JJTZJQY:
                     text = OcrService.re_search(r'\d+(?=/30)', text)
                 if folder_path == Onmyoji.friends_HYSQY:
@@ -93,8 +99,9 @@ class OcrService:
                     text = OcrService.re_search(r'\d+(?=/6)', text)
                 if folder_path == Onmyoji.foster_JJK_GYWZ:
                     text = text.split('+')[-1].strip() if '+' in text else text
+            
             if text:
-                logger.debug(text)
+                logger.debug("识别结果: {}", text)
             else:
                 logger.debug("无{}", folder_path)
             return text
@@ -103,18 +110,18 @@ class OcrService:
         return None
 
     @staticmethod
-    def re_search(pattern: str, text: str):
+    def re_search(pattern: str, text: str) -> str:
         """
         正则表达式搜索
 
         :param pattern: 正则表达式模式
         :param text: 待搜索文本
-        :return: 匹配结果
+        :return: 匹配结果（始终返回str类型）
         """
-        text = re.search(pattern, text)
-        if text:
-            text = text.group()
-        return text
+        match = re.search(pattern, text)
+        if match:
+            return match.group()
+        return ""
 
     @staticmethod
     def ocr_paddle(img, words, exclude_words=None, similarly=0.9):
