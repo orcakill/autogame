@@ -128,8 +128,8 @@ class ComplexService:
                 AirtestService.auto_setup(connect_info)
             logger.debug("检查截图方法效率")
             best_method = AirtestService.check_method(serialno)
-            if best_method != "" and 1==2 :
-                logger.debug("以最快截图方法重新连接")
+            if best_method != "ADBCAP" :
+                logger.debug("以最快的可用截图方法重新连接")
                 connect_info = connect_info + '?cap_method=' + best_method
                 AirtestService.auto_setup(connect_info)
         else:

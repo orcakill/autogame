@@ -95,6 +95,9 @@ def restart_app_and_login(game_account, server, login_type):
         logger.debug("不存在适龄提示，重启应用")
         logger.debug("启动阴阳师app")
         ImageService.restart_app("com.netease.onmyoji")
+        width1, height1 = AirtestService.resolution_ratio()
+        logger.debug("设备连接方向，宽：{},高：{}", width1, height1)
+
         # 处理适龄提示
         handle_age_verification()
 
