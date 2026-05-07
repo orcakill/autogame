@@ -80,7 +80,7 @@ class TestOnmyojiService(TestCase):
         项目6 阴阳寮管理
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "阴阳寮管理")
+        TestOnmyojiService.test_project('2', '2', "阴阳寮管理")
 
     def test_region_border(self):
         """

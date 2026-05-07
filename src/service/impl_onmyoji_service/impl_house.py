@@ -144,7 +144,7 @@ class ImplHouseOptimized:
             return None
 
         for i_friends in range(10):
-            logger.debug(f"第{i_friends + 1}轮检查")
+            logger.debug(f"第{i_friends + 1}小轮好友寄养界面检查")
 
             if time.time() - time_start > 20 * 60:
                 logger.debug("检查执行时间超20分钟，停止检查")
@@ -300,21 +300,23 @@ class ImplHouseOptimized:
         card_types = [target_card, Onmyoji.foster_JJK_WFZ]
 
         with ThreadPoolExecutor() as executor:
-            futures = [executor.submit(check_image_confidence, image_path, 0.6, False) for image_path in card_types]
+            futures = [executor.submit(check_image_confidence, image_path, 0.7, False) for image_path in card_types]
         results = [future.result() for future in futures]
 
         if results[0]:
             logger.debug(f"图像匹配：{target_card}, 相似度：{results[0]['confidence']}")
-            
-            # 类型验证：通过OCR验证结界卡类型
-            logger.debug(f"点击目标位置：{results[0]['result']}")
-            AirtestService.touch_coordinate(results[0]['result'])
-            if ImplHouseOptimized._verify_card_type(target_card):
-                logger.debug(f"类型验证通过：{target_card}")
+            if results[0]['confidence'] > 0.95:
+                logger.debug("相似度大于0.95，不必验证")
                 return [target_card, results[0]['result'], results[0]['confidence']]
             else:
-                logger.debug(f"类型验证失败：期望{target_card}")
-                return None
+                logger.debug(f"点击目标位置：{results[0]['result']}, 类型验证")
+                AirtestService.touch_coordinate(results[0]['result'])
+                if ImplHouseOptimized._verify_card_type(target_card):
+                    logger.debug(f"类型验证通过：{target_card}")
+                    return [target_card, results[0]['result'], results[0]['confidence']]
+                else:
+                    logger.debug(f"类型验证失败：期望{target_card}")
+                    return None
         elif results[1]:
             logger.debug(f"检查结果：{Onmyoji.foster_JJK_WFZ}")
             return [Onmyoji.foster_JJK_WFZ, None, 0]
@@ -383,16 +385,16 @@ class ImplHouseOptimized:
         result = OcrService.get_word(target_word)
 
         if result:
-            if result in ['67', '76'] and target_type in [Onmyoji.foster_JJK_LXTG, Onmyoji.foster_JJK_WXTG]:
+            if result in ['67', '76'] and target_type in [Onmyoji.foster_ZCJJK_LXTG, Onmyoji.foster_ZCJJK_WXTG]:
                 logger.debug(f"检查结果：{target_type}")
                 return target_type
-            if result in ['59', '67'] and target_type in [Onmyoji.foster_JJK_WXTG]:
+            if result in ['59', '67'] and target_type in [Onmyoji.foster_ZCJJK_WXTG]:
                 logger.debug(f"检查结果：{target_type}")
                 return target_type
-            if result in ['50'] and target_type in [Onmyoji.foster_JJK_SXTG1]:
+            if result in ['50'] and target_type in [Onmyoji.foster_ZCJJK_SXTG1]:
                 logger.debug(f"检查结果：{target_type}")
                 return target_type
-            if result in ['42', '50'] and target_type in [Onmyoji.foster_JJK_SXTG1, Onmyoji.foster_JJK_SXTG]:
+            if result in ['42', '50'] and target_type in [Onmyoji.foster_ZCJJK_SXTG1, Onmyoji.foster_ZCJJK_SXTG]:
                 logger.debug(f"检查结果：{target_type}")
                 return target_type
 
@@ -439,7 +441,9 @@ def foster_care(game_task: list):
                 ComplexService.refuse_reward()
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
-        if is_foster:
+        is_PUSSYCAT=ImageService.exists(Onmyoji.foster_SSYCBT)
+        if is_foster and is_PUSSYCAT:
+            logger.debug("式神育成标题界面，有可寄养标志")
             logger.debug("寄养检查，按六星到三星太鼓，再到六星到三星太鼓")
             faster_place = ImplHouseOptimized.get_optimal_card()
             logger.debug(faster_place)
@@ -579,7 +583,7 @@ def shack_house(game_task: list):
                     ComplexService.get_reward(Onmyoji.shack_HDJL)
                 else:
                     logger.debug("全部坐标获取失败，尝试返回首页")
-                    ComplexService.get_reward(is_fire)
+                    ComplexService.get_reward(Onmyoji.shack_RWCLYHL)
                     ImageService.touch_coordinate((10, 10))
                     logger.debug("返回到寮首页")
                     ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)

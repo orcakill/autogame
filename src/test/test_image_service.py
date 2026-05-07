@@ -23,7 +23,7 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("5")
+        ComplexService.auto_setup("2")
         logger.debug("开始")
         now = time.time()
         is_switch=ImplHouseOptimized.check_current_card()
@@ -33,7 +33,7 @@ class TestImageService(TestCase):
         logger.debug(UtilsTime.convert_seconds(now1 - now))
 
     def test_exists_coordinate(self):
-        ComplexService.auto_setup("5")
+        ComplexService.auto_setup("2")
         logger.debug("开始")
         now = time.time()
         is_1= OcrService.get_word(Onmyoji.foster_JJK_GYWZ)

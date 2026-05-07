@@ -123,6 +123,7 @@ class AirtestService:
         screen = None
         try:
             if print_image:
+                name=name.replace("\\","_")
                 img_path = UtilsPath.get_print_image_path(name)
                 screen = snapshot(img_path, quality=99)
             else:
