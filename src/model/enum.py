@@ -336,6 +336,7 @@ class Onmyoji:
     foster_SFHY = r"阴阳寮\式神寄养\上方好友"
     foster_SFKQ = r"阴阳寮\式神寄养\上方跨区"
     foster_KJYBZ = r"阴阳寮\式神寄养\可寄养标志"
+    foster_SSYCBT = r"阴阳寮\式神寄养\式神育成标题"
     foster_DMDJDM = r"阴阳寮\式神寄养\大吉达摩"
     foster_DMFWDM = r"阴阳寮\式神寄养\奉为达摩"
     foster_DMZFDM = r"阴阳寮\式神寄养\招福达摩"
