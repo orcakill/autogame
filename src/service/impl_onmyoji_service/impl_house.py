@@ -8,6 +8,7 @@ import datetime
 import time
 from concurrent.futures import ThreadPoolExecutor
 
+from service.airtest_service import AirtestService
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji
 from src.model.models import GameAccount, GameProjectLog, GameProjectsRelation, GameProject, GameDevice
@@ -282,6 +283,7 @@ class ImplHouseOptimized:
     def _get_card_left_type(target_card: str):
         """
         获取当前结界卡,直接判断左侧是否有目标结界卡
+        增加类型验证：图像匹配成功后，通过OCR验证勾玉数量确认结界卡类型
         :param target_card: 目标结界卡
         :return: [target_card, position, confidence] 或 None
         """
@@ -302,14 +304,41 @@ class ImplHouseOptimized:
         results = [future.result() for future in futures]
 
         if results[0]:
-            logger.debug(f"检查结果：{target_card}, 相似度：{results[0]['confidence']}")
-            return [target_card, results[0]['result'], results[0]['confidence']]
+            logger.debug(f"图像匹配：{target_card}, 相似度：{results[0]['confidence']}")
+            
+            # 类型验证：通过OCR验证结界卡类型
+            logger.debug(f"点击目标位置：{results[0]['result']}")
+            AirtestService.touch_coordinate(results[0]['result'])
+            if ImplHouseOptimized._verify_card_type(target_card):
+                logger.debug(f"类型验证通过：{target_card}")
+                return [target_card, results[0]['result'], results[0]['confidence']]
+            else:
+                logger.debug(f"类型验证失败：期望{target_card}")
+                return None
         elif results[1]:
             logger.debug(f"检查结果：{Onmyoji.foster_JJK_WFZ}")
             return [Onmyoji.foster_JJK_WFZ, None, 0]
 
         logger.debug("检查结果：其他情况")
         return None
+
+    @staticmethod
+    def _verify_card_type(target_card: str) -> bool:
+        """
+        通过OCR验证结界卡类型（根据勾玉数量判断星级）
+        :param target_card: 目标结界卡类型
+        :return: 验证是否通过
+        """
+        try:
+            card_type = ImplHouseOptimized._get_card_type_word(target_card, Onmyoji.foster_JJK_GYWZ, 0)
+            if card_type == target_card:
+                return True
+            logger.debug(f"OCR验证失败：期望{target_card}，实际{card_type}")
+            return False
+        except Exception as e:
+            logger.debug(f"OCR验证异常：{e}")
+            # OCR异常时，默认信任图像匹配结果
+            return True
 
     @staticmethod
     def _locate_and_foster(target_card, target_position):

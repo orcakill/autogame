@@ -7,6 +7,7 @@ import datetime
 import time
 from unittest import TestCase
 
+from service.ocr_service import OcrService
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
 from src.service.complex_service import ComplexService
@@ -22,7 +23,7 @@ cvstrategy = Cvstrategy.default
 class TestImageService(TestCase):
 
     def test_exists(self):
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("5")
         logger.debug("开始")
         now = time.time()
         is_switch=ImplHouseOptimized.check_current_card()
@@ -32,11 +33,10 @@ class TestImageService(TestCase):
         logger.debug(UtilsTime.convert_seconds(now1 - now))
 
     def test_exists_coordinate(self):
-        ImageService.touch(Onmyoji.login_YHZX, timeouts=10)
-        ComplexService.auto_setup("0")
+        ComplexService.auto_setup("5")
         logger.debug("开始")
         now = time.time()
-        is_1= ImageService.touch(Onmyoji.login_YHZX, timeouts=10)
+        is_1= OcrService.get_word(Onmyoji.foster_JJK_GYWZ)
         logger.debug(is_1)
         now1 = time.time()
         logger.debug("结束")
