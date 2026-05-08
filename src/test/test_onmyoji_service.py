@@ -11,6 +11,7 @@ from src.service.complex_service import ComplexService
 from src.service.onmyoji_service import OnmyojiService
 from src.service.windows_service import WindowsService
 from src.utils.my_logger import logger
+from utils.utils_path import UtilsPath
 
 
 class TestOnmyojiService(TestCase):
@@ -87,7 +88,7 @@ class TestOnmyojiService(TestCase):
         项目7 阴阳寮突破
         :return:
         """
-        TestOnmyojiService.test_project('1', '0', "阴阳寮突破")
+        TestOnmyojiService.test_project('1', '5', "阴阳寮突破")
 
     def test_border_fight(self):
         """
@@ -115,7 +116,7 @@ class TestOnmyojiService(TestCase):
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project('2', '0', "好友协战")
+        TestOnmyojiService.test_project('2', '5', "好友协战")
 
     def test_awakening(self):
         """
@@ -269,6 +270,8 @@ class TestOnmyojiService(TestCase):
             game_project = GameProject(game_task[3])
             game_device = GameDevice(game_task[4])
             game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
+            logger.debug("清理图片文件夹")
+            WindowsService.delete_folder_file(UtilsPath.get_log_image_path())
             logger.debug("当前状态初始化:{}", game_account.role_name)
             # 连接设备
             ComplexService.auto_setup(test_devices)
