@@ -116,7 +116,7 @@ class TestOnmyojiService(TestCase):
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project('2', '5', "好友协战")
+        TestOnmyojiService.test_project('2', '2', "好友协战")
 
     def test_awakening(self):
         """
@@ -172,7 +172,7 @@ class TestOnmyojiService(TestCase):
         项目19 斗技   
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "斗技", fight_times=20)
+        TestOnmyojiService.test_project('2', '2', "斗技", fight_times=20)
 
     def test_soul_arrange(self):
 
@@ -271,7 +271,7 @@ class TestOnmyojiService(TestCase):
             game_device = GameDevice(game_task[4])
             game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
             logger.debug("清理图片文件夹")
-            WindowsService.delete_folder_file(UtilsPath.get_log_image_path())
+            WindowsService.delete_folder_file(UtilsPath.get_log_image_path(),day=0)
             logger.debug("当前状态初始化:{}", game_account.role_name)
             # 连接设备
             ComplexService.auto_setup(test_devices)
