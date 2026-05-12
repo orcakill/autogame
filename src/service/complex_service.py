@@ -8,6 +8,7 @@ import time
 from airtest.core.android.cap_methods.screen_proxy import ScreenProxy
 from tornado import concurrent
 
+from service.impl_cap.u2_fast_cap import U2FastCap
 from src.model.enum import Cvstrategy, Onmyoji, WinProcessName, WinClassName
 from src.service.airtest_service import AirtestService
 from src.service.image_service import ImageService
@@ -98,44 +99,58 @@ class ComplexService:
         screen = AirtestService.snapshot()
         if screen is None:
             logger.debug("未连接设备，开始连接")
-            if game_device in ['2', 2]:
-                logger.debug("注册scrcpy windows截图")
-                logger.debug("检查windows是否开启scrcpy")
-                is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
-                if is_scrcpy:
-                    logger.debug("已开启scrcpy")
-                else:
-                    logger.debug("开启scrcpy")
-                    str_f = ' -f'
-                    str_device = ' -s ' + serialno
-                    str_title = '  --window-title ' + serialno
-                    str_border = ' --window-borderless'
-                    str_control = ' --no-control'
-                    str_size = ' --max-fps 30'
-                    str_bt = " -b 8M"
-                    str_audio = " --no-audio"
-                    str_buffer = " --display-buffer=10"
-                    str_cmd = 'scrcpy' + str_device + str_f + str_audio + str_control + str_border + str_title + str_size + str_bt + str_buffer
-                    logger.debug("执行命令{}", str_cmd)
-                    subprocess.Popen(str_cmd, shell=True, start_new_session=True)  # 打开scrcpy
-                    time.sleep(5)
-                logger.debug("注册scrcpy截图")
-                ScreenProxy.register_method("SCRCPYCAP", ScrcpyCap)
+            if game_device in ['0',0,'2', 2]:
+                logger.debug("使用u2_fast截图")
+                ComplexService.start_u2_fast_cap()
                 logger.debug("连接设备")
-                AirtestService.auto_setup(serialno)
+                AirtestService.auto_setup(serialno+'?cap_method=U2FASTCAP')
             else:
-                logger.debug("连接设备")
+                logger.debug("其他走默认连接设备")
                 AirtestService.auto_setup(connect_info)
-            logger.debug("检查截图方法效率")
+            logger.debug("检查截图方法效率，但不切换,仅做参考")
             best_method = AirtestService.check_method(serialno)
-            if best_method != "ADBCAP" :
-                logger.debug("以最快的可用截图方法重新连接")
-                connect_info = connect_info + '?cap_method=' + best_method
-                AirtestService.auto_setup(connect_info)
+            logger.debug("最佳截图方法{}", best_method)
+            # if best_method != "ADBCAP" :
+            #     logger.debug("以最快的可用截图方法重新连接")
+            #     connect_info = connect_info + '?cap_method=' + best_method
+            #     if connect_info=='JAVACAP':
+            #         connect_info=connect_info+'&ori_method=ADBORI&&touch_method=ADBORI'
+            # AirtestService.auto_setup(connect_info)
         else:
             logger.debug("已连接设备")
             logger.debug("检查截图方法")
             AirtestService.check_method(serialno)
+
+    @staticmethod
+    def start_scrcpy_cap(serialno):
+        logger.debug("注册并启动scrcpy windows截图")
+        logger.debug("检查windows是否开启scrcpy")
+        is_scrcpy = ImageService.get_all_hwnd_info(title=serialno)
+        if is_scrcpy:
+            logger.debug("已开启scrcpy")
+        else:
+            logger.debug("开启scrcpy")
+            str_f = ' -f'
+            str_device = ' -s ' + serialno
+            str_title = '  --window-title ' + serialno
+            str_border = ' --window-borderless'
+            str_control = ' --no-control'
+            str_size = ' --max-fps 30'
+            str_bt = " -b 8M"
+            str_audio = " --no-audio"
+            str_buffer = " --display-buffer=10"
+            str_cmd = 'scrcpy' + str_device + str_f + str_audio + str_control + str_border + str_title + str_size + str_bt + str_buffer
+            logger.debug("执行命令{}", str_cmd)
+            subprocess.Popen(str_cmd, shell=True, start_new_session=True)  # 打开scrcpy
+            time.sleep(5)
+        logger.debug("注册scrcpy截图")
+        ScreenProxy.register_method("SCRCPYCAP", ScrcpyCap)
+
+
+    @staticmethod
+    def start_u2_fast_cap():
+        logger.debug("注册u2_fast截图")
+        ScreenProxy.register_method("U2FASTCAP", U2FastCap)
 
     @staticmethod
     def fight_end(fight_win: str, fight_fail: str, fight_again: str, fight_quit: str, fight_fight: str = None,
