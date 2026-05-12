@@ -47,11 +47,11 @@ class TestImageService(TestCase):
         ImageService.keyevent_back()
 
     def test_touch(self):
-        ComplexService.auto_setup("1")
+        ComplexService.auto_setup("0")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")
-        ImageService.touch(Onmyoji.login_DLAN, cvstrategy=Cvstrategy.default, wait=4)
+        ImageService.touch(Onmyoji.login_YHZX, cvstrategy=Cvstrategy.default, wait=4)
         logger.debug("结束")
         now1 = datetime.datetime.now()
         print(now1 - now)
