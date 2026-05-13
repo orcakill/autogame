@@ -29,7 +29,7 @@ def daily_rewards(game_task: list):
         ImageService.touch(Onmyoji.reward_all_YJWCLS)
         ImageService.touch(Onmyoji.reward_all_YJWCLS)
         ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-        ComplexService.get_reward(Onmyoji.reward_all_LQJL)
+        ComplexService.get_reward(Onmyoji.reward_all_LQCG)
         ImageService.touch(Onmyoji.comm_FH_SYFH)
         ImageService.touch(Onmyoji.comm_FH_SYFH)
     # 账号信息

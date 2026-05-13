@@ -27,7 +27,7 @@ class TestOnmyojiService(TestCase):
         5 MuMu模拟器
         :return:
         """
-        TestOnmyojiService.test_all_project("1", "0")
+        TestOnmyojiService.test_all_project("1", "2")
 
     def test_initialization(self):
         """
@@ -219,6 +219,8 @@ class TestOnmyojiService(TestCase):
         logger.debug("循环执行所有项目，部分项目免测试")
         test_reports = []
         num_report = 0
+        logger.debug("清理图片文件夹")
+        WindowsService.delete_folder_file(UtilsPath.get_log_image_path(), day=0)
         for i in range(len(project)):
             game_project = GameProject(project[i])
             game_project_num = game_project.project_num
@@ -238,7 +240,7 @@ class TestOnmyojiService(TestCase):
                     continue
                 num_report = num_report + 1
                 logger.info("测试项目{}:{}", game_project_num, game_project_name)
-                result = TestOnmyojiService.test_project(name, test_devices, game_project_name)
+                result = TestOnmyojiService.test_project(name, test_devices, game_project_name,all_project=True)
                 result_report = [num_report, name, game_project_name, result]
                 test_reports.append(result_report)
                 logger.debug("打印报告")
@@ -250,7 +252,7 @@ class TestOnmyojiService(TestCase):
 
     @staticmethod
     def test_project(test_names, test_devices, project_name, fight_times: int = 1, chapter: int = 28,
-                     difficulty: int = 1):
+                     difficulty: int = 1,all_project=False):
         """
         项目测试
         :param test_names:
@@ -262,6 +264,9 @@ class TestOnmyojiService(TestCase):
         WindowsService.limit_cpu_percentage(30)
         game_tasks = OnmyojiController.create_tasks(test_devices, test_names, "", project_name)
         result = False
+        if not all_project:
+            logger.debug("清理图片文件夹")
+            WindowsService.delete_folder_file(UtilsPath.get_log_image_path(), day=0)
         for i in range(len(game_tasks)):
             game_task = game_tasks[i]
             logger.debug("初始化项目信息")
@@ -270,8 +275,7 @@ class TestOnmyojiService(TestCase):
             game_project = GameProject(game_task[3])
             game_device = GameDevice(game_task[4])
             game_task = [game_projects, game_projects_relation, game_account, game_project, game_device]
-            logger.debug("清理图片文件夹")
-            WindowsService.delete_folder_file(UtilsPath.get_log_image_path(),day=0)
+
             logger.debug("当前状态初始化:{}", game_account.role_name)
             # 连接设备
             ComplexService.auto_setup(test_devices)

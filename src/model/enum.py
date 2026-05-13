@@ -218,6 +218,7 @@ class Onmyoji:
     reward_all_YJWCAS = r"奖励\一键完成\一键完成暗色"
     reward_all_YJWCLS = r"奖励\一键完成\一键完成亮色"
     reward_all_LQJL = r"奖励\一键完成\领取奖励"
+    reward_all_LQCG = r"奖励\一键完成\领取成功"
 
     souL_BQ_JSTXXH = r"探索\御魂\八岐大蛇\角色头像小号"
     soul_BQ_BD = r"探索\御魂\八岐大蛇\白蛋"

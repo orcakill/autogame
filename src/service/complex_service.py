@@ -101,8 +101,11 @@ class ComplexService:
             logger.debug("未连接设备，开始连接")
             logger.debug("注册u2_fast截图")
             ComplexService.start_u2_fast_cap()
+            if game_device in [2,'2']:
+                logger.debug("开启scrcpy")
+                ComplexService.start_scrcpy_cap(serialno)
             logger.debug("连接设备")
-            AirtestService.auto_setup(serialno+'?cap_method=U2FASTCAP')
+            AirtestService.auto_setup(connect_info+'?cap_method=U2FASTCAP')
             logger.debug("检查截图方法效率，不必切换,仅做参考")
             best_method = AirtestService.check_method(serialno)
             logger.debug("最佳截图方法{}", best_method)
