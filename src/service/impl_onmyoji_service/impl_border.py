@@ -187,8 +187,10 @@ def border_fight(game_task: list, fight_times: int = 40):
             ImageService.touch(Onmyoji.home_TS)
             logger.debug("进入结界突破")
             ImageService.touch(Onmyoji.border_JJTPTB)
+        logger.debug("再次检查结界首页")
         is_border_home = ImageService.exists(Onmyoji.border_JJSY)
         if not is_border_home:
+            logger.debug("未找到")
             break
         time_fight_start = time.time()
         logger.debug("结界突破{}次", i + 1)

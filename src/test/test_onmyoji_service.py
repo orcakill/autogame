@@ -95,14 +95,14 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "个人突破")
+        TestOnmyojiService.test_project('1', '5', "个人突破")
 
     def test_border_fight1(self):
         """
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "个人突破")
+        TestOnmyojiService.test_project('1', '5', "个人突破")
 
     def test_friends_manage(self):
         """
@@ -144,7 +144,7 @@ class TestOnmyojiService(TestCase):
         项目14 魂十一
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "魂十一", fight_times=10)
+        TestOnmyojiService.test_project('1', '5', "魂十一", fight_times=1)
 
     def test_soul_fight_fire(self):
         """

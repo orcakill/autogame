@@ -47,7 +47,7 @@ class TestImageService(TestCase):
         ImageService.keyevent_back()
 
     def test_touch(self):
-        ComplexService.auto_setup("0")
+        ComplexService.auto_setup("5")
         now = datetime.datetime.now()
         # 测试代码
         logger.debug("开始")

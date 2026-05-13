@@ -72,7 +72,7 @@ class ComplexService:
         logger.debug("检查设备是否已就绪")
         is_state = WindowsService.get_device_status_by_ip(serialno)
         while is_state != "device":
-            logger.debug("设备未就绪")
+            logger.debug("设备未就绪,未找到{}",serialno)
             if game_device in ['0', '4'] and auto_adb == 1:
                 logger.debug("云手机自动登录")
                 logger.debug("获取云手机句柄")
@@ -99,22 +99,17 @@ class ComplexService:
         screen = AirtestService.snapshot()
         if screen is None:
             logger.debug("未连接设备，开始连接")
-            if game_device in ['0',0,'2', 2]:
-                logger.debug("使用u2_fast截图")
-                ComplexService.start_u2_fast_cap()
-                logger.debug("连接设备")
-                AirtestService.auto_setup(serialno+'?cap_method=U2FASTCAP')
-            else:
-                logger.debug("其他走默认连接设备")
-                AirtestService.auto_setup(connect_info)
-            logger.debug("检查截图方法效率，但不切换,仅做参考")
+            logger.debug("注册u2_fast截图")
+            ComplexService.start_u2_fast_cap()
+            logger.debug("连接设备")
+            AirtestService.auto_setup(serialno+'?cap_method=U2FASTCAP')
+            logger.debug("检查截图方法效率，不必切换,仅做参考")
             best_method = AirtestService.check_method(serialno)
             logger.debug("最佳截图方法{}", best_method)
-            # if best_method != "ADBCAP" :
-            #     logger.debug("以最快的可用截图方法重新连接")
-            #     connect_info = connect_info + '?cap_method=' + best_method
-            #     if connect_info=='JAVACAP':
-            #         connect_info=connect_info+'&ori_method=ADBORI&&touch_method=ADBORI'
+            # logger.debug("以最快的可用截图方法重新连接")
+            # connect_info = connect_info + '?cap_method=' + best_method
+            # if connect_info=='JAVACAP':
+            #     connect_info=connect_info+'&ori_method=ADBORI&&touch_method=ADBORI'
             # AirtestService.auto_setup(connect_info)
         else:
             logger.debug("已连接设备")
