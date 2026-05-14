@@ -441,8 +441,8 @@ def foster_care(game_task: list):
                 ComplexService.refuse_reward()
         logger.debug("判断是否可寄养")
         is_foster = ImageService.exists(Onmyoji.foster_KJYBZ)
-        is_PUSSYCAT=ImageService.exists(Onmyoji.foster_SSYCBT)
-        if is_foster and is_PUSSYCAT:
+        is_pussycat=ImageService.exists(Onmyoji.foster_SSYCBT)
+        if is_foster and is_pussycat:
             logger.debug("式神育成标题界面，有可寄养标志")
             logger.debug("寄养检查，按六星到三星太鼓，再到六星到三星太鼓")
             faster_place = ImplHouseOptimized.get_optimal_card()
