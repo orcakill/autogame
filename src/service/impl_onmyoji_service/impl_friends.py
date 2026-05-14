@@ -81,6 +81,7 @@ def friends_fight(game_task: list):
         if is_self_selection:
             logger.debug("返回")
             ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
+            ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
         # 默认有协战式神
         is_assist_shikigami = True
         # 默认锁定阵容
