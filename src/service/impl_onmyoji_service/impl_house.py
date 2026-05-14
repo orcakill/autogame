@@ -154,8 +154,10 @@ class ImplHouseOptimized:
             ComplexService.refuse_reward()
 
             # 点击四个好友位置
-            for pos in friend_positions:
-                ImageService.touch_coordinate(pos, wait=0.5)
+            # for pos in friend_positions:
+            #     ImageService.touch_coordinate(pos, wait=0.5)
+            # 点击第一个好友位置
+            ImageService.touch_coordinate(friend_positions[0], wait=0.5)
 
             # 检查左侧结界卡
             card_info = ImplHouseOptimized.check_current_card()
@@ -194,7 +196,6 @@ class ImplHouseOptimized:
 
             # 向下滑动
             logger.debug("向下滑动4位好友")
-            ComplexService.refuse_reward()
             ImageService.swipe(friend_positions[3], friend_positions[0], 2)
 
         return None
@@ -291,9 +292,9 @@ class ImplHouseOptimized:
         def check_image_confidence(image, threshold, rgb):
             if image:
                 if image == Onmyoji.foster_JJK_WFZ:
-                    result = ImageService.cv_match(image, threshold=threshold, rgb=rgb, x1=0.5)
+                    result = ImageService.cv_match(image, threshold=threshold, rgb=rgb, x1=0.5,wait=0.2)
                 else:
-                    result = ImageService.cv_match(image, threshold=threshold, rgb=rgb, x2=0.5)
+                    result = ImageService.cv_match(image, threshold=threshold, rgb=rgb, x2=0.5,wait=0.2)
                 return result
             return 0
 
