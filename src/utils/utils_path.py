@@ -81,7 +81,7 @@ class UtilsPath:
     @staticmethod
     def get_print_image():
         root_path = UtilsPath.get_project_path()
-        config_path = root_path + "src\\resources\\config.ini"
+        config_path = root_path + "all_config.ini"
         config = configparser.ConfigParser()
         config.read(config_path, encoding="utf-8")
         return config.get("airtest", "print_image")
