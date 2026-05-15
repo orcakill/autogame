@@ -98,7 +98,7 @@ class ImplHouseOptimized:
 
         for i_sign in range(3):
             logger.debug("寄养--点击可寄养标志")
-            ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10, wait=5)
+            ImageService.touch(Onmyoji.foster_KJYBZ, timeouts=10, wait=3)
             logger.debug("寄养-获取上方好友坐标")
             coordinate_friend = ImageService.exists(Onmyoji.foster_SFHY)
             logger.debug("寄养-获取上方跨区坐标")
@@ -119,13 +119,10 @@ class ImplHouseOptimized:
         coordinate_difference1 = 0.8902849002849003 * (coordinate_region[0] - coordinate_friend[0])
 
         # 计算好友位置
-        coordinate_friend1 = (coordinate_region[0], coordinate_region[1] + coordinate_difference)
-        coordinate_friend2 = (
-            coordinate_region[0], coordinate_region[1] + coordinate_difference + 1 * coordinate_difference1)
-        coordinate_friend3 = (
-            coordinate_region[0], coordinate_region[1] + coordinate_difference + 2 * coordinate_difference1)
-        coordinate_friend4 = (
-            coordinate_region[0], coordinate_region[1] + coordinate_difference + 3 * coordinate_difference1)
+        coordinate_friend1 = (int(coordinate_region[0]), int(coordinate_region[1] + coordinate_difference))
+        coordinate_friend2 = (int(coordinate_region[0]), int(coordinate_region[1] + coordinate_difference + 1 * coordinate_difference1))
+        coordinate_friend3 = (int(coordinate_region[0]), int(coordinate_region[1] + coordinate_difference + 2 * coordinate_difference1))
+        coordinate_friend4 = (int(coordinate_region[0]), int(coordinate_region[1] + coordinate_difference + 3 * coordinate_difference1))
 
         return [coordinate_friend1, coordinate_friend2, coordinate_friend3, coordinate_friend4]
 
@@ -149,15 +146,20 @@ class ImplHouseOptimized:
             if time.time() - time_start > 20 * 60:
                 logger.debug("检查执行时间超20分钟，停止检查")
                 break
-
             # 拒接协战
             ComplexService.refuse_reward()
+
+            is_friend = ImageService.exists(Onmyoji.foster_SFHY)
+            if not is_friend:
+                logger.debug("未找到上方好友")
+                break
 
             # 点击四个好友位置
             # for pos in friend_positions:
             #     ImageService.touch_coordinate(pos, wait=0.5)
             # 点击第一个好友位置
             ImageService.touch_coordinate(friend_positions[0], wait=0.5)
+            AirtestService.draw_point('',friend_positions[0][0],friend_positions[0][1],'点击第一个好友位置')
 
             # 检查左侧结界卡
             card_info = ImplHouseOptimized.check_current_card()
