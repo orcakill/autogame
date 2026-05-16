@@ -78,8 +78,7 @@ class OcrService:
             img = AirtestService.crop_image(pos1[0], pos1[1], pos2[0], pos2[1])
             # 图像文字识别
             pil_image = AirtestService.cv2_2_pil(img)
-            pil_image.save("D:/a.png", quality=99, optimize=True)
-            # image = Image.open('D:/a.png')
+            # pil_image.save("D:/a.png", quality=99, optimize=True)
             # 打开图像
             image = pil_image.convert('RGBA')
             # 使用 Tesseract 进行文字识别
