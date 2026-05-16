@@ -1,19 +1,30 @@
 @echo off
-cd %~dp0
+chcp 65001 >nul
+cd /d "%~dp0"
 
-:: 终止正在运行的 main_day_all.py 进程
-echo [%date% %time%] 检查并终止已存在的 main_day_all.py 进程...
-tasklist /fi "imagename eq python.exe" /fo csv | find /i "main_day_all.py" >nul
-if %errorlevel% equ 0 (
-    echo [%date% %time%] 发现正在运行的进程，正在终止...
-    taskkill /f /im python.exe /fi "windowtitle eq main_day_all.py*" >nul 2>&1
-    timeout /t 2 /nobreak >nul
-    echo [%date% %time%] 进程终止完成
+rem Create log directory
+if not exist "logs\bat" mkdir "logs\bat"
+
+rem Get current date
+for /f "tokens=1-3 delims=/- " %%a in ('date /t') do set "y=%%a" & set "m=%%b" & set "d=%%c"
+if "%m%"=="" for /f "tokens=1-3 delims=/- " %%a in ('echo %date%') do set "y=%%a" & set "m=%%b" & set "d=%%c"
+set "logfile=logs\bat\main_day_all_%y%%m%%d%.log"
+
+echo [%date% %time%] Checking for running main_day_all.py...
+
+set "found=0"
+for /f "tokens=2 delims==" %%i in ('wmic process where "name='python.exe' and commandline like '%%main_day_all.py%%'" get processid /value 2^>nul') do (
+    set "found=1"
+    echo [%date% %time%] Found PID=%%i, terminating...
+    taskkill /f /pid %%i >nul 2>&1
+)
+if %found% equ 0 (
+    echo [%date% %time%] No running process found.
 ) else (
-    echo [%date% %time%] 未发现正在运行的进程
+    timeout /t 2 /nobreak >nul
+    echo [%date% %time%] Process terminated.
 )
 
-:: 激活虚拟环境并启动 Python 脚本
 call venv\Scripts\activate
-echo [%date% %time%] 启动 main_day_all.py...
-python src\main_day_all.py >> "logs\bat\main_day_all_%date:~0,4%%date:~5,2%%date:~8,2%.log"
+echo [%date% %time%] Starting main_day_all.py...
+python src\main_day_all.py >> "%logfile%" 2>&1

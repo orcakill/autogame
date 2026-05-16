@@ -1,39 +1,36 @@
 import os
 import sys
-
 from loguru import logger
-
 from src.utils.utils_path import UtilsPath
 
-logger.remove()  # 移除默认的日志记录器
-# 设置主日志文件目录,所有日志都会记录在此文件夹中
-my_log_file_path = UtilsPath.get_project_path_log()
+# 不要在这里全局 remove，留给 MyLogger 内部处理
+# logger.remove()
 
+my_log_file_path = UtilsPath.get_project_path_log()
 
 class MyLogger:
     def __init__(self, log_file_path=my_log_file_path):
         self.logger = logger
-        self.logger.remove()
+        self.logger.remove()  # 只在这里移除一次
         self.configure_logger(log_file_path)
 
     def configure_logger(self, log_file_path):
-        # 确保日志文件夹存在
         self._ensure_log_directory(log_file_path)
 
-        # 添加控制台输出的格式
+        # 控制台输出（修正 process 和 thread）
         self.logger.add(
             sys.stdout,
             level='DEBUG',
-            format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
-                   "{process.name} | "
-                   "{thread.name} | "
-                   "<cyan>{module}</cyan>.<cyan>{function}</cyan>"
-                   ":<cyan>{line}</cyan> | "
-                   "<level>{level}</level>: "
-                   "<level>{message}</level>",
+            format=(
+                "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+                "{process} | "
+                "{thread} | "
+                "<cyan>{module}</cyan>.<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
+                "<level>{level}</level>: <level>{message}</level>"
+            )
         )
 
-        # 信息日志配置（添加进程标识）
+        # INFO 日志文件
         self.logger.add(
             os.path.join(log_file_path, f"info/{{time:YYYY-MM-DD}}/{{time:HH-mm-ss}}_p{os.getpid()}.log"),
             level='INFO',
@@ -43,7 +40,7 @@ class MyLogger:
             rotation="500 MB"
         )
 
-        # 信息日志配置（添加进程标识）
+        # DEBUG 日志文件
         self.logger.add(
             os.path.join(log_file_path, f"debug/{{time:YYYY-MM-DD}}/{{time:HH-mm-ss}}_p{os.getpid()}.log"),
             level='DEBUG',
@@ -53,7 +50,7 @@ class MyLogger:
             rotation="500 MB"
         )
 
-        # 新增错误日志单独存储
+        # ERROR 日志文件
         self.logger.add(
             os.path.join(log_file_path, f"error/{{time:YYYY-MM-DD}}/{{time:HH-mm-ss}}_p{os.getpid()}.log"),
             level='ERROR',
@@ -63,25 +60,17 @@ class MyLogger:
         )
 
     def _ensure_log_directory(self, log_file_path):
-        """
-        确保日志输出文件夹存在，如果不存在则创建
-        :param log_file_path: 日志根目录
-        """
-        # 需要创建的日志子文件夹
-        sub_dirs = ['info', 'debug', 'error','bat','image']
-
+        sub_dirs = ['info', 'debug', 'error', 'bat', 'image']
         for sub_dir in sub_dirs:
             dir_path = os.path.join(log_file_path, sub_dir)
-            if not os.path.exists(dir_path):
-                os.makedirs(dir_path, exist_ok=True)
-                print(f"创建日志文件夹: {dir_path}")
+            os.makedirs(dir_path, exist_ok=True)
 
     def get_logger(self):
         return self.logger
 
+# 屏蔽 airtest 的 logging 日志（如果是 logging 模块）
+import logging
+logging.getLogger("airtest").setLevel(logging.WARNING)
 
-# 屏蔽第三方包日志
-logger.disable("airtest")
-
-# 创建MyLogger实例
+# 创建单例 logger
 my_logger = MyLogger().get_logger()
