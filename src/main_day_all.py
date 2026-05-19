@@ -60,8 +60,8 @@ if __name__ == '__main__':
                 logger.info("周三维护中")
             else:
                 start_hour, end_hour = 0, 23
-                logger.info("0-23,大号，式神寄养")
-                OnmyojiController.create_execute_tasks(game_device, game_account_large, project_name="式神寄养",
+                logger.info("0-23,大小号，式神寄养")
+                OnmyojiController.create_execute_tasks(game_device, game_account_all, project_name="式神寄养",
                                                        start_hour=start_hour, end_hour=end_hour)
         else:
             logger.info("最近3小时有寄养记录")
