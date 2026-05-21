@@ -84,4 +84,4 @@ class UtilsPath:
         config_path = root_path + "all_config.ini"
         config = configparser.ConfigParser()
         config.read(config_path, encoding="utf-8")
-        return config.get("airtest", "print_image")
+        return config.getboolean("airtest", "print_image")  # 返回布尔值 False 或 True
