@@ -3,9 +3,6 @@ import sys
 from loguru import logger
 from src.utils.utils_path import UtilsPath
 
-# 不要在这里全局 remove，留给 MyLogger 内部处理
-# logger.remove()
-
 my_log_file_path = UtilsPath.get_project_path_log()
 
 class MyLogger:
@@ -74,3 +71,6 @@ logging.getLogger("airtest").setLevel(logging.WARNING)
 
 # 创建单例 logger
 my_logger = MyLogger().get_logger()
+
+if __name__ == '__main__':
+    logger.debug("测试")
