@@ -56,7 +56,8 @@ class MyLogger:
             enqueue=True
         )
 
-    def _ensure_log_directory(self, log_file_path):
+    @staticmethod
+    def _ensure_log_directory(log_file_path):
         sub_dirs = ['info', 'debug', 'error', 'bat', 'image']
         for sub_dir in sub_dirs:
             dir_path = os.path.join(log_file_path, sub_dir)
