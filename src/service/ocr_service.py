@@ -126,56 +126,121 @@ class OcrService:
         根据图片识别文字
 
         :param img: 图片路径或ndarray
-        :param words: 文字数组
+        :param words: 文字数组或字符串
         :param exclude_words: 排除文字
         :param similarly: 相似度阈值，默认0.9
         :return: 文字坐标多边形
         """
         try:
+            # 将words转换为列表，确保统一处理
+            if isinstance(words, str):
+                words = [words]
+            
+            # 将exclude_words转换为列表，确保统一处理
+            if isinstance(exclude_words, str):
+                exclude_words = [exclude_words]
+            
             if isinstance(img, str):
                 img = cv2.imread(img)
+            
+            logger.debug("OCR匹配参数: words={}, exclude_words={}, similarly={}".format(words, exclude_words, similarly))
 
-            # 使用单例OCR实例进行识别
+            # 使用单例OCR实例进行识别（使用predict方法）
             ocr_result = get_ocr_ch().predict(img)
 
             if ocr_result:
+                # 处理不同版本PaddleOCR的返回格式
                 for line in ocr_result:
-                    rec_texts = line.get('rec_texts', [])
-                    rec_scores = line.get('rec_scores', [])
-                    rec_polys = line.get('rec_polys', [])
+                    if not line:
+                        continue
+                    
+                    # 新版本PaddleOCR返回字典格式
+                    if isinstance(line, dict):
+                        boxes = line.get('boxes', [])
+                        rec_texts = line.get('rec_texts', [])
+                        rec_scores = line.get('rec_scores', [])
+                        
+                        for i in range(len(rec_texts)):
+                            if i >= len(boxes) or i >= len(rec_scores):
+                                continue
+                            poly = boxes[i]
+                            text = rec_texts[i]
+                            score = rec_scores[i]
+                            
+                            if poly is None or len(poly) < 4:
+                                continue
+                            if len(poly[0]) < 2 or len(poly[2]) < 2:
+                                continue
+                            
+                            # 调试：记录每次匹配尝试
+                            is_in_words = text in words
+                            score_ok = score >= similarly
+                            not_excluded = not exclude_words or text not in exclude_words
+                            
+                            logger.debug("匹配尝试: text='{}', in_words={}, score={} >= {}={}, not_excluded={}".format(
+                                text, is_in_words, score, similarly, score_ok, not_excluded))
+                            
+                            condition_met = is_in_words and score_ok and not_excluded
+                            
+                            if condition_met:
+                                logger.debug("识别到{}，置信度{}，坐标{}", text, score, poly)
+                                return poly
+                    else:
+                        # 旧版本返回格式：[[文本区域坐标], (识别文本, 置信度)]
+                        for item in line:
+                            if len(item) < 2:
+                                continue
+                            poly = item[0]  # 文本区域坐标
+                            text_info = item[1]
+                            
+                            # 处理不同的文本信息格式
+                            if isinstance(text_info, tuple) and len(text_info) >= 2:
+                                text = text_info[0]
+                                score = text_info[1]
+                            elif isinstance(text_info, str):
+                                text = text_info
+                                score = 1.0  # 默认置信度
+                            else:
+                                continue
 
-                    for i in range(len(rec_texts)):
-                        text = rec_texts[i]
-                        score = rec_scores[i] if i < len(rec_scores) else 0.0
+                            if poly is None or len(poly) < 4:
+                                continue
 
-                        if i >= len(rec_polys):
-                            continue
+                            if len(poly[0]) < 2 or len(poly[2]) < 2:
+                                continue
 
-                        poly = rec_polys[i]
-                        if poly is None or len(poly) < 4:
-                            continue
+                            condition_met = (
+                                text in words and
+                                score >= similarly and
+                                (not exclude_words or text not in exclude_words)
+                            )
 
-                        if len(poly[0]) < 2 or len(poly[2]) < 2:
-                            continue
-
-                        condition_met = (
-                            text in words and
-                            score >= similarly and
-                            (not exclude_words or text not in exclude_words)
-                        )
-
-                        if condition_met:
-                            logger.debug("识别到{}，置信度{}，坐标{}", text, score, poly)
-                            return poly
+                            if condition_met:
+                                logger.debug("识别到{}，置信度{}，坐标{}", text, score, poly)
+                                return poly
                 logger.debug("未识别，遍历输出识别的文字信息")
                 for line in ocr_result:
-                    rec_texts = line.get('rec_texts', [])
-                    rec_scores = line.get('rec_scores', [])
-                    for i in range(len(rec_texts)):
-                        if i < len(rec_scores):
-                            logger.debug("{}:{}", rec_texts[i], rec_scores[i])
-                        else:
-                            logger.debug("{}:无置信度", rec_texts[i])
+                    if not line:
+                        continue
+                    if isinstance(line, dict):
+                        rec_texts = line.get('rec_texts', [])
+                        rec_scores = line.get('rec_scores', [])
+                        for i in range(len(rec_texts)):
+                            score = rec_scores[i] if i < len(rec_scores) else 0.0
+                            logger.debug("{}:{}", rec_texts[i], score)
+                    else:
+                        for item in line:
+                            if len(item) >= 2:
+                                text_info = item[1]
+                                if isinstance(text_info, tuple) and len(text_info) >= 2:
+                                    text = text_info[0]
+                                    score = text_info[1]
+                                elif isinstance(text_info, str):
+                                    text = text_info
+                                    score = 1.0
+                                else:
+                                    continue
+                                logger.debug("{}:{}", text, score)
         except Exception as e:
             logger.exception(e)
 
@@ -185,11 +250,15 @@ class OcrService:
         基于PaddleOCR的指定文字识别
 
         :param img: 图片路径或numpy数组
-        :param words: 需要匹配的文字列表
+        :param words: 需要匹配的文字列表或字符串
         :param lang: 语言类型，默认中文
         :return: 包含匹配文字及其坐标的列表 [[文字, [x,y]], ...]
         """
         result_xy = []
+
+        # 将words转换为列表，确保统一处理
+        if isinstance(words, str):
+            words = [words]
 
         if isinstance(img, str):
             img = cv2.imread(img)
@@ -201,49 +270,87 @@ class OcrService:
 
         img = img.astype(np.uint8)
 
-        # 使用单例OCR实例进行识别
+        # 使用单例OCR实例进行识别（使用predict方法）
         if lang == 'en':
             ocr_result = get_ocr_en().predict(img)
         else:
             ocr_result = get_ocr_ch().predict(img)
 
         if ocr_result:
+            # 处理不同版本PaddleOCR的返回格式
             for line in ocr_result:
-                rec_texts = line.get('rec_texts', [])
-                rec_scores = line.get('rec_scores', [])
-                rec_polys = line.get('rec_polys', [])
-
-                min_length = min(len(rec_texts), len(rec_scores), len(rec_polys))
-                if min_length == 0:
+                if not line:
                     continue
+                
+                # 新版本PaddleOCR返回字典格式
+                if isinstance(line, dict):
+                    boxes = line.get('boxes', [])
+                    rec_texts = line.get('rec_texts', [])
+                    rec_scores = line.get('rec_scores', [])
+                    
+                    for i in range(len(rec_texts)):
+                        if i >= len(boxes) or i >= len(rec_scores):
+                            continue
+                        poly = boxes[i]
+                        text = rec_texts[i]
+                        score = rec_scores[i]
+                        
+                        if poly is None or len(poly) < 4:
+                            continue
+                        if len(poly[0]) < 2 or len(poly[2]) < 2:
+                            continue
+                        
+                        if words:
+                            if text in words and score >= 0.7:
+                                x_center = (poly[0][0] + poly[2][0]) / 2
+                                y_center = (poly[0][1] + poly[2][1]) / 2
+                                if x_center > 0 and y_center > 0:
+                                    result_xy.append([text, [int(x_center), int(y_center)]])
+                                    logger.debug("识别到{}，置信度{}，坐标{}", text, score, [int(x_center), int(y_center)])
+                        else:
+                            if score >= 0.7:
+                                x_center = (poly[0][0] + poly[2][0]) / 2
+                                y_center = (poly[0][1] + poly[2][1]) / 2
+                                if x_center > 0 and y_center > 0:
+                                    result_xy.append([text, [int(x_center), int(y_center)]])
+                                    logger.debug("识别到{}，置信度{}，坐标{}", text, score, [int(x_center), int(y_center)])
+                else:
+                    # 旧版本返回格式：[[文本区域坐标], (识别文本, 置信度)]
+                    for item in line:
+                        if len(item) < 2:
+                            continue
+                        poly = item[0]  # 文本区域坐标
+                        text_info = item[1]
+                        
+                        # 处理不同的文本信息格式
+                        if isinstance(text_info, tuple) and len(text_info) >= 2:
+                            text = text_info[0]
+                            score = text_info[1]
+                        elif isinstance(text_info, str):
+                            text = text_info
+                            score = 1.0  # 默认置信度
+                        else:
+                            continue
 
-                for i in range(min_length):
-                    text = rec_texts[i]
-                    score = rec_scores[i]
+                        if poly is None or len(poly) < 4:
+                            continue
 
-                    if i >= len(rec_polys):
-                        continue
+                        if len(poly[0]) < 2 or len(poly[2]) < 2:
+                            continue
 
-                    poly = rec_polys[i]
-                    if poly is None or len(poly) < 4:
-                        continue
-
-                    if len(poly[0]) < 2 or len(poly[2]) < 2:
-                        continue
-
-                    if words:
-                        if text in words and score >= 0.7:
-                            x_center = (poly[0][0] + poly[2][0]) / 2
-                            y_center = (poly[0][1] + poly[2][1]) / 2
-                            if x_center > 0 and y_center > 0:
-                                result_xy.append([text, [int(x_center), int(y_center)]])
-                                logger.debug("识别到{}，置信度{}，坐标{}", text, score, [int(x_center), int(y_center)])
-                    else:
-                        if score >= 0.7:
-                            x_center = (poly[0][0] + poly[2][0]) / 2
-                            y_center = (poly[0][1] + poly[2][1]) / 2
-                            if x_center > 0 and y_center > 0:
-                                result_xy.append([text, [int(x_center), int(y_center)]])
-                                logger.debug("识别到{}，置信度{}，坐标{}", text, score, [int(x_center), int(y_center)])
+                        if words:
+                            if text in words and score >= 0.7:
+                                x_center = (poly[0][0] + poly[2][0]) / 2
+                                y_center = (poly[0][1] + poly[2][1]) / 2
+                                if x_center > 0 and y_center > 0:
+                                    result_xy.append([text, [int(x_center), int(y_center)]])
+                                    logger.debug("识别到{}，置信度{}，坐标{}", text, score, [int(x_center), int(y_center)])
+                        else:
+                            if score >= 0.7:
+                                x_center = (poly[0][0] + poly[2][0]) / 2
+                                y_center = (poly[0][1] + poly[2][1]) / 2
+                                if x_center > 0 and y_center > 0:
+                                    result_xy.append([text, [int(x_center), int(y_center)]])
+                                    logger.debug("识别到{}，置信度{}，坐标{}", text, score, [int(x_center), int(y_center)])
 
         return result_xy

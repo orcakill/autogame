@@ -18,13 +18,13 @@ from src.utils.my_logger import my_logger as logger
 if __name__ == '__main__':
     WindowsService.limit_cpu_percentage(30)
     # 设备：云手机001
-    game_device = "0"
+    game_device = "5"
     # 账号：大号、小号、大小号
     game_account_large = '1'
     game_account_small = '2,3,4,5'
     game_account_all = '1,2,3,4,5'
     # 特殊模式处理 ，绘卷
-    is_mode = ""
+    is_mode = "绘卷"
     # 0-5
     task_list1 = []
     # 6-11
