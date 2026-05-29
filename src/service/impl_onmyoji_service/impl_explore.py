@@ -89,7 +89,7 @@ def explore_chapters(game_task: list, chapter: int = 28, difficulty: int = 1):
                 is_select_chapter = select_chapter()
                 if not is_select_chapter:
                     logger.debug("切换文字识别")
-                    ImageService.ocr_touch("第二十八章")
+                    ImageService.ocr_touch(["第二十八章"])
             else:
                 ImageService.touch(chapter_layers)
             logger.debug("选择困难")

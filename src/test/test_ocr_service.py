@@ -20,5 +20,5 @@ class TestOcrService(TestCase):
 
     def test_ocr(self):
         ComplexService.auto_setup("0")
-        ImageService.ocr_touch("切换")
+        ImageService.ocr_touch(["切换"])
         logger.debug("结束")

@@ -24,9 +24,71 @@ class ImplHouseOptimized:
     """
     优化后的结界卡寄养实现
     采用两轮检查机制：
-    1. 第一轮：检查六星太鼓和五星太鼓，找到直接寄养
-    2. 第二轮：检查四星太鼓和三星太鼓，找到直接寄养
+    1. 第一轮：检查六星太鼓到三星太鼓，发现六星立即中断寄养
+    2. 第二轮：根据第一轮统计的最高星级作为目标，进行精确查找
     """
+
+    # 结界卡优先级定义（从高到低）
+    CARD_PRIORITY = [
+        Onmyoji.foster_ZCJJK_LXTG,  # 六星太鼓
+        Onmyoji.foster_ZCJJK_WXTG,  # 五星太鼓
+        Onmyoji.foster_ZCJJK_SXTG1,  # 四星太鼓
+        Onmyoji.foster_ZCJJK_SXTG    # 三星太鼓
+    ]
+
+    # 星级映射
+    STAR_LEVEL = {
+        Onmyoji.foster_ZCJJK_LXTG: 6,
+        Onmyoji.foster_ZCJJK_WXTG: 5,
+        Onmyoji.foster_ZCJJK_SXTG1: 4,
+        Onmyoji.foster_ZCJJK_SXTG: 3
+    }
+
+    # 统计信息缓存
+    _statistics_cache = {
+        'six_star': [],
+        'five_star': [],
+        'four_star': [],
+        'three_star': [],
+        'all_cards': []
+    }
+
+    @staticmethod
+    def _clear_cache():
+        """清空统计缓存"""
+        ImplHouseOptimized._statistics_cache = {
+            'six_star': [],
+            'five_star': [],
+            'four_star': [],
+            'three_star': [],
+            'all_cards': []
+        }
+
+    @staticmethod
+    def _add_to_cache(card_type, position):
+        """添加结界卡到缓存"""
+        if card_type == Onmyoji.foster_ZCJJK_LXTG:
+            ImplHouseOptimized._statistics_cache['six_star'].append((card_type, position))
+        elif card_type == Onmyoji.foster_ZCJJK_WXTG:
+            ImplHouseOptimized._statistics_cache['five_star'].append((card_type, position))
+        elif card_type == Onmyoji.foster_ZCJJK_SXTG1:
+            ImplHouseOptimized._statistics_cache['four_star'].append((card_type, position))
+        elif card_type == Onmyoji.foster_ZCJJK_SXTG:
+            ImplHouseOptimized._statistics_cache['three_star'].append((card_type, position))
+        ImplHouseOptimized._statistics_cache['all_cards'].append((card_type, position))
+
+    @staticmethod
+    def _get_max_star_from_statistics():
+        """从缓存中获取最高星级"""
+        if ImplHouseOptimized._statistics_cache['six_star']:
+            return 6
+        elif ImplHouseOptimized._statistics_cache['five_star']:
+            return 5
+        elif ImplHouseOptimized._statistics_cache['four_star']:
+            return 4
+        elif ImplHouseOptimized._statistics_cache['three_star']:
+            return 3
+        return 0
 
     @staticmethod
     def _get_coordinates():
@@ -65,10 +127,11 @@ class ImplHouseOptimized:
         return [coordinate_friend1, coordinate_friend2, coordinate_friend3, coordinate_friend4]
 
     @staticmethod
-    def _single_round_check(target_cards: list):
+    def _single_round_check(check_six_star=False, target_star=0):
         """
         单轮检查结界卡
-        :param target_cards: 本轮需要检查的结界卡类型列表
+        :param check_six_star: 是否检查到六星就中断
+        :param target_star: 目标星级（第二轮使用）
         :return: (card_type, position) 或 None
         """
         time_start = time.time()
@@ -91,16 +154,35 @@ class ImplHouseOptimized:
                 logger.debug("未找到上方好友")
                 break
 
+            # 点击四个好友位置
+            # for pos in friend_positions:
+            #     ImageService.touch_coordinate(pos, wait=0.5)
             # 点击第一个好友位置
             ImageService.touch_coordinate(friend_positions[0], wait=0.5)
-            AirtestService.draw_point('', friend_positions[0][0], friend_positions[0][1], '点击第一个好友位置')
+            AirtestService.draw_point('',friend_positions[0][0],friend_positions[0][1],'点击第一个好友位置')
 
-            # 检查左侧结界卡（只检查本轮指定的类型）
-            card_info = ImplHouseOptimized.check_current_card(target_cards)
+            # 检查左侧结界卡
+            card_info = ImplHouseOptimized.check_current_card()
             if card_info:
                 card_type, position = card_info
-                logger.debug(f"发现目标结界卡：{card_type}，立即返回")
-                return card_type, position
+                star_level = ImplHouseOptimized.STAR_LEVEL.get(card_type, 0)
+
+                if check_six_star:
+                    # 第一轮检查：统计所有结界卡，发现六星立即返回
+                    ImplHouseOptimized._add_to_cache(card_type, position)
+                    if card_type == Onmyoji.foster_ZCJJK_LXTG:
+                        logger.debug("发现六星太鼓，立即返回")
+                        return card_type, position
+                else:
+                    # 第二轮检查：根据目标星级进行判断
+                    if star_level > target_star:
+                        # 发现更高星级的太鼓，立即返回
+                        logger.debug(f"发现{star_level}星太鼓（高于目标{target_star}星），立即返回")
+                        return card_type, position
+                    elif star_level == target_star:
+                        # 找到目标星级，立即返回
+                        logger.debug(f"找到目标{target_star}星太鼓，立即返回")
+                        return card_type, position
 
             # 检查是否未放置
             is_unplaced = ImageService.exists(Onmyoji.foster_JJK_WFZ)
@@ -125,37 +207,46 @@ class ImplHouseOptimized:
         """
         优化后的获取最优结界卡函数
         两轮检查机制：
-        1. 第一轮：检查六星太鼓和五星太鼓，找到直接寄养
-        2. 第二轮：检查四星太鼓和三星太鼓，找到直接寄养
-        :return: 最优结界卡类型或None
+        1. 第一轮：检查六星太鼓到三星太鼓，如果有六星太鼓，直接中断检查并寄养
+        2. 如果第一轮没找到六星，统计识别到的最高星级作为目标星级
+        3. 第二轮：重新检查，如果发现目标星级之上的太鼓则立即寄养，找到目标星级也立即寄养
+        :return: 最优结界卡位置或None
         """
         logger.debug("开始结界卡寄养检查")
 
-        # 第一轮：六星太鼓和五星太鼓
-        logger.debug("=== 第一轮：六星太鼓、五星太鼓 ===")
-        first_target_cards = [
-            Onmyoji.foster_ZCJJK_LXTG,  # 六星太鼓
-            Onmyoji.foster_ZCJJK_WXTG   # 五星太鼓
-        ]
-        first_result = ImplHouseOptimized._single_round_check(first_target_cards)
+        # 清空缓存
+        ImplHouseOptimized._clear_cache()
+
+        # 第一轮检查：检查六星太鼓到三星太鼓
+        logger.debug("=== 第一轮检查：六星太鼓到三星太鼓 ===")
+        first_result = ImplHouseOptimized._single_round_check(check_six_star=True)
 
         if first_result:
             card_type, position = first_result
-            logger.debug(f"第一轮找到目标结界卡：{card_type}")
-            if ImplHouseOptimized._locate_and_foster(card_type, position):
-                logger.debug("寄养成功")
-                return card_type
+            if card_type == Onmyoji.foster_ZCJJK_LXTG:
+                # 第一轮就找到六星太鼓，直接寄养
+                logger.debug("第一轮发现六星太鼓，立即中断并寄养")
+                if ImplHouseOptimized._locate_and_foster(card_type, position):
+                    logger.debug("寄养成功")
+                    return card_type
+                else:
+                    logger.debug("寄养失败")
+                    return None
             else:
-                logger.debug("寄养失败")
-                return None
+                # 第一轮找到非六星太鼓，记录统计信息
+                logger.debug(f"第一轮找到{ImplHouseOptimized.STAR_LEVEL[card_type]}星太鼓，继续统计")
 
-        # 第二轮：四星太鼓和三星太鼓
-        logger.debug("=== 第二轮：四星太鼓、三星太鼓 ===")
-        second_target_cards = [
-            Onmyoji.foster_ZCJJK_SXTG1,  # 四星太鼓
-            Onmyoji.foster_ZCJJK_SXTG    # 三星太鼓
-        ]
-        second_result = ImplHouseOptimized._single_round_check(second_target_cards)
+        # 统计第一轮发现的最高星级
+        max_star_level = ImplHouseOptimized._get_max_star_from_statistics()
+        logger.debug(f"第一轮统计完成，最高星级为{max_star_level}星")
+
+        if max_star_level == 0:
+            logger.debug("未找到任何结界卡，退出寄养")
+            return None
+
+        # 第二轮检查：以最高星级为目标进行精确查找
+        logger.debug(f"=== 第二轮检查：目标星级{max_star_level}星 ===")
+        second_result = ImplHouseOptimized._single_round_check(target_star=max_star_level)
 
         if second_result:
             card_type, position = second_result
@@ -166,24 +257,23 @@ class ImplHouseOptimized:
             else:
                 logger.debug("寄养失败")
                 return None
-
-        logger.debug("两轮均未找到目标结界卡")
-        return None
+        else:
+            logger.debug("第二轮未找到目标结界卡")
+            return None
 
     @staticmethod
-    def check_current_card(target_cards: list = None):
+    def check_current_card():
         """
         检查当前好友的结界卡类型
-        :param target_cards: 需要检查的结界卡类型列表，默认检查全部四种
         :return: (card_type, position) 或 None
         """
-        if target_cards is None:
-            target_cards = [
-                Onmyoji.foster_ZCJJK_LXTG,  # 六星太鼓
-                Onmyoji.foster_ZCJJK_WXTG,   # 五星太鼓
-                Onmyoji.foster_ZCJJK_SXTG1,  # 四星太鼓
-                Onmyoji.foster_ZCJJK_SXTG   # 三星太鼓
-            ]
+        # 检查左侧结界卡
+        target_cards = [
+            Onmyoji.foster_ZCJJK_LXTG,  # 六星太鼓
+            Onmyoji.foster_ZCJJK_WXTG,   # 五星太鼓
+            Onmyoji.foster_ZCJJK_SXTG1,  # 四星太鼓
+            Onmyoji.foster_ZCJJK_SXTG   # 三星太鼓1
+        ]
 
         for target_card in target_cards:
             result = ImplHouseOptimized._get_card_left_type(target_card)
