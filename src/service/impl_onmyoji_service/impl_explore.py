@@ -215,7 +215,7 @@ def explore_chapters(game_task: list, chapter: int = 28, difficulty: int = 1):
                                       fight_times=len_time_fight_list, fight_win=num_win,
                                       fight_fail=num_false, fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
-    logger.debug(
+    logger.info(
         "{}章探索挑战，总用时{}，共{}轮，每轮平均战斗时间{}，战斗总用时{},每次战斗平均用时{}，挑战{}次，胜利{}次，失败{}次",
         chapter, UtilsTime.convert_seconds(time_all), fight_times, UtilsTime.convert_seconds(time_round_avg),
         UtilsTime.convert_seconds(time_fight_all), time_fight_avg, len_time_fight_list, num_win, num_false)

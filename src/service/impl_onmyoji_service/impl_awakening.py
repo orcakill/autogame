@@ -144,6 +144,6 @@ def awakening(game_task: list, awakening_type: int = 0):
                                       fight_times=len_time_fight_list, fight_win=num_win, fight_fail=num_fail,
                                       fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("本轮觉醒十总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+    logger.info("本轮觉醒十总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  UtilsTime.convert_seconds(time_all), UtilsTime.convert_seconds(time_fight_all), time_fight_avg,
                  len_time_fight_list, num_win, num_fail)

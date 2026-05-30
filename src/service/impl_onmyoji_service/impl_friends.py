@@ -253,7 +253,7 @@ def friends_fight(game_task: list):
                                       fight_fail=num_fail,
                                       fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("本轮好友协战总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+    logger.info("本轮好友协战总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  UtilsTime.convert_seconds(time_all), UtilsTime.convert_seconds(time_fight_all), time_fight_avg,
                  len_time_fight_list, num_win, num_fail)
 
@@ -331,4 +331,4 @@ def friends_manage(game_task: list):
     game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='好友管理', cost_time=int(time_all))
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("好友管理,用时{}秒", round(time_all))
+    logger.info("好友管理,用时{}秒", round(time_all))

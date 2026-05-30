@@ -121,7 +121,7 @@ def ghost_king(game_task: list):
     game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='地域鬼王完成', cost_time=int(time_all))
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("地域鬼王,用时{}秒", round(time_all))
+    logger.info("地域鬼王,用时{}秒", round(time_all))
 
 
 def encounter_demons(game_task: list):
@@ -242,7 +242,7 @@ def encounter_demons(game_task: list):
     game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='逢魔之时完成', cost_time=int(time_all))
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("逢魔之时,用时{}秒", round(time_all))
+    logger.info("逢魔之时,用时{}秒", round(time_all))
 
 
 def realm_fight(game_task: []):

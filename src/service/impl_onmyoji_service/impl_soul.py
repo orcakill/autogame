@@ -168,7 +168,7 @@ def soul_fight(game_task: list):
                                       fight_fail=num_fail,
                                       fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("本轮{}御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+    logger.info("本轮{}御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  game_project.project_name, round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list,
                  num_win, num_fail)
 
@@ -271,7 +271,7 @@ def soul_fight_fire(game_task: list):
                                       fight_fail=num_fail,
                                       fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("本轮{}御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+    logger.info("本轮{}御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  game_project.project_name, round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list,
                  num_win, num_fail)
 
@@ -384,7 +384,7 @@ def soul_fight_sun(game_task: list):
                                       fight_fail=num_fail,
                                       fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("本轮日轮之陨御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+    logger.info("本轮日轮之陨御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)
 
 
@@ -495,5 +495,5 @@ def soul_fight_sea(game_task: list, fight: int = 0):
                                       fight_fail=num_fail,
                                       fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("本轮永生之海御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
+    logger.info("本轮永生之海御魂挑战，总用时{}秒，战斗总用时{}秒,平均战斗用时{}秒，挑战{}次，胜利{}次，失败{}次",
                  round(time_all, 3), time_fight_all, time_fight_avg, len_time_fight_list, num_win, num_fail)

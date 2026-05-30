@@ -144,7 +144,7 @@ def login_with_account(game_account, server):
     def log_step(step_name, status):
         """记录步骤执行状态"""
         status_symbol = "OK" if status else "FAIL"
-        logger.info(f"[{status_symbol}] {step_name}: {status}")
+        logger.debug(f"[{status_symbol}] {step_name}: {status}")
         step_status[step_name] = status
         return status
 
