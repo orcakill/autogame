@@ -148,10 +148,10 @@ def region_border(game_task: list):
     else:
         if is_over:
             game_project_log.result = game_project_log.result + "突破进度100%"
-            logger.debug("突破进度100%，总用时{}秒", UtilsTime.convert_seconds(time_all))
+            logger.info("突破进度100%，总用时{}秒", UtilsTime.convert_seconds(time_all))
         else:
             game_project_log.result = game_project_log.result + "无寮结界或无战斗次数"
-            logger.debug("无寮结界或无战斗次数，总用时{}秒", UtilsTime.convert_seconds(time_all))
+            logger.info("无寮结界或无战斗次数，总用时{}秒", UtilsTime.convert_seconds(time_all))
     Mapper.save_game_project_log(game_project_log)
 
 
@@ -309,7 +309,7 @@ def border_fight(game_task: list, fight_times: int = 40):
                                       fight_time=time_fight_all, fight_times=len_time_fight_list, fight_win=num_win,
                                       fight_fail=num_false, fight_avg=time_fight_avg)
     Mapper.save_game_project_log(game_project_log)
-    logger.debug(
+    logger.info(
         "本轮结界突破战斗结束，总用时{}，结界挑战劵{}张，战斗总用时{}秒,战斗次数{}次，胜利{}次，失败{}次，平均用时{}秒",
         UtilsTime.convert_seconds(time_all), num_securities, time_fight_all, len_time_fight_list, num_win, num_false,
         time_fight_avg)

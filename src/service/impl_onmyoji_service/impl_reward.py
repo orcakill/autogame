@@ -133,7 +133,7 @@ def daily_rewards(game_task: list):
     game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='每日奖励完成', cost_time=int(time_all))
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("每日奖励,用时{}秒", round(time_all))
+    logger.info("每日奖励,用时{}秒", round(time_all))
 
 
 def soul_arrange(game_task: list):
@@ -213,4 +213,4 @@ def soul_arrange(game_task: list):
     game_project_log = GameProjectLog(project_id=game_project.id, account_id=game_account.id, device_id=game_devices.id,
                                       result='御魂整理', cost_time=int(time_all))
     Mapper.save_game_project_log(game_project_log)
-    logger.debug("御魂整理总用时{}", UtilsTime.convert_seconds(time_all))
+    logger.info("御魂整理总用时{}", UtilsTime.convert_seconds(time_all))
