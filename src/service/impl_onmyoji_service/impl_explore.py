@@ -176,6 +176,7 @@ def explore_chapters(game_task: list, chapter: int = 28, difficulty: int = 1):
             if is_reward and not is_layers:
                 logger.debug("有式神录，无最后一章,点击左上角返回")
                 ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
+                ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
                 logger.debug("确认")
                 ImageService.touch(Onmyoji.explore_QR)
             time_round_end = time.time()
