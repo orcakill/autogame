@@ -19,7 +19,7 @@ if __name__ == '__main__':
     rar_path = os.path.join(project_path, 'src.rar')
     # 创建RAR压缩包对象并添加文件
     logger.debug("正在压缩文件夹")
-    with py7zr.SevenZipFile(rar_path, mode='w') as rar:
+    with py7zr.SevenZipFile(rar_path, mode='w') as rar:  
         rar.writeall(folder_path, os.path.basename(folder_path))
     logger.debug("压缩文件夹完成")
     server = UtilsPath.get_server()

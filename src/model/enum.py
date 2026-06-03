@@ -179,6 +179,7 @@ class Onmyoji:
     login_CY = r"登录\常用"
     login_YCDL = r"登录\异常常用"
     login_DLAN = r"登录\登录按钮"
+    login_GX = r"登录\更新"
     login_XZQY = r"登录\选择区域"
     login_FWQ = r"登录\服务器"
     login_KSYX = r"登录\开始游戏"
