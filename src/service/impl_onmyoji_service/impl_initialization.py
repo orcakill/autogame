@@ -179,6 +179,10 @@ def login_with_account(game_account, server):
         logger.debug("点击可能存在的登录")
         ImageService.touch(Onmyoji.login_DLAN, wait=3, rgb=True)
 
+
+        logger.debug("点击可能存在的更新")
+        ImageService.touch(Onmyoji.login_GX, wait=3, rgb=True)
+
         logger.debug("检查可能存在的其他账号登录")
         # 2. 检查可能存在的其他账号登录
         is_exception = ImageService.exists(Onmyoji.login_YCDL)

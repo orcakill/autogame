@@ -27,7 +27,7 @@ class TestOnmyojiService(TestCase):
         5 MuMu模拟器
         :return:
         """
-        TestOnmyojiService.test_all_project("1", "2")
+        TestOnmyojiService.test_all_project("1", "0")
 
     def test_initialization(self):
         """
