@@ -293,6 +293,8 @@ def login_with_account(game_account, server):
             logger.debug("第五次尝试登录失败,邮件发送")
             # 限制截图数量，避免邮件过大
             UtilsMail.send_email("阴阳师脚本", "登录失败5次", send_text, failure_screenshots[:5])
+            logger.debug("重启阴阳师客户端")
+            ImageService.restart_app("com.netease.onmyoji")
 
     return False
 
