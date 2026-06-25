@@ -1,14 +1,14 @@
 @echo off
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 cd /d "%~dp0"
 
 rem Create log directory
 if not exist "logs\bat" mkdir "logs\bat"
 
-rem Get current date
-for /f "tokens=1-3 delims=/- " %%a in ('date /t') do set "y=%%a" & set "m=%%b" & set "d=%%c"
-if "%m%"=="" for /f "tokens=1-3 delims=/- " %%a in ('echo %date%') do set "y=%%a" & set "m=%%b" & set "d=%%c"
-set "logfile=logs\bat\main_day_all_%y%%m%%d%.log"
+rem 用 PowerShell 获取纯数字日期（如 20260530）
+for /f %%a in ('powershell -Command "Get-Date -Format yyyyMMdd"') do set "datestr=%%a"
+set "logfile=logs\bat\main_day_all_%datestr%.log"
 
 echo [%date% %time%] Checking for running main_day_all.py...
 

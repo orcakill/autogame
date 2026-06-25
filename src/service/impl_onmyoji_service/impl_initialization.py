@@ -84,6 +84,7 @@ def is_on_account_homepage(account_index):
     is_index = ImageService.exists(account_index)
     is_explore = ImageService.exists(Onmyoji.home_TS, rgb=True)
     is_courtyard = ImageService.exists(Onmyoji.home_DZ)
+    logger.debug("识别结果：首页头像{},探索{}，町中{}", is_index, is_explore, is_courtyard)
     return is_index and is_explore and is_courtyard
 
 
