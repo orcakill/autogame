@@ -146,8 +146,7 @@ class ImplHouseOptimized:
                 logger.debug("寄养成功")
                 return card_type
             else:
-                logger.debug("寄养失败")
-                return None
+                logger.debug("第一轮寄养失败，继续第二轮查找")
 
         # 第二轮：四星太鼓和三星太鼓
         logger.debug("=== 第二轮：四星太鼓、三星太鼓 ===")
@@ -164,8 +163,7 @@ class ImplHouseOptimized:
                 logger.debug("寄养成功")
                 return card_type
             else:
-                logger.debug("寄养失败")
-                return None
+                logger.debug("第二轮寄养失败")
 
         logger.debug("两轮均未找到目标结界卡")
         return None
