@@ -116,8 +116,6 @@ class ComplexService:
             # AirtestService.auto_setup(connect_info)
         else:
             logger.debug("已连接设备")
-            logger.debug("检查截图方法")
-            AirtestService.check_method(serialno)
 
     @staticmethod
     def start_scrcpy_cap(serialno):

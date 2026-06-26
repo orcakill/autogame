@@ -215,7 +215,7 @@ class ImplHouseOptimized:
         results = [future.result() for future in futures]
 
         if results[0]:
-            logger.debug(f"图像匹配：{target_card}, 相似度：{results[0]['confidence']}")
+            logger.debug(f"图像匹配：路径={target_card}, 图片={results[0].get('template_file', 'N/A')}, 相似度={results[0]['confidence']}")
             if results[0]['confidence'] > 0.95:
                 logger.debug("相似度大于0.95，不必验证")
                 return [target_card, results[0]['result'], results[0]['confidence']]

@@ -118,9 +118,10 @@ def region_border(game_task: list):
                 time_fight_list.append(time_fight_time)
     else:
         logger.debug("无寮结界或者无挑战次数")
-    logger.debug("阴阳寮突破-返回首页")
+    logger.debug("阴阳寮突破-返回首页{}",Onmyoji.comm_FH_YSJHDBSCH)
     ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
-    ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH, wait=2)
+    logger.debug("阴阳寮突破-返回首页{}", Onmyoji.comm_FH_YSJHDBSCH)
+    ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH, wait=2)
     logger.debug("阴阳寮突破-确认返回首页")
     impl_initialization.return_home(game_task)
     # 结束时间
@@ -286,9 +287,9 @@ def border_fight(game_task: list, fight_times: int = 40):
             time_fight = time_fight_end - time_fight_start
             logger.debug("本次结界突破战斗结束，用时{}秒", round(time_fight, 3))
             time_fight_list.append(time_fight)
-    logger.debug("返回探索界面")
-    ImageService.touch(Onmyoji.comm_FH_YSJZDHBSCH)
-    logger.debug("返回首页")
+    logger.debug("返回探索界面:{}",Onmyoji.comm_FH_YSJZDHBSCH)
+    ImageService.touch(Onmyoji.comm_FH_ZSJHKZDHSXYH)
+    logger.debug("返回首页,{}",Onmyoji.comm_FH_ZSJHKZDHSXYH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)
     logger.debug("确认返回首页")
     impl_initialization.return_home(game_task)
