@@ -7,6 +7,7 @@ import datetime
 import time
 from unittest import TestCase
 
+from service.impl_onmyoji_service.impl_explore import select_chapter
 from service.ocr_service import OcrService
 from src.model.enum import Onmyoji, Cvstrategy
 from src.service.airtest_service import AirtestService
@@ -195,3 +196,8 @@ class TestImageService(TestCase):
     def test_start_app(self):
         ComplexService.auto_setup("2")
         ImageService.restart_app("com.netease.nie.yosemite")
+
+
+    def test_select_chapter(self):
+        ComplexService.auto_setup("0")
+        select_chapter()

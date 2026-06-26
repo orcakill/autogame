@@ -30,6 +30,9 @@ class WindowsService:
         process_name = process  # 替换为你的应用程序进程名称
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
         shortcut_path = os.path.join(desktop_path, name + ".lnk")  # 替换为你的桌面快捷方式路径
+        logger.debug("进程名{}",process)
+        logger.debug("桌面地址{}",desktop_path)
+        logger.debug("桌面快捷方式地址{}",shortcut_path)
 
         if not WindowsService.check_process_running(process_name):
             WindowsService.start_process(shortcut_path)

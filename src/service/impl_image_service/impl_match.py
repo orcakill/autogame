@@ -65,6 +65,7 @@ class ImplMatch:
                                                          y2 * resolution[1])
                         result=AirtestService.cv_match(template, image1, cvstrategy)
                         AirtestService.draw_point(image1, result['result'][0], result['result'][1])
+                        result['template_file'] = template.filename
                         return result
                     except Exception as e:
                         if is_throw:

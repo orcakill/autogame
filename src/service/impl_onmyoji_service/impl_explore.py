@@ -4,6 +4,7 @@
 # @Description: 探索
 import time
 
+from service.airtest_service import AirtestService
 from src.dao.mapper import Mapper
 from src.model.enum import Onmyoji, Cvstrategy
 from src.model.models import GameProjectsRelation, GameAccount, GameDevice, GameProject, GameProjectLog
@@ -86,7 +87,10 @@ def explore_chapters(game_task: list, chapter: int = 28, difficulty: int = 1):
             ImageService.touch(Onmyoji.home_TS)
             logger.debug("选择章节")
             if chapter == 28:
-                is_select_chapter = select_chapter()
+                logger.debug("选择28章")
+                select_chapter()
+                logger.debug("检查是否有困难")
+                is_select_chapter = ImageService.exists(Onmyoji.explore_ZJNDKN)
                 if not is_select_chapter:
                     logger.debug("切换文字识别")
                     ImageService.ocr_touch(["第二十八章"])
@@ -227,12 +231,17 @@ def select_chapter():
     选择最大章节
     :return:
     """
-    results = ImageService.find_all(Onmyoji.explore_ZZ, cvstrategy=Cvstrategy.default)
+    logger.debug("查找最大章节")
+    results = ImageService.find_all(Onmyoji.explore_ZZ)
     if results:
+        logger.debug("点击最大章章节的章字")
         result = max(results, key=lambda x: x['result'][1])['result']
         if result:
+            logger.debug("坐标{}",result)
+            AirtestService.draw_point(x=result[0],y=result[1])
             ImageService.touch_coordinate(result)
             return True
+        return False
     else:
         logger.debug("找不到章节")
         return False

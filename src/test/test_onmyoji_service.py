@@ -102,7 +102,7 @@ class TestOnmyojiService(TestCase):
         项目8 个人突破
         :return:
         """
-        TestOnmyojiService.test_project('1', '5', "个人突破")
+        TestOnmyojiService.test_project('1', '0', "个人突破")
 
     def test_friends_manage(self):
         """
@@ -188,7 +188,7 @@ class TestOnmyojiService(TestCase):
         项目21 探索
         :return:
         """
-        TestOnmyojiService.test_project('1', '2', "探索")
+        TestOnmyojiService.test_project('1', '0', "探索")
 
     def test_spirit(self):
         """
@@ -283,6 +283,7 @@ class TestOnmyojiService(TestCase):
             OnmyojiService.initialization(game_task)
             # 项目 1、
             if game_project.project_name in ["登录"]:
+                logger.debug("额外测试登录")
                 result = OnmyojiService.initialization(game_task)
             # 项目 2、24 每日奖励领取
             elif game_project.project_name in ["每日奖励"]:

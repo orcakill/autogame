@@ -41,6 +41,7 @@ if __name__ == '__main__':
         logger.debug("检查最近3小时是否式神寄养成功")
         foster_care_records = MapperExtend.select_foster_carer(game_account_large, 3)
         if not foster_care_records:
+            logger.debug("最近3小时无寄养记录")
             if weekday == 3 and 6 <= current_hour <= 8:
                 logger.info("周三维护中")
             else:
@@ -59,4 +60,3 @@ if __name__ == '__main__':
         logger.debug("等待5分钟")
         time.sleep(60 * 5)
         logger.debug("第{}轮次结束", num_round)
-        sys.exit()
