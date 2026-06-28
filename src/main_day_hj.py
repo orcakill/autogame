@@ -17,7 +17,7 @@ from src.utils.my_logger import my_logger as logger
 if __name__ == '__main__':
     WindowsService.limit_cpu_percentage(30)
     # 设备：云手机001
-    game_device = "0"
+    game_device = "2"
     # 账号：大号、小号、大小号
     game_account_large = '1'
     game_account_small = '2,3,4,5'
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         weekday = today.weekday() + 1
         logger.debug("当前日期{}:{}:{}", today, current_hour, current_minute)
         logger.debug("检查最近3小时是否式神寄养成功")
-        foster_care_records = MapperExtend.select_foster_carer(game_account_large, 3)
+        foster_care_records = MapperExtend.select_foster_carer(game_account_large, 6)
         if not foster_care_records:
             logger.debug("最近3小时无寄养记录")
             if weekday == 3 and 6 <= current_hour <= 8:
@@ -52,11 +52,11 @@ if __name__ == '__main__':
         else:
             logger.info("最近3小时有寄养记录")
         # 如果当前时间大于等于0点并且小于23点，大号绘卷
-        start_hour, end_hour = 0, 22
+        start_hour, end_hour = 0, 23
         logger.info("0-23,大号，大号绘卷")
         OnmyojiController.create_execute_tasks(game_device, game_account_large, projects_num="4",
                                                        start_hour=start_hour, end_hour=end_hour)
         # 等待5分钟
-        logger.debug("等待5分钟")
-        time.sleep(60 * 5)
+        logger.debug("等待1分钟")
+        time.sleep(60 * 1)
         logger.debug("第{}轮次结束", num_round)

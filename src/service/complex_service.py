@@ -109,11 +109,10 @@ class ComplexService:
             logger.debug("检查截图方法效率，不必切换,仅做参考")
             best_method = AirtestService.check_method(serialno)
             logger.debug("最佳截图方法{}", best_method)
-            # logger.debug("以最快的可用截图方法重新连接")
-            # connect_info = connect_info + '?cap_method=' + best_method
-            # if connect_info=='JAVACAP':
-            #     connect_info=connect_info+'&ori_method=ADBORI&&touch_method=ADBORI'
-            # AirtestService.auto_setup(connect_info)
+            if game_device in [2,'2']:
+                logger.debug("以最快的可用截图方法重新连接")
+                connect_info = connect_info + '?cap_method=' + best_method
+                AirtestService.auto_setup(connect_info)
         else:
             logger.debug("已连接设备")
 
