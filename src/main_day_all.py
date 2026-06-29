@@ -51,8 +51,8 @@ if __name__ == '__main__':
         # 获取本日是周几（周一为0，周日为6）
         weekday = today.weekday() + 1
         logger.debug("当前日期{}:{}:{}", today, current_hour, current_minute)
-        logger.debug("检查最近3小时是否式神寄养成功")
-        foster_care_records = MapperExtend.select_foster_carer(game_account_large, 3)
+        logger.debug("检查最近6小时是否大号式神寄养成功")
+        foster_care_records = MapperExtend.select_foster_carer(game_account_large, 6)
         if not foster_care_records:
             if weekday == 3 and 6 <= current_hour <= 8:
                 logger.info("周三维护中")
@@ -62,7 +62,7 @@ if __name__ == '__main__':
                 OnmyojiController.create_execute_tasks(game_device, game_account_all, project_name="式神寄养",
                                                        start_hour=start_hour, end_hour=end_hour)
         else:
-            logger.info("最近3小时有寄养记录")
+            logger.info("最近6小时有寄养记录")
         # 如果当前时间大于等于0点并且小于8点
         if 0 <= current_hour <= 5:
             # 0点-5点 大号-式神寄养，签到，每日奖励，阴阳寮管理，好友管理，御魂20次，每日奖励，御魂整理
@@ -174,7 +174,7 @@ if __name__ == '__main__':
                 task_list4[3] = True
                 continue
 
-        elif current_hour >= 22:
+        elif current_hour >=23:
             logger.debug("结束当日任务")
             sys.exit()
         # 等待5分钟
