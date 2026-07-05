@@ -34,10 +34,10 @@ class TestImageService(TestCase):
         logger.debug(UtilsTime.convert_seconds(now1 - now))
 
     def test_exists_coordinate(self):
-        ComplexService.auto_setup("2")
+        ComplexService.auto_setup("5")
         logger.debug("开始")
         now = time.time()
-        is_1= OcrService.get_word(Onmyoji.foster_JJK_GYWZ)
+        is_1= ImageService.exists(Onmyoji.login_SLTS)
         logger.debug(is_1)
         now1 = time.time()
         logger.debug("结束")
