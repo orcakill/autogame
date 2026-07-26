@@ -195,7 +195,7 @@ class TestOnmyojiService(TestCase):
         项目22 御灵
         :return:
         """
-        TestOnmyojiService.test_project('2,3,4,5', '2', "御灵")
+        TestOnmyojiService.test_project('1', '2', "御灵", fight_times=200)
 
     def test_deed(self):
         """

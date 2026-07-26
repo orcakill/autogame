@@ -22,7 +22,7 @@ THRESHOLD = 0.7
 # 图片识别轮次
 REC_ROUND = 1
 # 图片等待识别时间(秒）·
-WAIT = 2
+WAIT = 0.1
 # 图片识别间隔(秒）·
 INTERVAL = 1
 # 点击次数
