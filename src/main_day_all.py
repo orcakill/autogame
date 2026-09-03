@@ -112,7 +112,7 @@ if __name__ == '__main__':
         elif 5 <= current_hour <= 11:
             # 6点-12点 大号-式神寄养，地域鬼王，阴阳寮突破循环
             start_hour, end_hour = 5, 11
-            if weekday == 3 and current_hour <= 7:
+            if (weekday == 3 and current_hour <= 7) or (weekday == 3 and current_hour >= 9) or (weekday != 3):
                 logger.info("周三 5-11,大号阴阳寮突破循环")
                 OnmyojiController.create_execute_tasks(game_device, game_account_large, projects_num="3",
                                                        start_hour=start_hour, end_hour=end_hour)
@@ -174,7 +174,7 @@ if __name__ == '__main__':
                 task_list4[3] = True
                 continue
 
-        elif current_hour >=23:
+        elif current_hour >= 23:
             logger.debug("结束当日任务")
             sys.exit()
         # 等待5分钟
