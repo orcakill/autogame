@@ -6,6 +6,7 @@
 import os
 import sys
 
+from service.airtest_service import AirtestService
 from src.service.image_service import ImageService
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -20,13 +21,20 @@ def soul(game_devices: str):
     ComplexService.auto_setup(game_devices)
     for i in range(500):
         logger.debug("第{}次挑战", i + 1)
-        ImageService.touch(Onmyoji.trials_arts_TZ, wait=4)
-        ComplexService.fight_end(Onmyoji.trials_arts_ZDSL, Onmyoji.trials_arts_ZDSB, Onmyoji.trials_arts_ZCTZ,Onmyoji.trials_arts_TCTZ, 100, 2)
-
+        if i%20==0:
+            logger.debug("检查是否已连接")
+            screen = AirtestService.snapshot()
+            if screen is None:
+                logger.debug("设备未连接")
+                ComplexService.auto_setup(game_devices)
+        is_fight=ImageService.touch(Onmyoji.trials_arts_TZ, wait=4)
+        if not is_fight:
+            ComplexService.refuse_reward()
+        ComplexService.fight_end(Onmyoji.trials_arts_ZDSL, Onmyoji.trials_arts_ZDSB, Onmyoji.trials_arts_ZCTZ,
+                                 Onmyoji.trials_arts_TCTZ, Onmyoji.trials_arts_TZ,None,100, 2)
 
 
 if __name__ == '__main__':
     WindowsService.limit_cpu_percentage(30)
-    game_device = input("队员 请输入一个设备 0 云手机1 1 夜神模拟器 2 荣耀平板 3 小米手机 4云手机2：")
+    game_device = input("队员 请输入一个设备 0 云手机1 1 夜神模拟器 2 荣耀平板 3 小米手机 4云手机2")
     soul(game_device)
-
