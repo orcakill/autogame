@@ -10,7 +10,7 @@ from src.model.models import GameProjectsRelation, GameProject, GameAccount, Gam
 from src.service.complex_service import ComplexService
 from src.service.onmyoji_service import OnmyojiService
 from src.service.windows_service import WindowsService
-from src.utils.my_logger import logger
+from src.utils.my_logger import my_logger as logger
 from utils.utils_path import UtilsPath
 
 
@@ -27,7 +27,7 @@ class TestOnmyojiService(TestCase):
         5 MuMu模拟器
         :return:
         """
-        TestOnmyojiService.test_all_project("1", "0")
+        TestOnmyojiService.test_all_project("1", "2")
 
     def test_initialization(self):
         """
@@ -39,7 +39,7 @@ class TestOnmyojiService(TestCase):
         4 云手机-0021
         :return:
         """
-        TestOnmyojiService.test_project('1', "5", "登录")
+        TestOnmyojiService.test_project('1', "2", "登录")
 
     def test_initialization1(self):
         """

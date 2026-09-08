@@ -25,6 +25,6 @@ if %found% equ 0 (
     echo [%date% %time%] Process terminated.
 )
 
-call venv\Scripts\activate
+call .venv\Scripts\activate
 echo [%date% %time%] Starting main_day_hj.py...
 python src\main_day_hj.py >> "%logfile%" 2>&1
