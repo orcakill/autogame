@@ -163,6 +163,8 @@ cython_debug/
 *.properties
 *.ini
 *.rar
+*.tar.gz
+*.tar
 .idea/
 idea/
 .trae/
