@@ -118,9 +118,9 @@ def explore_chapters(game_task: list, chapter: int = 28, difficulty: int = 1):
                 if i == 1 and i_fight == 1:
                     logger.debug("添加N卡式神自动轮换")
                     automatic_rotation_type_god()
-                    logger.debug("开启经验加成")
-                    ComplexService.top_addition(Onmyoji.explore_JC, Onmyoji.explore_JYJC, Onmyoji.explore_JCK,
-                                                Onmyoji.explore_JCG, 1)
+                    # logger.debug("开启经验加成")
+                    # ComplexService.top_addition(Onmyoji.explore_JC, Onmyoji.explore_JYJC, Onmyoji.explore_JCK,
+                    #                             Onmyoji.explore_JCG, 1)
                 if not is_rotation:
                     logger.debug("未自动轮换-锁定阵容")
                     ImageService.touch(Onmyoji.explore_SDZR)
@@ -188,9 +188,9 @@ def explore_chapters(game_task: list, chapter: int = 28, difficulty: int = 1):
             logger.debug("本次章节探索结束，用时{}秒", round(time_round_fight, 3))
             time_round_list.append(time_round_fight)
             logger.debug("本轮探索战斗结束")
-    logger.debug("关闭加成")
-    ComplexService.top_addition(Onmyoji.explore_JC, Onmyoji.explore_JYJC, Onmyoji.explore_JCK,
-                                Onmyoji.explore_JCG, 0)
+    # logger.debug("关闭加成")
+    # ComplexService.top_addition(Onmyoji.explore_JC, Onmyoji.explore_JYJC, Onmyoji.explore_JCK,
+    #                             Onmyoji.explore_JCG, 0)
     logger.debug("返回首页")
     ImageService.touch(Onmyoji.comm_FH_YSJHDBSCH)
     ImageService.touch(Onmyoji.comm_FH_ZSJLDYXBSXYH)

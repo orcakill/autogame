@@ -17,7 +17,8 @@ from src.utils.my_logger import my_logger as logger
 if __name__ == '__main__':
     WindowsService.limit_cpu_percentage(30)
     # 设备：云手机001
-    # 设备：云手机001
+    # 设备：云手机001 0
+    # 设备：荣耀云手机 2
     game_device = "0"
     # 账号：大号、小号、大小号
     game_account_large = '1'
@@ -42,7 +43,7 @@ if __name__ == '__main__':
         logger.debug("检查最近6小时是否式神寄养成功")
         foster_care_records = MapperExtend.select_foster_carer(game_account_large, 6)
         if not foster_care_records:
-            logger.debug("最近3小时无寄养记录")
+            logger.debug("最近6小时无寄养记录")
             if weekday == 3 and 6 <= current_hour <= 8:
                 logger.info("周三维护中")
             else:
@@ -51,7 +52,7 @@ if __name__ == '__main__':
                 OnmyojiController.create_execute_tasks(game_device, game_account_all, project_name="式神寄养",
                                                        start_hour=start_hour, end_hour=end_hour)
         else:
-            logger.info("最近3小时有寄养记录")
+            logger.info("最近6小时有寄养记录")
         # 如果当前时间大于等于0点并且小于23点，大号绘卷
         start_hour, end_hour = 0, 23
         logger.info("0-23,大号，大号绘卷")
