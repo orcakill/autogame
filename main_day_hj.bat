@@ -8,7 +8,7 @@ if not exist "logs\bat" mkdir "logs\bat"
 
 rem 用 PowerShell 获取纯数字日期（如 20260530）
 for /f %%a in ('powershell -Command "Get-Date -Format yyyyMMdd"') do set "datestr=%%a"
-set "logfile=logs\bat\main_day_all_%datestr%.log"
+set "logfile=logs\bat\main_day_hj_%datestr%.log"
 
 echo [%date% %time%] Checking for running main_day_hj.py...
 
@@ -25,6 +25,6 @@ if %found% equ 0 (
     echo [%date% %time%] Process terminated.
 )
 
-call .venv\Scripts\activate
 echo [%date% %time%] Starting main_day_hj.py...
-python src\main_day_hj.py >> "%logfile%" 2>&1
+
+"%~dp0.venv\python.exe" src\main_day_hj.py >> "%logfile%" 2>&1

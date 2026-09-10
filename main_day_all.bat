@@ -25,6 +25,5 @@ if %found% equ 0 (
     echo [%date% %time%] Process terminated.
 )
 
-call .venv\Scripts\activate
 echo [%date% %time%] Starting main_day_all.py...
-python src\main_day_all.py >> "%logfile%" 2>&1
+"%~dp0.venv\python.exe" src\main_day_all.py >> "%logfile%" 2>&1
