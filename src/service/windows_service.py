@@ -124,16 +124,20 @@ class WindowsService:
             if filename == '.md':
                 continue
             file_path = os.path.join(folder_path, filename)
-            # 获取文件的创建时间
-            create_time = os.path.getctime(file_path)
-            # 计算创建时间距今的天数
-            days_diff = (now - create_time) / (24 * 60 * 60)
-            # 如果创建时间距今 x  天以上，则删除文件
-            if days_diff > day:
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
+            try:
+                # 获取文件的创建时间
+                create_time = os.path.getctime(file_path)
+                # 计算创建时间距今的天数
+                days_diff = (now - create_time) / (24 * 60 * 60)
+                # 如果创建时间距今 x  天以上，则删除文件
+                if days_diff > day:
+                    if os.path.isfile(file_path):
+                        os.remove(file_path)
+                    elif os.path.isdir(file_path):
+                        # 目录可能被其它进程占用（如日志句柄未释放），删除失败仅告警，不向上抛出
+                        shutil.rmtree(file_path, ignore_errors=True)
+            except OSError as e:
+                logger.warning("清理历史日志失败(忽略) {} -> {}", file_path, e)
 
     @staticmethod
     def get_computer_name():

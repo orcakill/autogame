@@ -90,12 +90,14 @@ class OnmyojiController:
         :param end_hour: 结束时间
         :return: None
         """
+        time_start = time.time()
+        # 清理历史日志，失败只告警，绝不影响任务执行
+        for log_dir in ("info", "debug"):
+            try:
+                WindowsService.delete_folder_file(os.path.join(UtilsPath.get_project_path_log(), log_dir), 2)
+            except Exception as e:
+                logger.warning("日志清理失败，忽略：{}", e)
         try:
-            time_start = time.time()
-            path1 = os.path.join(UtilsPath.get_project_path_log(), "info")
-            WindowsService.delete_folder_file(path1, 2)
-            path2 = os.path.join(UtilsPath.get_project_path_log(), "debug")
-            WindowsService.delete_folder_file(path2, 2)
             if len(game_tasks) > 0:
                 logger.info("任务开始")
                 # 循环项目组
