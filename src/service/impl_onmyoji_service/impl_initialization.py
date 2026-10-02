@@ -368,7 +368,7 @@ def switch():
     logger.debug("切换服务器，图片识别")
     # 尝试通过图片识别切换
     if ImageService.touch(Onmyoji.login_QHFWQ):
-        if not ImageService.touch(Onmyoji.login_QHFWQ):
+        if not ImageService.exists(Onmyoji.login_QHFWQ,wait=2):
             return True
 
     # 尝试通过OCR识别切换
