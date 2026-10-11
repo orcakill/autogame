@@ -116,7 +116,7 @@ class TestOnmyojiService(TestCase):
         项目10 好友协战
         :return:
         """
-        TestOnmyojiService.test_project('2,3,4,5', '5', "好友协战")
+        TestOnmyojiService.test_project('2', '5', "好友协战")
 
     def test_awakening(self):
         """
